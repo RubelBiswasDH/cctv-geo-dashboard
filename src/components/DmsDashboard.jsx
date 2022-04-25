@@ -78,16 +78,6 @@ class DmsDashboard extends React.PureComponent {
   }
 
   // Handle Date Range Change
-  _handleDateRangeChange = dateValues => {
-    const { start_date, end_date } = this.state            
-
-    // Get start date and end date from date range picker
-    const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
-    const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
-
-    // Set state for start date and end date accordingly
-    this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
-  }
 
   // Handle Get Data
   _handleOnSubmit = () => {
@@ -142,7 +132,7 @@ class DmsDashboard extends React.PureComponent {
                   <LocalizationProvider dateAdapter={ AdapterDayjs }>
                       <DateRangePicker
                           value={ [ start_date, end_date ] }
-                          onChange={ this._handleDateRangeChange }
+                          onChange={ () => ("handle data change")}
                           disableMaskedInput={ true }
                           inputFormat={ 'DD-MMM-YYYY' }
                           renderInput={(startProps, endProps) => (                                            

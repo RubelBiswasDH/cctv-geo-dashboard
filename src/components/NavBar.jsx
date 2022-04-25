@@ -22,7 +22,8 @@ class NavBar extends React.PureComponent {
     accMenuAnchorEl: null,
     notificationsMenuAnchorEl: null,
     isTaskDetailsOpen: false,
-    selectedTask: {}
+    selectedTask: {},
+    filterOptions: ['option1','option2','option3']
   }
 
   componentDidUpdate = (prevProps) => {
@@ -125,40 +126,11 @@ class NavBar extends React.PureComponent {
   }
 
   // On Search Input Change
-  _onSearchInputChange = (e, newInputValue) => {
-    const { dispatch } = this.props
-    dispatch( setSearchQuery(newInputValue) )
-  }
 
   // On Autocomplete Select Change
-  _onAutocompleteChange = (e, newValue) => {
-    const { dispatch } = this.props
-
-    if(!newValue) {
-      dispatch( setAutocompleteSelectedTask(null) )
-      return
-    }
-
-    dispatch( setAutocompleteSelectedTask(newValue) )
-
-    // Auto Select Date by Selected Task
-    const selectedDate = dayjs(newValue?.created_at ?? '').format('YYYY-MM-DD')
-    dispatch( setSelectedDate(selectedDate) )
-
-    // Auto Select All Status Type
-    dispatch( setSelectedStatusType('ALL') )
-  }
 
   // On Autocomplete Filter
-  _onAutocompleteFilter = (options, state) => {
-    if(!state?.inputValue) {
-      return []
-    }
 
-    return options.filter(o =>
-      state.getOptionLabel(o).toLowerCase().includes(state.inputValue.toLowerCase())
-    )
-  }
   
   render() {
     const { user, appBarProps, pushNotifications, searchQuery, tasks, autocompleteSelectedTask } = this.props
@@ -200,13 +172,13 @@ class NavBar extends React.PureComponent {
                     size='small'
                     popupIcon={ <Search fontSize='small' /> }
                     openOnFocus={ false }
-                    options={ tasks }
+                    options={ this.state.filterOptions }
                     getOptionLabel={ o => o?.ticket_number ?? '' }
-                    filterOptions={ this._onAutocompleteFilter }
+                    filterOptions={ x => (x)}
                     value={ autocompleteSelectedTask }
                     inputValue={ searchQuery }
-                    onChange={ this._onAutocompleteChange }
-                    onInputChange={ this._onSearchInputChange }
+                    onChange={ () => console.log('Autocopmplete changed') }
+                    onInputChange={ () => console.log('onInputChange') }
                     sx={ autocompleteStyles }
                     renderInput={params =>
                       <TextField

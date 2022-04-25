@@ -32,7 +32,7 @@ class TaskList extends React.PureComponent {
     // dispatch( loadTasks() )
 
     // Pending Emergency Reminder
-    this._setReminderForEmergency()
+    // this._setReminderForEmergency()
   }
 
   // Generate Columns & Rows
@@ -80,61 +80,14 @@ class TaskList extends React.PureComponent {
   }
 
   // Sort Tasks By Emergency
-  _sortTasksByEmergency = tasks => {
-    if(!tasks) {
-      return []
-    }
-
-    return [ ...tasks ].sort((t1, t2) => {
-      const t1Em = t1?.is_emergency ?? 0
-      const t2Em = t2?.is_emergency ?? 0
-
-      return t2Em - t1Em
-    })
-  }
 
   // Filter Tasks By Request Date
-  _filterTasksByDate = (tasks, selectedDate) => {
-    if(!tasks) {
-      return []
-    }
 
-    const filteredTasks = tasks.filter(t => String(t.created_at).includes(selectedDate))
-
-    return filteredTasks
-  }
 
   // Filter Tasks By Status Type
-  _filterTasksByStatus = (tasks, selectedStatus) => {
-    if(!tasks) {
-      return []
-    }
 
-    if(!selectedStatus || selectedStatus === 'ALL') {
-      return tasks
-    }
-
-    const filteredTasks = tasks.filter(t => t.status === selectedStatus)
-    
-    return filteredTasks
-  }
 
   // Filter Tasks By Search
-  _filterByAutocompleteSelectedTask = (tasks, autocompleteSelectedTask) => {
-    if(!tasks) {
-      return []
-    }
-
-    if(!autocompleteSelectedTask) {
-      return tasks
-    }
-
-    const filteredTasks = tasks.filter(t =>
-      t.ticket_number.toLowerCase().includes(autocompleteSelectedTask.ticket_number.toLowerCase())
-    )
-    
-    return filteredTasks
-  }
 
   // Open Task Details Dialog
   _openTaskDetails = selectedTask => {
@@ -189,41 +142,7 @@ class TaskList extends React.PureComponent {
   }
 
   // Open Reminder for Emergency Tasks Periodically
-  _setReminderForEmergency = () => {
-    setInterval(() => {
-      const { tasks } = this.props
-
-      const emergencies = tasks.filter(t => t.is_emergency && t.status !== 'CLOSED')
-
-      if(!emergencies?.length) {
-        this.setState({ feedback: null })
-        return
-      }
-
-      let index = 0
-      const intervalId = setInterval(() => {
-        if(index >= emergencies.length) {
-          index = 0
-          clearInterval(intervalId)
-          return
-        }
-
-        const feedback = {
-          status: 400,
-          message: `[${ emergencies[ index ].ticket_number }] emergency pending!`,
-          task: emergencies[ index ]
-        }
-  
-        this.setState({ feedback })
-
-        // Play emergency sound
-        playNotificationSound('emergency')
-
-        index++
-      }, 12000)
-
-    }, 600000)
-  }
+ 
 
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
@@ -252,16 +171,427 @@ class TaskList extends React.PureComponent {
   render() {
     const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
-    const sortedByEmergency = this._sortTasksByEmergency(tasks)    
-    const tasksByStatus = this._filterTasksByStatus(sortedByEmergency, selectedStatus)
-    const tasksBySearchQuery = this._filterByAutocompleteSelectedTask(tasksByStatus, autocompleteSelectedTask)
-    const transformedTasks = this._generateTaskColumnsAndRows(tasksBySearchQuery)
     
+
+    const demoTasks = {
+      "columns": [
+          {
+              "field": "serial_no",
+              "headerName": "Sl no",
+              "minWidth": 50,
+              "maxWidth": 50,
+              "sortable": false,
+              "filter": false,
+              "filterable": false
+          },
+          {
+              "field": "ticket_number",
+              "headerName": "Ticket ID",
+              "minWidth": 100,
+              "maxWidth": 120,
+              "sortable": false,
+              "filter": false,
+              "filterable": false
+          },
+          {
+              "field": "created_by",
+              "headerName": "Created by",
+              "minWidth": 200,
+              "maxWidth": 350,
+              "sortable": false,
+              "filter": false
+          },
+          {
+              "field": "dispatcher_name",
+              "headerName": "Dispatcher Name",
+              "minWidth": 200,
+              "maxWidth": 350,
+              "sortable": false,
+              "filter": true,
+              "type": "string"
+          },
+          {
+              "field": "created_at",
+              "headerName": "Created Date & Time",
+              "minWidth": 150,
+              "maxWidth": 180,
+              "sortable": false,
+              "filter": false,
+              "type": "dateTime",
+              "filterable": false
+          },
+          {
+              "field": "snd_name",
+              "headerName": "S&D Name",
+              "minWidth": 200,
+              "maxWidth": 350,
+              "sortable": false,
+              "filter": false,
+              "type": "singleSelect",
+              "valueOptions": [
+                  {
+                      "value": "Kafrul S&D Division",
+                      "label": "Kafrul S&D Division",
+                      "snd": {
+                          "id": 1,
+                          "snd_name": "Kafrul S&D Division",
+                          "snd_area_name": "Kafrul",
+                          "created_at": "2022-02-01T12:43:05.000000Z",
+                          "updated_at": "2022-02-01T12:43:05.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Pallabi S&D Division",
+                      "label": "Pallabi S&D Division",
+                      "snd": {
+                          "id": 2,
+                          "snd_name": "Pallabi S&D Division",
+                          "snd_area_name": "Pallabi",
+                          "created_at": "2022-02-01T12:40:58.000000Z",
+                          "updated_at": "2022-02-01T12:40:58.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Rupnagar S&D Division",
+                      "label": "Rupnagar S&D Division",
+                      "snd": {
+                          "id": 3,
+                          "snd_name": "Rupnagar S&D Division",
+                          "snd_area_name": "Rupnagar",
+                          "created_at": "2022-02-01T12:43:39.000000Z",
+                          "updated_at": "2022-02-01T12:43:39.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Shahali S&D Division",
+                      "label": "Shahali S&D Division",
+                      "snd": {
+                          "id": 4,
+                          "snd_name": "Shahali S&D Division",
+                          "snd_area_name": "Shahali",
+                          "created_at": "2022-02-01T12:40:04.000000Z",
+                          "updated_at": "2022-02-01T12:40:04.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Monipur S&D Division",
+                      "label": "Monipur S&D Division",
+                      "snd": {
+                          "id": 5,
+                          "snd_name": "Monipur S&D Division",
+                          "snd_area_name": "Monipur",
+                          "created_at": "2022-02-01T12:41:42.000000Z",
+                          "updated_at": "2022-02-01T12:41:42.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Agargaon S&D Division",
+                      "label": "Agargaon S&D Division",
+                      "snd": {
+                          "id": 6,
+                          "snd_name": "Agargaon S&D Division",
+                          "snd_area_name": "Agargaon",
+                          "created_at": "2022-02-01T12:43:21.000000Z",
+                          "updated_at": "2022-02-01T12:43:21.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Gulshan S&D Division",
+                      "label": "Gulshan S&D Division",
+                      "snd": {
+                          "id": 7,
+                          "snd_name": "Gulshan S&D Division",
+                          "snd_area_name": "Gulshan",
+                          "created_at": "2022-02-01T12:45:01.000000Z",
+                          "updated_at": "2022-02-01T12:45:01.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Badda S&D Division",
+                      "label": "Badda S&D Division",
+                      "snd": {
+                          "id": 8,
+                          "snd_name": "Badda S&D Division",
+                          "snd_area_name": "Badda",
+                          "created_at": "2022-02-01T12:38:53.000000Z",
+                          "updated_at": "2022-02-01T12:38:53.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Baridhara S&D Division",
+                      "label": "Baridhara S&D Division",
+                      "snd": {
+                          "id": 9,
+                          "snd_name": "Baridhara S&D Division",
+                          "snd_area_name": "Baridhara",
+                          "created_at": "2022-02-01T12:39:34.000000Z",
+                          "updated_at": "2022-02-01T12:39:34.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Uttara (East) S&D Division",
+                      "label": "Uttara (East) S&D Division",
+                      "snd": {
+                          "id": 10,
+                          "snd_name": "Uttara (East) S&D Division",
+                          "snd_area_name": "Uttara (East)",
+                          "created_at": "2022-02-01T12:41:16.000000Z",
+                          "updated_at": "2022-02-01T12:41:16.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Uttara (West) S&D Division",
+                      "label": "Uttara (West) S&D Division",
+                      "snd": {
+                          "id": 11,
+                          "snd_name": "Uttara (West) S&D Division",
+                          "snd_area_name": "Uttara (West)",
+                          "created_at": "2022-02-01T12:40:28.000000Z",
+                          "updated_at": "2022-02-01T12:40:28.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Tongi (East) S&D Division",
+                      "label": "Tongi (East) S&D Division",
+                      "snd": {
+                          "id": 12,
+                          "snd_name": "Tongi (East) S&D Division",
+                          "snd_area_name": "Tongi (East)",
+                          "created_at": "2022-02-01T12:44:30.000000Z",
+                          "updated_at": "2022-02-01T12:44:30.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Joarshahara S&D Division",
+                      "label": "Joarshahara S&D Division",
+                      "snd": {
+                          "id": 13,
+                          "snd_name": "Joarshahara S&D Division",
+                          "snd_area_name": "Joarshahara",
+                          "created_at": "2022-02-01T12:26:29.000000Z",
+                          "updated_at": "2022-02-01T12:26:29.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Uttarkhan S&D Division",
+                      "label": "Uttarkhan S&D Division",
+                      "snd": {
+                          "id": 14,
+                          "snd_name": "Uttarkhan S&D Division",
+                          "snd_area_name": "Uttarkhan",
+                          "created_at": "2022-02-01T12:35:30.000000Z",
+                          "updated_at": "2022-02-01T12:35:30.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Dakshinkhan S&D Division",
+                      "label": "Dakshinkhan S&D Division",
+                      "snd": {
+                          "id": 15,
+                          "snd_name": "Dakshinkhan S&D Division",
+                          "snd_area_name": "Dakshinkhan",
+                          "created_at": "2022-02-01T12:39:06.000000Z",
+                          "updated_at": "2022-02-01T12:39:06.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Tongi (West) S&D Division",
+                      "label": "Tongi (West) S&D Division",
+                      "snd": {
+                          "id": 16,
+                          "snd_name": "Tongi (West) S&D Division",
+                          "snd_area_name": "Tongi (West)",
+                          "created_at": "2022-02-01T12:42:03.000000Z",
+                          "updated_at": "2022-02-01T12:42:03.000000Z"
+                      }
+                  },
+                  {
+                      "value": "Central_S&D",
+                      "label": "Central_S&D",
+                      "snd": {
+                          "id": 17,
+                          "snd_name": "Central_S&D",
+                          "snd_area_name": "Central",
+                          "created_at": null,
+                          "updated_at": null
+                      }
+                  }
+              ]
+          },
+          {
+              "field": "etd_total_time",
+              "headerName": "TAT",
+              "minWidth": 150,
+              "maxWidth": 200,
+              "sortable": false,
+              "filter": false,
+              "filterable": false
+          },
+          {
+              "field": "status",
+              "headerName": "Ticket Status",
+              "minWidth": 150,
+              "maxWidth": 220,
+              "sortable": false,
+              "filter": false,
+              "type": "singleSelect",
+              "valueOptions": [
+                  {
+                      "value": "OPEN",
+                      "label": "OPEN"
+                  },
+                  {
+                      "value": "DISPATCHED",
+                      "label": "DISPATCHED"
+                  },
+                  {
+                      "value": "ASSIGNED",
+                      "label": "ASSIGNED"
+                  },
+                  {
+                      "value": "ONGOING",
+                      "label": "ONGOING"
+                  },
+                  {
+                      "value": "PRECOMPLETION",
+                      "label": "TASK CLOSED"
+                  },
+                  {
+                      "value": "RESOLVED",
+                      "label": "RESOLVED"
+                  },
+                  {
+                      "value": "CLOSED",
+                      "label": "CLOSED"
+                  },
+                  {
+                      "value": "CANCELLED",
+                      "label": "CANCELLED"
+                  }
+              ]
+          },
+          {
+              "field": "ticket_sla",
+              "headerName": "Ticket SLA",
+              "minWidth": 150,
+              "maxWidth": 180,
+              "sortable": false,
+              "filter": false,
+              "filterable": false
+          }
+      ],
+      "rows": [
+          {
+              "id": 684,
+              "ticket_number": "tkt-023846-1169",
+              "caller_name": "AL- HAJ ABDUL JABBER",
+              "caller_contact": "01778200359",
+              "complain_address": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
+              "query_category": "Bill",
+              "connection_category": "LT",
+              "remarks": "Test callgh fg hf h",
+              "exact_address": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
+              "query_id": null,
+              "connection_status": null,
+              "connection_account_status": null,
+              "status": "DISPATCHED",
+              "is_emergency": null,
+              "is_information_correct": 1,
+              "is_exact_address": 0,
+              "is_active_user": 1,
+              "completion_time": null,
+              "caller_id": null,
+              "dispatcher_id": 2,
+              "snd_id": 7,
+              "fieldforce_id": null,
+              "assigned_by": null,
+              "sanctioned_phase": "1",
+              "latitude": 23.79139504,
+              "longitude": 90.42544764,
+              "created_at": "2022-04-20 15:19:13",
+              "updated_at": "2022-04-24 10:22:52",
+              "fieldforce_latitude": null,
+              "fieldforce_longitude": null,
+              "reopen": 1,
+              "query_sub_category": "বিল কপি পাই নাই",
+              "nearby_points": "Uttar Badda",
+              "created_by": "Demo user for IT",
+              "landmarks": "Suvastu",
+              "dispatcher_name": "Tamannna Pervin",
+              "snd_name": "Gulshan S&D Division",
+              "fieldforce_name": null,
+              "dispatched_time": 0.059722222222222,
+              "resolved_time": "2022-04-21 13:24:00",
+              "customer_phone": "01743946688",
+              "assign_time": null,
+              "dispatch_time": "2022-04-24 10:22:52",
+              "pre_completion_time": null,
+              "closed_time": null,
+              "ticket_sla": null,
+              "etd_total_time": null,
+              "reopen_remarks": null,
+              "serial_no": 1,
+              "snd": "Gulshan S&D Division"
+          },
+          {
+              "id": 683,
+              "ticket_number": "tkt-023846-1169",
+              "caller_name": "AL- HAJ ABDUL JABBER",
+              "caller_contact": "01778200359",
+              "complain_address": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
+              "query_category": "Bill",
+              "connection_category": "LT",
+              "remarks": "Test call",
+              "exact_address": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
+              "query_id": null,
+              "connection_status": null,
+              "connection_account_status": null,
+              "status": "OPEN",
+              "is_emergency": null,
+              "is_information_correct": 1,
+              "is_exact_address": 0,
+              "is_active_user": 1,
+              "completion_time": null,
+              "caller_id": null,
+              "dispatcher_id": null,
+              "snd_id": 8,
+              "fieldforce_id": null,
+              "assigned_by": null,
+              "sanctioned_phase": "1",
+              "latitude": 23.79139504,
+              "longitude": 90.42544764,
+              "created_at": "2022-04-20 15:13:35",
+              "updated_at": "2022-04-20 15:13:35",
+              "fieldforce_latitude": null,
+              "fieldforce_longitude": null,
+              "reopen": 0,
+              "query_sub_category": "বিল কপি পাই নাই",
+              "nearby_points": "Uttar Badda",
+              "created_by": "Test user for IT",
+              "landmarks": "Suvastu",
+              "dispatcher_name": null,
+              "snd_name": "Badda S&D Division",
+              "fieldforce_name": null,
+              "dispatched_time": null,
+              "resolved_time": null,
+              "customer_phone": "01743946688",
+              "assign_time": null,
+              "dispatch_time": null,
+              "pre_completion_time": null,
+              "closed_time": null,
+              "ticket_sla": null,
+              "etd_total_time": null,
+              "reopen_remarks": null,
+              "serial_no": 2,
+              "snd": "Badda S&D Division"
+          }
+      ]
+  }
     return (
       <Box width='100%' height='380px'>
         <StyledDataGrid
-          columns={ transformedTasks.columns }
-          rows={ transformedTasks.rows }
+          columns={ demoTasks.columns }
+          rows={ demoTasks.rows }
           loading={ isTaskLoading }
           renderActions={ cellValues => ([
             <GridActionsCellItem
