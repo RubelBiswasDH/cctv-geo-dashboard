@@ -1,0 +1,46 @@
+div {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* MUI Style Overrides */
+.MuiBox-root {
+  box-sizing: border-box !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* MUI Data Grid Style Overrides */
+.MuiDataGrid-viewport, .MuiDataGrid-row, .MuiDataGrid-renderingZone {
+  max-height: fit-content !important;
+}
+
+.MuiDataGrid-cell {
+  height: unset !important;
+  max-height: fit-content !important;
+  overflow: auto;
+  white-space: initial !important;
+  line-height: 16px !important;
+  display: flex !important;
+  align-items: center;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  justify-content: flex-start !important;
+}
+
+.MuiDataGrid-columnHeaderTitle {
+  height: unset !important;    
+  max-height: fit-content !important;
+  overflow: auto;
+  white-space: initial !important;
+  line-height: 16px !important;
+  display: flex !important;
+  align-items: center;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.MuiDataGrid-columnHeaderTitleContainer {
+  padding: 0 !important;
+}
