@@ -126,7 +126,7 @@ class DmsDashboard extends React.PureComponent {
           })}
         >
           <Grid container={ true } spacing={ 4 }>
-            <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
+          {/*   <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
               <Box sx={{ pb: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                 <Stack spacing={ 1 } direction='row'>
                   <LocalizationProvider dateAdapter={ AdapterDayjs }>
@@ -173,7 +173,7 @@ class DmsDashboard extends React.PureComponent {
                 }                
               </Box>                                        
               <TaskTypeFilter />
-            </Grid>
+            </Grid> */}
 
             <Grid
               item={ true }

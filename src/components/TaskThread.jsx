@@ -78,7 +78,7 @@ class TaskThread extends React.PureComponent {
                 fontWeight: 600
               }) }
             >
-              { 'Task Thread' }
+              { 'Announcements' }
             </Typography>
           </AppBar>
 

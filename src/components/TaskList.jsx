@@ -20,7 +20,32 @@ class TaskList extends React.PureComponent {
     isTaskDetailsOpen: false,
     isTaskTimelineOpen: false,
     selectedTask: {},
-    selectedTimeline: [],
+    selectedTimeline: [
+      {
+          "message": "Task opened by Test user for IT",
+          "time": "2022-04-20 15:19:13"
+      },
+      {
+          "message": "Task viewed by Tamannna Pervin",
+          "time": "2022-04-20 15:22:25"
+      },
+      {
+          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
+          "time": "2022-04-20 15:22:48"
+      },
+      {
+          "message": "Task opened by Mr. S.M. Munzur Rashid",
+          "time": "2022-04-20 15:23:05"
+      },
+      {
+          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
+          "time": "2022-04-20 15:23:34"
+      },
+      {
+          "message": "Task resolved by Rupnagar S&D with remarks \"sssss\".",
+          "time": "2022-04-21 13:24:00"
+      }
+  ],
     isTimelineLoading: false,
     feedback: null
   }
@@ -41,12 +66,12 @@ class TaskList extends React.PureComponent {
 
     const columns = [      
       { field: 'serial_no', headerName: 'Sl no', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
-      { field: 'ticket_number', headerName: 'Ticket ID', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
-      { field: 'created_by', headerName: 'Created by', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
+      { field: 'ticket_number', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
+      { field: 'created_by', headerName: 'Checked In', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
       { field: 'created_at', headerName: 'Created Date & Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
       { field: 'snd_name', headerName: 'S&D Name', minWidth: 200, maxWidth: 350, sortable: false, filter: false, type: 'singleSelect', valueOptions: sndList },
       { field: 'etd_total_time', headerName: 'TAT', minWidth: 150, maxWidth: 200, sortable: false, filter: false, filterable: false },
-      { field: 'status', headerName: 'Ticket Status', minWidth: 150, maxWidth: 220, sortable: false, filter: false, type: 'singleSelect', valueOptions: [
+      { field: 'status', headerName: 'Name', minWidth: 150, maxWidth: 220, sortable: false, filter: false, type: 'singleSelect', valueOptions: [
         { value: 'OPEN', label: 'OPEN' },
         { value: 'DISPATCHED', label: 'DISPATCHED' },
         { value: 'ASSIGNED', label: 'ASSIGNED' },
@@ -90,20 +115,9 @@ class TaskList extends React.PureComponent {
   // Filter Tasks By Search
 
   // Open Task Details Dialog
-  _openTaskDetails = selectedTask => {
-    const { user } = this.props
-    this.setState({ isTaskDetailsOpen: true, selectedTask })    
-    
-    // Send Task Click Count
-    if(selectedTask.id && user.user_type === 'DISPATCHER') {
-      sendTaskClickCount(selectedTask.id)
-    }
-  }
 
+ 
   // Close Task Details Dialog
-  _closeTaskDetails = () => {
-    this.setState({ isTaskDetailsOpen: false, selectedTask: {} })
-  }
 
   // Open Task Timeline Dialog
   _openTaskTimeline = selectedTask => {
@@ -115,7 +129,8 @@ class TaskList extends React.PureComponent {
     // Get Timeline Data
     getTimelineData(selectedTask.id, sndList)
       .then(selectedTimeline => {
-        this.setState({ selectedTimeline, isTimelineLoading: false })
+        console.log("selectedTimeline",selectedTimeline)
+        //this.setState({ selectedTimeline, isTimelineLoading: false })
       })
       .catch(err => {
         console.error(err)
@@ -186,7 +201,7 @@ class TaskList extends React.PureComponent {
           },
           {
               "field": "ticket_number",
-              "headerName": "Ticket ID",
+              "headerName": "Name",
               "minWidth": 100,
               "maxWidth": 120,
               "sortable": false,
@@ -195,7 +210,7 @@ class TaskList extends React.PureComponent {
           },
           {
               "field": "created_by",
-              "headerName": "Created by",
+              "headerName": "Checked In Time",
               "minWidth": 200,
               "maxWidth": 350,
               "sortable": false,
@@ -203,7 +218,7 @@ class TaskList extends React.PureComponent {
           },
           {
               "field": "dispatcher_name",
-              "headerName": "Dispatcher Name",
+              "headerName": "Late",
               "minWidth": 200,
               "maxWidth": 350,
               "sortable": false,
@@ -212,7 +227,7 @@ class TaskList extends React.PureComponent {
           },
           {
               "field": "created_at",
-              "headerName": "Created Date & Time",
+              "headerName": "Checked in Date & Time",
               "minWidth": 150,
               "maxWidth": 180,
               "sortable": false,
@@ -429,7 +444,7 @@ class TaskList extends React.PureComponent {
           },
           {
               "field": "status",
-              "headerName": "Ticket Status",
+              "headerName": "Name",
               "minWidth": 150,
               "maxWidth": 220,
               "sortable": false,
@@ -600,7 +615,7 @@ class TaskList extends React.PureComponent {
                   <AssignmentInd fontSize='small' />
                 </Tooltip>
               }
-              onClick={ () => this._openTaskDetails(cellValues.row) }
+              onClick={ () => ("this._openTaskDetails(cellValues.row)") }
             />,
             <GridActionsCellItem
               icon={
@@ -608,7 +623,7 @@ class TaskList extends React.PureComponent {
                   <Timeline fontSize='small' />
                 </Tooltip>
               }
-              onClick={ () => this._openTaskTimeline(cellValues.row) }
+              onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
             />
           ])}
         />

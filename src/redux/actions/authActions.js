@@ -10,6 +10,7 @@ export function login(user) {
 
         axios.post(AUTH.LOGIN_API, user)
             .then(res => {
+                console.log({ auth: res.data})
                 if(res.data && res.data.token) {
                     const token = res.data.token
 
@@ -57,15 +58,21 @@ export function logout() {
 
 // User Validation
 export function validateUser(token) {
+    console.log({ token })
     return dispatch => {
         // Set `isValidating`
         dispatch( setIsValidating(true) )
 
         axios.get(AUTH.GET_USER_API, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                if(res.data.user) {
-                    const user = res.data.user
-
+                console.log("data , ",res.data )
+                const userData = res.data
+                if(userData) {
+                    const user = {
+                        username:userData.name,
+                        user_type:  'DISPATCHER',
+                    }
+                    console.log(user)
                     // Authenticate only for user_type = DISPATCHER & SUPERVISOR
                     if(user.user_type !== 'DISPATCHER' && user.user_type !== 'SUPERVISOR') {
                         throw new Error('User not authorized')

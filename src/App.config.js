@@ -1,10 +1,10 @@
 // export const BASE_URL = 'http://192.168.161.4:8192'
-export const BASE_URL = 'http://103.73.38.11'
+export const BASE_URL = 'http://hr.trace.bkoih3.ml'
 
 // Auth Configs
 export const AUTH = {
-  LOGIN_API: `${BASE_URL}/api/v1/login`,
-  GET_USER_API: `${BASE_URL}/api/v1/auth/user`
+  LOGIN_API: `${BASE_URL}/api/login`,
+  GET_USER_API: `${BASE_URL}/api/auth/user`
 }
 
 // API Endpoints
