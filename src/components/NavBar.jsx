@@ -9,7 +9,8 @@ import { Logout, Notifications, Assignment, Check, Task, AssignmentLate, Search 
 import TaskDetailsDialog from './TaskDetailsDialog'
 
 // Import Assets
-import descoLogo from '../assets/desco-logo.png'
+// import descoLogo from '../assets/desco-logo.png'
+import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
@@ -148,7 +149,7 @@ class NavBar extends React.PureComponent {
                 <Box>
                   <a href='/'>
                     <img
-                      src={ descoLogo }
+                      src={ bkoiLogo }
                       alt='Brand Logo'
                       height='32px'
                       style={ imgStyles }
@@ -161,7 +162,7 @@ class NavBar extends React.PureComponent {
                   color='text.secondary'
                   sx={ brandTextStyles }
                 >
-                  { 'DMS Dashboard' }
+                  { 'HR Trace Dashboard' }
                 </Typography>
               </Grid>
 
