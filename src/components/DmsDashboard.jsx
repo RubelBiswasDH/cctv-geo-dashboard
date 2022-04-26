@@ -18,7 +18,8 @@ import AnalyticsDialog from './AnalyticsDialog'
 // Import Actions & Methods
 import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
-import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
+// import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
+import { activateSocket_A, deactivateSocket } from '../redux/actions/announcementsActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
 
 class DmsDashboard extends React.PureComponent {
@@ -42,7 +43,7 @@ class DmsDashboard extends React.PureComponent {
     dispatch( loadTasks({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 
     // Activate Socket
-    dispatch( activateSocket() )
+    dispatch( activateSocket_A() )
 
     // Get Query Categories
     dispatch( getQueryCategories() )

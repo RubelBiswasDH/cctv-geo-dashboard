@@ -35,6 +35,23 @@ export const SOCKET = {
   DMS_TASK_ASSIGN_EVENT: 'task-assigned',  
 }
 
+export const SOCKET_A = {
+  PUSHER_APP_KEY: "a1975a97bf741bbb1005",
+  PUSHER_APP_CLUSTER:'ap1',
+  WS_HOST: 'socket.bmapsbd.com',
+  WS_PORT: 8005,
+  AUTH_ENDPOINT: `${BASE_URL}/broadcasting/auth`,
+
+  CHANNEL: "user-notification.",
+
+  ATTENDANCE_EVENT: 'user-attendance',
+  ANNOUNCEMENT_EVENT: "user-announcement",
+  PUSHER_APP_ID:1005,
+  PUSHER_APP_SECRET: "7cfe0b6f0c4adbcd1005",
+ 
+}
+
+
 // Map Configs
 export const MAP = {
   ACCESS_TOKEN: 'Mjg5MTpGMDNaTU1HTjZU',
