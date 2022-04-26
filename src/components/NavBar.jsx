@@ -166,9 +166,9 @@ class NavBar extends React.PureComponent {
                 </Typography>
               </Grid>
 
-              <Grid item xs={ 12 } sm={ 12 } md={ 6 }>
-                <Toolbar variant='dense' sx={ toolbarStyles }>
-                  <Autocomplete
+              <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
+                <Toolbar variant='dense' sx={ {...toolbarStyles , justifyContent:'flex-end'} }>
+                  {/* <Autocomplete
                     fullWidth={ true }
                     size='small'
                     popupIcon={ <Search fontSize='small' /> }
@@ -192,7 +192,7 @@ class NavBar extends React.PureComponent {
                         placeholder='Search tickets...'
                       />
                     }
-                  />
+                  /> */}
 
                   {
                     user?.user_type &&

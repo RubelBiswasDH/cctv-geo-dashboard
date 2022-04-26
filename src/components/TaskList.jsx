@@ -21,8 +21,8 @@ import dayjs from 'dayjs'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
-  { field: 'checked_in_time', headerName: 'Checked in Time', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
-  { field: 'checked_out_time', headerName: 'Checked in Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
+  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
   { field: 'is_late', headerName: 'Late', minWidth: 150, maxWidth: 180, sortable: false, filter: false, filterable: false },
 ]
 const rows = [
@@ -35,11 +35,7 @@ const rows = [
       "is_late": "No",
   }
 ]
-const dateToday = () => {
-  const d = new Date();
-  const date = d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
-  return  date
-}
+
 class TaskList extends React.PureComponent {
   state = {
     start_date:null,
@@ -117,13 +113,24 @@ class TaskList extends React.PureComponent {
       }
     }
 
+    const checkedOutTime = (user_id) => {
+      const checkedOutUser = attendanceList.find(user => user.user_id === user_id && user.status === "exit")
+      if (checkedOutUser) {
+        return checkedOutUser.created_at
+      }
+      else {
+        return "-"
+      }
+
+    }
+
     const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a) => {
 
       return ({
         "id": a.id,
         "name": a.name,
         "checked_in_time": a.created_at,
-        "checked_out_time": "-",
+        "checked_out_time": checkedOutTime(a.user_id),
         "is_late": isLate(a.created_at)
       })
     })
