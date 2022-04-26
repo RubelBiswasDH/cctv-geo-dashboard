@@ -14,9 +14,36 @@ import TaskTimelineDialog from './TaskTimelineDialog'
 import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
+import {getAttendance}  from '../redux/actions/attendanceActions'
 
+import dayjs from 'dayjs'
+
+const columns = [      
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
+  { field: 'checked_in_time', headerName: 'Checked in Time', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
+  { field: 'checked_out_time', headerName: 'Checked in Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'is_late', headerName: 'Late', minWidth: 150, maxWidth: 180, sortable: false, filter: false, filterable: false },
+]
+const rows = [
+  {
+      "id": 684,
+      "name": "tkt-023846-1169",
+      "checked_in_time": "AL- HAJ ABDUL JABBER",
+      "caller_contact": "01778200359",
+      "checked_out_time": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
+      "is_late": "No",
+  }
+]
+const dateToday = () => {
+  const d = new Date();
+  const date = d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+  return  date
+}
 class TaskList extends React.PureComponent {
   state = {
+    start_date:null,
+    start_date: null,
     isTaskDetailsOpen: false,
     isTaskTimelineOpen: false,
     selectedTask: {},
@@ -51,13 +78,45 @@ class TaskList extends React.PureComponent {
   }
 
   componentDidMount() {
-    // const { dispatch } = this.props
+    const { dispatch } = this.props
 
+    let date = new Date()
+      
+    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    console.log(start_date,end_date)
+    this.setState({ start_date, end_date })
+
+    // Load Tasks
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
+    // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
+
+    //dispatch(getAttendance());
+    //console.log(dateToday())
     // // Get All Task List
     // dispatch( loadTasks() )
 
     // Pending Emergency Reminder
     // this._setReminderForEmergency()
+  }
+  findAttendanceInfo = () => {
+    const {attendanceList} = this.props;
+    console.log('findAttendanceInfo called', attendanceList);
+    
+
+    const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a) => {
+
+      return ({
+        "id": a.id,
+        "name": a.name,
+        "checked_in_time": a.created_at,
+        "checked_out_time": "-",
+        "is_late": "No",
+      })
+    })
+    console.log("returing attendace info ", attendanceInfo)
+    return attendanceInfo
   }
 
   // Generate Columns & Rows
@@ -187,7 +246,7 @@ class TaskList extends React.PureComponent {
     const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
-
+   
     const demoTasks = {
       "columns": [
           {
@@ -601,12 +660,13 @@ class TaskList extends React.PureComponent {
               "snd": "Badda S&D Division"
           }
       ]
-  }
+  } 
+    let attendance_rows = this.findAttendanceInfo()
     return (
       <Box width='100%' height='380px'>
         <StyledDataGrid
-          columns={ demoTasks.columns }
-          rows={ demoTasks.rows }
+          columns={columns }
+          rows={ attendance_rows }
           loading={ isTaskLoading }
           renderActions={ cellValues => ([
             <GridActionsCellItem
@@ -715,7 +775,10 @@ const mapStateToProps = state => ({
   selectedStatus: state.task.selectedStatus,
   selectedDate: state.task.selectedDate,
   sndList: state.task.sndList,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask
+  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
+  // attendanceList
+  attendanceList: state.attendanceList.attendanceList,
+
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

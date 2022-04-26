@@ -19,6 +19,7 @@ export const API = {
   SEND_TASK_CLICK_COUNT: `${BASE_URL}/api/v1/dms-open-task/`,
   REVERSEGEO: `https://barikoi.xyz/v1/api/search/reverse/Mjg5MTpGMDNaTU1HTjZU/geocode`,
   DELETE_TASK: `${BASE_URL}/api/v1/delete-task/`,
+  GET_ALL_ATTENDANCE: `${BASE_URL}/api/get-attendance/`,
 }
 
 // SOCKET configs
