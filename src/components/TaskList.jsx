@@ -115,6 +115,7 @@ class TaskList extends React.PureComponent {
 
     const checkedOutTime = (user_id) => {
       const checkedOutUser = attendanceList.find(user => user.user_id === user_id && user.status === "exit")
+      
       if (checkedOutUser) {
         return checkedOutUser.created_at
       }
@@ -123,6 +124,8 @@ class TaskList extends React.PureComponent {
       }
 
     }
+    
+    const checkedOutUsers = attendanceList.filter((a) => a.status === 'exit' );
 
     const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a,i) => {
 
@@ -131,7 +134,7 @@ class TaskList extends React.PureComponent {
         "serial_no":i+1,
         "name": a.name,
         "checked_in_time": a.created_at,
-        "checked_out_time": attendanceList.find(user => user.user_id === a.user_id && user.status === "exit")?.created_at || '-',
+        "checked_out_time": checkedOutUsers.find(user => user.user_id === a.user_id)?.created_at || '-',
         "is_late": isLate(a.created_at)
       })
     })
