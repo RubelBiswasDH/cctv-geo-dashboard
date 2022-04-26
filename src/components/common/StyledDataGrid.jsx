@@ -62,14 +62,14 @@ class StyledDataGrid extends React.PureComponent {
                 }
                 columns={
                     [
-                        {
-                            field: 'actions',
-                            type: 'actions',
-                            headerName: 'Actions',
-                            minWidth: 100,
-                            maxWidth: 600,
-                            getActions: renderActions
-                        },
+                        // {
+                        //     field: 'actions',
+                        //     type: 'actions',
+                        //     headerName: 'Actions',
+                        //     minWidth: 100,
+                        //     maxWidth: 600,
+                        //     getActions: renderActions
+                        // },
                         ...columns.map(c => ({
                             ...c,
                             renderCell: cellValues => {                                
