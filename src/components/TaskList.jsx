@@ -100,10 +100,22 @@ class TaskList extends React.PureComponent {
     // Pending Emergency Reminder
     // this._setReminderForEmergency()
   }
-  findAttendanceInfo = () => {
+  mappedAttendanceInfo = () => {
     const {attendanceList} = this.props;
-    console.log('findAttendanceInfo called', attendanceList);
-    
+    console.log('mappedAttendanceInfo called', attendanceList);
+
+    const isLate = (checked_in_time) => {
+      const today = dayjs().format('YYYY-MM-DD')
+      const lastCheckinTime = today+' 10:00:00'
+      const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
+      console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
+      if(new Date(checkedInTime) > new Date(lastCheckinTime)){
+        return "Yes"
+      }
+      else{
+        return "No"
+      }
+    }
 
     const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a) => {
 
@@ -112,7 +124,7 @@ class TaskList extends React.PureComponent {
         "name": a.name,
         "checked_in_time": a.created_at,
         "checked_out_time": "-",
-        "is_late": "No",
+        "is_late": isLate(a.created_at)
       })
     })
     console.log("returing attendace info ", attendanceInfo)
@@ -661,7 +673,7 @@ class TaskList extends React.PureComponent {
           }
       ]
   } 
-    let attendance_rows = this.findAttendanceInfo()
+    let attendance_rows = this.mappedAttendanceInfo()
     return (
       <Box width='100%' height='380px'>
         <StyledDataGrid
