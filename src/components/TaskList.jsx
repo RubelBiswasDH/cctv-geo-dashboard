@@ -104,7 +104,7 @@ class TaskList extends React.PureComponent {
       const today = dayjs().format('YYYY-MM-DD')
       const lastCheckinTime = today+' 10:00:00'
       const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-      console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
+      // console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
       if(new Date(checkedInTime) > new Date(lastCheckinTime)){
         return "Yes"
       }
@@ -124,13 +124,14 @@ class TaskList extends React.PureComponent {
 
     }
 
-    const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a) => {
+    const attendanceInfo = attendanceList.filter((a) => a.status === 'enter' ).map((a,i) => {
 
       return ({
         "id": a.id,
+        "serial_no":i+1,
         "name": a.name,
         "checked_in_time": a.created_at,
-        "checked_out_time": checkedOutTime(a.user_id),
+        "checked_out_time": attendanceList.find(user => user.user_id === a.user_id && user.status === "exit")?.created_at || '-',
         "is_late": isLate(a.created_at)
       })
     })
