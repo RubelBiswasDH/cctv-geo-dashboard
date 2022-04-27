@@ -55,6 +55,7 @@ class TaskThread extends React.PureComponent {
           <AppBar
             position='sticky'
             sx={ theme => ({
+     
               padding: theme.spacing(1),
               background: theme.palette.grey[200],
               boxShadow: theme.shadows[2],
@@ -80,21 +81,23 @@ class TaskThread extends React.PureComponent {
                 width: '100%',
                 color: theme.palette.text.primary,
                 fontSize: '14px',
-                fontWeight: 600
+                fontWeight: 600,
+              
               }) }
             >
               { 'Announcements' }
             </Typography>
           </AppBar>
 
-          <Box width='100%' height='100%'>
+          <Box width='100%' height='85em' sx={{marginTop:'0%'}}>
             <Stack
               sx={{
                 width: '100%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-end',
+                marginTop:'0px',
               }}
             >
               { announcements && announcements.map((a, i) => (

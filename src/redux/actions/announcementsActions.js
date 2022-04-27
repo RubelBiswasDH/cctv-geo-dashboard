@@ -109,10 +109,10 @@ export function getAnnouncements(params) {
               //console.log("data , ",res.data )
               const announcementData = res.data
               if(announcementData) {
-                 
+                const transformedAnnouncements = transformAnnouncements(announcementData.announcement)
                   //console.log(" attendance data : ",announcementData)     
-                  console.log(" attendance data : ",announcementData.announcement)          
-                  dispatch(setAnnouncements(announcementData.announcement))
+                  //console.log(" attendance data : ",announcementData.announcement)          
+                  dispatch(setAnnouncements(transformedAnnouncements))
                   //console.log('attendance setted')
                   // Dispatch authReducer Values to Redux State
                
