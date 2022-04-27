@@ -2,9 +2,10 @@ import { getAuthToken } from './authActions'
 import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
 import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
-import { setAnnouncements, setError } from "../reducers/announcementReducer"
+import { setAnnouncements, updateAnnouncements, setError } from "../reducers/announcementReducer"
 import axios from 'axios'
 import { AUTH,API } from '../../App.config'
+import dayjs from 'dayjs'
 
 
 export function activateSocket_A() {
@@ -33,31 +34,37 @@ export function activateSocket_A() {
       }
     }) 
     
-    window.pusher.connection.bind("connecting", function () {
-      // $("div#status").text("Realtime is go!");
-      //console.log("Channel Connecting")
-    });
-    var state = window.pusher.connection.state;
-    //console.log("pusher state  before subscribe: ",state)
-    window.pusher.connection.bind("connected", function () {
-        // $("div#status").text("Realtime is go!");
-        //console.log("Channel Connected")
-      });
+    // window.pusher.connection.bind("connecting", function () {
+    //   // $("div#status").text("Realtime is go!");
+    //   //console.log("Channel Connecting")
+    // });
+    // var state = window.pusher.connection.state;
+    // //console.log("pusher state  before subscribe: ",state)
+    // window.pusher.connection.bind("connected", function () {
+    //     // $("div#status").text("Realtime is go!");
+    //     //console.log("Channel Connected")
+    //   });
 
-      window.pusher.connection.bind("error", function (err) {
-        //console.log('error on pusher channel not connected')
-        if (err.error.data.code === 4004) {
-          //console.log(">>> detected limit error");
-        }
-      });
+    //   window.pusher.connection.bind("error", function (err) {
+    //     //console.log('error on pusher channel not connected')
+    //     if (err.error.data.code === 4004) {
+    //       //console.log(">>> detected limit error");
+    //     }
+    //   });
 
-      var state = window.pusher.connection.state;
-      //console.log("pusher state  before subscribe: ",state)
+    //   var state = window.pusher.connection.state;
+    //   //console.log("pusher state  before subscribe: ",state)
     // Task Channel
     window.pusher.subscribe(SOCKET_A.CHANNEL)
       .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
         console.log("Socket data: ",data)
-        
+
+        //dispatch( updateAnnouncements(data) )
+        const transformedAnnouncements = transformAnnouncements([ data ])
+        console.log('test transformedAnnouncements ', transformedAnnouncements)
+        // Add Socket Data To Redux State
+        dispatch( updateAnnouncements(transformedAnnouncements))
+
       })
       .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
         console.log("Attendence event data: ",data)      
@@ -104,7 +111,7 @@ export function getAnnouncements(params) {
               if(announcementData) {
                  
                   //console.log(" attendance data : ",announcementData)     
-                  console.log(" attendance data : ",announcementData.attendence)          
+                  console.log(" attendance data : ",announcementData.announcement)          
                   dispatch(setAnnouncements(announcementData.announcement))
                   //console.log('attendance setted')
                   // Dispatch authReducer Values to Redux State
@@ -128,6 +135,35 @@ export function getAnnouncements(params) {
   }
 }
 
+function sortByDate(data) {
+  return data.sort((a, b) => {
+    var timeA = new Date(a.created_at) // ignore upper and lowercase
+    var timeB = new Date(b.created_at) // ignore upper and lowercase
+
+    if (timeA > timeB) {
+      return -1;
+    }
+    if (timeA < timeB) {
+      return 1;
+    }
+    return 0;
+  })
+}
+
+function transformAnnouncements(announcements) {
+  if(!announcements) {
+    return []
+  }
+
+  const transformedAnnouncements = announcements.map(t => ({
+    ...t,
+    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
+    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
+  }))
+  console.log('tranformAnnouncement : ',transformedAnnouncements)
+  const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
+  return transformedAnnouncementsSortByDate
+}
 
 ///////////////
 // Utilities //
