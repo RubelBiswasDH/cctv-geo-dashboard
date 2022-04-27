@@ -66,15 +66,17 @@ export function validateUser(token) {
         axios.get(AUTH.GET_USER_API, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 //console.log("data , ",res.data )
-                const userData = res.data
+                const userData = res.data.data
                 if(userData) {
+                    // console.log("user Data: ",userData)
+                    // console.log("user type: ", userData)
                     const user = {
                         username:userData.name,
-                        user_type:  'DISPATCHER',
+                        user_type: userData.user_level,
                     }
                     //console.log(user)
                     // Authenticate only for user_type = DISPATCHER & SUPERVISOR
-                    if(user.user_type !== 'DISPATCHER' && user.user_type !== 'SUPERVISOR') {
+                    if(user.user_type !== 'HR' && user.user_type !== 'ADMIN') {
                         throw new Error('User not authorized')
                     }
 

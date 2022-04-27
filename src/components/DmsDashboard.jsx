@@ -214,7 +214,7 @@ class DmsDashboard extends React.PureComponent {
           </Grid>
         </Box>
         {
-          user?.user_type === 'SUPERVISOR' && isAnalyticsDialogOpen &&
+          user?.user_type === 'ADMIN' && isAnalyticsDialogOpen &&
           <AnalyticsDialog 
             isDialogOpen={ isAnalyticsDialogOpen }
             handleDialogOnClose={ this._closeAnalyticsDialog }

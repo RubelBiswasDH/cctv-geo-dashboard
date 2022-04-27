@@ -102,7 +102,7 @@ class NavBar extends React.PureComponent {
     this.setState({ isTaskDetailsOpen: true, selectedTask: { ...selectedTask, snd } })
 
     // Send Task Click Count
-    if(selectedTask.id && user.user_type === 'DISPATCHER') {
+    if(selectedTask.id && user.user_type === 'HR') {
       sendTaskClickCount(selectedTask.id)
     }
   }
@@ -198,7 +198,7 @@ class NavBar extends React.PureComponent {
                     user?.user_type &&
                     <Chip                        
                         color='primary'
-                        label={ user?.user_type === 'SUPERVISOR' ? 'Supervisor' : user?.user_type === 'DISPATCHER' ? 'Dispatcher' : 'DMS' }
+                        label={ user?.user_type === 'ADMIN' ? 'ADMIN' : user?.user_type === 'HR' ? 'HR' : 'DMS' }
                         size={ 'small' }
                     />
                   }
