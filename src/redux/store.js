@@ -3,12 +3,14 @@ import authReducer from './reducers/authReducer'
 import taskReducer from './reducers/taskReducer'
 import analyticsReducer from './reducers/analyticsReducer'
 import attendanceReducer from './reducers/attendanceReducer'
+import announcementsReducer from "../redux/reducers/announcementReducer"
 const store = configureStore({
   reducer: {
     auth: authReducer,
     task: taskReducer,
     analytics: analyticsReducer,
     attendanceList: attendanceReducer,
+    announcements: announcementsReducer,
   }
 })
 

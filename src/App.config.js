@@ -20,6 +20,8 @@ export const API = {
   REVERSEGEO: `https://barikoi.xyz/v1/api/search/reverse/Mjg5MTpGMDNaTU1HTjZU/geocode`,
   DELETE_TASK: `${BASE_URL}/api/v1/delete-task/`,
   GET_ALL_ATTENDANCE: `${BASE_URL}/api/get-attendance/`,
+  GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
+
 }
 
 // SOCKET configs
@@ -42,7 +44,7 @@ export const SOCKET_A = {
   WS_PORT: 8005,
   AUTH_ENDPOINT: `${BASE_URL}/broadcasting/auth`,
 
-  CHANNEL: "user-notification.",
+  CHANNEL: "private-user-notification.1",
 
   ATTENDANCE_EVENT: 'user-attendance',
   ANNOUNCEMENT_EVENT: "user-announcement",

@@ -2,16 +2,26 @@ import { getAuthToken } from './authActions'
 import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
 import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
+import { setAnnouncements, setError } from "../reducers/announcementReducer"
+import axios from 'axios'
+import { AUTH,API } from '../../App.config'
 
-// Activate Socket
+
 export function activateSocket_A() {
   return (dispatch, getState) => {
+
+
     // Get Auth Token
     const token = getAuthToken()
 
-    window.pusher = new window.Pusher(SOCKET.API_KEY, {
+    window.Pusher.logToConsole = true;
+
+    window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
         
       cluster: SOCKET_A.PUSHER_APP_CLUSTER,
+      secret: SOCKET_A.PUSHER_APP_SECRET,
+      appId:SOCKET_A.PUSHER_APP_ID,
+      key:SOCKET_A.PUSHER_APP_KEY,
       wsHost: SOCKET_A.WS_HOST,
       wsPort: SOCKET_A.WS_PORT,
       forceTLS: false,
@@ -21,42 +31,47 @@ export function activateSocket_A() {
           Authorization: `Bearer ${ token }`
         }
       }
-    })    
+    }) 
+    
+    window.pusher.connection.bind("connecting", function () {
+      // $("div#status").text("Realtime is go!");
+      //console.log("Channel Connecting")
+    });
+    var state = window.pusher.connection.state;
+    //console.log("pusher state  before subscribe: ",state)
     window.pusher.connection.bind("connected", function () {
         // $("div#status").text("Realtime is go!");
-        console.log("Channel Connected")
+        //console.log("Channel Connected")
       });
+
+      window.pusher.connection.bind("error", function (err) {
+        //console.log('error on pusher channel not connected')
+        if (err.error.data.code === 4004) {
+          //console.log(">>> detected limit error");
+        }
+      });
+
+      var state = window.pusher.connection.state;
+      //console.log("pusher state  before subscribe: ",state)
     // Task Channel
-    window.pusher.subscribe(SOCKET_A.CHANNEL+"1")
+    window.pusher.subscribe(SOCKET_A.CHANNEL)
       .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
-        const prevAnnounceMent = getState().task.tasks
         console.log("Socket data: ",data)
-        //const transformedTasks = transformTasks([ data ])
-
-        // Add Socket Data To Redux State
-        //dispatch( updateTasks(transformedTasks) )
-
-        // Load Push Notifications
-        // const pushNotifications = generatePushNotifications(transformedTasks, prevTasks)
-        // dispatch( updatePushNotifications(pushNotifications) )
         
       })
       .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
-            console.log("Attendence event data: ",data)      
-                // const prevTasks = getState().task.tasks
-        
-                // const transformedTasks = transformTasks([ data ])
-        
-                // // Add Socket Data To Redux State
-                // dispatch( updateTasks(transformedTasks) )
-        
-                // // Update Task Thread
-                // dispatch( loadThreadMessage(data) )
-                
-                // Load Push Notifications
-                // const pushNotifications = generatePushNotifications(transformedTasks, prevTasks)
-                // dispatch( updatePushNotifications(pushNotifications) )
-              })
+        console.log("Attendence event data: ",data)      
+      
+        })
+      .bind("pusher:subscription_error", (error) => {
+        var { status } = error;
+        console.log("error on pusher: ",status)
+        if (status == 408 || status == 503) {
+          // Retry?
+        }
+      });
+      var state = window.pusher.connection.state;
+      console.log("pusher state  after subscribe: ",state)
 
   }
 }
@@ -71,6 +86,141 @@ export function deactivateSocket() {
   }
 }
 
+
+//get all announcement 
+
+export function getAnnouncements(params) {
+  const token = getAuthToken();
+  //console.log('token on get Attendance: ', token)
+  //console.log({ token })
+  return dispatch => {
+      // Set `isValidating`
+      // dispatch( setIsValidating(true) )
+
+      axios.get(API.GET_ALL_ANNOUNCEMENT, { headers: { Authorization: `Bearer ${ token }` }, params } )
+          .then(res => {
+              //console.log("data , ",res.data )
+              const announcementData = res.data
+              if(announcementData) {
+                 
+                  //console.log(" attendance data : ",announcementData)     
+                  console.log(" attendance data : ",announcementData.attendence)          
+                  dispatch(setAnnouncements(announcementData.announcement))
+                  //console.log('attendance setted')
+                  // Dispatch authReducer Values to Redux State
+               
+
+
+              }
+
+              // Set `isValidating`
+  
+
+          })
+          .catch(err => {
+              //console.log("error on attendance: ",err)
+              //console.error(err)
+
+              dispatch( setAnnouncements([]) )
+              dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
+
+          })
+  }
+}
+
+
+///////////////
+// Utilities //
+///////////////
+// Get User Auth Token
+// export function getAuthToken() {
+//   const token = localStorage.getItem('token')
+//   if(token) {
+//       return token
+//   }
+
+//   return null
+// }
+
+
+// attendance channel
+
+// Activate Socket
+// export function activateSocket_A() {
+//   return (dispatch, getState) => {
+//     // Get Auth Token
+//     const token = getAuthToken()
+
+//     window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
+        
+//       cluster: SOCKET_A.PUSHER_APP_CLUSTER,
+//       wsHost: SOCKET_A.WS_HOST,
+//       wsPort: SOCKET_A.WS_PORT,
+//       forceTLS: false,
+//       authEndpoint: SOCKET_A.AUTH_ENDPOINT,
+//       auth: {
+//         headers: {
+//           Authorization: `Bearer ${ token }`
+//         }
+//       }
+//     })    
+//     window.pusher.connection.bind("connected", function () {
+//         // $("div#status").text("Realtime is go!");
+//         console.log("Channel Connected")
+//       });
+//     // Task Channel
+//     window.pusher.subscribe(SOCKET_A.CHANNEL)
+//       .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
+//         //const prevAnnounceMent = getState().task.tasks
+//         console.log("Socket data: ",data)
+//         //const transformedTasks = transformTasks([ data ])
+
+//         // Add Socket Data To Redux State
+//         //dispatch( updateTasks(transformedTasks) )
+
+//         // Load Push Notifications
+//         // const pushNotifications = generatePushNotifications(transformedTasks, prevTasks)
+//         // dispatch( updatePushNotifications(pushNotifications) )
+        
+//       })
+//       .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
+//             console.log("Attendence event data: ",data)      
+//                 // const prevTasks = getState().task.tasks
+        
+//                 // const transformedTasks = transformTasks([ data ])
+        
+//                 // // Add Socket Data To Redux State
+//                 // dispatch( updateTasks(transformedTasks) )
+        
+//                 // // Update Task Thread
+//                 // dispatch( loadThreadMessage(data) )
+                
+//                 // Load Push Notifications
+//                 // const pushNotifications = generatePushNotifications(transformedTasks, prevTasks)
+//                 // dispatch( updatePushNotifications(pushNotifications) )
+//               })
+//               .bind("pusher:subscription_error", (error) => {
+//                 var { status } = error;
+//                 console.log("error on pusher: ",status)
+//                 if (status == 408 || status == 503) {
+//                   // Retry?
+//                 }
+//               });
+
+//   }
+// }
+
+// // Deactivate Socket
+// export function deactivateSocket() {
+//   return () => {
+//     if(window.pusher) {
+//       window.pusher.unsubscribe(SOCKET.DMS_TASK_CHANNEL)
+//       delete window.pusher
+//     }
+//   }
+// }
+
+//// attendence channel
 ///////////////
 // Utilities //
 ///////////////

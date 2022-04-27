@@ -10,7 +10,7 @@ const attendanceSlice = createSlice({
   initialState,
   reducers: {
     setAttendance: (state, action) => {
-    console.log("action data: ",action, action.payload)
+    //console.log("action data: ",action, action.payload)
       state.attendanceList = action.payload
     },
     setError: (state, action) => {

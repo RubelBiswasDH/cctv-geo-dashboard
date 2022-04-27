@@ -36,7 +36,7 @@ const rows = [
   }
 ]
 
-class TaskList extends React.PureComponent {
+class AttendanceList extends React.PureComponent {
   state = {
     start_date:null,
     start_date: null,
@@ -80,7 +80,7 @@ class TaskList extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    console.log(start_date,end_date)
+    //console.log(start_date,end_date)
     this.setState({ start_date, end_date })
 
     // Load Tasks
@@ -98,7 +98,7 @@ class TaskList extends React.PureComponent {
   }
   mappedAttendanceInfo = () => {
     const {attendanceList} = this.props;
-    console.log('mappedAttendanceInfo called', attendanceList);
+    //console.log('mappedAttendanceInfo called', attendanceList);
 
     const isLate = (checked_in_time) => {
       const today = dayjs().format('YYYY-MM-DD')
@@ -138,7 +138,7 @@ class TaskList extends React.PureComponent {
         "is_late": isLate(a.created_at)
       })
     })
-    console.log("returing attendace info ", attendanceInfo)
+    //console.log("returing attendace info ", attendanceInfo)
     return attendanceInfo
   }
 
@@ -211,7 +211,7 @@ class TaskList extends React.PureComponent {
     // Get Timeline Data
     getTimelineData(selectedTask.id, sndList)
       .then(selectedTimeline => {
-        console.log("selectedTimeline",selectedTimeline)
+        //console.log("selectedTimeline",selectedTimeline)
         //this.setState({ selectedTimeline, isTimelineLoading: false })
       })
       .catch(err => {
@@ -769,7 +769,7 @@ class TaskList extends React.PureComponent {
 }
 
 // Prop Types
-TaskList.propTypes = {
+AttendanceList.propTypes = {
   user: PropTypes.object,
   isTaskLoading: PropTypes.bool,
   tasks: PropTypes.array,
@@ -780,7 +780,7 @@ TaskList.propTypes = {
   dispatch: PropTypes.func,
 }
 
-TaskList.defaultProps = {
+AttendanceList.defaultProps = {
   user: {},
   isTaskLoading: false,
   tasks: [],
@@ -806,4 +806,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({ dispatch })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskList)
+export default connect(mapStateToProps, mapDispatchToProps)(AttendanceList)

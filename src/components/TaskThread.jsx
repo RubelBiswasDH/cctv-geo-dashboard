@@ -9,16 +9,21 @@ import { ChevronRight } from '@mui/icons-material'
 
 // Import Actions & Methods
 import { setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
-import { loadInitialThreadMessages } from '../redux/actions/taskActions'
+// import { loadInitialThreadMessages } from '../redux/actions/taskActions'
+import {getAnnouncements}  from '../redux/actions/announcementsActions'
 
 class TaskThread extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
 
     const today = dayjs().format('YYYY-MM-DD')
-    dispatch(
-      loadInitialThreadMessages(today + ' 00:00:00', today + ' 23:59:59')
-    )
+    console.log("Annoucement loading.. ")
+    dispatch(getAnnouncements())
+
+    // dispatch(
+    //   loadInitialThreadMessages(today + ' 00:00:00', today + ' 23:59:59')
+    // )
+
   }
 
   // Sort Messages by Emergency
@@ -41,7 +46,7 @@ class TaskThread extends React.PureComponent {
   }
 
   render() {
-    const { messages } = this.props
+    const { messages,announcements } = this.props
     const sortedMessages = this._sortByEmergency(messages)
 
     return (
@@ -92,7 +97,7 @@ class TaskThread extends React.PureComponent {
                 justifyContent: 'flex-end'
               }}
             >
-              { sortedMessages && sortedMessages.map((m, i) => (
+              { announcements && announcements.map((a, i) => (
                   <Box
                     key={ i }
                     sx={theme => ({
@@ -103,20 +108,27 @@ class TaskThread extends React.PureComponent {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
-                      background: m?.task?.is_emergency ?
-                        'rgba(211, 47, 47, 0.2)'
-                        :
-                        i % 2 ?
-                        theme.palette.grey[200]
-                        :
-                        '#ffffff'
+                      background: '#ffffff'
+                      // background: m?.task?.is_emergency ?
+                      //   'rgba(211, 47, 47, 0.2)'
+                      //   :
+                      //   i % 2 ?
+                      //   theme.palette.grey[200]
+                      //   :
+                      //   '#ffffff'
                     })}
                   >
                     <Typography
                       variant='body2'
+                      sx={{ fontSize: '15px',color:'#2F4F4F', marginRight:"5px" }}
+                    >
+                      { a.name ? a.name: '' }
+                    </Typography>
+                    <Typography
+                      variant='body2'
                       sx={{ fontSize: '12px' }}
                     >
-                      { m.message ? m.message?.replace('PRECOMPLETION', 'TASK CLOSED') : '' }
+                      { a.description ? a.description: '' }
                     </Typography>
 
                     <Typography
@@ -126,7 +138,7 @@ class TaskThread extends React.PureComponent {
                       marginLeft='auto'
                       sx={{ marginLeft: 'auto' }}
                     >
-                      { m.time ? m.time : '' }
+                      { a.created_at ? a.created_at : '' }
                     </Typography>
                   </Box>
                 ))
@@ -167,7 +179,8 @@ TaskThread.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  messages: state.task.threadMessages
+  messages: state.task.threadMessages,
+  announcements: state.announcements.announcements
 })
 
 export default connect(mapStateToProps)(TaskThread)

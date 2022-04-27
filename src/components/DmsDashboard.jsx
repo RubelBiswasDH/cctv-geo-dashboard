@@ -11,7 +11,7 @@ import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import NavBar from './NavBar'
 // import TaskDateFilter from './TaskDateFilter'
 import TaskTypeFilter from './TaskTypeFilter'
-import TaskList from './TaskList'
+import AttendanceList from './AttendanceList'
 import TaskThread from './TaskThread'
 import AnalyticsDialog from './AnalyticsDialog'
 
@@ -60,7 +60,7 @@ class DmsDashboard extends React.PureComponent {
           dispatch( setSndList(sndList) )
       })
       .catch(err => {
-          console.error(err)
+          //console.error(err)
           dispatch( setSndList([]) )
       })
   }
@@ -187,7 +187,7 @@ class DmsDashboard extends React.PureComponent {
                 alignItems: 'flex-start'
               }}
             >
-              <TaskList />
+              <AttendanceList />
 
               { !isTaskThreadOpen &&
                   <Tooltip title='Open Thread'>

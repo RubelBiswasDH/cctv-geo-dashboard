@@ -26,7 +26,7 @@ export function loadTasks( params ) {
         }
       })
       .catch(err => {
-        console.error(err)
+        //console.error(err)
 
         // Dispatch `taskReducer` Values to Redux State
         dispatch( setIsTaskLoading(false) )
@@ -64,7 +64,7 @@ export function loadInitialThreadMessages(start_date, end_date) {
         
       })
       .catch(err => {
-        console.error(err)
+        //console.error(err)
       })
   }
 }

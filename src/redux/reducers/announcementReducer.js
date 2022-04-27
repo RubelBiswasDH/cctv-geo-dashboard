@@ -21,7 +21,9 @@ const announcementsSlice = createSlice({
     setAnnouncements: (state, action) => {
       state.announcements = action.payload
     },
-
+    updateAnnouncements: (state, action) => {
+      state.announcements = [ ...action.payload, ...state.announcements ]
+    },
     setPushNotifications: (state, action) => {
       state.pushNotifications = action.payload
     },
@@ -47,5 +49,5 @@ const announcementsSlice = createSlice({
   }
 })
 
-export const { setAnnouncementLoading, setAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory } = announcementsSlice.actions
+export const { setAnnouncementLoading, setAnnouncements,updateAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory } = announcementsSlice.actions
 export default announcementsSlice.reducer
