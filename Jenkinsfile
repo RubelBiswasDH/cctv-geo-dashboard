@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'jenkins_agent' }
 
     tools { nodejs "node16" }
 
@@ -19,24 +19,24 @@ pipeline {
             }
         }
 
-        // stage('SSH transfer') {
-        //     steps([$class: 'BapSshPromotionPublisherPlugin']) {
-        //         sshPublisher(
-        //             continueOnError: false, failOnError: true,
-        //             publishers: [
-        //                 sshPublisherDesc(
-        //                     configName: "hr_trace_staging",
-        //                     verbose: true,
-        //                     transfers: [
-        //                         sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
-        //                         // sshTransfer(execCommand: "mv build/* ./"),
-        //                         // sshTransfer(execCommand: "cd /var/www/html/react-map; mv build/* ./; rm -r build; ls -l")
-        //                     ]
-        //                 )
-        //             ]
-        //         )
-        //     }
-        // }
+        stage('SSH transfer') {
+            steps([$class: 'BapSshPromotionPublisherPlugin']) {
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "hr_trace_staging",
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+                                // sshTransfer(execCommand: "mv build/* ./"),
+                                sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
+                            ]
+                        )
+                    ]
+                )
+            }
+        }
     }
 
     post {
@@ -45,7 +45,7 @@ pipeline {
             slackSend color: 'good', message: "${GIT_COMMIT} \n ${JOB_URL} \n ${BUILD_TAG} \n ${BUILD_DISPLAY_NAME} \n ${BRANCH_NAME}"
         }
         failure {
-            slackSend color: 'good', message: 'error message'
+            slackSend color: 'warning', message: "${GIT_COMMIT} \n ${JOB_URL} \n ${BUILD_TAG} \n ${BUILD_DISPLAY_NAME} \n ${BRANCH_NAME}"
         }
     }
 }
