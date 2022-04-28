@@ -102,7 +102,7 @@ class StyledDataGrid extends React.PureComponent {
                         })),                        
                     ]
                 }
-                disableColumnFilter={ false }
+                disableColumnFilter={ true }
                 hideFooterPagination={ true }
                 hideFooterSelectedRowCount={ true }
                 disableColumnMenu={ false }

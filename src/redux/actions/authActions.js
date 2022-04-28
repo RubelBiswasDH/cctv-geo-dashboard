@@ -76,9 +76,9 @@ export function validateUser(token) {
                     }
                     //console.log(user)
                     // Authenticate only for user_type = DISPATCHER & SUPERVISOR
-                    if(user.user_type !== 'HR' && user.user_type !== 'ADMIN') {
-                        throw new Error('User not authorized')
-                    }
+                    // if(user.user_type !== 'HR' && user.user_type !== 'ADMIN') {
+                    //     throw new Error('User not authorized')
+                    // }
 
                     // Save `token` & `user` to localStorage
                     localStorage.setItem('token', token)

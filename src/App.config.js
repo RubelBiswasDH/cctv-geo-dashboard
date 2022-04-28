@@ -1,5 +1,5 @@
 // export const BASE_URL = 'http://192.168.161.4:8192'
-export const BASE_URL = 'http://hr.trace.bkoih3.ml'
+export const BASE_URL = 'http://hr.bmapsbd.com'
 
 // Auth Configs
 export const AUTH = {
