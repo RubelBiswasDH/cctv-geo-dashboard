@@ -40,29 +40,29 @@ class DmsDashboard extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load Tasks
-    dispatch( loadTasks({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
+    //dispatch( loadTasks({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 
     // Activate Socket
     dispatch( activateSocket_A() )
 
     // Get Query Categories
-    dispatch( getQueryCategories() )
+    // dispatch( getQueryCategories() )
 
     // Load SND List
-    loadSndList()
-      .then(_sndList => {
-          const sndList = _sndList.map(s => ({
-              value: s.snd_name,
-              label: s.snd_name,
-              snd: s
-          }))
+    // loadSndList()
+    //   .then(_sndList => {
+    //       const sndList = _sndList.map(s => ({
+    //           value: s.snd_name,
+    //           label: s.snd_name,
+    //           snd: s
+    //       }))
 
-          dispatch( setSndList(sndList) )
-      })
-      .catch(err => {
-          //console.error(err)
-          dispatch( setSndList([]) )
-      })
+    //       dispatch( setSndList(sndList) )
+    //   })
+    //   .catch(err => {
+    //       //console.error(err)
+    //       dispatch( setSndList([]) )
+    //   })
   }
 
   componentWillUnmount() {
