@@ -160,7 +160,7 @@ function transformAnnouncements(announcements) {
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
-  console.log('tranformAnnouncement : ',transformedAnnouncements)
+  //console.log('tranformAnnouncement : ',transformedAnnouncements)
   const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
   return transformedAnnouncementsSortByDate
 }

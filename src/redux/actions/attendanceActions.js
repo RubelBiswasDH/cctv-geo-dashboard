@@ -19,8 +19,8 @@ export function getAttendance(params) {
                 const attendanceData = res.data
                 if(attendanceData) {
                    
-                    console.log(" attendance data : ",attendanceData)
-                    console.log(" attendance data : ",attendanceData.attendence)          
+                    // console.log(" attendance data : ",attendanceData)
+                    // console.log(" attendance data : ",attendanceData.attendence)          
                     //console.log(" attendance data : ",attendanceData.attendence)          
                     dispatch(setAttendance(attendanceData.attendence))
                     //console.log('attendance setted')
