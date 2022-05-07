@@ -7,91 +7,7 @@ import axios from 'axios'
 import { AUTH,API } from '../../App.config'
 import dayjs from 'dayjs'
 
-
-export function activateSocket_A() {
-  return (dispatch, getState) => {
-
-
-    // Get Auth Token
-    const token = getAuthToken()
-
-    window.Pusher.logToConsole = true;
-
-    window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
-        
-      cluster: SOCKET_A.PUSHER_APP_CLUSTER,
-      secret: SOCKET_A.PUSHER_APP_SECRET,
-      appId:SOCKET_A.PUSHER_APP_ID,
-      key:SOCKET_A.PUSHER_APP_KEY,
-      wsHost: SOCKET_A.WS_HOST,
-      wsPort: SOCKET_A.WS_PORT,
-      forceTLS: false,
-      authEndpoint: SOCKET_A.AUTH_ENDPOINT,
-      auth: {
-        headers: {
-          Authorization: `Bearer ${ token }`
-        }
-      }
-    }) 
-    
-    // window.pusher.connection.bind("connecting", function () {
-    //   // $("div#status").text("Realtime is go!");
-    //   //console.log("Channel Connecting")
-    // });
-    // var state = window.pusher.connection.state;
-    // //console.log("pusher state  before subscribe: ",state)
-    // window.pusher.connection.bind("connected", function () {
-    //     // $("div#status").text("Realtime is go!");
-    //     //console.log("Channel Connected")
-    //   });
-
-    //   window.pusher.connection.bind("error", function (err) {
-    //     //console.log('error on pusher channel not connected')
-    //     if (err.error.data.code === 4004) {
-    //       //console.log(">>> detected limit error");
-    //     }
-    //   });
-
-    //   var state = window.pusher.connection.state;
-    //   //console.log("pusher state  before subscribe: ",state)
-    // Task Channel
-    window.pusher.subscribe(SOCKET_A.CHANNEL)
-      .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
-        console.log("Socket data: ",data)
-
-        //dispatch( updateAnnouncements(data) )
-        const transformedAnnouncements = transformAnnouncements([ data ])
-        console.log('test transformedAnnouncements ', transformedAnnouncements)
-        // Add Socket Data To Redux State
-        dispatch( updateAnnouncements(transformedAnnouncements))
-
-      })
-      .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
-        console.log("Attendence event data: ",data)      
-      
-        })
-      .bind("pusher:subscription_error", (error) => {
-        var { status } = error;
-        console.log("error on pusher: ",status)
-        if (status == 408 || status == 503) {
-          // Retry?
-        }
-      });
-      var state = window.pusher.connection.state;
-      console.log("pusher state  after subscribe: ",state)
-
-  }
-}
-
-// Deactivate Socket
-export function deactivateSocket() {
-  return () => {
-    if(window.pusher) {
-      window.pusher.unsubscribe(SOCKET.DMS_TASK_CHANNEL)
-      delete window.pusher
-    }
-  }
-}
+import {transformAnnouncements} from '../../utils/utils';
 
 
 //get all announcement 
@@ -135,35 +51,6 @@ export function getAnnouncements(params) {
   }
 }
 
-function sortByDate(data) {
-  return data.sort((a, b) => {
-    var timeA = new Date(a.created_at) // ignore upper and lowercase
-    var timeB = new Date(b.created_at) // ignore upper and lowercase
-
-    if (timeA > timeB) {
-      return -1;
-    }
-    if (timeA < timeB) {
-      return 1;
-    }
-    return 0;
-  })
-}
-
-function transformAnnouncements(announcements) {
-  if(!announcements) {
-    return []
-  }
-
-  const transformedAnnouncements = announcements.map(t => ({
-    ...t,
-    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
-    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
-  }))
-  //console.log('tranformAnnouncement : ',transformedAnnouncements)
-  const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
-  return transformedAnnouncementsSortByDate
-}
 
 ///////////////
 // Utilities //

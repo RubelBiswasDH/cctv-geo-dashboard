@@ -1,6 +1,10 @@
 import regularNotificationAudioClip from '../assets/notification_tone.mp3'
 import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
 
+import dayjs from 'dayjs'
+
+
+
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
   const array = [ ...array1 ]
@@ -57,3 +61,34 @@ export function convertSecondsToTime(seconds) {
     ${sec ? sec + 'sec' : ''}`
 }
 
+// // //
+
+export function sortByDate(data) {
+  return data.sort((a, b) => {
+    var timeA = new Date(a.created_at) // ignore upper and lowercase
+    var timeB = new Date(b.created_at) // ignore upper and lowercase
+
+    if (timeA > timeB) {
+      return -1;
+    }
+    if (timeA < timeB) {
+      return 1;
+    }
+    return 0;
+  })
+}
+
+export function transformAnnouncements(announcements) {
+  if(!announcements) {
+    return []
+  }
+
+  const transformedAnnouncements = announcements.map(t => ({
+    ...t,
+    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
+    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
+  }))
+  //console.log('tranformAnnouncement : ',transformedAnnouncements)
+  const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
+  return transformedAnnouncementsSortByDate
+}

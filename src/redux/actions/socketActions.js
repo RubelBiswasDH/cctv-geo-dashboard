@@ -3,6 +3,113 @@
 // import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 // import { SOCKET } from '../../App.config'
 
+//new imports
+
+import { getAuthToken } from './authActions'
+import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
+import { loadThreadMessage, transformTasks } from '../actions/taskActions'
+import { SOCKET,SOCKET_A } from '../../App.config'
+import { setAnnouncements, updateAnnouncements, setError } from "../reducers/announcementReducer"
+import axios from 'axios'
+import { AUTH,API } from '../../App.config'
+import dayjs from 'dayjs'
+
+import {transformAnnouncements} from '../../utils/utils'
+// // //
+
+export function activateSocket_A() {
+    return (dispatch, getState) => {
+  
+  
+      // Get Auth Token
+      const token = getAuthToken()
+  
+      window.Pusher.logToConsole = true;
+  
+      window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
+          
+        cluster: SOCKET_A.PUSHER_APP_CLUSTER,
+        secret: SOCKET_A.PUSHER_APP_SECRET,
+        appId:SOCKET_A.PUSHER_APP_ID,
+        key:SOCKET_A.PUSHER_APP_KEY,
+        wsHost: SOCKET_A.WS_HOST,
+        wsPort: SOCKET_A.WS_PORT,
+        forceTLS: false,
+        authEndpoint: SOCKET_A.AUTH_ENDPOINT,
+        auth: {
+          headers: {
+            Authorization: `Bearer ${ token }`
+          }
+        }
+      }) 
+      
+      // window.pusher.connection.bind("connecting", function () {
+      //   // $("div#status").text("Realtime is go!");
+      //   //console.log("Channel Connecting")
+      // });
+      // var state = window.pusher.connection.state;
+      // //console.log("pusher state  before subscribe: ",state)
+      // window.pusher.connection.bind("connected", function () {
+      //     // $("div#status").text("Realtime is go!");
+      //     //console.log("Channel Connected")
+      //   });
+  
+      //   window.pusher.connection.bind("error", function (err) {
+      //     //console.log('error on pusher channel not connected')
+      //     if (err.error.data.code === 4004) {
+      //       //console.log(">>> detected limit error");
+      //     }
+      //   });
+  
+      //   var state = window.pusher.connection.state;
+      //   //console.log("pusher state  before subscribe: ",state)
+      // Task Channel
+      window.pusher.subscribe(SOCKET_A.CHANNEL)
+        .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
+          console.log("Socket data: ",data)
+  
+          //dispatch( updateAnnouncements(data) )
+          const transformedAnnouncements = transformAnnouncements([ data ])
+          console.log('test transformedAnnouncements ', transformedAnnouncements)
+          // Add Socket Data To Redux State
+          dispatch( updateAnnouncements(transformedAnnouncements))
+  
+        })
+        .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
+          console.log("Attendence event data: ",data)      
+        
+          })
+        .bind("pusher:subscription_error", (error) => {
+          var { status } = error;
+          console.log("error on pusher: ",status)
+          if (status == 408 || status == 503) {
+            // Retry?
+          }
+        });
+        var state = window.pusher.connection.state;
+        console.log("pusher state  after subscribe: ",state)
+  
+    }
+  }
+  
+  // Deactivate Socket
+  export function deactivateSocket() {
+    return () => {
+      if(window.pusher) {
+        window.pusher.unsubscribe(SOCKET.DMS_TASK_CHANNEL)
+        delete window.pusher
+      }
+    }
+  }
+  
+
+
+
+
+
+
+// // //
+
 // // Activate Socket
 // export function activateSocket() {
 //   return (dispatch, getState) => {

@@ -19,7 +19,7 @@ import AnalyticsDialog from './AnalyticsDialog'
 import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
-import { activateSocket_A, deactivateSocket } from '../redux/actions/announcementsActions'
+import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
 
 class DmsDashboard extends React.PureComponent {
