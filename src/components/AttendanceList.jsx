@@ -120,7 +120,7 @@ class AttendanceList extends React.PureComponent {
         "id": a.id,
         "serial_no":i+1,
         "name": a.name,
-        "checked_in_time": a.enter_time,
+        "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
         "checked_out_time": a.exit_time?a.exit_time : '-',
         "is_late": isLate(a.enter_time)
       })
