@@ -122,10 +122,10 @@ class TaskThread extends React.PureComponent {
                     })}
                   >
                     <Typography
-                      variant='body2'
-                      sx={{ fontSize: '15px',color:'#2F4F4F', marginRight:"5px" }}
+                      variant='h6'
+                      sx={{ fontSize: '15px', fontWeight:'600', color:'#000080	', marginRight:"5px" }}
                     >
-                      { a.name ? a.name: '' }
+                      { a.name ? a.name+" : ": '' }
                     </Typography>
                     <Typography
                       variant='body2'
