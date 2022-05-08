@@ -19,11 +19,11 @@ import {getAttendance}  from '../redux/actions/attendanceActions'
 import dayjs from 'dayjs'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
-  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'is_late', headerName: 'Late', minWidth: 150, maxWidth: 180, sortable: false, filter: false, filterable: false },
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: false, filterable: false },
+  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false },
+  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .3, filter: false, filterable: false },
 ]
 const rows = [
   {
@@ -102,7 +102,7 @@ class AttendanceList extends React.PureComponent {
 
     const isLate = (checked_in_time) => {
       const today = dayjs().format('YYYY-MM-DD')
-      const lastCheckinTime = today+' 10:15:00'
+      const lastCheckinTime = today+' 10:00:00'
       const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
       // console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
       if(new Date(checkedInTime) > new Date(lastCheckinTime)){
@@ -121,7 +121,7 @@ class AttendanceList extends React.PureComponent {
         "serial_no":i+1,
         "name": a.name,
         "checked_in_time": a.enter_time,
-        "checked_out_time": a.exit_time?a.exit_time : '-',
+        "checked_out_time": a.exit_time?.exit_time || '-',
         "is_late": isLate(a.enter_time)
       })
     })
