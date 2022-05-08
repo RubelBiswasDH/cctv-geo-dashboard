@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Box, CircularProgress } from '@mui/material'
 import DmsDashboard from './components/DmsDashboard'
 import Login from './components/Login'
+import Register from './components/Register'
 import ProtectedRoute from './components/common/ProtectedRoute'
 
 // Import Styles
@@ -45,6 +46,17 @@ class App extends React.PureComponent {
                     <Navigate to='/' />
                     :
                     <Login />
+                }
+              />
+
+            <Route
+                exact={ true }
+                path='/register'
+                element={
+                  isAuthenticated ?
+                    <Navigate to='/' />
+                    :
+                    <Register />
                 }
               />
 
