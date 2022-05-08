@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Import Components
-import { Box, Chip, LinearProgress } from '@mui/material'
+import { Box, Chip, LinearProgress,Typography } from '@mui/material'
 import { Refresh } from '@mui/icons-material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid'
 
@@ -82,19 +82,24 @@ class StyledDataGrid extends React.PureComponent {
                                         }}
                                     >
                                         {
-                                            cellValues.field === 'status' ?
-                                                <Chip
-                                                    icon={ cellValues?.row?.reopen && <Refresh sx={{ color: '#ffffff !important' }} /> }
-                                                    sx={ this._getStatusColor(cellValues.value) }
-                                                    label={ 
-                                                        cellValues.value === 'PRECOMPLETION' ?
-                                                        `TASK CLOSED${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
-                                                        :
-                                                        `${ cellValues.value }${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
-                                                    }
-                                                    size={ 'small' }
-                                                />
-                                                : cellValues.value
+                                            cellValues.field === 'name' ?
+                                                // <Chip
+                                                //     icon={ cellValues?.row?.reopen && <Refresh sx={{ color: '#ffffff !important' }} /> }
+                                                //     sx={ this._getStatusColor(cellValues.value) }
+                                                //     label={ 
+                                                //         cellValues.value === 'PRECOMPLETION' ?
+                                                //         `TASK CLOSED${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
+                                                //         :
+                                                //         `${ cellValues.value }${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
+                                                //     }
+                                                //     size={ 'small' }
+                                                // />
+                                                <Typography sx={{fontSize:'1.5em',fontWeight:500}}>{cellValues.value}</Typography>
+                                                : cellValues.field === 'is_late' 
+                                                ? cellValues.value === 'Yes'
+                                                ? <Typography sx={{color:'red',bgColor:'black'}}>{cellValues.value}</Typography> 
+                                                : <Typography sx={{color:'green'}}>{cellValues.value}</Typography> 
+                                                :cellValues.value
                                         }                                        
                                     </Box>
                                 )
