@@ -21,7 +21,10 @@ class App extends React.PureComponent {
 
     // Validate User
     const token = localStorage.getItem('token')
-    dispatch( validateUser(token) )
+    if(token){
+      dispatch( validateUser(token) )
+    }
+   
   }
 
   render() {

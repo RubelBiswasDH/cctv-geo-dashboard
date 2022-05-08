@@ -13,7 +13,7 @@ export function login(user) {
                 //console.log({ auth: res.data})
                 if(res.data && res.data.token) {
                     const token = res.data.token
-
+                    //console.log("token at login api ",token)
                     // Validate User
                     dispatch( validateUser(token) )
                     
@@ -58,11 +58,12 @@ export function logout() {
 
 // User Validation
 export function validateUser(token) {
+    //console.log('validate user..')
     //console.log({ token })
     return dispatch => {
         // Set `isValidating`
         dispatch( setIsValidating(true) )
-
+        
         axios.get(AUTH.GET_USER_API, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 //console.log("data , ",res.data )
