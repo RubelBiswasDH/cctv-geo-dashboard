@@ -219,6 +219,28 @@ class Register extends React.PureComponent {
                   />
                 </Box>
 
+                <Box sx={{boxStyle}}>
+                  <Typography variant='h6'>{ 'Retype Password' }</Typography>
+                  
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='password-2'
+                    type='password-2'
+                    value={ password }
+                    placeholder='Retype Password...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && authError.includes('password') ) || error.password ? true : false
+                    }
+                    helperText={
+                      authError && authError.includes('password') ? authError : error.password ? error.password : null
+                    }
+                  />
+                </Box>
+
                 <Button
                   type='submit'
                   fullWidth={ true }
@@ -277,7 +299,7 @@ const paperStyles = {
   p: '32px',
   mx: {
     xs: '20px'
-  }
+  },
 }
 
 const attributionLinkStyles = {
