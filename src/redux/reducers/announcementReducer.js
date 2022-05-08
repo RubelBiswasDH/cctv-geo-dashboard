@@ -22,7 +22,7 @@ const announcementsSlice = createSlice({
       state.announcements = action.payload
     },
     updateAnnouncements: (state, action) => {
-      console.log("state in store ", action.payload)
+      //console.log("state in store ", action.payload)
       state.announcements = sortByDate(unionArrayOfObjects(state.announcements, action.payload, 'id'))
     },
     setPushNotifications: (state, action) => {

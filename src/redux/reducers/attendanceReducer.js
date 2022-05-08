@@ -13,7 +13,7 @@ const attendanceSlice = createSlice({
   reducers: {
     setAttendance: (state, action) => {
     //console.log("action data: ",action, action.payload)
-      state.attendanceList = action.payload
+      state.attendanceList = sortByDate(action.payload)
     },
     updateAttendance: (state, action) => {
       console.log("state in store attendanceList ", action.payload)
