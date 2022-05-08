@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AUTH } from '../../App.config'
-import { setEmployeeId, setPassword, setError, setIsAuthenticated, setIsValidating, setToken, setUser } from '../reducers/authReducer'
+import { setEmployeeEmail, setPassword, setError, setIsAuthenticated, setIsValidating, setToken, setUser } from '../reducers/authReducer'
 
 // Login Action
 export function login(user) {
@@ -89,7 +89,7 @@ export function validateUser(token) {
                     dispatch( setToken(token) )
                     dispatch( setUser(user) )
                     dispatch( setError('') )
-                    dispatch( setEmployeeId('') )
+                    dispatch( setEmployeeEmail('') )
                     dispatch( setPassword('') )
 
                     // Set axios default token

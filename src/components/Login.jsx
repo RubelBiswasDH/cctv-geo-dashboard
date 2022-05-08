@@ -9,13 +9,13 @@ import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack } f
 import loginCover from '../assets/login-cover.jpg'
 
 // Import Actions & Methods
-import { setEmployeeId, setPassword, setError } from '../redux/reducers/authReducer'
+import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
 import { login } from '../redux/actions/authActions'
 
 class Login extends React.PureComponent {
   state = {
     error: {
-      employeeId: '',
+      employeeEmail: '',
       password: ''
     }
   }
@@ -25,9 +25,9 @@ class Login extends React.PureComponent {
     const { dispatch, authError } = this.props
     const { error } = this.state
 
-    if(e.target.name === 'employeeId') {
+    if(e.target.name === 'employeeEmail') {
       // If Employee Id
-      dispatch( setEmployeeId(e.target.value?.trim() ?? '') )
+      dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
 
     } else if(e.target.name === 'password') {
       // If Password
@@ -51,31 +51,31 @@ class Login extends React.PureComponent {
   // On Submit
   _onSubmit = e => {
     e.preventDefault()
-    const { dispatch, employeeId, password } = this.props
+    const { dispatch, employeeEmail, password } = this.props
 
     // Validate Employee Id & Password
-    const validateEmployeeId = this._validateEmployeeId(employeeId)
+    const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
     const validatePassword = this._validatePassword(password)
-    if(validateEmployeeId.success && validatePassword.success) {
+    if(validateEmployeeEmail.success && validatePassword.success) {
       // Login
-      dispatch( login({ email: employeeId, password }) )
+      dispatch( login({ email: employeeEmail, password }) )
 
     } else {
       this.setState({
         error: {
-          employeeId: validateEmployeeId.message,
+          employeeEmail: validateEmployeeEmail.message,
           password: validatePassword.message
         }
       })
     }
   }
 
-  // Validate employeeId
-  _validateEmployeeId = employeeId => {
-    employeeId = employeeId.trim()
+  // Validate employeeEmail
+  _validateEmployeeEmail = employeeEmail => {
+    employeeEmail = employeeEmail.trim()
     const verdict = { success: false, message: '' }
 
-    if(employeeId) {
+    if(employeeEmail) {
       verdict.success = true
       verdict.message = ''
 
@@ -110,7 +110,7 @@ class Login extends React.PureComponent {
   }
 
   render() {
-    const { employeeId, password, authError } = this.props
+    const { employeeEmail, password, authError } = this.props
     const { error } = this.state
 
     return (
@@ -155,14 +155,14 @@ class Login extends React.PureComponent {
                     fullWidth={ true }
                     name='employeeEmail'
                     type='text'
-                    value={ employeeId }
+                    value={ employeeEmail }
                     placeholder='Enter Employee Email...'
                     onChange={ this._onChange }
                     error={
-                      ( authError && !authError.includes('password') ) || error.employeeId ? true : false
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
                     }
                     helperText={
-                      authError && !authError.includes('password') ? authError : error.employeeId ? error.employeeId : null
+                      authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
                     }
                   />
                 </Box>
@@ -257,21 +257,21 @@ const attributionLinkStyles = {
 
 // Prop Types
 Login.propTypes = {
-  employeeId: PropTypes.string,
+  employeeEmail: PropTypes.string,
   password: PropTypes.string,
   authError: PropTypes.string,
   dispatch: PropTypes.func
 }
 
 Login.defaultProps = {
-  employeeId: '',
+  employeeEmail: '',
   password: '',
   authError: '',
   dispatch: () => null
 }
 
 const mapStateToProps = state => ({
-  employeeId: state.auth.employeeId,
+  employeeEmail: state.auth.employeeEmail,
   password: state.auth.password,
   authError: state.auth.error
 })
