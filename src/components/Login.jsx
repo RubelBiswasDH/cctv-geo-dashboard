@@ -138,7 +138,7 @@ class Login extends React.PureComponent {
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'DMS Log In' }
+              { 'Hr Trace Log In' }
             </Typography>
           </Box>
 
@@ -146,17 +146,17 @@ class Login extends React.PureComponent {
             <form onSubmit={ this._onSubmit }>
               <Stack spacing={ 2 }>
                 <Box>
-                  <Typography variant='h6'>{ 'Employee ID' }</Typography>
+                  <Typography variant='h6'>{ 'Employee Email' }</Typography>
 
                   <TextField
                     variant='outlined'
                     margin='none'
                     size='small'
                     fullWidth={ true }
-                    name='employeeId'
+                    name='employeeEmail'
                     type='text'
                     value={ employeeId }
-                    placeholder='Enter Employee ID...'
+                    placeholder='Enter Employee Email...'
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeId ? true : false
@@ -214,7 +214,7 @@ class Login extends React.PureComponent {
                   align='center'
                   sx={ attributionLinkStyles }
                 >
-                  { 'Copyright: Desco & Digicon Technologies Limited' }
+                  { 'Copyright: Barikoi Technologies Limited' }
                 </Typography>              
             </Box>
           </Box>
