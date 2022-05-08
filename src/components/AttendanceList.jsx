@@ -102,7 +102,7 @@ class AttendanceList extends React.PureComponent {
 
     const isLate = (checked_in_time) => {
       const today = dayjs().format('YYYY-MM-DD')
-      const lastCheckinTime = today+' 10:10:00'
+      const lastCheckinTime = today+' 10:15:00'
       const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
       // console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
       if(new Date(checkedInTime) > new Date(lastCheckinTime)){
