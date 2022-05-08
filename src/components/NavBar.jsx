@@ -198,7 +198,7 @@ class NavBar extends React.PureComponent {
                     user?.user_type &&
                     <Chip                        
                         color='primary'
-                        label={ user?.user_type === 'ADMIN' ? 'ADMIN' : user?.user_type === 'HR' ? 'HR' : 'DMS' }
+                        label={ user?.user_type? user.user_type : 'Unassigned' }
                         size={ 'small' }
                     />
                   }
