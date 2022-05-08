@@ -159,7 +159,7 @@ const containerStyles = {
   margin: 0,
   padding: 0,
   width: '100%',
-  height: '380px'
+  height: '84vh'
 }
 
 const paperStyles = {

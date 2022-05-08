@@ -259,7 +259,7 @@ class AttendanceList extends React.PureComponent {
    
     let attendance_rows = this.mappedAttendanceInfo()
     return (
-      <Box width='100%' height='380px'>
+      <Box width='100%' height='84vh'>
         <StyledDataGrid
           columns={columns }
           rows={ attendance_rows }
