@@ -92,3 +92,18 @@ export function transformAnnouncements(announcements) {
   const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
   return transformedAnnouncementsSortByDate
 }
+
+export function transformAttendance(attendance) {
+  if(!attendance){
+    return []
+  }
+
+  const transformedAttendance = attendance.map(t => ({
+    ...t,
+    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
+    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
+  }))
+  //console.log('tranformAnnouncement : ',transformedAttendance)
+  const transformedAttendanceSortByDate = sortByDate(transformedAttendance)  
+  return transformedAttendanceSortByDate
+}

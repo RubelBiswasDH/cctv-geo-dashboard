@@ -10,11 +10,12 @@ import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
 import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
 import { setAnnouncements, updateAnnouncements, setError } from "../reducers/announcementReducer"
+import { updateAttendance } from '../reducers/attendanceReducer'
 import axios from 'axios'
 import { AUTH,API } from '../../App.config'
 import dayjs from 'dayjs'
 
-import {transformAnnouncements} from '../../utils/utils'
+import {transformAnnouncements, transformAttendance} from '../../utils/utils'
 // // //
 
 export function activateSocket_A() {
@@ -76,8 +77,11 @@ export function activateSocket_A() {
   
         })
         .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
-          console.log("Attendence event data: ",data)      
-        
+          console.log("Attendance event data: ",data)      
+          const transformedAttendance = transformAttendance([ data ])
+          console.log('test transformedAttendance ', transformedAttendance)
+          // Add Socket Data To Redux State
+          dispatch( updateAttendance(transformedAttendance))
           })
         .bind("pusher:subscription_error", (error) => {
           var { status } = error;
