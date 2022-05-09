@@ -12,6 +12,7 @@ import NavBar from './NavBar'
 // import TaskDateFilter from './TaskDateFilter'
 import TaskTypeFilter from './TaskTypeFilter'
 import AttendanceList from './AttendanceList'
+import FilterEmployee from './FilterEmployee'
 import TaskThread from './TaskThread'
 import AnalyticsDialog from './AnalyticsDialog'
 
@@ -23,13 +24,14 @@ import {getAttendance}  from '../redux/actions/attendanceActions'
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
 
 class DmsDashboard extends React.PureComponent {
   state = {
     start_date: null,
     end_date: null,
     dateValues: [],
-    isAnalyticsDialogOpen: false
+    isAnalyticsDialogOpen: false,
   }
   componentDidMount() {
     const { dispatch } = this.props
@@ -128,7 +130,7 @@ class DmsDashboard extends React.PureComponent {
     return (
       <Box sx={ containerStyles }>
         <NavBar />
-
+        <FilterEmployee/>
         <Box
           sx={ theme => ({
             padding: {
@@ -139,6 +141,7 @@ class DmsDashboard extends React.PureComponent {
           })}
         >
           <Grid container={ true } spacing={ 4 }>
+
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
               <Box sx={{ pb: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                 <Stack spacing={ 1 } direction='row'>
@@ -198,9 +201,10 @@ class DmsDashboard extends React.PureComponent {
                 justifyContent: 'space-between',
                 alignItems: 'flex-start'
               }}
-            >
-              <AttendanceList />
-
+            > 
+              {
+                (this.props.currentView === 'attendance') && <AttendanceList />
+              }
               { !isTaskThreadOpen &&
                   <Tooltip title='Open Thread'>
                     <IconButton
@@ -278,7 +282,8 @@ const mapStateToProps = state => ({
   isTaskLoading: state.task.isTaskLoading,
   queryCategory: state.task.queryCategory,
   user: state.auth.user,
-  feedback: state.analytics.errorAnalytics
+  feedback: state.analytics.errorAnalytics,
+  currentView: state.dashboard.currentView
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

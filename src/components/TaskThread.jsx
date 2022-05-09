@@ -57,7 +57,8 @@ class TaskThread extends React.PureComponent {
             sx={ theme => ({
      
               padding: theme.spacing(1),
-              background: theme.palette.grey[200],
+              // background: theme.palette.gray[200],
+              background: '#FF6961',
               boxShadow: theme.shadows[2],
               display: 'flex',
               flexDirection: 'row',
@@ -79,7 +80,7 @@ class TaskThread extends React.PureComponent {
               align='center'
               sx={ theme => ({
                 width: '100%',
-                color: theme.palette.text.primary,
+                color: theme.palette.text.white,
                 fontSize: '14px',
                 fontWeight: 600,
               

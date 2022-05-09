@@ -71,6 +71,15 @@ const theme = createTheme({
         }
       }
     }
+  },
+  palette: {
+    gray: {
+      main: '#5F5F5F',
+      contrastText: '#fff',
+    },
+    text: {
+      white: 'white'
+    }
   }
 })
 
