@@ -101,7 +101,7 @@ export function transformAttendance(attendance) {
   const transformedAttendance = attendance.map(t => ({
     ...t,
     enter_time: dayjs(t.enter_time).format('YYYY-MM-DD HH:mm:ss'),
-    exit_time: dayjs(t.exit_time).format('YYYY-MM-DD HH:mm:ss'),
+    exit_time: (t.exit_time)?dayjs(t.exit_time).format('YYYY-MM-DD HH:mm:ss'):'-',
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
