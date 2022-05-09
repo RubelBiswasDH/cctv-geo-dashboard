@@ -20,10 +20,10 @@ import dayjs from 'dayjs'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: false, filterable: false },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false },
+  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .3, filter: false, filterable: false },
+  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .3, filter: true, filterable: true  },
 ]
 const rows = [
   {
