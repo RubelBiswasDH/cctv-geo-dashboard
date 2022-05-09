@@ -97,8 +97,9 @@ class StyledDataGrid extends React.PureComponent {
                                                 <Typography sx={{fontSize:'1.5em',fontWeight:500}}>{cellValues.value}</Typography>
                                                 : cellValues.field === 'is_late' 
                                                 ? cellValues.value === 'Yes'
-                                                ? <Typography sx={{color:'red',bgColor:'black'}}>{cellValues.value}</Typography> 
-                                                : <Typography sx={{color:'green'}}>{cellValues.value}</Typography> 
+                                                ? <Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}}/>
+
+                                                : <Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :cellValues.value
                                         }                                        
                                     </Box>
