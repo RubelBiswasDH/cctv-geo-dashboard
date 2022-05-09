@@ -101,7 +101,7 @@ class AttendanceList extends React.PureComponent {
     //console.log('mappedAttendanceInfo called', attendanceList);
 
     const isLate = (checked_in_time) => {
-      const today = dayjs().format('YYYY-MM-DD')
+      const today = dayjs(checked_in_time).format('YYYY-MM-DD')
       const lastCheckinTime = today+' 10:15:00'
       //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
       //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)

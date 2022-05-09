@@ -18,6 +18,8 @@ import AnalyticsDialog from './AnalyticsDialog'
 // Import Actions & Methods
 import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
+import {getAttendance}  from '../redux/actions/attendanceActions'
+
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
@@ -78,7 +80,17 @@ class DmsDashboard extends React.PureComponent {
     dispatch( setIsTaskThreadOpen(true) )
   }
 
-  // Handle Date Range Change
+   // Handle Date Range Change
+   _handleDateRangeChange = dateValues => {
+    const { start_date, end_date } = this.state            
+
+    // Get start date and end date from date range picker
+    const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
+    const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+
+    // Set state for start date and end date accordingly
+    this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+  }
 
   // Handle Get Data
   _handleOnSubmit = () => {
@@ -86,7 +98,7 @@ class DmsDashboard extends React.PureComponent {
     const { dispatch } = this.props
 
     // Load Tasks
-    dispatch( loadTasks({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
 
   // Handle Analytics Dialog
@@ -127,13 +139,13 @@ class DmsDashboard extends React.PureComponent {
           })}
         >
           <Grid container={ true } spacing={ 4 }>
-          {/*   <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
+            <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
               <Box sx={{ pb: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                 <Stack spacing={ 1 } direction='row'>
                   <LocalizationProvider dateAdapter={ AdapterDayjs }>
                       <DateRangePicker
                           value={ [ start_date, end_date ] }
-                          onChange={ () => ("handle data change")}
+                          onChange={ this._handleDateRangeChange }
                           disableMaskedInput={ true }
                           inputFormat={ 'DD-MMM-YYYY' }
                           renderInput={(startProps, endProps) => (                                            
@@ -160,7 +172,7 @@ class DmsDashboard extends React.PureComponent {
                       { 'Get Data' }
                   </LoadingButton>
                 </Stack>
-                {
+                {/* {
                   user.user_type === 'SUPERVISOR' &&
                   <LoadingButton 
                     loading={ false }
@@ -171,10 +183,10 @@ class DmsDashboard extends React.PureComponent {
                   >
                       { 'Analytics' }
                   </LoadingButton>
-                }                
+                }                 */}
               </Box>                                        
-              <TaskTypeFilter />
-            </Grid> */}
+              {/* <TaskTypeFilter /> */}
+            </Grid>
 
             <Grid
               item={ true }
