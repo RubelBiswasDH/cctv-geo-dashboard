@@ -12,6 +12,7 @@ import NavBar from './NavBar'
 // import TaskDateFilter from './TaskDateFilter'
 import TaskTypeFilter from './TaskTypeFilter'
 import AttendanceList from './AttendanceList'
+import EmployeeList from './EmployeeList'
 import FilterEmployee from './FilterEmployee'
 import TaskThread from './TaskThread'
 import AnalyticsDialog from './AnalyticsDialog'
@@ -24,7 +25,6 @@ import {getAttendance}  from '../redux/actions/attendanceActions'
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
-import { setCurrentView } from '../redux/reducers/dashboardReducer'
 
 class DmsDashboard extends React.PureComponent {
   state = {
@@ -144,6 +144,8 @@ class DmsDashboard extends React.PureComponent {
 
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
               <Box sx={{ pb: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+              {
+                (this.props.currentView === 'attendance') &&
                 <Stack spacing={ 1 } direction='row'>
                   <LocalizationProvider dateAdapter={ AdapterDayjs }>
                       <DateRangePicker
@@ -175,6 +177,7 @@ class DmsDashboard extends React.PureComponent {
                       { 'Get Data' }
                   </LoadingButton>
                 </Stack>
+              }
                 {/* {
                   user.user_type === 'SUPERVISOR' &&
                   <LoadingButton 
@@ -204,6 +207,9 @@ class DmsDashboard extends React.PureComponent {
             > 
               {
                 (this.props.currentView === 'attendance') && <AttendanceList />
+              }
+              {
+                (this.props.currentView !== 'attendance') && <EmployeeList />
               }
               { !isTaskThreadOpen &&
                   <Tooltip title='Open Thread'>

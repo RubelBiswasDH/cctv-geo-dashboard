@@ -5,6 +5,7 @@ import analyticsReducer from './reducers/analyticsReducer'
 import attendanceReducer from './reducers/attendanceReducer'
 import announcementsReducer from "../redux/reducers/announcementReducer"
 import dashboardReducer from "../redux/reducers/dashboardReducer"
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
