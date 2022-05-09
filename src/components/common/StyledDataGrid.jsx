@@ -153,7 +153,8 @@ const LinearProgressFactory = () => (
 // JSS Styles
 const dataGridStyles = theme => ({    
     '& .MuiDataGrid-columnHeaders': {
-        background: theme.palette.grey[200],
+        // background: theme.palette.grey[200],
+        background: theme.palette.tableHeader.main,
         boxShadow: theme.shadows[2]
     },
     '& .MuiDataGrid-columnHeaderTitle': {

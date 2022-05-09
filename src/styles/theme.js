@@ -77,6 +77,10 @@ const theme = createTheme({
       main: '#5F5F5F',
       contrastText: '#fff',
     },
+    tableHeader: {
+      main: '#8CCA9E',
+      contrastText: '#00',
+    },
     text: {
       white: 'white'
     }
