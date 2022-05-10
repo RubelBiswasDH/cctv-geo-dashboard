@@ -48,9 +48,12 @@ const boxStyle = {
     display:'flex',
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     padding: '10px',
-    my:'20px'
+    pb:0,
+    mt:'10px',
+    mb:'0px',
+    gap:'4vw'
 }
 
 const mapDispatchToProps = dispatch => ({ dispatch })

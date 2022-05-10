@@ -14,6 +14,7 @@ import TaskTypeFilter from './TaskTypeFilter'
 import AttendanceList from './AttendanceList'
 import EmployeeList from './EmployeeList'
 import FilterEmployee from './FilterEmployee'
+import SubNav from './SubNav'
 import TaskThread from './TaskThread'
 import AnalyticsDialog from './AnalyticsDialog'
 
@@ -130,6 +131,7 @@ class DmsDashboard extends React.PureComponent {
     return (
       <Box sx={ containerStyles }>
         <NavBar />
+        <SubNav/>
         <FilterEmployee/>
         <Box
           sx={ theme => ({
@@ -143,7 +145,7 @@ class DmsDashboard extends React.PureComponent {
           <Grid container={ true } spacing={ 4 }>
 
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
-              <Box sx={{ pb: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{ pb: '.5rem', display: 'flex', justifyContent: 'space-between' }}>
               {
                 (this.props.currentView === 'attendance') &&
                 <Stack spacing={ 1 } direction='row'>
