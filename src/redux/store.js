@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './reducers/authReducer'
+import registerReducer from './reducers/registerReducer'
 import taskReducer from './reducers/taskReducer'
 import analyticsReducer from './reducers/analyticsReducer'
 import attendanceReducer from './reducers/attendanceReducer'
@@ -14,6 +15,7 @@ const store = configureStore({
     attendanceList: attendanceReducer,
     announcements: announcementsReducer,
     dashboard: dashboardReducer,
+    register: registerReducer,
   }
 })
 

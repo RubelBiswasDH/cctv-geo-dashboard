@@ -111,7 +111,7 @@ class Register extends React.PureComponent {
 //   }
 
   render() {
-    const {employeeName,companyName, employeeEmail, employeePhone, password, authError } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, password, authError } = this.props
     const { error } = this.state
 
     return (
@@ -349,9 +349,12 @@ Register.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  employeeEmail: state.auth.employeeEmail,
-  password: state.auth.password,
-  authError: state.auth.error
+  employeeName: state.register.employeeName, 
+  employeeEmail: state.register.employeeEmail,
+  employeePhone: state.register.employeePhone,
+  companyName: state.register.companyName,
+  password: state.register.password,
+  authError: state.register.error
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

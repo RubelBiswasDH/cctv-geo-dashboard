@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { AUTH } from '../../App.config'
-import { setEmployeeEmail, setPassword, setError, setIsAuthenticated, setIsValidating, setToken, setUser } from '../reducers/authReducer'
+import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError  } from '../reducers/registerReducer'
 
 // Login Action
-export function login(user) {
+export function register(user) {
     return dispatch => {
         // Set `isValidating`
         dispatch( setIsValidating(true) )
@@ -36,25 +36,7 @@ export function login(user) {
     }
 }
 
-// Logout Action
-export function logout() {
-    return dispatch => {
-        // Set `isValidating`
-        dispatch( setIsValidating(true) )
 
-        // Clear localStorage
-        localStorage.clear()
-
-        // Dispatch `authReducer` Values to Redux State
-        dispatch( setIsAuthenticated(false) )
-        dispatch( setToken(null) )
-        dispatch( setUser({}) )
-        dispatch( setError('') )
-
-        // Set `isValidating`
-        dispatch( setIsValidating(false) )
-    }
-}
 
 // User Validation
 export function validateUser(token) {
@@ -123,15 +105,3 @@ export function validateUser(token) {
     }
 }
 
-///////////////
-// Utilities //
-///////////////
-// Get User Auth Token
-export function getAuthToken() {
-    const token = localStorage.getItem('token')
-    if(token) {
-        return token
-    }
-
-    return null
-}

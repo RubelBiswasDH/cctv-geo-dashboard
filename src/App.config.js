@@ -3,6 +3,7 @@ export const BASE_URL = 'http://hr.bmapsbd.com'
 
 // Auth Configs
 export const AUTH = {
+  REGISTER_API: `${BASE_URL}/api/register`,
   LOGIN_API: `${BASE_URL}/api/login`,
   GET_USER_API: `${BASE_URL}/api/auth/user`
 }
@@ -19,6 +20,7 @@ export const API = {
   SEND_TASK_CLICK_COUNT: `${BASE_URL}/api/v1/dms-open-task/`,
   REVERSEGEO: `https://barikoi.xyz/v1/api/search/reverse/Mjg5MTpGMDNaTU1HTjZU/geocode`,
   DELETE_TASK: `${BASE_URL}/api/v1/delete-task/`,
+  
   GET_ALL_ATTENDANCE: `${BASE_URL}/api/get-attendance/`,
   GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
 
