@@ -7,6 +7,7 @@ const initialState = {
   employeePhone: '',
   companyName: '',
   password: '',
+  password_2: '',
   error: ''
 }
 
@@ -33,11 +34,14 @@ const registerSlice = createSlice({
     setPassword: (state, action) => {
       state.password = action.payload
     },
+    setPassword_2: (state, action) => {
+      state.password_2 = action.payload
+    },
     setError: (state, action) => {
       state.error = action.payload
     }
   }
 })
 
-export const { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } = registerSlice.actions
+export const { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setPassword_2, setError } = registerSlice.actions
 export default registerSlice.reducer

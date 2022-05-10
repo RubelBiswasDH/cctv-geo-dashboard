@@ -7,6 +7,8 @@ import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack } f
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
+import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanayName, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
+import { register } from '../../redux/actions/registerActions'
 
 // Import Actions & Methods
 //import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
@@ -15,16 +17,19 @@ import loginCover from '../../assets/login-cover.jpg'
 class Register extends React.PureComponent {
   state = {
     error: {
+      employeeName: '',
+      employeePhone: '',
       employeeEmail: '',
       companyName:'',
-      password: ''
+      password: '',
+      password_2: ''
     }
   }
 
   // On Change
-//   _onChange = e => {
-//     const { dispatch, authError } = this.props
-//     const { error } = this.state
+  _onChange = e => {
+    const { dispatch, authError } = this.props
+    const { error } = this.state
 
 //     if(e.target.name === 'employeeEmail') {
 //       // If Employee Id
@@ -38,80 +43,184 @@ class Register extends React.PureComponent {
 //       this.setState({ [ e.target.name ]: e.target.value })
 //     }
 
-    // Clear Error
-//     if(error[ e.target.name ]) {
-//       this.setState({ error: { ...error, [ e.target.name ]: '' } })      
-//     }
+switch (e.target.name) {
+    case 'employeeName':
+        dispatch( setEmployeeName(e.target.value ?? '') )
+        break;
+    case 'employeeEmail':
+        dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
+        break;
+    case 'employeePhone':
+        dispatch( setEmployeePhone(e.target.value?.trim() ?? '') )
+        break;
+    case 'companyName':
+        dispatch( setCompanayName(e.target.value ?? '') )
+        break;
+    case 'password':
+        dispatch( setPassword(e.target.value?.trim() ?? '') )
+        break;
+    case 'password_2':
+        dispatch( setPassword_2(e.target.value?.trim() ?? '') )
+        break;
+    // default:
+    //   data = empData;
+  } 
 
-//     // Clear auth error from redux
-//     if(authError) {
-//       dispatch( setError('') )
-//     }
-//   }
+    // Clear Error
+    if(error[ e.target.name ]) {
+      this.setState({ error: { ...error, [ e.target.name ]: '' } })      
+    }
+
+    // Clear auth error from redux
+    if(authError) {
+      dispatch( setError('') )
+    }
+  }
 
   // On Submit
-  //_onSubmit = e => {
-//     e.preventDefault()
-//     const { dispatch, employeeEmail, password } = this.props
+  _onSubmit = e => {
+    e.preventDefault()
+    const { dispatch,employeeName, employeeEmail, employeePhone, companyName, password, password_2 } = this.props
 
-//     // Validate Employee Id & Password
-//     const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
-//     const validatePassword = this._validatePassword(password)
-//     if(validateEmployeeEmail.success && validatePassword.success) {
-//       // Login
-//       dispatch( login({ email: employeeEmail, password }) )
+    // Validate Employee Id & Password
+    const validateEmployeeName = this._validateEmployeeName(employeeName)
+    const validateEmployeePhone = this._validateEmployeePhone(employeePhone)
+    const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
+    const validateCompanayName = this._validateCompanyName(companyName)
+    const validatePassword = this._validatePassword(password)
+    const validatePassword_2 = this._validatePassword(password_2)
+    if(validateEmployeeEmail.success && validatePassword.success) {
+      // Register
+      console.log('submited register data')
+      //dispatch( register({ email: employeeEmail, password }) )
 
-//     } else {
-//       this.setState({
-//         error: {
-//           employeeEmail: validateEmployeeEmail.message,
-//           password: validatePassword.message
-//         }
-//       })
-//     }
-//   }
+    } else {
+      this.setState({
+        error: {
+          employeeName: validateEmployeeName.message,
+          employeeEmail: validateEmployeeEmail.message,
+          employeePhone: validateEmployeePhone.message,
+          companyName: validateCompanayName.message,
+          password: validatePassword.message,
+          password_2: validatePassword_2.message
+        }
+      })
+    }
+  }
 
-  // Validate employeeEmail
-//   _validateEmployeeEmail = employeeEmail => {
-//     employeeEmail = employeeEmail.trim()
-//     const verdict = { success: false, message: '' }
+   // Validate employeeName
+   _validateEmployeeName = employeeName => {
+    employeeName = employeeName.trim()
+    const verdict = { success: false, message: '' }
 
-//     if(employeeEmail) {
-//       verdict.success = true
-//       verdict.message = ''
+    if(employeeName) {
+      verdict.success = true
+      verdict.message = ''
 
-//     } else {
-//       verdict.success = false
-//       verdict.message = 'Required field.'
-//     }
+    } else {
+      verdict.success = false
+      verdict.message = 'Required field.'
+    }
 
-//     return verdict
-//   }
+    return verdict
+  }
 
+
+ // Validate employeeEmail
+  _validateEmployeeEmail = employeeEmail => {
+    employeeEmail = employeeEmail.trim()
+    const verdict = { success: false, message: '' }
+
+    if(employeeEmail) {
+      verdict.success = true
+      verdict.message = ''
+
+    } else {
+      verdict.success = false
+      verdict.message = 'Required field.'
+    }
+
+    return verdict
+  }
+    // Validate employeePhone
+       _validateEmployeePhone = employeePhone => {
+        employeePhone = employeePhone.trim()
+        const verdict = { success: false, message: '' }
+    
+        if(employeePhone) {
+          verdict.success = true
+          verdict.message = ''
+    
+        } else {
+          verdict.success = false
+          verdict.message = 'Required field.'
+        }
+    
+        return verdict
+      }
+
+      // Validate companyName
+      _validateCompanyName = companyName => {
+        companyName = companyName.trim()
+        const verdict = { success: false, message: '' }
+    
+        if(companyName) {
+          verdict.success = true
+          verdict.message = ''
+    
+        } else {
+          verdict.success = false
+          verdict.message = 'Required field.'
+        }
+    
+        return verdict
+      }
   // Validate Password
-//   _validatePassword = password => {
-//     const verdict = { success: false, message: '' }
+  _validatePassword = password => {
+    const verdict = { success: false, message: '' }
 
-//     if (password) {
-//       if (password.length < 6) {
-//         verdict.success = false
-//         verdict.message = 'Password must be atleast 6 digit!'
+    if (password) {
+      if (password.length < 6) {
+        verdict.success = false
+        verdict.message = 'Password must be atleast 6 digit!'
 
-//       } else {
-//         verdict.success = true
-//         verdict.message = ''
-//       }
+      } else {
+        verdict.success = true
+        verdict.message = ''
+      }
 
-//     } else {
-//       verdict.success = false
-//       verdict.message = 'Required field.'
-//     }
+    } else {
+      verdict.success = false
+      verdict.message = 'Required field.'
+    }
 
-//     return verdict
-//   }
+    return verdict
+  }
+
+  // Validate Password2
+  _validatePassword_2 = password => {
+    const verdict = { success: false, message: '' }
+
+    if (password) {
+      if (password.length < 6) {
+        verdict.success = false
+        verdict.message = 'Password must be atleast 6 digit!'
+
+      } else {
+        verdict.success = true
+        verdict.message = ''
+      }
+
+    } else {
+      verdict.success = false
+      verdict.message = 'Required field.'
+    }
+
+    return verdict
+  }
 
   render() {
-    const {employeeName, employeeEmail, employeePhone, companyName, password, authError } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, password, password_2, authError } = this.props
     const { error } = this.state
 
     return (
@@ -158,9 +267,17 @@ class Register extends React.PureComponent {
                     type='text'
                     value={ employeeName }
                     placeholder='Enter Employee Name...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
+                    }
                   />
                 </Box>
 
+                {/* 'Employee Email' */}
                 <Box sx={{boxStyle}}>
                   <Typography variant='h6'>{ 'Employee Email' }</Typography>
 
@@ -173,13 +290,13 @@ class Register extends React.PureComponent {
                     type='text'
                     value={ employeeEmail }
                     placeholder='Enter Employee Email...'
-                    // onChange={ this._onChange }
-                    // error={
-                    //   ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
-                    // }
-                    // helperText={
-                    //   authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
-                    // }
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
+                    }
                   />
                 </Box>
                 {/*phone*/}
@@ -195,13 +312,13 @@ class Register extends React.PureComponent {
                     type='text'
                     value={ employeePhone }
                     placeholder='Enter Employee Phone...'
-                    // onChange={ this._onChange }
-                    // error={
-                    //   ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
-                    // }
-                    // helperText={
-                    //   authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
-                    // }
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
+                    }
                   />
                 </Box>
 
@@ -218,6 +335,13 @@ class Register extends React.PureComponent {
                     type='text'
                     value={ companyName }
                     placeholder='Enter Company Name...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
+                    }
                   />
                 </Box>
                 <Box sx={{boxStyle}}>
@@ -250,9 +374,9 @@ class Register extends React.PureComponent {
                     margin='none'
                     size='small'
                     fullWidth={ true }
-                    name='password-2'
-                    type='password-2'
-                    value={ password }
+                    name='password_2'
+                    type='password'
+                    value={ password_2 }
                     placeholder='Retype Password...'
                     onChange={ this._onChange }
                     error={
@@ -354,6 +478,7 @@ const mapStateToProps = state => ({
   employeePhone: state.register.employeePhone,
   companyName: state.register.companyName,
   password: state.register.password,
+  password_2: state.register.password_2,
   authError: state.register.error
 })
 
