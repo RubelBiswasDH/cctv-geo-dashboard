@@ -88,7 +88,7 @@ switch (e.target.name) {
     const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
     const validateCompanayName = this._validateCompanyName(companyName)
     const validatePassword = this._validatePassword(password)
-    const validatePassword_2 = this._validatePassword(password_2)
+    const validatePassword_2 = this._validatePassword_2(password,password_2)
     if(validateEmployeeEmail.success && validatePassword.success) {
       // Register
       console.log('submited register data')
@@ -198,15 +198,20 @@ switch (e.target.name) {
   }
 
   // Validate Password2
-  _validatePassword_2 = password => {
+  _validatePassword_2 = (password,password_2) => {
     const verdict = { success: false, message: '' }
 
-    if (password) {
-      if (password.length < 6) {
+    if (password_2) {
+      if (password_2.length < 6) {
         verdict.success = false
         verdict.message = 'Password must be atleast 6 digit!'
 
-      } else {
+      }
+      else if(password_2 !== password){
+        verdict.success = false
+        verdict.message = 'Password did not match!'
+      }
+       else {
         verdict.success = true
         verdict.message = ''
       }
@@ -380,10 +385,10 @@ switch (e.target.name) {
                     placeholder='Retype Password...'
                     onChange={ this._onChange }
                     error={
-                      ( authError && authError.includes('password') ) || error.password ? true : false
+                      ( authError && authError.includes('password') ) || error.password_2 ? true : false
                     }
                     helperText={
-                      authError && authError.includes('password') ? authError : error.password ? error.password : null
+                      authError && authError.includes('password') ? authError : error.password_2 ? error.password_2 : null
                     }
                   />
                 </Box>
