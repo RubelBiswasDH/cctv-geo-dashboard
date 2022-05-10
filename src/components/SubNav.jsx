@@ -13,12 +13,12 @@ function CustomizedInputBase() {
     return (
       <Paper
         component="form"
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px' }}
+        sx={{ p: '0px 0px', display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px' }}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1,color:'white',ps:'15px'}}
+          sx={{ ml: 3,mt:.5, flex: 1,color:'white',opacity: 1}}
           placeholder="Search"
-          inputProps={{ 'aria-label': 'search',color:'white',p: '10px'  }}
+          inputProps={{ 'aria-label': 'search',color:'white'  }}
         />
         <IconButton sx={{ p: '10px' }} aria-label="search">
           <SearchIcon sx={{color:'white'}}/>
