@@ -111,7 +111,7 @@ class Register extends React.PureComponent {
 //   }
 
   render() {
-    const { employeeEmail, password, authError } = this.props
+    const {employeeName,companyName, employeeEmail, employeePhone, password, authError } = this.props
     const { error } = this.state
 
     return (
@@ -156,7 +156,7 @@ class Register extends React.PureComponent {
                     fullWidth={ true }
                     name='employeeName'
                     type='text'
-                    value={ employeeEmail }
+                    value={ employeeName }
                     placeholder='Enter Employee Name...'
                   />
                 </Box>
@@ -182,7 +182,30 @@ class Register extends React.PureComponent {
                     // }
                   />
                 </Box>
+                {/*phone*/}
+                <Box sx={{boxStyle}}>
+                  <Typography variant='h6'>{ 'Employee Phone' }</Typography>
 
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='employeePhone'
+                    type='text'
+                    value={ employeePhone }
+                    placeholder='Enter Employee Phone...'
+                    // onChange={ this._onChange }
+                    // error={
+                    //   ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    // }
+                    // helperText={
+                    //   authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
+                    // }
+                  />
+                </Box>
+
+                {/*email*/}
                 <Box sx={{boxStyle}}>
                   <Typography variant='h6'>{ 'Company Name' }</Typography>
 
@@ -193,7 +216,7 @@ class Register extends React.PureComponent {
                     fullWidth={ true }
                     name='companyName'
                     type='text'
-                    value={ employeeEmail }
+                    value={ companyName }
                     placeholder='Enter Company Name...'
                   />
                 </Box>
@@ -246,7 +269,7 @@ class Register extends React.PureComponent {
                   fullWidth={ true }
                   variant='contained'
                 >
-                  { 'Log In' }
+                  { 'Register' }
                 </Button>
               </Stack>
             </form>
