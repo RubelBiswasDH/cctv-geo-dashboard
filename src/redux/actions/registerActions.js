@@ -10,7 +10,8 @@ export function register(user) {
 
         axios.post(AUTH.REGISTER_API, user)
             .then(res => {
-                console.log({ register: res.data})
+                //console.log({ register: res.data})
+                window.location.href = '/login';
                 // if(res.data && res.data.token) {
                 //     const token = res.data.token
                 //     //console.log("token at login api ",token)

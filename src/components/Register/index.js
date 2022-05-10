@@ -86,13 +86,20 @@ switch (e.target.name) {
     const validateEmployeeName = this._validateEmployeeName(employeeName)
     const validateEmployeePhone = this._validateEmployeePhone(employeePhone)
     const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
-    const validateCompanayName = this._validateCompanyName(companyName)
+    const validateCompanyName = this._validateCompanyName(companyName)
     const validatePassword = this._validatePassword(password)
     const validatePassword_2 = this._validatePassword_2(password,password_2)
-    if(validateEmployeeEmail.success && validatePassword.success) {
+    if(validateEmployeeName.success && validateEmployeePhone.success &&  validateEmployeeEmail.success && validateCompanyName.success && validatePassword.success && validatePassword_2.success) {
       // Register
-      console.log('submited register data')
-      //dispatch( register({ email: employeeEmail, password }) )
+      const user = {
+        name:employeeName,
+        email: employeeEmail,
+        phone: employeePhone,
+        company_name: companyName,
+        password: password
+      }
+      //console.log('submited register data: ',user)
+      dispatch( register(user) )
 
     } else {
       this.setState({
@@ -100,7 +107,7 @@ switch (e.target.name) {
           employeeName: validateEmployeeName.message,
           employeeEmail: validateEmployeeEmail.message,
           employeePhone: validateEmployeePhone.message,
-          companyName: validateCompanayName.message,
+          companyName: validateCompanyName.message,
           password: validatePassword.message,
           password_2: validatePassword_2.message
         }
