@@ -67,19 +67,19 @@ class AdminPanel extends React.PureComponent{
                     {/*Add User*/}
                     <GridContent title={"Add User"} >
                         <Grid container spacing={2} sx={{p:2}}>
-                            <Grid xs={2} item sx={{backgroundColor:''}}>
+                            <Grid xs={3} item sx={{backgroundColor:''}}>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
                             </Grid>
-                            <Grid xs={2} item>
+                            <Grid xs={3} item>
                                 <StyledInputField placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
                             </Grid>
-                            <Grid xs={2} item>
+                            <Grid xs={3} item>
                                 <StyledInputField placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
                             </Grid>
-                            <Grid xs={3} item>
+                            <Grid xs={2} item>
                                 <StyledSelect onChange={(setdesignation)} value={'role'} options={['role']} style={{minWidth:'100%'}}/>
                             </Grid>
-                            <Grid xs={3} item>
+                            <Grid xs={1} item>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
                             </Grid>
                             <Grid xs={4} item>

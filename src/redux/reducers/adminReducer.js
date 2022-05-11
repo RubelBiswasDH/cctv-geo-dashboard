@@ -10,6 +10,12 @@ const initialState = {
   contractTypeOptions:['intern','permanent'],
   designation: 'designation',
   designationOptions: ['designation'],
+  newUser: {
+    name:'',
+    email:'',
+    mobile:'',
+    role:'',
+  }
 
 }
 
@@ -31,9 +37,11 @@ const adminSlice = createSlice({
     setdesignation: (state, action) => {
       state.designation = action.payload
     },
-
+    setNewUser: (state, action) => {
+      state.newUser = {...state,...action.payload}
+    },
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUser } = adminSlice.actions
 export default adminSlice.reducer
