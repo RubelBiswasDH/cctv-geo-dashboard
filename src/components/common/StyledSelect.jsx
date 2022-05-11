@@ -18,10 +18,10 @@ class StyledSelect extends React.PureComponent {
 
     render() {
         const {handleChange} = this
-        const {value, options} = this.props
+        const {value, options, style} = this.props
         // console.log("optons: ",options)
         return (
-            <FormControl sx={{ m: 0, p:0, minWidth: '45%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">
+            <FormControl sx={{ m: 0, p:0, minWidth: '45%',height:'100%',fontFamily:'Roboto', fontWeight:500, ...style}} size="small">
                 {/* <InputLabel id="demo-select-small">isActive</InputLabel> */}
                 <Select
                     labelId="demo-select-small"
