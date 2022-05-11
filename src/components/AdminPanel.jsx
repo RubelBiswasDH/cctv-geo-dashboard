@@ -6,7 +6,7 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus } from '../redux/reducers/adminReducer'
+import { setActivityStatus,setDepartment, setContractType, setdesignation } from '../redux/reducers/adminReducer'
 
 const GridContent = (props) => {
     
@@ -24,7 +24,7 @@ class AdminPanel extends React.PureComponent{
     }
 
     render(){
-        const {activityStatus, activityStatusOptions} = this.props
+        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={{width:'100%'}} >
@@ -37,10 +37,15 @@ class AdminPanel extends React.PureComponent{
                             <Grid item>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
-                            <Grid item>
-                                <StyledSelect onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
+                            <Grid xs={6} item>
+                                <Box sx={{display:'flex',flexDirection:'row',justifyContent:'center', flexWrap:'wrap',gap:2,width: '100%',backgroundColor:''}}>
+                                    <StyledSelect onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
+                                    <StyledSelect onChange={setDepartment} value={department} options={departmentOptions}/>
+                                    <StyledSelect onChange={setContractType} value={contractType} options={contractTypeOptions}/>
+                                    <StyledSelect onChange={setdesignation} value={designation} options={designationOptions}/>
+                                </Box>
                             </Grid>
-                            <Grid item>
+                            <Grid item sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Update</StyledButton>
                             </Grid>
 
@@ -89,6 +94,12 @@ class AdminPanel extends React.PureComponent{
 const mapStateToProps = state => ({
     activityStatus: state.admin.activityStatus,
     activityStatusOptions: state.admin.activityStatusOptions,
+    department: state.admin.department,
+    departmentOptions: state.admin.departmentOptions,
+    contractType: state.admin.contractType,
+    contractTypeOptions: state.admin.contractTypeOptions,
+    designation: state.admin.designation,
+    designationOptions: state.admin.designationOptions,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

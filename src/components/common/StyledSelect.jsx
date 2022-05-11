@@ -21,7 +21,7 @@ class StyledSelect extends React.PureComponent {
         const {value, options} = this.props
         // console.log("optons: ",options)
         return (
-            <FormControl sx={{ m: 0, p:0, minWidth: 120,height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">
+            <FormControl sx={{ m: 0, p:0, minWidth: '45%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">
                 {/* <InputLabel id="demo-select-small">isActive</InputLabel> */}
                 <Select
                     labelId="demo-select-small"
@@ -35,7 +35,7 @@ class StyledSelect extends React.PureComponent {
                     {/* <MenuItem value="">
                         <em>None</em>
                     </MenuItem> */}
-                    {options.map((option) => (<MenuItem key={option} sx={{fontSize:'.7em'}} value={option}>{option.replace('_',' ').toUpperCase()}</MenuItem>))}
+                    {options.map((option) => (<MenuItem key={option} sx={{fontSize:'.7em'}} value={option}>{option.replaceAll('_',' ').toUpperCase()}</MenuItem>))}
                     {/* <MenuItem value={"active"}>Active</MenuItem>
                     <MenuItem value={"non_active"}>Non Active</MenuItem> */}
 
