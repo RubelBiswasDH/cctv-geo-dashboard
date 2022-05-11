@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Grid, Typography } from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
-
+import StyledButton from './common/StyledBotton'
 const GridContent = (props) => {
     
     return (
@@ -26,36 +26,45 @@ class AdminThread extends React.PureComponent{
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >
-                        <Grid container sx={{p:2}}>
+                        <Grid container spacing={2} sx={{p:2}}>
                             <Grid item>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid item>
-
+                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Update</StyledButton>
                             </Grid>
                         </Grid>
                     </GridContent>
 
                     {/*Notice*/}
                     <GridContent title={"Notice"} >
-                        <Grid container sx={{p:2}}>
+                        <Grid container spacing={2} sx={{p:2}}>
                             <Grid item>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid item>
-
+                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Post</StyledButton>
                             </Grid>
                         </Grid>
                     </GridContent>
 
                     {/*Add User*/}
                     <GridContent title={"Add User"} >
-                        <Grid container sx={{p:2}}>
+                        <Grid container spacing={2} sx={{p:2}}>
                             <Grid item>
-                                <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
+                                <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
                             </Grid>
                             <Grid item>
-
+                                <StyledInputField placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
+                            </Grid>
+                            <Grid item>
+                                <StyledInputField placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
+                            </Grid>
+                            <Grid item>
+                                <StyledInputField placeholder={"CSV File"} ariaLabel={"CSV File"} style={{borderRadius:2}}/>
+                            </Grid>
+                            <Grid item>
+                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Upload</StyledButton>
                             </Grid>
                         </Grid>
                     </GridContent>

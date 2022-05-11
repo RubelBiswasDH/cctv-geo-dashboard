@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState = {
-    currentView: 'attendance',
+    currentView: 'admin',
 }
 
 const dashboardSlice = createSlice({
