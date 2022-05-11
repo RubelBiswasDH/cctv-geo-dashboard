@@ -1,8 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Box, Grid, Typography } from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
+import StyledSelect from './common/StyledSelect'
+
+import { setActivityStatus } from '../redux/reducers/adminReducer'
+
 const GridContent = (props) => {
     
     return (
@@ -13,15 +18,17 @@ const GridContent = (props) => {
         )
 }
 
-class AdminThread extends React.PureComponent{
+class AdminPanel extends React.PureComponent{
     constructor(props){
         super(props)
     }
 
     render(){
+        const {activityStatus, activityStatusOptions} = this.props
+        //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={{width:'100%'}} >
-                <StyledAppBar title={'Admin Thread'} bgColor={'#FF6961'} />
+                <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
                 <Grid container spacing={2} sx={{mt:3,px:5}}>
 
                     {/*Job Statuc*/}
@@ -31,8 +38,12 @@ class AdminThread extends React.PureComponent{
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid item>
+                                <StyledSelect onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
+                            </Grid>
+                            <Grid item>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Update</StyledButton>
                             </Grid>
+
                         </Grid>
                     </GridContent>
 
@@ -74,4 +85,12 @@ class AdminThread extends React.PureComponent{
     }
 }
 
-export default AdminThread;
+// export default AdminPanel;
+const mapStateToProps = state => ({
+    activityStatus: state.admin.activityStatus,
+    activityStatusOptions: state.admin.activityStatusOptions,
+  })
+  
+  const mapDispatchToProps = dispatch => ({ dispatch })
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel)

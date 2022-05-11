@@ -6,6 +6,7 @@ import analyticsReducer from './reducers/analyticsReducer'
 import attendanceReducer from './reducers/attendanceReducer'
 import announcementsReducer from "../redux/reducers/announcementReducer"
 import dashboardReducer from "../redux/reducers/dashboardReducer"
+import adminReducer from './reducers/adminReducer'
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     announcements: announcementsReducer,
     dashboard: dashboardReducer,
     register: registerReducer,
+    admin:adminReducer,
   }
 })
 
