@@ -11,11 +11,11 @@ class StyledInputField extends React.PureComponent {
     }
 
     render() {
-        const {placeholder, ariaLabel, } = this.props;
+        const {placeholder, ariaLabel, style} = this.props;
 
         return (
             <Paper
-                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '12vw', backgroundColor: '#5F5F5F', color: 'white', borderRadius: '25px', px: '10px' }}
+                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '12vw', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
             >
                 <InputBase
                     sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
