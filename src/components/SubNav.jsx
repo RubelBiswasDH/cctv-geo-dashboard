@@ -53,7 +53,7 @@ class SubNav extends React.PureComponent{
         <Box sx={boxStyle}>
             <Stack direction="row" spacing={2}>
                 <CustomizedInputBase/>
-                <StyledButton onClick={() => this.props.dispatch(setCurrentView('attendance'))}>Admin</StyledButton>
+                <StyledButton onClick={() => this.props.dispatch(setCurrentView('admin'))}>Admin</StyledButton>
             </Stack>
         </Box>
         );
