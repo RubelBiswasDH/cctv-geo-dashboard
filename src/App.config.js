@@ -24,6 +24,7 @@ export const API = {
   GET_ALL_ATTENDANCE: `${BASE_URL}/api/get-attendance/`,
   GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
   CREATE_USER: `${BASE_URL}/api/create-user`,
+  CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,
 
 }
 

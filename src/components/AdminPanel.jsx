@@ -1,14 +1,34 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole } from '../redux/reducers/adminReducer'
-import { createUser } from '../redux/actions/adminActions'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput } from '../redux/reducers/adminReducer'
+import { createUser, createBulkUser } from '../redux/actions/adminActions'
 
+const FileInput = (props) => {
+    const {style, onChange} = props
+    return (
+        <Paper
+            sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
+        >
+            <InputBase
+                sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
+                placeholder={"placeholder"}
+                inputProps={{ 'aria-label': "ariaLabel", color: 'white','type':'file',multiple:true }}
+                // value={value}
+                onChange={onChange}
+
+            />
+            {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
+                <SearchIcon sx={{ color: 'white' }} />
+            </IconButton> */}
+        </Paper>
+    );
+}
 const GridContent = (props) => {
     
     return (
@@ -23,8 +43,31 @@ class AdminPanel extends React.PureComponent{
     constructor(props){
         super(props)
         this.handleCreateUser = this.handleCreateUser.bind(this)
+        this.handleFileInput = this.handleFileInput.bind(this)
+        this.handleFileUpload = this.handleFileUpload.bind(this)
         
     }
+
+
+    handleFileUpload = e => {
+        e.preventDefault()
+        const {dispatch,fileInput} = this.props
+        const file = {users:fileInput}
+        // const users = {users: fileInput}
+        dispatch(createBulkUser(file))
+        console.log('file uploaded, file: ',this.props.fileInput)
+    }
+
+
+    handleFileInput = e => {
+        const {dispatch,fileInput} = this.props
+        e.preventDefault()
+        const file = e.target.files[0]
+        dispatch(setFileInput(file))
+        //console.log('file ',file)
+    }
+
+
     handleCreateUser = (e) => {
         e.preventDefault()
         const {dispatch, newUserName, newUserEmail, newUserMobile, newUserRole} = this.props
@@ -47,7 +90,7 @@ class AdminPanel extends React.PureComponent{
     }
 
     render(){
-        const {handleCreateUser} = this
+        const {handleCreateUser,handleFileInput, handleFileUpload} = this
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
@@ -106,11 +149,11 @@ class AdminPanel extends React.PureComponent{
                             <Grid xs={1} item>
                                 <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
                             </Grid>
-                            <Grid xs={4} item>
-                                <StyledInputField placeholder={"CSV File"} ariaLabel={"CSV File"} style={{borderRadius:2}}/>
+                            <Grid xs={6} item>
+                                <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
                             </Grid>
-                            <Grid item>
-                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Upload</StyledButton>
+                            <Grid xs={3} item>
+                                <StyledButton onClick= {handleFileUpload} variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Upload</StyledButton>
                             </Grid>
                         </Grid>
                     </GridContent>
@@ -135,7 +178,7 @@ const mapStateToProps = state => ({
     newUserMobile:state.admin.newUserMobile,
     newUserRole: state.admin.newUserRole,
     newUserRoleOptions: state.admin.newUserRoleOptions,
-
+    fileInput: state.admin.fileInput,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

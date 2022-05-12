@@ -18,7 +18,12 @@ const store = configureStore({
     dashboard: dashboardReducer,
     register: registerReducer,
     admin:adminReducer,
-  }
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
 })
 
 export default store

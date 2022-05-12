@@ -15,6 +15,7 @@ const initialState = {
   newUserMobile:'',
   newUserRole:'GENERAL',
   newUserRoleOptions:['GENERAL', 'ADMIN', 'HR'],
+  fileInput:null,
 
   }
 
@@ -53,8 +54,13 @@ const adminSlice = createSlice({
       state.newUserRole = action.payload
     },
 
+    setFileInput: (state, action) => {
+      //console.log('file payload ',action.payload)
+      state.fileInput = action.payload
+    },
+
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput } = adminSlice.actions
 export default adminSlice.reducer
