@@ -6,7 +6,7 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus,setDepartment, setContractType, setdesignation } from '../redux/reducers/adminReducer'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole } from '../redux/reducers/adminReducer'
 
 const GridContent = (props) => {
     
@@ -24,7 +24,7 @@ class AdminPanel extends React.PureComponent{
     }
 
     render(){
-        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions} = this.props
+        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={{width:'100%',px:5}} >
@@ -68,16 +68,16 @@ class AdminPanel extends React.PureComponent{
                     <GridContent title={"Add User"} >
                         <Grid container spacing={2} sx={{p:2}}>
                             <Grid xs={3} item sx={{backgroundColor:''}}>
-                                <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
+                                <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
                             </Grid>
                             <Grid xs={3} item>
-                                <StyledInputField placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
+                                <StyledInputField onChange={setNewUserEmail} value={newUserEmail} placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid xs={3} item>
-                                <StyledInputField placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
+                                <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid xs={2} item>
-                                <StyledSelect onChange={(setdesignation)} value={'role'} options={['role']} style={{minWidth:'100%'}}/>
+                                <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
                             </Grid>
                             <Grid xs={1} item>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
@@ -106,6 +106,12 @@ const mapStateToProps = state => ({
     contractTypeOptions: state.admin.contractTypeOptions,
     designation: state.admin.designation,
     designationOptions: state.admin.designationOptions,
+    newUserName: state.admin.newUserName,
+    newUserEmail: state.admin.newUserEmail,
+    newUserMobile:state.admin.newUserMobile,
+    newUserRole: state.admin.newUserRole,
+    newUserRoleOptions: state.admin.newUserRoleOptions,
+
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

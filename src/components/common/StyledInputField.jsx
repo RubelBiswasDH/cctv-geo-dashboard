@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -8,11 +9,18 @@ import SearchIcon from '@mui/icons-material/Search';
 class StyledInputField extends React.PureComponent {
     constructor(props){
         super(props)
+        this.handleChange = this.handleChange.bind(this)
     }
-
+    handleChange = (e) => {
+        e.preventDefault()
+        console.log("input value: ",e.target.value)
+        this.props.dispatch(this.props.onChange(e.target.value))
+        //console.log(`changed ${e.target.value}`)
+    
+    }
     render() {
-        const {placeholder, ariaLabel, style} = this.props;
-
+        const {placeholder, ariaLabel, style, value, onChange} = this.props;
+        const {handleChange} = this;
         return (
             <Paper
                 sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
@@ -21,6 +29,8 @@ class StyledInputField extends React.PureComponent {
                     sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
                     placeholder={placeholder}
                     inputProps={{ 'aria-label': {ariaLabel}, color: 'white' }}
+                    value={value}
+                    onChange={handleChange}
                 />
                 {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
                     <SearchIcon sx={{ color: 'white' }} />
@@ -30,4 +40,7 @@ class StyledInputField extends React.PureComponent {
     }
 }
 
-export default StyledInputField;
+// export default StyledInputField;
+
+  const mapDispatchToProps = dispatch => ({ dispatch })
+  export default connect(mapDispatchToProps)(StyledInputField)

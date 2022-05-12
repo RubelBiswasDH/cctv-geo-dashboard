@@ -10,14 +10,13 @@ const initialState = {
   contractTypeOptions:['intern','permanent'],
   designation: 'designation',
   designationOptions: ['designation'],
-  newUser: {
-    name:'',
-    email:'',
-    mobile:'',
-    role:'',
-  }
+  newUserName: '',
+  newUserEmail:'',
+  newUserMobile:'',
+  newUserRole:'general',
+  newUserRoleOptions:['general', 'admin', 'hr'],
 
-}
+  }
 
 const adminSlice = createSlice({
   name: 'admin',
@@ -37,11 +36,25 @@ const adminSlice = createSlice({
     setdesignation: (state, action) => {
       state.designation = action.payload
     },
-    setNewUser: (state, action) => {
-      state.newUser = {...state,...action.payload}
+    setNewUserName: (state, action) => {
+      // console.log('payload: ',action.payload)
+      state.newUserName = action.payload
     },
+    setNewUserEmail: (state, action) => {
+      // console.log('payload: ',action.payload)
+      state.newUserEmail = action.payload
+    },
+    setNewUserMobile: (state, action) => {
+      // console.log('payload: ',action.payload)
+      state.newUserMobile = action.payload
+    },
+    setNewUserRole: (state, action) => {
+      // console.log('payload: ',action.payload)
+      state.newUserRole = action.payload
+    },
+
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUser } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole } = adminSlice.actions
 export default adminSlice.reducer
