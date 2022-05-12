@@ -13,8 +13,8 @@ const initialState = {
   newUserName: '',
   newUserEmail:'',
   newUserMobile:'',
-  newUserRole:'general',
-  newUserRoleOptions:['general', 'admin', 'hr'],
+  newUserRole:'GENERAL',
+  newUserRoleOptions:['GENERAL', 'ADMIN', 'HR'],
 
   }
 

@@ -7,6 +7,7 @@ import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole } from '../redux/reducers/adminReducer'
+import { createUser } from '../redux/actions/adminActions'
 
 const GridContent = (props) => {
     
@@ -21,9 +22,32 @@ const GridContent = (props) => {
 class AdminPanel extends React.PureComponent{
     constructor(props){
         super(props)
+        this.handleCreateUser = this.handleCreateUser.bind(this)
+        
+    }
+    handleCreateUser = (e) => {
+        e.preventDefault()
+        const {dispatch, newUserName, newUserEmail, newUserMobile, newUserRole} = this.props
+        const user = {
+            name: newUserName,
+            user_level: newUserRole,
+            phone: newUserMobile,
+            email: newUserEmail
+        }
+        if(newUserName && newUserMobile && newUserEmail && newUserRole){
+            // console.log('all field filled')
+            dispatch(createUser(user))
+            // console.log('dispatch createUser',dispatch,createUser)
+            // console.log('dipatch create user')
+        }
+        else{ 
+            alert('All fields are required')
+        }
+        //console.log('create user clicked, user is: ', user)
     }
 
     render(){
+        const {handleCreateUser} = this
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
@@ -80,7 +104,7 @@ class AdminPanel extends React.PureComponent{
                                 <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
                             </Grid>
                             <Grid xs={1} item>
-                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
+                                <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
                             </Grid>
                             <Grid xs={4} item>
                                 <StyledInputField placeholder={"CSV File"} ariaLabel={"CSV File"} style={{borderRadius:2}}/>
