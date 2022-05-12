@@ -193,12 +193,23 @@ class Login extends React.PureComponent {
                   type='submit'
                   fullWidth={ true }
                   variant='contained'
+                  sx={{mt:'2rem'}}
                 >
                   { 'Log In' }
                 </Button>
               </Stack>
             </form>
-
+           {/*Register Button*/}
+           <Button
+                onClick={()=> {window.location.href = '/register'}}
+                fullWidth={ true }
+                variant='contained'
+                sx={{mt:'1rem'}}
+                color={'btnOrange'}
+              >
+                { 'Register' }
+            </Button>  
+            {/* Copyright Section */}
             <Box
               sx={{
                 mt: '2rem',

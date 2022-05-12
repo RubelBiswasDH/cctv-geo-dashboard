@@ -13,7 +13,7 @@ class StyledInputField extends React.PureComponent {
     }
     handleChange = (e) => {
         e.preventDefault()
-        console.log("input value: ",e.target.value)
+        //console.log("input value: ",e.target.value)
         this.props.dispatch(this.props.onChange(e.target.value))
         //console.log(`changed ${e.target.value}`)
     

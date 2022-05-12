@@ -14,7 +14,11 @@ export function createUser(user) {
         axios.post(API.CREATE_USER, user, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 console.log({ create_user_response: res.data})
-                console.log('res :', res)
+                if(res.status===200){
+
+                    alert("User Successfully Created")
+                }
+                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)

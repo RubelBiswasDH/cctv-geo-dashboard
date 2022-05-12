@@ -81,6 +81,10 @@ const theme = createTheme({
       main: '#77DD77',
       contrastText: '#fff',
     },
+    btnOrange: {
+      main: '#FF6961',
+      contrastText: '#fff',
+    },
     tableHeader: {
       main: '#8CCA9E',
       contrastText: '#00',

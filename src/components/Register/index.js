@@ -409,7 +409,16 @@ switch (e.target.name) {
                 </Button>
               </Stack>
             </form>
-
+            {/* Login Button */} 
+            <Button
+                onClick={()=> {window.location.href = '/login'}}
+                fullWidth={ true }
+                variant='contained'
+                color={'btnOrange'}
+                sx={{mt:'1rem',pt:.5}}
+              >
+                { 'Login Instead' }
+            </Button>  
             <Box
               sx={{
                 mt: '2rem',
