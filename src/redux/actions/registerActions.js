@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { AUTH } from '../../App.config'
-import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError  } from '../reducers/registerReducer'
+import { AUTH, API } from '../../App.config'
+import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanyName,setCompanyNameOptions, setPassword, setError  } from '../reducers/registerReducer'
 
 // Login Action
 export function register(user) {
@@ -37,6 +37,41 @@ export function register(user) {
     }
 }
 
+// getCompanyList
+export function getCompanyList(name) {
+    console.log("name ",name)
+    return dispatch => {
+        // Set `isValidating`
+       // dispatch( setIsValidating(true) )
+
+        axios.get(API.AUTOCOMPLETE+name)
+            .then(res => {
+                console.log({ list : res.data.places})
+                dispatch(setCompanyNameOptions(res.data.places))
+                // if(res.data && res.data.token) {
+                //     const token = res.data.token
+                //     //console.log("token at login api ",token)
+                //     // Validate User
+                //     dispatch( validateUser(token) )
+                    
+                // } else {
+                //     throw new Error('Token Not Found')
+                // }
+            })
+            .catch(err => {
+                console.error(err)
+
+                // Dispatch `authReducer` Values to Redux State
+                // dispatch( setIsAuthenticated(false) )
+                // dispatch( setToken(null) )
+                // dispatch( setUser({}) )
+                // dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
+
+                // Set `isValidating`
+                // dispatch( setIsValidating(false) )
+            })
+    }
+}
 
 
 // // User Validation

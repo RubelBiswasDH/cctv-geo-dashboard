@@ -26,6 +26,8 @@ export const API = {
   CREATE_USER: `${BASE_URL}/api/create-user`,
   CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
+  AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
+
 }
 
 // SOCKET configs
@@ -74,5 +76,5 @@ export const MAP = {
       title: 'Dark',
       uri:'https://map.barikoi.com/styles/barikoi-dark/style.json?key=Mjg5MTpGMDNaTU1HTjZU'
     }
-  ]
+  ],
 }

@@ -3,16 +3,27 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
-import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanayName, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
-import { register } from '../../redux/actions/registerActions'
+import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
+import { register,getCompanyList } from '../../redux/actions/registerActions'
 
 // Import Actions & Methods
 //import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
 
+function CustomInput() {
+  return (
+    <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={['option 1','option 2']}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Movie" />}
+    />
+  );
+}
 
 class Register extends React.PureComponent {
   state = {
@@ -25,6 +36,22 @@ class Register extends React.PureComponent {
       password_2: ''
     }
   }
+
+
+  // handleAutoCompInputChange
+  handleAutoCompInputChange = e => {
+    const { dispatch } = this.props
+    dispatch(getCompanyList(e.target.value))
+    console.log('onInputChange called, value :', e.target.value)
+
+  }
+
+// handleAutoCompChange
+  handleAutoCompChange = (e,value) => {
+    console.log('selected place: ', e.target, value)
+    console.log('onChange Called')
+  }
+
 
   // On Change
   _onChange = e => {
@@ -54,7 +81,7 @@ switch (e.target.name) {
         dispatch( setEmployeePhone(e.target.value?.trim() ?? '') )
         break;
     case 'companyName':
-        dispatch( setCompanayName(e.target.value ?? '') )
+        dispatch( setCompanyName(e.target.value ?? '') )
         break;
     case 'password':
         dispatch( setPassword(e.target.value?.trim() ?? '') )
@@ -232,8 +259,13 @@ switch (e.target.name) {
   }
 
   render() {
-    const {employeeName, employeeEmail, employeePhone, companyName, password, password_2, authError } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, companyNameOptions, password, password_2, authError } = this.props
     const { error } = this.state
+    const {handleAutoCompInputChange, handleAutoCompChange} = this
+    console.log('ac :',companyNameOptions)
+    const autoCompleteOptons = companyNameOptions.map(c => c.Address)
+
+    console.log('autoComplate optons: ', autoCompleteOptons)
 
     return (
       <Container sx={ containerStyles }>
@@ -334,7 +366,7 @@ switch (e.target.name) {
                   />
                 </Box>
 
-                {/*email*/}
+                {/*Company Name*/}
                 <Box sx={{boxStyle}}>
                   <Typography variant='h6'>{ 'Company Name' }</Typography>
 
@@ -356,6 +388,42 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
+                  
+                 
+                {/*Autocomplete Company Name*/}
+                {/* <Box sx={{boxStyle}}>
+                  <Typography variant='h6'>{ 'Company Name ' }</Typography>
+                  <Autocomplete
+                  onChange={handleAutoCompChange}
+                  onInputChange={handleAutoCompInputChange}
+
+                  disablePortal
+                  id="combo-box-demo"
+                  options={autoCompleteOptons}
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => 
+                  <TextField
+                  {...params}
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='companyName'
+                    type='text'
+                    // value={ companyName }
+                    placeholder='Enter Company Name...'
+                    // onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
+                    }
+                  />
+                }
+                />
+                </Box>  */}
+                {/* Password */}
                 <Box sx={{boxStyle}}>
                   <Typography variant='h6'>{ 'Password' }</Typography>
                   
@@ -498,6 +566,9 @@ const mapStateToProps = state => ({
   employeeEmail: state.register.employeeEmail,
   employeePhone: state.register.employeePhone,
   companyName: state.register.companyName,
+  companyNameOptions: state.register.companyNameOptions,
+  companyLongitude: state.register.companyNameLongitude,
+  companyLatitude: state.register.companyNameLatiitude,
   password: state.register.password,
   password_2: state.register.password_2,
   authError: state.register.error
