@@ -31,19 +31,21 @@ export function createBulkUser(file) {
     //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValidating`
-       // dispatch( setIsValidating(true) )
         console.log('user in actions ',file)
         //console.log('token: ',token)
-        axios.post(API.CREATE_BULK_USER, file, { 
+        axios.post(API.CREATE_BULK_USER,file, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
                 'Content-Type': 'multipart/form-data',
-        } })
+                Accept:'application/octet-stream',
+                // 'Access-Control-Allow-Origin': '*',
+
+                },
+            // params:{users:file} 
+        })
             .then(res => {
                 console.log({ create_user_response: res.data})
                 if(res.status===200){
-
                     alert("User Successfully Created")
                 }
                 //console.log('res :', res)

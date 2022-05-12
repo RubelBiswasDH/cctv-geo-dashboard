@@ -71,8 +71,8 @@ class AdminPanel extends React.PureComponent{
         const {dispatch,fileInput} = this.props
         const file = {users:fileInput}
         // const users = {users: fileInput}
-        dispatch(createBulkUser(file))
-        console.log('file uploaded, file: ',this.props.fileInput)
+        dispatch(createBulkUser(fileInput))
+        //console.log('file uploaded, file: ',this.props.fileInput)
     }
 
 
