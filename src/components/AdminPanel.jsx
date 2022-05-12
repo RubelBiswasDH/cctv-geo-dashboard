@@ -6,8 +6,8 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput } from '../redux/reducers/adminReducer'
-import { createUser, createBulkUser } from '../redux/actions/adminActions'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage } from '../redux/reducers/adminReducer'
+import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
 const FileInput = (props) => {
     const {style, onChange} = props
@@ -45,9 +45,26 @@ class AdminPanel extends React.PureComponent{
         this.handleCreateUser = this.handleCreateUser.bind(this)
         this.handleFileInput = this.handleFileInput.bind(this)
         this.handleFileUpload = this.handleFileUpload.bind(this)
-        
+        this.handleNotice = this.handleNotice.bind(this)
+ 
     }
 
+    handleNotice = e => {
+        e.preventDefault()
+        const {dispatch, announcementMessage} = this.props
+        const message = {
+            message: announcementMessage,
+        }
+        if(announcementMessage){
+            // console.log('all field filled')
+            dispatch(createNotice(message))
+            // console.log('dispatch createUser',dispatch,createUser)
+            // console.log('dipatch create user')
+        }
+        else{ 
+            alert('Notice field is empty')
+        }
+    }
 
     handleFileUpload = e => {
         e.preventDefault()
@@ -90,8 +107,8 @@ class AdminPanel extends React.PureComponent{
     }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload} = this
-        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions} = this.props
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice} = this
+        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={{width:'100%',px:5}} >
@@ -123,10 +140,10 @@ class AdminPanel extends React.PureComponent{
                     <GridContent title={"Notice"} >
                         <Grid container spacing={2} sx={{p:2}}>
                             <Grid xs={9} item sx={{pr:2}}>
-                                <StyledInputField placeholder={"Notice"} ariaLabel={"Notice"} style={{borderRadius:2,height:'8vh'}}/>
+                                <StyledInputField onChange={setAnnouncementMessage} value={announcementMessage} placeholder={"Notice"} ariaLabel={"Notice"} style={{borderRadius:2,height:'8vh'}}/>
                             </Grid>
                             <Grid xs={3} item sx={{display:'flex',justifyContent:'center',alignItems:'center', background:''}}>
-                                <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'100%'}}>Post</StyledButton>
+                                <StyledButton onClick={handleNotice} variant="contained" style={{borderRadius:2,pt:1,width:'100%'}}>Post</StyledButton>
                             </Grid>
                         </Grid>
                     </GridContent>
@@ -179,6 +196,7 @@ const mapStateToProps = state => ({
     newUserRole: state.admin.newUserRole,
     newUserRoleOptions: state.admin.newUserRoleOptions,
     fileInput: state.admin.fileInput,
+    announcementMessage: state.admin.announcementMessage,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

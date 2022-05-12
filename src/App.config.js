@@ -25,7 +25,7 @@ export const API = {
   GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
   CREATE_USER: `${BASE_URL}/api/create-user`,
   CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,
-
+  SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
 }
 
 // SOCKET configs

@@ -54,6 +54,30 @@ export function createBulkUser(file) {
     }
 }
 
+// Create User Action
+export function createNotice(notice) {
+    //console.log('user: ',user)
+    return dispatch => {
+        const token = getAuthToken()
+        // Set `isValidating`
+       // dispatch( setIsValidating(true) )
+        console.log('notice in actions ',notice)
+        //console.log('token: ',token)
+        axios.post(API.SEND_ANNOUNCEMENT, notice, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                console.log({ notice_response: res.data})
+                if(res.status===200){
+
+                    alert("Notice Successfully Send")
+                }
+                //console.log('res :', res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
 export function getAuthToken() {
     const token = localStorage.getItem('token')
     if(token) {
