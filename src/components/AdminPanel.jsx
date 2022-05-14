@@ -32,8 +32,8 @@ const FileInput = (props) => {
 const GridContent = (props) => {
     
     return (
-    <Grid item sx={{border: '1px solid black',m:0,mt:2,p:0,px:10,borderRadius:2, width:'100%'}}>
-        <Typography>{props.title}</Typography>
+    <Grid xs={12} item sx={{border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'green'}}>
+        <Typography sx={{width:'100%'}}>{props.title}</Typography>
         {props.children}
     </Grid>
         )
@@ -113,21 +113,21 @@ class AdminPanel extends React.PureComponent{
         return (
             <Box sx={{width:'100%',px:5}} >
                 <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
-                <Grid container spacing={2} sx={{mt:3}}>
+                <Grid xs={12} container spacing={2} sx={{mt:3,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >
-                        <Grid container spacing={2} sx={{p:2}}>
-                            <Grid sx={4} item sx={{background:''}}>
+                        <Grid xs={12} container spacing={2} sx={{p:2,backgroundColor:''}}>
+                            <Grid xs={4} item sx={{background:''}}>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid xs={5} item sx={{background:''}}>
-                                <Box sx={{display:'flex',flexDirection:'row',justifyContent:'center', flexWrap:'wrap',gap:2,width: '100%',backgroundColor:''}}>
-                                    <StyledSelect onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
-                                    <StyledSelect onChange={setDepartment} value={department} options={departmentOptions}/>
-                                    <StyledSelect onChange={setContractType} value={contractType} options={contractTypeOptions}/>
-                                    <StyledSelect onChange={setdesignation} value={designation} options={designationOptions}/>
-                                </Box>
+                                <Grid container xs={12} spacing={1} sx={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center', flexWrap:'wrap',backgroundColor:''}}>
+                                    <StyledSelect xs={6} onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
+                                    <StyledSelect xs={6} onChange={setDepartment} value={department} options={departmentOptions}/>
+                                    <StyledSelect xs={6} onChange={setContractType} value={contractType} options={contractTypeOptions}/>
+                                    <StyledSelect xs={6} onChange={setdesignation} value={designation} options={designationOptions}/>
+                                </Grid>
                             </Grid>
                             <Grid xs={3} item sx={{display:'flex',justifyContent:'center',alignItems:'center', background:''}}>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'100%'}}>Update</StyledButton>
