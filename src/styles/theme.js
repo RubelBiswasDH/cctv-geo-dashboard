@@ -92,7 +92,8 @@ const theme = createTheme({
     text: {
       white: 'white'
     }
-  }
+  },
+ 
 })
 
 export default theme

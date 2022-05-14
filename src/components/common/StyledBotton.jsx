@@ -14,11 +14,7 @@ class StyledButton extends React.PureComponent{
                 textTransform:'none',
                 fontFamily: 'Roboto',
                 fontWeight:500,
-                fontSize:'10px',
-                fontSize: '.8em',
-                px:'10px',
-                borderRadius: '25px',
-                minWidth: '12vw',
+                borderRadius: '1em',
             }
         }
     }
@@ -27,7 +23,7 @@ class StyledButton extends React.PureComponent{
         const {btnStyle} = this.state;
         const {onClick,style,children} = this.props
         return (
-        <Button onClick={onClick} sx={{...btnStyle,...style}} variant="contained" color="btnGreen">{children}</Button>
+        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">{children}</Button>
     )
     }
 }
