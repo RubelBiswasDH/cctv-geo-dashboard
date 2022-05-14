@@ -11,16 +11,17 @@ class StyledAppBar extends React.PureComponent {
         const {title,bgColor} = this.props;
         return (
             <AppBar
-                position='sticky'
+                position='relative'
                 sx={theme => ({
 
                     padding: theme.spacing(1),
+                    pl:0,
                     // background: theme.palette.gray[200],
                     background: bgColor,
                     boxShadow: theme.shadows[2],
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center-between',
                     alignItems: 'center'
                 })}
             >

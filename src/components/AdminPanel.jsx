@@ -32,8 +32,8 @@ const FileInput = (props) => {
 const GridContent = (props) => {
     const {style} = props
     return (
-    <Grid xs={12} item sx={{border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'green',...style}}>
-        <Typography sx={{width:'100%'}}>{props.title}</Typography>
+    <Grid xs={12} item sx={{ border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
+        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0}}>{props.title}</Typography>
         {props.children}
     </Grid>
         )
@@ -111,13 +111,15 @@ class AdminPanel extends React.PureComponent{
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
-            <Box sx={{width:'100%',px:5}} >
-                <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
+            <Box sx={{width:'100%',px:5,display:'flex',flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:''}} >
                 <Grid xs={12} container spacing={2} sx={{mt:3,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
+                </Grid>
+                <Grid xs={12} container spacing={2} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >
-                        <Grid xs={12} container spacing={2} sx={{p:2,backgroundColor:''}}>
+                        <Grid xs={12} container spacing={2} sx={{p:4,pt:2,backgroundColor:''}}>
                             <Grid xs={4} item sx={{background:''}}>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
@@ -138,7 +140,7 @@ class AdminPanel extends React.PureComponent{
 
                     {/*Notice*/}
                     <GridContent title={"Notice"} >
-                        <Grid container spacing={2} sx={{p:2}}>
+                        <Grid container spacing={2} sx={{p:4,pt:2,}}>
                             <Grid xs={9} item sx={{pr:2}}>
                                 <StyledInputField onChange={setAnnouncementMessage} value={announcementMessage} placeholder={"Notice"} ariaLabel={"Notice"} style={{borderRadius:2,height:'8vh'}}/>
                             </Grid>
@@ -150,7 +152,7 @@ class AdminPanel extends React.PureComponent{
 
                     {/*Add User*/}
                     <GridContent title={"Add User"} style={{p:1}}>
-                        <Grid xs={12} container spacing={2} sx={{background:''}}>
+                        <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
@@ -161,10 +163,10 @@ class AdminPanel extends React.PureComponent{
                                 <Grid xs={4} xl={3} item>
                                     <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
                                 </Grid>
-                                <Grid xs={4} xl={2} item>
+                                <Grid xs={4} xl={1.5} item>
                                     <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
                                 </Grid>
-                                <Grid xs={4} xl={1} item>
+                                <Grid xs={4} xl={1.5} item>
                                     <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Create</StyledButton>
                                 </Grid>
                            </Grid>

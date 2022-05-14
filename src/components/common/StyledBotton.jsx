@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button,Typography } from '@mui/material'
 
 
 // Roboto
@@ -23,7 +23,9 @@ class StyledButton extends React.PureComponent{
         const {btnStyle} = this.state;
         const {onClick,style,children} = this.props
         return (
-        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">{children}</Button>
+        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">
+            <Typography sx={{fontSize:'.8em',fontWeight:500,p:.5,pt:.75}}>{children}</Typography>
+        </Button>
     )
     }
 }
