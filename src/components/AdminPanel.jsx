@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase,Button} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
@@ -16,9 +16,10 @@ const FileInput = (props) => {
             sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
         >
             <InputBase
-                sx={{ ml: 0, mt: .5, flex: 1, color: 'white', opacity: 1 }}
+                sx={{ ml: 0, mt: .5, flex: 1,background:'transparent', color: 'white', opacity: 1 }}
                 placeholder={"placeholder"}
-                inputProps={{ 'aria-label': "ariaLabel", color: 'transparent','type':'file',multiple:true }}
+               
+                inputProps={{  hidden:true,'aria-label': "ariaLabel", style:{color: 'transparent',visibility: '',backgroundColor:'transparent'},'type':'file',multiple:true }}
                 // value={value}
                 onChange={onChange}
 
@@ -26,6 +27,13 @@ const FileInput = (props) => {
             {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
                 <SearchIcon sx={{ color: 'white' }} />
             </IconButton> */}
+            {/* <Button>
+            Upload File
+                <input
+                    type="file"
+                    hidden
+                />
+            </Button> */}
         </Paper>
     );
 }

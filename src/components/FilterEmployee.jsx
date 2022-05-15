@@ -9,10 +9,14 @@ const StyledButton = (props) => {
             textTransform:'none',
             fontSize: '.8em',
             borderRadius: '.3em',
-            minWidth:'100%'
+            minWidth:'100%',
+            background:'transparent',
+            border: '2px solid black',
+
+
         }
         return (
-            <Button onClick={props.onClick} sx={{...btnStyle}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize: '1em', ...sx}}>{props.children}</Typography></Button>
+            <Button onClick={props.onClick} sx={{...btnStyle}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize: '1em',color:'black', ...sx}}>{props.children}</Typography></Button>
         );
 }
 
