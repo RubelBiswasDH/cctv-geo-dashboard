@@ -142,7 +142,7 @@ class NavBar extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <AppBar position='sticky' { ...appBarProps }>
+        <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>
           <Box sx={ appBarStyles }>
             <Grid container spacing={ 0 }>
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={ brandContainerStyles }>
@@ -381,7 +381,7 @@ const menuPaperProps = {
       height: 10,
       bgcolor: 'background.paper',
       transform: 'translateY(-50%) rotate(45deg)',
-      zIndex: 0
+      zIndex: 1
     }
   }
 }

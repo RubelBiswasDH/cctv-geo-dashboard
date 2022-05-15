@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete, Grid } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
@@ -263,9 +263,9 @@ switch (e.target.name) {
     const { error } = this.state
     const {handleAutoCompInputChange, handleAutoCompChange} = this
     console.log('ac :',companyNameOptions)
-    const autoCompleteOptons = companyNameOptions.map(c => c.Address)
+    // const autoCompleteOptons = companyNameOptions.map(c => c.Address)
 
-    console.log('autoComplate optons: ', autoCompleteOptons)
+    // console.log('autoComplate optons: ', autoCompleteOptons)
 
     return (
       <Container sx={ containerStyles }>
@@ -366,7 +366,7 @@ switch (e.target.name) {
                   />
                 </Box>
 
-                {/*Company Name*/}
+                {/* Company Name */}
                 <Box sx={{boxStyle}}>
                   <Typography variant='h6'>{ 'Company Name' }</Typography>
 
@@ -398,8 +398,23 @@ switch (e.target.name) {
                   onInputChange={handleAutoCompInputChange}
 
                   disablePortal
-                  id="combo-box-demo"
-                  options={autoCompleteOptons}
+                  id="companySearch"
+                  options={companyNameOptions}
+                  getOptionLabel={(option) => {
+                    // e.g value selected with enter, right from the input
+                    if (typeof option === 'string') {
+                      return option;
+                    }
+                    if (option.inputValue) {
+                      return option.inputValue;
+                    }
+                    return option.Address.split(',')[0];
+                  }}
+                  renderOption={(props, option) => (
+                    <Grid container xs={12} {...props} key={option.id} >
+                        <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
+                        <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
+                    </Grid>)}
                   sx={{ width: '100%' }}
                   renderInput={(params) => 
                   <TextField
