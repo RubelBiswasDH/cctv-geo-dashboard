@@ -32,8 +32,8 @@ const FileInput = (props) => {
 const GridContent = (props) => {
     const {style} = props
     return (
-    <Grid xs={12} item sx={{ border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
-        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0}}>{props.title}</Typography>
+    <Grid xs={12} item sx={{m:0,mt:2,p:0,borderRadius:2,border:"1px solid black",display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
+        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0,pt:2}}>{props.title}</Typography>
         {props.children}
     </Grid>
         )
@@ -111,11 +111,26 @@ class AdminPanel extends React.PureComponent{
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
-            <Box sx={{width:'100%',px:5,display:'flex',flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:''}} >
-                <Grid xs={12} container spacing={2} sx={{mt:3,display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
+            <Box sx={
+                theme => ({
+                    padding: {
+                        xs: `${theme.spacing(0)}`,
+                        md: theme.spacing(0)
+                    },
+                    // border:'1px solid red',
+                    width: '100%',
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                }
+                )}
+                >
+                <Grid xs={12} container spacing={0} sx={{mt:0,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'}  style={{borderRadius: '4px'}} />
                 </Grid>
-                <Grid xs={12} container spacing={2} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid xs={12} container spacing={0} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >

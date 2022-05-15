@@ -143,10 +143,10 @@ class DmsDashboard extends React.PureComponent {
             width: '100%'
           })}
         >
-          <Grid container={ true } spacing={ 4 }>
+          <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: '1px solid red',boxSizing:'border-box',pl:0}}>
 
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
-              <Box sx={{ pb: '.5rem', display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
               {
                 (this.props.currentView === 'attendance') &&
                 <Stack spacing={ 1 } direction='row'>
