@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button,Typography } from '@mui/material'
 
 
 // Roboto
@@ -14,20 +14,19 @@ class StyledButton extends React.PureComponent{
                 textTransform:'none',
                 fontFamily: 'Roboto',
                 fontWeight:500,
-                fontSize:'10px',
-                fontSize: '.8em',
-                px:'10px',
-                borderRadius: '25px',
-                minWidth: '12vw',
+                borderRadius: '1em',
             }
         }
     }
 
     render(){
         const {btnStyle} = this.state;
-        const {onClick,style,children} = this.props
+        const {onClick,style,children,sx} = this.props
+        // console.log('sx: ',sx)
         return (
-        <Button onClick={onClick} sx={{...btnStyle,...style}} variant="contained" color="btnGreen">{children}</Button>
+        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">
+            <Typography sx={{fontSize:'.8em',fontWeight:500,p:.5,pt:.75,...sx}}>{children}</Typography>
+        </Button>
     )
     }
 }

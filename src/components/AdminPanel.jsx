@@ -16,9 +16,9 @@ const FileInput = (props) => {
             sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
         >
             <InputBase
-                sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
+                sx={{ ml: 0, mt: .5, flex: 1, color: 'white', opacity: 1 }}
                 placeholder={"placeholder"}
-                inputProps={{ 'aria-label': "ariaLabel", color: 'white','type':'file',multiple:true }}
+                inputProps={{ 'aria-label': "ariaLabel", color: 'transparent','type':'file',multiple:true }}
                 // value={value}
                 onChange={onChange}
 
@@ -30,10 +30,10 @@ const FileInput = (props) => {
     );
 }
 const GridContent = (props) => {
-    
+    const {style} = props
     return (
-    <Grid item sx={{border: '1px solid black',m:0,mt:2,p:0,px:10,borderRadius:2, width:'100%'}}>
-        <Typography>{props.title}</Typography>
+    <Grid xs={12} item sx={{ border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
+        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0}}>{props.title}</Typography>
         {props.children}
     </Grid>
         )
@@ -111,23 +111,25 @@ class AdminPanel extends React.PureComponent{
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
-            <Box sx={{width:'100%',px:5}} >
-                <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
-                <Grid container spacing={2} sx={{mt:3}}>
+            <Box sx={{width:'100%',px:5,display:'flex',flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:''}} >
+                <Grid xs={12} container spacing={2} sx={{mt:3,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
+                </Grid>
+                <Grid xs={12} container spacing={2} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >
-                        <Grid container spacing={2} sx={{p:2}}>
-                            <Grid sx={4} item sx={{background:''}}>
+                        <Grid xs={12} container spacing={2} sx={{p:4,pt:2,backgroundColor:''}}>
+                            <Grid xs={4} item sx={{background:''}}>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
                             </Grid>
                             <Grid xs={5} item sx={{background:''}}>
-                                <Box sx={{display:'flex',flexDirection:'row',justifyContent:'center', flexWrap:'wrap',gap:2,width: '100%',backgroundColor:''}}>
-                                    <StyledSelect onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
-                                    <StyledSelect onChange={setDepartment} value={department} options={departmentOptions}/>
-                                    <StyledSelect onChange={setContractType} value={contractType} options={contractTypeOptions}/>
-                                    <StyledSelect onChange={setdesignation} value={designation} options={designationOptions}/>
-                                </Box>
+                                <Grid container xs={12} spacing={1} sx={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center', flexWrap:'wrap',backgroundColor:''}}>
+                                    <StyledSelect xs={6} onChange={setActivityStatus} value={activityStatus} options={activityStatusOptions}/>
+                                    <StyledSelect xs={6} onChange={setDepartment} value={department} options={departmentOptions}/>
+                                    <StyledSelect xs={6} onChange={setContractType} value={contractType} options={contractTypeOptions}/>
+                                    <StyledSelect xs={6} onChange={setdesignation} value={designation} options={designationOptions}/>
+                                </Grid>
                             </Grid>
                             <Grid xs={3} item sx={{display:'flex',justifyContent:'center',alignItems:'center', background:''}}>
                                 <StyledButton variant="contained" style={{borderRadius:2,pt:1,width:'100%'}}>Update</StyledButton>
@@ -138,7 +140,7 @@ class AdminPanel extends React.PureComponent{
 
                     {/*Notice*/}
                     <GridContent title={"Notice"} >
-                        <Grid container spacing={2} sx={{p:2}}>
+                        <Grid container spacing={2} sx={{p:4,pt:2,}}>
                             <Grid xs={9} item sx={{pr:2}}>
                                 <StyledInputField onChange={setAnnouncementMessage} value={announcementMessage} placeholder={"Notice"} ariaLabel={"Notice"} style={{borderRadius:2,height:'8vh'}}/>
                             </Grid>
@@ -149,29 +151,34 @@ class AdminPanel extends React.PureComponent{
                     </GridContent>
 
                     {/*Add User*/}
-                    <GridContent title={"Add User"} >
-                        <Grid container spacing={2} sx={{p:2}}>
-                            <Grid xs={3} item sx={{backgroundColor:''}}>
-                                <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
-                            </Grid>
-                            <Grid xs={3} item>
-                                <StyledInputField onChange={setNewUserEmail} value={newUserEmail} placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
-                            </Grid>
-                            <Grid xs={3} item>
-                                <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
-                            </Grid>
-                            <Grid xs={2} item>
-                                <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
-                            </Grid>
-                            <Grid xs={1} item>
-                                <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:1,minWidth:'100%'}}>Create</StyledButton>
-                            </Grid>
-                            <Grid xs={6} item>
-                                <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
-                            </Grid>
-                            <Grid xs={3} item>
-                                <StyledButton onClick= {handleFileUpload} variant="contained" style={{borderRadius:2,pt:1,width:'5vw'}}>Upload</StyledButton>
-                            </Grid>
+                    <GridContent title={"Add User"} style={{p:1}}>
+                        <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                           <Grid xs={12} spacing={2} item container>
+                                <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                    <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
+                                </Grid>
+                                <Grid xs={4} xl={3} item>
+                                    <StyledInputField onChange={setNewUserEmail} value={newUserEmail} placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
+                                </Grid>
+                                <Grid xs={4} xl={3} item>
+                                    <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
+                                </Grid>
+                                <Grid xs={4} xl={1.5} item>
+                                    <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
+                                </Grid>
+                                <Grid xs={4} xl={1.5} item>
+                                    <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Create</StyledButton>
+                                </Grid>
+                           </Grid>
+                           <Grid xs={12} item container spacing={2}>
+                                <Grid xs={4} item>
+                                    <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
+                                </Grid>
+                                <Grid xs={4} item>
+                                    <StyledButton onClick= {handleFileUpload} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Upload</StyledButton>
+                                </Grid>
+                           </Grid>
+                            
                         </Grid>
                     </GridContent>
                 </Grid>
