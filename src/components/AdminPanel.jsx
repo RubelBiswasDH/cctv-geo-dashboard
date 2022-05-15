@@ -127,10 +127,10 @@ class AdminPanel extends React.PureComponent{
                 }
                 )}
                 >
-                <Grid xs={12} container spacing={0} sx={{mt:0,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid xs={12} container spacing={0} sx={{mt:0,pl:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'}  style={{borderRadius: '4px'}} />
                 </Grid>
-                <Grid xs={12} container spacing={0} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid xs={12} container spacing={0} sx={{mt:1,px:4,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >

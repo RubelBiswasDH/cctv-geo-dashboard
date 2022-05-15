@@ -143,7 +143,7 @@ class DmsDashboard extends React.PureComponent {
             width: '100%'
           })}
         >
-          <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: '1px solid red',boxSizing:'border-box',pl:0}}>
+          <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: 'none',boxSizing:'border-box',pl:0}}>
 
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
               <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
