@@ -17,6 +17,7 @@ import FilterEmployee from './FilterEmployee'
 import SubNav from './SubNav'
 import TaskThread from './TaskThread'
 import AdminPanel from './AdminPanel'
+import Profile from './Profile'
 import AnalyticsDialog from './AnalyticsDialog'
 
 // Import Actions & Methods
@@ -215,8 +216,12 @@ class DmsDashboard extends React.PureComponent {
                 (this.props.currentView === 'attendance') && <AttendanceList />
               }
               {
-                (this.props.currentView !== 'attendance' && this.props.currentView !== 'admin') && <EmployeeList />
+              (this.props.currentView === 'profile') && <Profile />
               }
+              {
+                (this.props.currentView !== 'attendance' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
+              }
+              
               { !isTaskThreadOpen &&
                   <Tooltip title='Open Thread'>
                     <IconButton
