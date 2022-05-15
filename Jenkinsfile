@@ -19,7 +19,19 @@ pipeline {
             }
         }
 
+        stage("test condition") {
+            when {
+                branch "dev"
+            }
+            steps{
+                echo 'dev branch'
+            }
+        }
+
         stage('SSH transfer') {
+            // when {
+            //     branch "dev"
+            // }
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 sshPublisher(
                     continueOnError: false, failOnError: true,
