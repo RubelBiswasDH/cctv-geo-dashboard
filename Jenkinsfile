@@ -19,17 +19,16 @@ pipeline {
                 sh 'npm install'
                 sh 'CI=false npm run build'
             }
-        }
 
-        stage("test condition") {
-            when {
-                branch "dev"
+        }
+        stage('test'){
+            when{
+                branch 'dev'
             }
-            steps{
-                echo 'dev branch'
+            steps {
+                echo 'test'
             }
         }
-
         stage('SSH transfer') {
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 sshPublisher(

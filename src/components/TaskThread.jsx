@@ -83,7 +83,7 @@ class TaskThread extends React.PureComponent {
                 color: theme.palette.text.white,
                 fontSize: '14px',
                 fontWeight: 600,
-              
+                pt:.25,
               }) }
             >
               { 'Announcements' }

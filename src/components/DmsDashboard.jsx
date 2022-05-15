@@ -17,6 +17,7 @@ import FilterEmployee from './FilterEmployee'
 import SubNav from './SubNav'
 import TaskThread from './TaskThread'
 import AdminPanel from './AdminPanel'
+import Profile from './Profile'
 import AnalyticsDialog from './AnalyticsDialog'
 
 // Import Actions & Methods
@@ -143,10 +144,10 @@ class DmsDashboard extends React.PureComponent {
             width: '100%'
           })}
         >
-          <Grid container={ true } spacing={ 4 }>
+          <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: 'none',boxSizing:'border-box',pl:0}}>
 
             <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
-              <Box sx={{ pb: '.5rem', display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
               {
                 (this.props.currentView === 'attendance') &&
                 <Stack spacing={ 1 } direction='row'>
@@ -215,8 +216,12 @@ class DmsDashboard extends React.PureComponent {
                 (this.props.currentView === 'attendance') && <AttendanceList />
               }
               {
-                (this.props.currentView !== 'attendance' && this.props.currentView !== 'admin') && <EmployeeList />
+              (this.props.currentView === 'profile') && <Profile />
               }
+              {
+                (this.props.currentView !== 'attendance' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
+              }
+              
               { !isTaskThreadOpen &&
                   <Tooltip title='Open Thread'>
                     <IconButton

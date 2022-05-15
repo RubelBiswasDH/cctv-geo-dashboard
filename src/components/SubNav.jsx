@@ -8,15 +8,16 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import {Typography} from '@mui/material'
 
 function CustomizedInputBase() {
     return (
       <Paper
         component="form"
-        sx={{ p: '0px 0px', display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px' }}
+        sx={{ display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px' }}
       >
         <InputBase
-          sx={{ ml: 3,mt:.5, flex: 1,color:'white',opacity: 1}}
+          sx={{ mt:.5, flex: 1,color:'white',opacity: 1}}
           placeholder="Search"
           inputProps={{ 'aria-label': 'search',color:'white'  }}
         />
@@ -39,7 +40,7 @@ const StyledButton = (props) => {
             minWidth: '12vw',
         }
         return (
-            <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="gray">{props.children}</Button>
+            <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="gray"><Typography sx={{fontSize:'1em',p:.5,pt:.75,}}>{props.children}</Typography></Button>
         );
 }
 
@@ -50,7 +51,12 @@ class SubNav extends React.PureComponent{
     render(){
         
         return (
-        <Box sx={boxStyle}>
+        <Box sx={(theme) => ({...boxStyle,  padding: {
+          xs: `${ theme.spacing(0,2) }`,
+          md: theme.spacing(0,4)
+        },
+      
+        width: '100%'})}>
             <Stack direction="row" spacing={2}>
                 <CustomizedInputBase/>
                 <StyledButton onClick={() => this.props.dispatch(setCurrentView('admin'))}>Admin</StyledButton>
@@ -74,7 +80,8 @@ const boxStyle = {
     padding: '10px',
     paddingBottom: '0px',
     mt:'20px',
-    mb:'10px'
+    mb:'10px',
+    pl: '0px'
 }
 
 const mapDispatchToProps = dispatch => ({ dispatch })

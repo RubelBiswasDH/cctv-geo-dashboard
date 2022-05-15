@@ -43,7 +43,7 @@ export function getCompanyList(name) {
     return dispatch => {
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-
+        if(name.length > 0){
         axios.get(API.AUTOCOMPLETE+name)
             .then(res => {
                 console.log({ list : res.data.places})
@@ -70,6 +70,7 @@ export function getCompanyList(name) {
                 // Set `isValidating`
                 // dispatch( setIsValidating(false) )
             })
+        }
     }
 }
 

@@ -21,10 +21,10 @@ import {transformAnnouncements, transformAttendance} from '../../utils/utils'
 export function activateSocket_A() {
     return (dispatch, getState) => {
   
-  
       // Get Auth Token
       const token = getAuthToken()
-  
+      const companyId = localStorage.getItem("companyId")
+
       window.Pusher.logToConsole = true;
   
       window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
@@ -65,7 +65,7 @@ export function activateSocket_A() {
       //   var state = window.pusher.connection.state;
       //   //console.log("pusher state  before subscribe: ",state)
       // Task Channel
-      window.pusher.subscribe(SOCKET_A.CHANNEL)
+      window.pusher.subscribe(SOCKET_A.CHANNEL+companyId)
         .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
           console.log("Socket data: ",data)
   

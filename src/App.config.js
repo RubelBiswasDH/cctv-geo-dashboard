@@ -50,7 +50,7 @@ export const SOCKET_A = {
   WS_PORT: 8005,
   AUTH_ENDPOINT: `${BASE_URL}/broadcasting/auth`,
 
-  CHANNEL: "private-user-notification.1",
+  CHANNEL: "private-user-notification.",
 
   ATTENDANCE_EVENT: 'user-attendance',
   ANNOUNCEMENT_EVENT: "user-announcement",

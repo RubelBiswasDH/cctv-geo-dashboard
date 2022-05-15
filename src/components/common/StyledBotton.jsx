@@ -1,11 +1,8 @@
 import React from 'react'
 import { Button,Typography } from '@mui/material'
+import PropTypes from 'prop-types'
 
 
-// Roboto
-// Weight 500, Medium
-// Size 18px
-// Line height 21.09px
 class StyledButton extends React.PureComponent{
     constructor(props){
         super(props)
@@ -25,10 +22,22 @@ class StyledButton extends React.PureComponent{
         // console.log('sx: ',sx)
         return (
         <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">
-            <Typography sx={{fontSize:'.8em',fontWeight:500,p:.5,pt:.75,...sx}}>{children}</Typography>
+            <Typography sx={{fontSize:'.8em',fontWeight:800,p:.5,pt:.75,...sx}}>{children}</Typography>
         </Button>
     )
     }
+}
+
+StyledButton.propTypes ={
+    onClick: PropTypes.func,
+    style: PropTypes.object,
+    children: PropTypes.string
+}
+
+StyledButton.defaultProps = {
+    onClick: () => null,
+    style: {},
+    children: 'Text'
 }
 
 export default StyledButton;

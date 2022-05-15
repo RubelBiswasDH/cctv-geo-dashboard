@@ -10,11 +10,12 @@ export function login(user) {
 
         axios.post(AUTH.LOGIN_API, user)
             .then(res => {
-                //console.log({ auth: res.data})
+                console.log({ auth: res.data})
                 if(res.data && res.data.token) {
                     const token = res.data.token
                     //console.log("token at login api ",token)
                     // Validate User
+                    localStorage.setItem('companyId', res.data.user.company.id)
                     dispatch( validateUser(token) )
                     
                 } else {
@@ -69,7 +70,7 @@ export function validateUser(token) {
                 //console.log("data , ",res.data )
                 const userData = res.data.data
                 if(userData) {
-                    // console.log("user Data: ",userData)
+                    console.log("user Data: ",userData)
                     // console.log("user type: ", userData)
                     const user = {
                         username:userData.name,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase,Button} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
@@ -16,9 +16,10 @@ const FileInput = (props) => {
             sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
         >
             <InputBase
-                sx={{ ml: 0, mt: .5, flex: 1, color: 'white', opacity: 1 }}
+                sx={{ ml: 0, mt: .5, flex: 1,background:'transparent', color: 'white', opacity: 1 }}
                 placeholder={"placeholder"}
-                inputProps={{ 'aria-label': "ariaLabel", color: 'transparent','type':'file',multiple:true }}
+               
+                inputProps={{  hidden:true,'aria-label': "ariaLabel", style:{color: 'transparent',visibility: '',backgroundColor:'transparent'},'type':'file',multiple:true }}
                 // value={value}
                 onChange={onChange}
 
@@ -26,14 +27,21 @@ const FileInput = (props) => {
             {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
                 <SearchIcon sx={{ color: 'white' }} />
             </IconButton> */}
+            {/* <Button>
+            Upload File
+                <input
+                    type="file"
+                    hidden
+                />
+            </Button> */}
         </Paper>
     );
 }
 const GridContent = (props) => {
     const {style} = props
     return (
-    <Grid xs={12} item sx={{ border: '1px solid black',m:0,mt:2,p:0,borderRadius:2,display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
-        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0}}>{props.title}</Typography>
+    <Grid xs={12} item sx={{m:0,mt:2,p:0,borderRadius:2,border:"1px solid black",display:'flex', alignItems:'center', justifyContent:'center',flexDirection:'column',background:'',...style}}>
+        <Typography sx={{width:'90%',fontSize:'.8em',fontWeight:600,background:'',pl:0,pt:2}}>{props.title}</Typography>
         {props.children}
     </Grid>
         )
@@ -111,11 +119,26 @@ class AdminPanel extends React.PureComponent{
         const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
-            <Box sx={{width:'100%',px:5,display:'flex',flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:''}} >
-                <Grid xs={12} container spacing={2} sx={{mt:3,display:'flex', alignItems:'center', justifyContent:'center'}}>
-                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'} />
+            <Box sx={
+                theme => ({
+                    padding: {
+                        xs: `${theme.spacing(0)}`,
+                        md: theme.spacing(0)
+                    },
+                    // border:'1px solid red',
+                    width: '100%',
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                }
+                )}
+                >
+                <Grid xs={12} container spacing={0} sx={{mt:0,pl:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'}  style={{borderRadius: '4px'}} />
                 </Grid>
-                <Grid xs={12} container spacing={2} sx={{mt:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid xs={12} container spacing={0} sx={{mt:1,px:4,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     <GridContent title={"Job Status"} >
