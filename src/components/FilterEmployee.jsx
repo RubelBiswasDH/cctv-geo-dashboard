@@ -58,6 +58,9 @@ class FilterEmpolyee extends React.PureComponent{
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
                         <StyledButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('attendance'))}>Attendance</StyledButton>
                     </Grid>
+                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
+                        <StyledButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('profile'))}>Profile</StyledButton>
+                    </Grid>
  
             </Grid>
         </Box>

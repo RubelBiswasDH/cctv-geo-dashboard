@@ -48,7 +48,7 @@ class TaskThread extends React.PureComponent {
   render() {
     const { messages,announcements } = this.props
     const sortedMessages = this._sortByEmergency(messages)
-
+    console.log({ announcements })
     return (
       <Box sx={ containerStyles }>
         <Paper variant='outlined' sx={ paperStyles }>
@@ -63,7 +63,7 @@ class TaskThread extends React.PureComponent {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',              
             })}
           >
             <Tooltip title='Collapse'>
@@ -90,15 +90,16 @@ class TaskThread extends React.PureComponent {
             </Typography>
           </AppBar>
 
-          <Box width='100%' height='85em' sx={{marginTop:'0%'}}>
+          <Box width='100%' sx={{ height: '100%', overflow: 'auto' }}>
             <Stack
               sx={{
                 width: '100%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-end',
-                marginTop:'0px',
+                // justifyContent: 'flex-end',
+                // marginBottom:'30px',
+                overflow:'auto'
               }}
             >
               { announcements && announcements.map((a, i) => (
@@ -108,7 +109,7 @@ class TaskThread extends React.PureComponent {
                       padding: '8px',
                       width: '100%',
                       display: 'flex',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
@@ -122,28 +123,45 @@ class TaskThread extends React.PureComponent {
                       //   '#ffffff'
                     })}
                   >
-                    <Typography
-                      variant='h6'
-                      sx={{ fontSize: '15px', fontWeight:'600', color:'#000080	', marginRight:"5px" }}
-                    >
-                      { a.name ? a.name+" : ": '' }
-                    </Typography>
-                    <Typography
-                      variant='body2'
-                      sx={{ fontSize: '12px' }}
-                    >
-                      { a.description ? a.description: '' }
-                    </Typography>
-
-                    <Typography
+                    <Box sx={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      pb:.5
+                    }}>
+                      <Typography
+                        variant='body2'
+                        sx={{ fontSize: '15px', fontWeight:'600', color:'#000080	', marginRight:0,p:0,m:0 }}
+                      >
+                        { a.name ? a.name+" : ": '' }
+                      </Typography>
+                      <Typography
                       variant='body2'
                       fontSize='10px'
                       color='#808080'
                       marginLeft='auto'
-                      sx={{ marginLeft: 'auto' }}
+                      sx={{ marginLeft: 'auto',p:0,pt:.5,m:0 }}
                     >
                       { a.created_at ? a.created_at : '' }
                     </Typography>
+                     
+                    </Box>
+                    <Box sx={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                      <Typography
+                          variant='body2'
+                          sx={{ fontSize: '12px' }}
+                        >
+                          { a.description ? a.description: '' }
+                      </Typography>
+                    </Box>
+                    
+                   
                   </Box>
                 ))
               }
@@ -170,7 +188,7 @@ const paperStyles = {
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  overflow: 'auto'
+  // overflow: 'auto'
 }
 
 // Prop Types
