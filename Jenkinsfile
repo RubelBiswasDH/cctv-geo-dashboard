@@ -20,18 +20,24 @@ pipeline {
 
         // }
         
-        stage('test'){
-            if (env.BRANCH_NAME == 'main') {
-                steps {
-                    echo 'main branch!'
-                }
+        stage('MAIN') {
+            when {
+                branch 'main'
             }
-            else {
-                steps {
-                    echo 'dev branch!'
-                }
+            steps {
+                echo 'from main branch!'
             }
         }
+
+        stage('DEV') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                echo 'from dev branch!'
+            }
+        }
+
         // stage('SSH transfer') {
         //     when{
         //         branch 'dev'
