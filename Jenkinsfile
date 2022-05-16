@@ -11,54 +11,58 @@ pipeline {
             }
         }
 
-        // stage('Build') {
-        //     steps {
-        //         echo 'building...'
-        //         sh 'npm install'
-        //         sh 'CI=false npm run build'
-        //     }
-
-        // }
-        
-        stage('MAIN') {
-            when {
-                branch 'main'
-            }
+        stage('Build') {
             steps {
-                echo 'from main branch!'
+                echo 'building...'
+                sh 'npm install'
+                sh 'CI=false npm run build'
             }
         }
 
-        stage('DEV') {
+        // for staging deployment
+        stage('DEV - SSH transfer') {
             when {
                 branch 'dev'
             }
-            steps {
-                echo 'from dev branch!'
+            steps([$class: 'BapSshPromotionPublisherPlugin']) {
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "hr_trace_staging",
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+                                sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
+                            ]
+                        )
+                    ]
+                )
             }
         }
-
-        // stage('SSH transfer') {
-        //     when{
-        //         branch 'dev'
-        //     }
-        //     steps([$class: 'BapSshPromotionPublisherPlugin']) {
-        //         sshPublisher(
-        //             continueOnError: false, failOnError: true,
-        //             publishers: [
-        //                 sshPublisherDesc(
-        //                     configName: "hr_trace_staging",
-        //                     verbose: true,
-        //                     transfers: [
-        //                         sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
-        //                         // sshTransfer(execCommand: "mv build/* ./"),
-        //                         sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
-        //                     ]
-        //                 )
-        //             ]
-        //         )
-        //     }
-        // }
+        
+        // for production deployment
+        stage('MAIN - SSH transfer') {
+            when {
+                branch 'main'
+            }
+            steps([$class: 'BapSshPromotionPublisherPlugin']) {
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "hrtrace_production",
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+                                sshTransfer(execCommand: "cd /var/www/html/hr-trace-dashboard; mv build/* ./; rm -r build; ls -l")
+                            ]
+                        )
+                    ]
+                )
+            }
+        }
+        
     }
 
     post {
