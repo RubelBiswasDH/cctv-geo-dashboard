@@ -15,7 +15,7 @@ export function getUserProfile(user_id) {
         axios.get(API.GET_USER_PROFILE+user_id, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 const data = res.data.data;
-                console.log({ user__response: data})
+                // console.log({ user__response: data})
                 dispatch(setUserProfile(data))
               
             })
@@ -36,7 +36,7 @@ export function setUserProfileAction(data) {
         //console.log('token: ',token)
         axios.post(API.SET_USER_PROFILE+"22", data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ update_user_response: res.data})
+                // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     getUserProfile("22")
                     dispatch(setProfileEdit(false))

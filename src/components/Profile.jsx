@@ -133,9 +133,9 @@ class Profile extends React.PureComponent {
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Medical:"} value={userProfile.medical} field={"medical"}/> 
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Convenience fee:"} value={userProfile.convenience_fee} field={"convenience_fee"}/> 
                         </GridContent>
-                        <GridContent >
-                            <Grid item xs={6}><Button onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</Button></Grid>
-                            <Grid item xs={6}><Button onClick={() => dispatch(setUserProfileAction(userProfile))}>Save</Button></Grid>
+                        <GridContent style={{flexDirection:'row'}} >
+                            <Grid item xs={6}><StyledButton style={{width:'100%', bg:'orange'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</StyledButton></Grid>
+                            <Grid item xs={6}><StyledButton style={{width:'100%'}} onClick={() => dispatch(setUserProfileAction(userProfile))}>Save</StyledButton></Grid>
                         </GridContent>
                     </Grid>
                 </Grid>

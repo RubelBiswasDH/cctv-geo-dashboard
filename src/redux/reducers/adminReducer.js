@@ -64,7 +64,7 @@ const adminSlice = createSlice({
       state.announcementMessage = action.payload
     },
     setUserProfile: (state, action) => {
-      console.log("admin : ",action, action.payload)
+      // console.log("admin : ",action, action.payload)
         state.userProfile = {...state.userProfile, ...action.payload}
       },
     setProfileEdit: (state, action) => {

@@ -70,7 +70,7 @@ export function validateUser(token) {
                 //console.log("data , ",res.data )
                 const userData = res.data.data
                 if(userData) {
-                    console.log("user Data: ",userData)
+                    // console.log("user Data: ",userData)
                     // console.log("user type: ", userData)
                     const user = {
                         username:userData.name,
