@@ -48,7 +48,7 @@ class TaskThread extends React.PureComponent {
   render() {
     const { messages,announcements } = this.props
     const sortedMessages = this._sortByEmergency(messages)
-
+    console.log({ announcements })
     return (
       <Box sx={ containerStyles }>
         <Paper variant='outlined' sx={ paperStyles }>
@@ -63,7 +63,7 @@ class TaskThread extends React.PureComponent {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',              
             })}
           >
             <Tooltip title='Collapse'>
@@ -90,15 +90,16 @@ class TaskThread extends React.PureComponent {
             </Typography>
           </AppBar>
 
-          <Box width='100%' height='85em' sx={{marginTop:'0%'}}>
+          <Box width='100%' sx={{ height: '100%', overflow: 'auto' }}>
             <Stack
               sx={{
                 width: '100%',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-end',
-                marginTop:'0px',
+                // justifyContent: 'flex-end',
+                // marginBottom:'30px',
+                overflow:'auto'
               }}
             >
               { announcements && announcements.map((a, i) => (
@@ -170,7 +171,7 @@ const paperStyles = {
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  overflow: 'auto'
+  // overflow: 'auto'
 }
 
 // Prop Types
