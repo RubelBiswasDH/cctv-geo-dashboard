@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-       label "agent1"
-    }
+    agent any
 
     tools { nodejs "node16" }
 
@@ -26,10 +24,13 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                echo 'test'
+                echo 'Branch Main'
             }
         }
         stage('SSH transfer') {
+            when{
+                branch 'dev'
+            }
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
                 sshPublisher(
                     continueOnError: false, failOnError: true,
