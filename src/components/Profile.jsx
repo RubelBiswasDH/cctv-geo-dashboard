@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography, Paper, InputBase, Button } from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase, Button, TextField } from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
@@ -24,7 +24,7 @@ const GridContent = (props) => {
 }
 
 const ProfileRow = (props) => {
-    const {title, value} = props
+    const {title, value, onClick, isFocused, onChange, onBlur} = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize:'12px',
@@ -32,7 +32,18 @@ const ProfileRow = (props) => {
     return (
     <Grid xs={12} item container sx={{ border:'none' }}>
         <Grid item xs={5}><Typography sx={{...textStyle, opacity: 0.7, fontWeight:300}}>{title}</Typography></Grid>
-        <Grid item xs={7}><Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography></Grid>
+        <Grid item xs={7}>{(!isFocused)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
+        : <TextField
+            hiddenLabel
+            fullWidth
+            defaultValue="Small"
+            value={(value)?value:""}
+            variant="outlined"
+            size="small"
+            sx={{borderBottom:'1px solid green',outline:'none',m:0,p:0}}
+            inputProps={{border:'none',outline:'none',p:0,pl:.25,pb:0}}
+        />
+      }</Grid>
     </Grid>
     )
 }
@@ -88,7 +99,7 @@ class Profile extends React.PureComponent {
                         {/* Grid 1 */}
                         <GridContent  style={{}}>
                             {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
-                            <ProfileRow  title={"Phone"} value={userProfile.phone}/>
+                            <ProfileRow  title={"Phone"} value={userProfile.phone} isFocused={true} onClick={() => null} onChange={() => null} onBlur={() => null}/>
                             <ProfileRow  title={"DOB:"} value={userProfile.dob}/>
                             <ProfileRow  title={"Father name:"} value={userProfile.father}/>
                             <ProfileRow  title={"Mother name:"} value={userProfile.mother}/>
