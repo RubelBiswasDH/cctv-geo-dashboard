@@ -1,6 +1,29 @@
 import axios from 'axios'
 import { API } from '../../App.config'
-import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError  } from '../reducers/registerReducer'
+import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
+import {setUserProfile} from '../reducers/adminReducer';
+
+// Get User Profile
+export function getUserProfile(user_id) {
+    //console.log('user: ',user)
+    return dispatch => {
+        const token = getAuthToken()
+        // Set `isValidating`
+       // dispatch( setIsValidating(true) )
+        console.log('user_id in actions ',user_id)
+        //console.log('token: ',token)
+        axios.get(API.GET_USER_PROFILE+user_id, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                const data = res.data.data;
+                console.log({ user__response: data})
+                dispatch(setUserProfile(data))
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
 
 // Create User Action
 export function createUser(user) {

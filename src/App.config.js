@@ -25,6 +25,8 @@ export const API = {
   GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
   CREATE_USER: `${BASE_URL}/api/create-user`,
   CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,
+  GET_USER_PROFILE: `${BASE_URL}/api/get-user-profile/`,
+  SET_USER_PROFILE: `${BASE_URL}/api/set-user-profile/`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
   AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
 

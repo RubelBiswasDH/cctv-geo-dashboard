@@ -8,6 +8,8 @@ import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 import image from '../assets/profile-image.jpg'
 
+import {getUserProfile} from '../redux/actions/adminActions'
+
 // import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
 // import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
@@ -30,7 +32,7 @@ const ProfileRow = (props) => {
     return (
     <Grid xs={12} item container sx={{ border:'none' }}>
         <Grid item xs={5}><Typography sx={{...textStyle, opacity: 0.7, fontWeight:300}}>{title}</Typography></Grid>
-        <Grid item xs={7}><Typography sx={{...textStyle, fontWeight:600}}>{value}</Typography></Grid>
+        <Grid item xs={7}><Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography></Grid>
     </Grid>
     )
 }
@@ -40,9 +42,12 @@ class Profile extends React.PureComponent {
         super(props)
     }
 
-
-
+    
+    componentDidMount(){
+        this.props.dispatch(getUserProfile('22'));
+    }
     render() {
+        const {userProfile} = this.props
 
         return (
             <Box sx={
@@ -63,7 +68,7 @@ class Profile extends React.PureComponent {
                 )}
             >
                 <Grid xs={12} container spacing={0} sx={{ mt: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <StyledAppBar title={'Name: Abu Sufiyan'} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
+                    <StyledAppBar title={`Name: ${userProfile.name}`} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
                 </Grid>
                 <Grid xs={12} container spacing={0} sx={{ display: 'flex',flexDirection:'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
                     {/* Left */}
@@ -76,39 +81,39 @@ class Profile extends React.PureComponent {
                                 height='100%'
                             />    
                         </Grid>
-                        <Grid item xs={12} sx={{p:2}}><Typography sx={{fontFamily:'Roboto',fontStyle: 'normal', fontWeight:500,fontSize:'19px', color:'#000000'}}>{"Abu Sufiyan"}</Typography></Grid>
+                        <Grid item xs={12} sx={{p:2}}><Typography sx={{fontFamily:'Roboto',fontStyle: 'normal', fontWeight:500,fontSize:'19px', color:'#000000'}}>{userProfile.name}</Typography></Grid>
                     </Grid>
                     {/* Right */}
                     <Grid xs={8} sx={{p:3,border:'none' }} item container>
                         {/* Grid 1 */}
                         <GridContent  style={{}}>
                             {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
-                            <ProfileRow  title={"Phone"} value={'+8801234234534'}/>
-                            <ProfileRow  title={"DOB:"} value={'03/06/1990'}/>
-                            <ProfileRow  title={"Father name:"} value={'Abu Sufiyan'}/>
-                            <ProfileRow  title={"Mother name:"} value={'Sumaiya Sufiyan'}/>
-                            <ProfileRow  title={"TIN:"} value={'1049181351357'}/>
-                            <ProfileRow  title={"Blood group:"} value={'O+ (Positive)'}/>
-                            <ProfileRow  title={"Marritial Status:"} value={'Married'}/>
-                            <ProfileRow  title={"Address:"} value={'6, bijoy nagar (old 22), (3rd floor) kakrail, 1000'}/>
-                            <ProfileRow  title={"Permanent Address:"} value={'6, bijoy nagar (old 22), (3rd floor) kakrail, 1000'}/>
+                            <ProfileRow  title={"Phone"} value={userProfile.phone}/>
+                            <ProfileRow  title={"DOB:"} value={userProfile.dob}/>
+                            <ProfileRow  title={"Father name:"} value={userProfile.father}/>
+                            <ProfileRow  title={"Mother name:"} value={userProfile.mother}/>
+                            <ProfileRow  title={"TIN:"} value={userProfile.tin}/>
+                            <ProfileRow  title={"Blood group:"} value={userProfile.blood_group}/>
+                            <ProfileRow  title={"Marritial Status:"} value={userProfile.blood_group}/>
+                            <ProfileRow  title={"Address:"} value={userProfile.address}/>
+                            <ProfileRow  title={"Permanent Address:"} value={userProfile.permanent_address}/>
                         </GridContent>
 
                         {/* Grid 2*/}
                         <GridContent >
-                            <ProfileRow  title={"Job Status:"} value={'In Service'}/> 
-                            <ProfileRow  title={"Department:"} value={'Tech Team'}/> 
-                            <ProfileRow  title={"Designation:"} value={'Jr. Front End Dev'}/> 
-                            <ProfileRow  title={"Joining date:"} value={'09 - April- 2021'}/> 
-                            <ProfileRow  title={"Reliving date:"} value={'-- -- -- -- -- -- -- --'}/> 
+                            <ProfileRow  title={"Job Status:"}  value={userProfile.job_status}/> 
+                            <ProfileRow  title={"Department:"}  value={userProfile.department}/> 
+                            <ProfileRow  title={"Designation:"} value={userProfile.designation}/> 
+                            <ProfileRow  title={"Joining date:"} value={userProfile.joining_date}/> 
+                            <ProfileRow  title={"Reliving date:"} value={userProfile.reliving_date}/> 
                         </GridContent>
 
                         {/* Grid 2*/}
                         <GridContent >
-                            <ProfileRow  title={"Gross:"} value={'15,000 Taka'}/> 
-                            <ProfileRow  title={"Basic:"} value={'10,000 Taka'}/> 
-                            <ProfileRow  title={"Medical:"} value={'2,500 Taka'}/> 
-                            <ProfileRow  title={"Convenience fee:"} value={'2,500 Taka'}/> 
+                            <ProfileRow  title={"Gross:"} value={userProfile.gross}/> 
+                            <ProfileRow  title={"Basic:"} value={userProfile.basic}/> 
+                            <ProfileRow  title={"Medical:"} value={userProfile.medical}/> 
+                            <ProfileRow  title={"Convenience fee:"} value={userProfile.convenience_fee}/> 
                         </GridContent>
                     </Grid>
                 </Grid>
@@ -125,7 +130,7 @@ ProfileRow.propTypes = {
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: "Value"
+    value: "Unavailable"
 }
 
 
@@ -139,8 +144,7 @@ GridContent.defaultProps = {
 
 // export default Profile;
 const mapStateToProps = state => ({
-    activityStatus: state.admin.activityStatus,
-    activityStatusOptions: state.admin.activityStatusOptions,
+    userProfile: state.admin.userProfile,
 
 })
 
