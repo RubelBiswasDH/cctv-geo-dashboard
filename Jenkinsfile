@@ -11,43 +11,48 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'building...'
-                sh 'npm install'
-                sh 'CI=false npm run build'
-            }
+        // stage('Build') {
+        //     steps {
+        //         echo 'building...'
+        //         sh 'npm install'
+        //         sh 'CI=false npm run build'
+        //     }
 
-        }
+        // }
+        
         stage('test'){
-            when{
-                branch 'dev'
+            if (env.BRANCH_NAME == 'main') {
+                steps {
+                    echo 'main branch!'
+                }
             }
-            steps {
-                echo 'Branch Main'
-            }
-        }
-        stage('SSH transfer') {
-            when{
-                branch 'dev'
-            }
-            steps([$class: 'BapSshPromotionPublisherPlugin']) {
-                sshPublisher(
-                    continueOnError: false, failOnError: true,
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: "hr_trace_staging",
-                            verbose: true,
-                            transfers: [
-                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
-                                // sshTransfer(execCommand: "mv build/* ./"),
-                                sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
-                            ]
-                        )
-                    ]
-                )
+            else {
+                steps {
+                    echo 'dev branch!'
+                }
             }
         }
+        // stage('SSH transfer') {
+        //     when{
+        //         branch 'dev'
+        //     }
+        //     steps([$class: 'BapSshPromotionPublisherPlugin']) {
+        //         sshPublisher(
+        //             continueOnError: false, failOnError: true,
+        //             publishers: [
+        //                 sshPublisherDesc(
+        //                     configName: "hr_trace_staging",
+        //                     verbose: true,
+        //                     transfers: [
+        //                         sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+        //                         // sshTransfer(execCommand: "mv build/* ./"),
+        //                         sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
+        //                     ]
+        //                 )
+        //             ]
+        //         )
+        //     }
+        // }
     }
 
     post {
