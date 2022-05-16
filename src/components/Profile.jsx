@@ -9,7 +9,7 @@ import StyledSelect from './common/StyledSelect'
 import image from '../assets/profile-image.jpg'
 
 import {getUserProfile} from '../redux/actions/adminActions'
-
+import { setUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 // import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
 // import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
@@ -24,25 +24,32 @@ const GridContent = (props) => {
 }
 
 const ProfileRow = (props) => {
-    const {title, value, onClick, isFocused, onChange, onBlur} = props
+    const {title, value,field, dispatch, profileEdit} = props
+    const [focus,setFocus] = React.useState(false)
+
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize:'12px',
     }
+    const handleChange = e => {
+        e.preventDefault() 
+        dispatch(setUserProfile({[field]: e.target.value}))
+
+    }
     return (
     <Grid xs={12} item container sx={{ border:'none' }}>
         <Grid item xs={5}><Typography sx={{...textStyle, opacity: 0.7, fontWeight:300}}>{title}</Typography></Grid>
-        <Grid item xs={7}>{(!isFocused)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
+        <Grid item xs={7}>{(!profileEdit)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
         : <TextField
             hiddenLabel
             fullWidth
-            defaultValue="Small"
             value={(value)?value:""}
-            variant="outlined"
+            variant="standard"
             size="small"
-            sx={{borderBottom:'1px solid green',outline:'none',m:0,p:0}}
-            inputProps={{border:'none',outline:'none',p:0,pl:.25,pb:0}}
-        />
+            sx={{border:'none',outline:'none',m:0,p:0}}
+            inputProps={{border:'none',outline:'none',p:0,pl:.25}}
+            onChange={handleChange}          
+        />  
       }</Grid>
     </Grid>
     )
@@ -58,8 +65,8 @@ class Profile extends React.PureComponent {
         this.props.dispatch(getUserProfile('22'));
     }
     render() {
-        const {userProfile} = this.props
-
+        const {userProfile, profileEdit, dispatch} = this.props
+        // console.log({setProfileEdit})
         return (
             <Box sx={
                 theme => ({
@@ -99,32 +106,36 @@ class Profile extends React.PureComponent {
                         {/* Grid 1 */}
                         <GridContent  style={{}}>
                             {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
-                            <ProfileRow  title={"Phone"} value={userProfile.phone} isFocused={true} onClick={() => null} onChange={() => null} onBlur={() => null}/>
-                            <ProfileRow  title={"DOB:"} value={userProfile.dob}/>
-                            <ProfileRow  title={"Father name:"} value={userProfile.father}/>
-                            <ProfileRow  title={"Mother name:"} value={userProfile.mother}/>
-                            <ProfileRow  title={"TIN:"} value={userProfile.tin}/>
-                            <ProfileRow  title={"Blood group:"} value={userProfile.blood_group}/>
-                            <ProfileRow  title={"Marritial Status:"} value={userProfile.blood_group}/>
-                            <ProfileRow  title={"Address:"} value={userProfile.address}/>
-                            <ProfileRow  title={"Permanent Address:"} value={userProfile.permanent_address}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Phone"} value={userProfile.phone} field={"phone"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"DOB:"} value={userProfile.dob}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Father name:"} value={userProfile.father}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Mother name:"} value={userProfile.mother}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN:"} value={userProfile.tin}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Blood group:"} value={userProfile.blood_group}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status:"} value={userProfile.blood_group}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Address:"} value={userProfile.address}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Permanent Address:"} value={userProfile.permanent_address}/>
                         </GridContent>
 
                         {/* Grid 2*/}
                         <GridContent >
-                            <ProfileRow  title={"Job Status:"}  value={userProfile.job_status}/> 
-                            <ProfileRow  title={"Department:"}  value={userProfile.department}/> 
-                            <ProfileRow  title={"Designation:"} value={userProfile.designation}/> 
-                            <ProfileRow  title={"Joining date:"} value={userProfile.joining_date}/> 
-                            <ProfileRow  title={"Reliving date:"} value={userProfile.reliving_date}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Job Status:"}  value={userProfile.job_status}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Department:"}  value={userProfile.department}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation:"} value={userProfile.designation}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Joining date:"} value={userProfile.joining_date}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Reliving date:"} value={userProfile.reliving_date}/> 
                         </GridContent>
 
                         {/* Grid 2*/}
                         <GridContent >
-                            <ProfileRow  title={"Gross:"} value={userProfile.gross}/> 
-                            <ProfileRow  title={"Basic:"} value={userProfile.basic}/> 
-                            <ProfileRow  title={"Medical:"} value={userProfile.medical}/> 
-                            <ProfileRow  title={"Convenience fee:"} value={userProfile.convenience_fee}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Gross:"} value={userProfile.gross}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Basic:"} value={userProfile.basic}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Medical:"} value={userProfile.medical}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Convenience fee:"} value={userProfile.convenience_fee}/> 
+                        </GridContent>
+                        <GridContent >
+                            <Grid item xs={6}><Button onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</Button></Grid>
+                            <Grid item xs={6}><Button onClick={() => dispatch(setProfileEdit(true))}>Save</Button></Grid>
                         </GridContent>
                     </Grid>
                 </Grid>
@@ -156,6 +167,7 @@ GridContent.defaultProps = {
 // export default Profile;
 const mapStateToProps = state => ({
     userProfile: state.admin.userProfile,
+    profileEdit: state.admin.profileEdit,
 
 })
 

@@ -18,7 +18,7 @@ const initialState = {
   fileInput:null,
   announcementMessage: '',
   userProfile: {},
-
+  profileEdit: false
   }
 
 const adminSlice = createSlice({
@@ -64,12 +64,15 @@ const adminSlice = createSlice({
       state.announcementMessage = action.payload
     },
     setUserProfile: (state, action) => {
-      //console.log("action data: ",action, action.payload)
+      console.log("admin : ",action, action.payload)
         state.userProfile = {...state.userProfile, ...action.payload}
+      },
+    setProfileEdit: (state, action) => {
+        state.profileEdit = action.payload
       },
 
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit } = adminSlice.actions
 export default adminSlice.reducer
