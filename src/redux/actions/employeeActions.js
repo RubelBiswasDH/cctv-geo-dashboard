@@ -15,7 +15,7 @@ export function getEmployee(params) {
                 const employeeData = res.data.data
                 if(employeeData) {
                    
-                    console.log({employeeData})         
+                    // console.log({employeeData})         
                     dispatch(setEmployeeList(employeeData))
                  
                 }

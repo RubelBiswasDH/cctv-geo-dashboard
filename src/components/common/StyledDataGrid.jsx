@@ -54,7 +54,7 @@ class StyledDataGrid extends React.PureComponent {
 
     render() {
         const { rows, columns, renderActions, rowHeight, ...restProps } = this.props  
-        console.log({renderActions})      
+        // console.log({renderActions})      
         return (
             <DataGrid
                 rows={ rows }
