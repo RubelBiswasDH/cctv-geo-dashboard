@@ -24,7 +24,7 @@ import AnalyticsDialog from './AnalyticsDialog'
 import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
 import {getAttendance}  from '../redux/actions/attendanceActions'
-
+import {getAnnouncements} from '../redux/actions/announcementsActions'
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
@@ -41,9 +41,9 @@ class DmsDashboard extends React.PureComponent {
 
     let date = new Date()
       
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
+    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-
+    dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     this.setState({ start_date, end_date })
 
     // Load Tasks
@@ -201,12 +201,14 @@ class DmsDashboard extends React.PureComponent {
             <Grid
               item={ true }
               xs={ 12 }
-              md={ isTaskThreadOpen ? 8 : 12 }
+
+              // md={ isTaskThreadOpen ? 8 : 12 }
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'flex-start'
+                alignItems: 'flex-start',
+                // border:'1px solid red'
               }}
             > 
               {
@@ -234,7 +236,7 @@ class DmsDashboard extends React.PureComponent {
               }
             </Grid>
 
-            <Grid
+            {/* <Grid
               item={ true }
               xs={ 12 }
               md={ isTaskThreadOpen ? 4 : 0 }
@@ -243,7 +245,7 @@ class DmsDashboard extends React.PureComponent {
               }}
             >
               <TaskThread />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         {

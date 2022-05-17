@@ -24,6 +24,8 @@ const columns = [
   { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
   { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .3, filter: true, filterable: true  },
+  { field: 'announcement', headerName: 'Announcement', minWidth: 150, sortable: false,flex: 1, filter: true, filterable: true  },
+  { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
 const rows = [
   {
@@ -43,32 +45,6 @@ class AttendanceList extends React.PureComponent {
     isTaskDetailsOpen: false,
     isTaskTimelineOpen: false,
     selectedTask: {},
-    selectedTimeline: [
-      {
-          "message": "Task opened by Test user for IT",
-          "time": "2022-04-20 15:19:13"
-      },
-      {
-          "message": "Task viewed by Tamannna Pervin",
-          "time": "2022-04-20 15:22:25"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:22:48"
-      },
-      {
-          "message": "Task opened by Mr. S.M. Munzur Rashid",
-          "time": "2022-04-20 15:23:05"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:23:34"
-      },
-      {
-          "message": "Task resolved by Rupnagar S&D with remarks \"sssss\".",
-          "time": "2022-04-21 13:24:00"
-      }
-  ],
     isTimelineLoading: false,
     feedback: null
   }
@@ -97,7 +73,8 @@ class AttendanceList extends React.PureComponent {
     // this._setReminderForEmergency()
   }
   mappedAttendanceInfo = () => {
-    const {attendanceList} = this.props;
+    const {attendanceList, announcements} = this.props;
+    // console.log({announcements})
     //console.log('mappedAttendanceInfo called', attendanceList);
 
     const isLate = (checked_in_time) => {
@@ -113,7 +90,14 @@ class AttendanceList extends React.PureComponent {
       }
     }
 
-  
+    const getAnnouncement = (id) => {
+      if(announcements.length > 0){
+        const announcement = announcements.filter( (an => an.user_id === id))[0]?.description
+        return announcement
+      }
+      else return 'no announcement'
+    }
+
     const attendanceInfo = attendanceList.map((a,i) => {
 
       return ({
@@ -122,7 +106,8 @@ class AttendanceList extends React.PureComponent {
         "name": a.name,
         "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
         "checked_out_time": a.exit_time?a.exit_time : '-',
-        "is_late": isLate(a.enter_time)
+        "is_late": isLate(a.enter_time),
+        "announcement": getAnnouncement(a.user_id)
       })
     })
     //console.log("returing attendace info ", attendanceInfo)
@@ -374,6 +359,7 @@ const mapStateToProps = state => ({
   autocompleteSelectedTask: state.task.autocompleteSelectedTask,
   // attendanceList
   attendanceList: state.attendanceList.attendanceList,
+  announcements: state.announcements.announcements,
 
 })
 
