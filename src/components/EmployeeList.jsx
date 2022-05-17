@@ -14,7 +14,7 @@ import TaskTimelineDialog from './TaskTimelineDialog'
 import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
-import {getAttendance}  from '../redux/actions/attendanceActions'
+import {getEmployee}  from '../redux/actions/employeeActions'
 
 import dayjs from 'dayjs'
 
@@ -140,30 +140,6 @@ class EmployeeList extends React.PureComponent {
     isTaskTimelineOpen: false,
     selectedTask: {},
     selectedTimeline: [
-      {
-          "message": "Task opened by Test user for IT",
-          "time": "2022-04-20 15:19:13"
-      },
-      {
-          "message": "Task viewed by Tamannna Pervin",
-          "time": "2022-04-20 15:22:25"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:22:48"
-      },
-      {
-          "message": "Task opened by Mr. S.M. Munzur Rashid",
-          "time": "2022-04-20 15:23:05"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:23:34"
-      },
-      {
-          "message": "Task resolved by Rupnagar S&D with remarks \"sssss\".",
-          "time": "2022-04-21 13:24:00"
-      }
   ],
     isTimelineLoading: false,
     feedback: null
@@ -180,7 +156,7 @@ class EmployeeList extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load Tasks
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    dispatch( getEmployee() )
 
     // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 

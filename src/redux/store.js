@@ -7,6 +7,7 @@ import attendanceReducer from './reducers/attendanceReducer'
 import announcementsReducer from "../redux/reducers/announcementReducer"
 import dashboardReducer from "../redux/reducers/dashboardReducer"
 import adminReducer from './reducers/adminReducer'
+import employeeReducer from './reducers/employeeReducer'
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     dashboard: dashboardReducer,
     register: registerReducer,
     admin:adminReducer,
+    employeeList: employeeReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

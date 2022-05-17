@@ -48,7 +48,7 @@ class TaskThread extends React.PureComponent {
   render() {
     const { messages,announcements } = this.props
     const sortedMessages = this._sortByEmergency(messages)
-    console.log({ announcements })
+    // console.log({ announcements })
     return (
       <Box sx={ containerStyles }>
         <Paper variant='outlined' sx={ paperStyles }>
