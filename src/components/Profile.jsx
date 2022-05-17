@@ -9,7 +9,7 @@ import StyledSelect from './common/StyledSelect'
 import image from '../assets/profile-image.jpg'
 
 import {getUserProfile, setUserProfileAction} from '../redux/actions/adminActions'
-import { setUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
+import { setUserProfile, updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 // import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
 // import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
@@ -33,7 +33,7 @@ const ProfileRow = (props) => {
     }
     const handleChange = e => {
         e.preventDefault() 
-        dispatch(setUserProfile({[field]: e.target.value}))
+        dispatch(updateUserProfile({[field]: e.target.value}))
 
     }
     return (
@@ -62,7 +62,7 @@ class Profile extends React.PureComponent {
 
     
     componentDidMount(){
-        this.props.dispatch(getUserProfile('22'));
+        // this.props.dispatch(getUserProfile('22'));
     }
     render() {
         const {userProfile, profileEdit, dispatch} = this.props
@@ -106,6 +106,7 @@ class Profile extends React.PureComponent {
                         {/* Grid 1 */}
                         <GridContent  style={{}}>
                             {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Name"} value={userProfile.name} field={"name"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Phone"} value={userProfile.phone} field={"phone"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"DOB:"} value={userProfile.dob} field={"dob"}/>
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Father name:"} value={userProfile.father} field={"father"}/>
@@ -135,7 +136,7 @@ class Profile extends React.PureComponent {
                         </GridContent>
                         <GridContent style={{flexDirection:'row'}} >
                             <Grid item xs={6}><StyledButton style={{width:'100%', bg:'orange'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</StyledButton></Grid>
-                            <Grid item xs={6}><StyledButton style={{width:'100%'}} onClick={() => dispatch(setUserProfileAction(userProfile))}>Save</StyledButton></Grid>
+                            <Grid item xs={6}><StyledButton style={{width:'100%'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</StyledButton></Grid>
                         </GridContent>
                     </Grid>
                 </Grid>
@@ -152,7 +153,7 @@ ProfileRow.propTypes = {
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: "Unavailable"
+    value: "-"
 }
 
 

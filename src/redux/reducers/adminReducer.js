@@ -65,6 +65,10 @@ const adminSlice = createSlice({
     },
     setUserProfile: (state, action) => {
       // console.log("admin : ",action, action.payload)
+        state.userProfile = action.payload
+      },
+    updateUserProfile: (state, action) => {
+      // console.log("admin : ",action, action.payload)
         state.userProfile = {...state.userProfile, ...action.payload}
       },
     setProfileEdit: (state, action) => {
@@ -74,5 +78,5 @@ const adminSlice = createSlice({
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile } = adminSlice.actions
 export default adminSlice.reducer
