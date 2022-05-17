@@ -17,7 +17,7 @@ class TaskThread extends React.PureComponent {
     const { dispatch } = this.props
 
     const today = dayjs().format('YYYY-MM-DD')
-    console.log("Annoucement loading.. ")
+    // console.log("Annoucement loading.. ")
     dispatch(getAnnouncements())
 
     // dispatch(
