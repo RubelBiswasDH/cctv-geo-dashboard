@@ -92,10 +92,13 @@ class AttendanceList extends React.PureComponent {
 
     const getAnnouncement = (id) => {
       if(announcements.length > 0){
-        const announcement = announcements.filter( (an => an.user_id === id))[0]?.description
-        return announcement
+        const announcement = announcements.filter( (an => an.user_id === id))[0]
+        if (announcement && announcement?.type=="LATE"){
+          return announcement?.description
+        }
+        
       }
-      else return 'no announcement'
+      else return ''
     }
 
     const attendanceInfo = attendanceList.map((a,i) => {
