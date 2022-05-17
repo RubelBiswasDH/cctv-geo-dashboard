@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 // Import Components
 import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
 import { GridActionsCellItem } from '@mui/x-data-grid'
-import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
+import { AssignmentInd, Timeline, Close, AccountBoxSharpIcon } from '@mui/icons-material'
+import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
 import TaskDetailsDialog from './TaskDetailsDialog'
 import TaskTimelineDialog from './TaskTimelineDialog'
@@ -14,7 +15,10 @@ import TaskTimelineDialog from './TaskTimelineDialog'
 import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
-import {getAttendance}  from '../redux/actions/attendanceActions'
+import {getEmployee}  from '../redux/actions/employeeActions'
+import {getUserProfile} from '../redux/actions/adminActions'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import {setUserProfile} from "../redux/reducers/adminReducer"
 
 import dayjs from 'dayjs'
 
@@ -116,6 +120,7 @@ const empData = [
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
+  { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'email', headerName: 'Email', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'phone', headerName: 'Phone', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
@@ -140,37 +145,13 @@ class EmployeeList extends React.PureComponent {
     isTaskTimelineOpen: false,
     selectedTask: {},
     selectedTimeline: [
-      {
-          "message": "Task opened by Test user for IT",
-          "time": "2022-04-20 15:19:13"
-      },
-      {
-          "message": "Task viewed by Tamannna Pervin",
-          "time": "2022-04-20 15:22:25"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:22:48"
-      },
-      {
-          "message": "Task opened by Mr. S.M. Munzur Rashid",
-          "time": "2022-04-20 15:23:05"
-      },
-      {
-          "message": "Task dispatched to Gulshan S&D Division by Tamannna Pervin.",
-          "time": "2022-04-20 15:23:34"
-      },
-      {
-          "message": "Task resolved by Rupnagar S&D with remarks \"sssss\".",
-          "time": "2022-04-21 13:24:00"
-      }
   ],
     isTimelineLoading: false,
     feedback: null
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    const { dispatch, employeeList } = this.props
 
     let date = new Date()
       
@@ -180,7 +161,7 @@ class EmployeeList extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load Tasks
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    dispatch( getEmployee() )
 
     // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 
@@ -355,6 +336,8 @@ class EmployeeList extends React.PureComponent {
     // if (currentView === 'all_employees'){
     //     return empData
     // }
+
+
     var data = []
     switch (currentView) {
         case 'in_service':
@@ -378,37 +361,43 @@ class EmployeeList extends React.PureComponent {
       return data
   }
 
+  transformedEmployeeList = () => {
+    return this.props.employeeList.map((emp,i) => ({
+      ...emp,
+      serial_no:i+1,
+      viewProfile: () => {
+        console.log({id:emp.id})
+        this.props.dispatch(setUserProfile({}))
+        this.props.dispatch(getUserProfile(emp.id))
+        this.props.dispatch(setCurrentView('profile'))
+      }
+    }))
+  }
+
   render() {
-    const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
+    const { isTaskLoading, employeeList } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
    
-    let attendance_rows = this.mappedAttendanceInfo()
     let employee_rows = this.filteredEmployees()
     return (
       <Box width='100%' height='84vh'>
         <StyledDataGrid
           columns={columns }
-          rows={ employee_rows }
+          // rows={ employee_rows }
+          rows={this.transformedEmployeeList()}
           loading={ isTaskLoading }
           renderActions={ cellValues => ([
             <GridActionsCellItem
               icon={
-                <Tooltip title='Dispatch' arrow={ true } placement='top'>
-                  <AssignmentInd fontSize='small' />
+                <Tooltip title='View Profile' arrow={ true } placement='top'>
+                  <ManageAccountsSharpIcon fontSize='small' />
                 </Tooltip>
               }
               onClick={ () => ("this._openTaskDetails(cellValues.row)") }
-            />,
-            <GridActionsCellItem
-              icon={
-                <Tooltip title='Timeline' arrow={ true } placement='top'>
-                  <Timeline fontSize='small' />
-                </Tooltip>
-              }
-              onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
             />
-          ])}
+          ]
+            )}
         />
 
         <TaskDetailsDialog
@@ -501,6 +490,7 @@ const mapStateToProps = state => ({
   autocompleteSelectedTask: state.task.autocompleteSelectedTask,
   // attendanceList
   attendanceList: state.attendanceList.attendanceList,
+  employeeList: state.employeeList.employeeList,
   currentView: state.dashboard.currentView
 
 })

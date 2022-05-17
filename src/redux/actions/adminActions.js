@@ -16,7 +16,7 @@ export function getUserProfile(user_id) {
             .then(res => {
                 const data = res.data.data;
                 // console.log({ user__response: data})
-                dispatch(setUserProfile(data))
+                dispatch(setUserProfile({...data,user_id:user_id}))
               
             })
             .catch(err => {
@@ -26,19 +26,19 @@ export function getUserProfile(user_id) {
 }
 
 // setUserProfile Action
-export function setUserProfileAction(data) {
+export function setUserProfileAction(id,data) {
     //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
         // Set `isValdataating`
        // dispatch( setIsValdataating(true) )
-        console.log('user in actions ',data)
+        // console.log('user in actions ',data)
         //console.log('token: ',token)
-        axios.post(API.SET_USER_PROFILE+"22", data, { headers: { Authorization: `Bearer ${ token }` } })
+        axios.post(API.SET_USER_PROFILE+id, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    getUserProfile("22")
+                    getUserProfile(id)
                     dispatch(setProfileEdit(false))
                     alert("User Successfully Updated")
                 }

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Import Components
-import { Box, Chip, LinearProgress,Typography } from '@mui/material'
+import { Box, Chip, LinearProgress,Typography, Button } from '@mui/material'
 import { Refresh } from '@mui/icons-material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid'
 
@@ -53,7 +53,8 @@ class StyledDataGrid extends React.PureComponent {
     }
 
     render() {
-        const { rows, columns, renderActions, rowHeight, ...restProps } = this.props        
+        const { rows, columns, renderActions, rowHeight, ...restProps } = this.props  
+        console.log({renderActions})      
         return (
             <DataGrid
                 rows={ rows }
@@ -61,7 +62,8 @@ class StyledDataGrid extends React.PureComponent {
                     `${ rowValues.row?.is_emergency ? 'row-emergency' : '' }`
                 }
                 columns={
-                    [
+                    [   
+                        // (renderActions.length > 0)?
                         // {
                         //     field: 'actions',
                         //     type: 'actions',
@@ -69,7 +71,8 @@ class StyledDataGrid extends React.PureComponent {
                         //     minWidth: 100,
                         //     maxWidth: 600,
                         //     getActions: renderActions
-                        // },
+                        // }:{},
+                       
                         ...columns.map(c => ({
                             ...c,
                             renderCell: cellValues => {                                
@@ -100,6 +103,9 @@ class StyledDataGrid extends React.PureComponent {
                                                 ? <Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}}/>
 
                                                 : <Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                :cellValues.field === 'view_profile'
+                                                ? <Button onClick={cellValues.row.viewProfile}>View</Button>
+
                                                 :cellValues.value
                                         }                                        
                                     </Box>

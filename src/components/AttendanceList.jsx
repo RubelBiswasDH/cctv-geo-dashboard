@@ -264,24 +264,24 @@ class AttendanceList extends React.PureComponent {
           columns={columns }
           rows={ attendance_rows }
           loading={ isTaskLoading }
-          renderActions={ cellValues => ([
-            <GridActionsCellItem
-              icon={
-                <Tooltip title='Dispatch' arrow={ true } placement='top'>
-                  <AssignmentInd fontSize='small' />
-                </Tooltip>
-              }
-              onClick={ () => ("this._openTaskDetails(cellValues.row)") }
-            />,
-            <GridActionsCellItem
-              icon={
-                <Tooltip title='Timeline' arrow={ true } placement='top'>
-                  <Timeline fontSize='small' />
-                </Tooltip>
-              }
-              onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
-            />
-          ])}
+          // renderActions={ cellValues => ([
+          //   <GridActionsCellItem
+          //     icon={
+          //       <Tooltip title='Dispatch' arrow={ true } placement='top'>
+          //         <AssignmentInd fontSize='small' />
+          //       </Tooltip>
+          //     }
+          //     onClick={ () => ("this._openTaskDetails(cellValues.row)") }
+          //   />,
+          //   <GridActionsCellItem
+          //     icon={
+          //       <Tooltip title='Timeline' arrow={ true } placement='top'>
+          //         <Timeline fontSize='small' />
+          //       </Tooltip>
+          //     }
+          //     onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
+          //   />
+          // ])}
         />
 
         <TaskDetailsDialog
