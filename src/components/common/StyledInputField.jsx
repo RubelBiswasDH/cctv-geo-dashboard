@@ -24,7 +24,7 @@ class StyledInputField extends React.PureComponent {
         return (
             <Paper
                 xs={12}
-                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#5F5F5F', color: 'white', ...style }}
+                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#887A7A', color: 'white', ...style }}
             >
                 <InputBase
                     sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
