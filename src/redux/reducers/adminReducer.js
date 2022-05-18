@@ -81,7 +81,7 @@ const adminSlice = createSlice({
       state.lateTime = action.payload
     },
     setMonthYear: (state, action) => {
-      state.setMonthYear = action.payload
+      state.monthYear = action.payload
     },
     setWorkingDays: (state, action) => {
       state.workingDays = action.payload
