@@ -550,7 +550,7 @@ switch (e.target.name) {
                 color={'btnOrange'}
                 sx={{mt:'1rem',pt:.5}}
               >
-                { 'Login Instead' }
+                { 'Login' }
             </Button>  
             <Box
               sx={{

@@ -224,9 +224,6 @@ class DmsDashboard extends React.PureComponent {
               (this.props.currentView === 'profile') && <Profile />
               }
               {
-              (this.props.currentView === 'profile') && <Profile />
-              }
-              {
                 (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
               }
               
