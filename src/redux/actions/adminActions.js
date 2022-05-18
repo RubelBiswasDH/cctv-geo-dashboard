@@ -3,6 +3,46 @@ import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
 import {setUserProfile, setProfileEdit} from '../reducers/adminReducer';
 
+
+// setWorkingDaysAction
+export function setWorkingDaysAction(data) {
+    return dispatch => {
+        const token = getAuthToken()
+        axios.post(API.SET_WORKING_DAYS, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                // console.log({ update_user_response: res.data})
+                if(res.status===200){
+                    // getUserProfile(id)
+                    // dispatch(setProfileEdit(false))
+                    // alert("User Successfully Updated")
+                }
+                //console.log('res :', res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
+// setLateTimeAction
+export function setLateTimeAction(data) {
+    return dispatch => {
+        const token = getAuthToken()
+        axios.post(API.SET_LATE_TIME, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                // console.log({ update_user_response: res.data})
+                if(res.status===200){
+                    // getUserProfile(id)
+                    // dispatch(setProfileEdit(false))
+                    // alert("User Successfully Updated")
+                }
+                //console.log('res :', res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
 // Get User Profile
 export function getUserProfile(user_id) {
     //console.log('user: ',user)

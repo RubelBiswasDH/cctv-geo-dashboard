@@ -6,8 +6,8 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage } from '../redux/reducers/adminReducer'
-import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime,setWorkingDays,setMonthYear } from '../redux/reducers/adminReducer'
+import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction } from '../redux/actions/adminActions'
 
 const FileInput = (props) => {
     const {style, onChange} = props
@@ -114,9 +114,15 @@ class AdminPanel extends React.PureComponent{
         //console.log('create user clicked, user is: ', user)
     }
 
+    handleSetLateTime = () => {
+        // setLateTimeAction()
+    }
+    handleSetWorkingDays = () => {
+        // setWorkingDaysAction()
+    }
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice} = this
-        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage} = this.props
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
+        const {activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={
@@ -141,7 +147,7 @@ class AdminPanel extends React.PureComponent{
                 <Grid xs={12} container spacing={0} sx={{mt:1,px:4,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
-                    <GridContent title={"Job Status"} >
+                    {/* <GridContent title={"Job Status"} >
                         <Grid xs={12} container spacing={2} sx={{p:4,pt:2,backgroundColor:''}}>
                             <Grid xs={4} item sx={{background:''}}>
                                 <StyledInputField placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>
@@ -159,7 +165,7 @@ class AdminPanel extends React.PureComponent{
                             </Grid>
 
                         </Grid>
-                    </GridContent>
+                    </GridContent> */}
 
                     {/*Notice*/}
                     <GridContent title={"Notice"} >
@@ -204,6 +210,51 @@ class AdminPanel extends React.PureComponent{
                             
                         </Grid>
                     </GridContent>
+                    {/*Company Settings*/}
+                    <GridContent title={"Company Settings"} >
+                    <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                           <Grid xs={12} spacing={2} item container>
+                                <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                    <StyledInputField onChange={setMonthYear} value={monthYear} placeholder={"Year/Month"} ariaLabel={"Year/Month"} style={{borderRadius:2}}/>    
+                                </Grid>
+                                <Grid xs={4} xl={3} item>
+                                    <StyledInputField onChange={setWorkingDays} value={workingDays} placeholder={"Working Days"} ariaLabel={"Working Days"} style={{borderRadius:2}}/>
+                                </Grid>
+                            
+                                <Grid xs={4} xl={1.5} item>
+                                    <StyledButton onClick= {handleSetWorkingDays} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                </Grid>
+                           </Grid>
+                           <Grid xs={12} spacing={2} item container>
+                                <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                    <Typography 
+                                        sx={{
+                                            py:1,
+                                            pl:3, 
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'flex-start', 
+                                            backgroundColor: '#887A7A',
+                                            fontSize:"14px",
+                                            fontWeight:500,
+                                            flex: 1, 
+                                            color: 'white', 
+                                            opacity: 1,
+                                            borderRadius:2
+                                            }}>
+                                            {"Late Count Policy"}
+                                    </Typography>
+                                </Grid>
+                                <Grid xs={4} xl={3} item>
+                                    <StyledInputField onChange={setLateTime} value={lateTime} placeholder={"Time"} ariaLabel={"Time"} style={{borderRadius:2}}/>
+                                </Grid>
+                                <Grid xs={4} xl={1.5} item>
+                                    <StyledButton onClick= {handleSetLateTime} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                </Grid>
+                           </Grid>
+                            
+                        </Grid>
+                    </GridContent>
                 </Grid>
             </Box>
         );
@@ -227,6 +278,8 @@ const mapStateToProps = state => ({
     newUserRoleOptions: state.admin.newUserRoleOptions,
     fileInput: state.admin.fileInput,
     announcementMessage: state.admin.announcementMessage,
+    lateTime: state.admin.lateTime,
+    workingDays: state.admin.workingDays,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })
