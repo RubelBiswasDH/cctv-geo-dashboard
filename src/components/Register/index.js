@@ -415,28 +415,7 @@ switch (e.target.name) {
                   />
                 </Box>
                 
-                 {/* Company Address */}
-                 <Box sx={{...boxStyle}}>
-                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
-
-                  <TextField
-                    variant='outlined'
-                    margin='none'
-                    size='small'
-                    fullWidth={ true }
-                    name='companyAddress'
-                    type='text'
-                    value={ companyAddress }
-                    placeholder='Enter Company Address...'
-                    onChange={ this._onChange }
-                    error={
-                      ( authError && !authError.includes('password') ) || error.companyAddress? true : false
-                    }
-                    helperText={
-                      authError && !authError.includes('password') ? authError : error.companyAddress ? error.companyAddress : null
-                    }
-                  />
-                </Box>
+                 
                  
                 {/*Autocomplete Company Name*/}
                 {/* <Box sx={{...boxStyle}}>
@@ -508,7 +487,29 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
+                {/* Company Address */}
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
 
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='companyAddress'
+                    type='text'
+                    value={ companyAddress }
+                    placeholder='Enter Company Address...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.companyAddress? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.companyAddress ? error.companyAddress : null
+                    }
+                  />
+                </Box>
+                  {/* Retype Password */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>
                   
