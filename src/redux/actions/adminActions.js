@@ -1,8 +1,56 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
-import {setUserProfile, setProfileEdit} from '../reducers/adminReducer';
+import {setUserProfile, setProfileEdit, setCompanySettings} from '../reducers/adminReducer';
 
+// getCompanySettingsAction
+
+export function getCompanySettingsAction() {
+    //console.log('user: ',user)
+    return dispatch => {
+        const token = getAuthToken()
+        // Set `isValidating`
+
+        //console.log('token: ',token)
+        axios.get(API.GET_COMPANY_SETTINGS, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                console.log('res: ', res)
+                const data = res.data;
+                    console.log({ SETTING_res : data})
+                if(res.status===200){
+                    dispatch(setCompanySettings(data))
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
+
+// setCompanySettingsAction
+export function setCompanySettingsAction(data) {
+    //console.log('user: ',user)
+    return dispatch => {
+        const token = getAuthToken()
+        // Set `isValdataating`
+       // dispatch( setIsValdataating(true) )
+        // console.log('user in actions ',data)
+        //console.log('token: ',token)
+        axios.post(API.SET_COMPANY_SETTINGS, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                // console.log({ update_user_response: res.data})
+                if(res.status===200){
+                    getCompanySettingsAction()
+                    alert("Company Setting Successfully Updated")
+                }
+                //console.log('res :', res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
 
 // setWorkingDaysAction
 export function setWorkingDaysAction(data) {

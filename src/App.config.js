@@ -29,6 +29,8 @@ export const API = {
   SET_USER_PROFILE: `${BASE_URL}/api/set-user-profile/`,
   GET_USER: `${BASE_URL}/api/get-user/`,
   GET_USERS: `${BASE_URL}/api/get-users/`,
+  GET_COMPANY_SETTINGS:  `${BASE_URL}/api/company-settings/`,
+  SET_COMPANY_SETTINGS:  `${BASE_URL}/api/update-company-settings/`,
   SET_WORKING_DAYS: `${BASE_URL}/`,
   SET_LATE_TIME: `${BASE_URL}/`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
