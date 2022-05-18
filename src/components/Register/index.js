@@ -326,7 +326,7 @@ switch (e.target.name) {
               <Stack spacing={ 0 } sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',width: '100%',boxSizing:'border-box'}}>
                 
               <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Name' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Name' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -349,7 +349,7 @@ switch (e.target.name) {
 
                 {/* 'Employee Email' */}
                 <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Email' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Email' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -371,7 +371,7 @@ switch (e.target.name) {
                 </Box>
                 {/*phone*/}
                 <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Phone' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Phone' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -394,7 +394,7 @@ switch (e.target.name) {
 
                 {/* Company Name */}
                 <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Company Name' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Name' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -417,7 +417,7 @@ switch (e.target.name) {
                 
                  {/* Company Address */}
                  <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Company Address' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -440,7 +440,7 @@ switch (e.target.name) {
                  
                 {/*Autocomplete Company Name*/}
                 {/* <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Company Name ' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Name ' }</Typography>
                   <Autocomplete
                   onChange={handleAutoCompChange}
                   onInputChange={handleAutoCompInputChange}
@@ -488,7 +488,7 @@ switch (e.target.name) {
                 </Box>  */}
                 {/* Password */}
                 <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Password' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Password' }</Typography>
                   
                   <TextField
                     variant='outlined'
@@ -510,7 +510,7 @@ switch (e.target.name) {
                 </Box>
 
                 <Box sx={{...boxStyle}}>
-                  <Typography variant='h6'>{ 'Retype Password' }</Typography>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>
                   
                   <TextField
                     variant='outlined'
@@ -532,6 +532,7 @@ switch (e.target.name) {
                 </Box>
 
                 <Button
+                  sx={{mt:1}}
                   type='submit'
                   fullWidth={ true }
                   variant='contained'
@@ -615,6 +616,15 @@ const boxStyle = {
     m: "2%",
     my:0,
     py:1
+}
+
+const labelStyle = {
+  fontSize: {
+    lg: 12,
+    md: 11,
+    sm: 10,
+    xs: 10
+  }
 }
 // Prop Types
 Register.propTypes = {
