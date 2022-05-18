@@ -14,7 +14,7 @@ const CustomButton = (props) => {
             border: '2px solid black',
         })
 
-        const activeBtn = (currentView === name)? {background:'#77DD77'}:{}
+        const activeBtn = (currentView === name)? {background:'#ADD8E6'}:{}
 
         const handleClick = () => {
             props.onClick()
