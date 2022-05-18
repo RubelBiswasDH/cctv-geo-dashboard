@@ -7,7 +7,7 @@ import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Aut
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
-import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
+import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
 import { register,getCompanyList } from '../../redux/actions/registerActions'
 
 // Import Actions & Methods
@@ -31,6 +31,7 @@ class Register extends React.PureComponent {
       employeeName: '',
       employeePhone: '',
       employeeEmail: '',
+      companyAddress: '',
       companyName:'',
       password: '',
       password_2: ''
@@ -83,6 +84,9 @@ switch (e.target.name) {
     case 'companyName':
         dispatch( setCompanyName(e.target.value ?? '') )
         break;
+    case 'companyAddress':
+      dispatch( setCompanyAddress(e.target.value ?? '') )
+      break;
     case 'password':
         dispatch( setPassword(e.target.value?.trim() ?? '') )
         break;
@@ -107,13 +111,14 @@ switch (e.target.name) {
   // On Submit
   _onSubmit = e => {
     e.preventDefault()
-    const { dispatch,employeeName, employeeEmail, employeePhone, companyName, password, password_2 } = this.props
+    const { dispatch,employeeName, employeeEmail, employeePhone, companyName, companyAddress, password, password_2 } = this.props
 
     // Validate Employee Id & Password
     const validateEmployeeName = this._validateEmployeeName(employeeName)
     const validateEmployeePhone = this._validateEmployeePhone(employeePhone)
     const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
     const validateCompanyName = this._validateCompanyName(companyName)
+    const validateCompanyAddress = this._validateCompanyAddress(companyAddress)
     const validatePassword = this._validatePassword(password)
     const validatePassword_2 = this._validatePassword_2(password,password_2)
     if(validateEmployeeName.success && validateEmployeePhone.success &&  validateEmployeeEmail.success && validateCompanyName.success && validatePassword.success && validatePassword_2.success) {
@@ -123,6 +128,7 @@ switch (e.target.name) {
         email: employeeEmail,
         phone: employeePhone,
         company_name: companyName,
+        company_address: companyAddress,
         password: password
       }
       //console.log('submited register data: ',user)
@@ -135,6 +141,7 @@ switch (e.target.name) {
           employeeEmail: validateEmployeeEmail.message,
           employeePhone: validateEmployeePhone.message,
           companyName: validateCompanyName.message,
+          companyAddress: validateCompanyAddress.message,
           password: validatePassword.message,
           password_2: validatePassword_2.message
         }
@@ -209,6 +216,22 @@ switch (e.target.name) {
     
         return verdict
       }
+         // Validate companyAddress
+         _validateCompanyAddress = companyAddress => {
+          companyAddress = companyAddress
+          const verdict = { success: false, message: '' }
+      
+          if(companyAddress) {
+            verdict.success = true
+            verdict.message = ''
+      
+          } else {
+            verdict.success = false
+            verdict.message = 'Required field.'
+          }
+      
+          return verdict
+        }
   // Validate Password
   _validatePassword = password => {
     const verdict = { success: false, message: '' }
@@ -259,7 +282,7 @@ switch (e.target.name) {
   }
 
   render() {
-    const {employeeName, employeeEmail, employeePhone, companyName, companyNameOptions, password, password_2, authError } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError } = this.props
     const { error } = this.state
     const {handleAutoCompInputChange, handleAutoCompChange} = this
     console.log('ac :',companyNameOptions)
@@ -272,7 +295,9 @@ switch (e.target.name) {
         <Hidden mdDown={ true }>
           <Box
             sx={{
-              height: '70vh'
+              height: 'auto',
+              width: '780px',
+              p: '32px',
             }}
           >
             <img
@@ -285,22 +310,23 @@ switch (e.target.name) {
           </Box>
         </Hidden>
 
-        <Paper elevation={ 8 } sx={ paperStyles }>
+        <Paper elevation={ 8 } sx={ {...paperStyles }}>
           <Box sx={{ width: '100%' }}>
             <Typography
               component={ 'h2' }
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'Hr Trace Register' }
+              { 'Registration' }
             </Typography>
           </Box>
 
-          <Box sx={{ width: '100%', mt: '1rem' }}>
+          <Box sx={{ width: '100%', mt: '1rem'}}>
             <form onSubmit={ this._onSubmit }>
-              <Stack spacing={ 2 }>
-              <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Name' }</Typography>
+              <Stack spacing={ 0 } sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',width: '100%',boxSizing:'border-box'}}>
+                
+              <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Name' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -322,8 +348,8 @@ switch (e.target.name) {
                 </Box>
 
                 {/* 'Employee Email' */}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Email' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Email' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -344,8 +370,8 @@ switch (e.target.name) {
                   />
                 </Box>
                 {/*phone*/}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Phone' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Phone' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -355,7 +381,7 @@ switch (e.target.name) {
                     name='employeePhone'
                     type='text'
                     value={ employeePhone }
-                    placeholder='Enter Employee Phone...'
+                    placeholder='Enter Phone...'
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -367,8 +393,8 @@ switch (e.target.name) {
                 </Box>
 
                 {/* Company Name */}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Company Name' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Name' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -388,11 +414,12 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
-                  
+                
+                 
                  
                 {/*Autocomplete Company Name*/}
-                {/* <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Company Name ' }</Typography>
+                {/* <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Name ' }</Typography>
                   <Autocomplete
                   onChange={handleAutoCompChange}
                   onInputChange={handleAutoCompInputChange}
@@ -439,8 +466,8 @@ switch (e.target.name) {
                 />
                 </Box>  */}
                 {/* Password */}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Password' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Password' }</Typography>
                   
                   <TextField
                     variant='outlined'
@@ -460,9 +487,31 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
+                {/* Company Address */}
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
 
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Retype Password' }</Typography>
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='companyAddress'
+                    type='text'
+                    value={ companyAddress }
+                    placeholder='Enter Company Address...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.companyAddress? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.companyAddress ? error.companyAddress : null
+                    }
+                  />
+                </Box>
+                  {/* Retype Password */}
+                <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>
                   
                   <TextField
                     variant='outlined'
@@ -484,6 +533,7 @@ switch (e.target.name) {
                 </Box>
 
                 <Button
+                  sx={{mt:1}}
                   type='submit'
                   fullWidth={ true }
                   variant='contained'
@@ -500,7 +550,7 @@ switch (e.target.name) {
                 color={'btnOrange'}
                 sx={{mt:'1rem',pt:.5}}
               >
-                { 'Login Instead' }
+                { 'Login' }
             </Button>  
             <Box
               sx={{
@@ -546,7 +596,7 @@ const imgStyles = {
 }
 
 const paperStyles = {
-  width: '320px',
+  width: '780px',
   p: '32px',
   mx: {
     xs: '20px'
@@ -558,8 +608,24 @@ const attributionLinkStyles = {
   fontSize: '11px'
 }
 const boxStyle = {
-    display:'flex',
-    flexDirection: 'row'
+    display: 'flex',
+    flexDirection: 'column',
+    // border:'1px solid red',
+    boxSizing: 'border-box',
+    width: '46%',
+    p: "2%",
+    m: "2%",
+    my:0,
+    py:1
+}
+
+const labelStyle = {
+  fontSize: {
+    lg: 12,
+    md: 11,
+    sm: 10,
+    xs: 10
+  }
 }
 // Prop Types
 Register.propTypes = {
@@ -581,6 +647,7 @@ const mapStateToProps = state => ({
   employeeEmail: state.register.employeeEmail,
   employeePhone: state.register.employeePhone,
   companyName: state.register.companyName,
+  companyAddress: state.register.companyAddress,
   companyNameOptions: state.register.companyNameOptions,
   companyLongitude: state.register.companyNameLongitude,
   companyLatitude: state.register.companyNameLatiitude,

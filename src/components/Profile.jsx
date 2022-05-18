@@ -15,9 +15,22 @@ import { setUserProfile, updateUserProfile, setProfileEdit } from '../redux/redu
 
 
 const GridContent = (props) => {
-    const { style } = props
+    const { style, title } = props
     return (
         <Grid xs={12} item sx={{ m: 0, mt: 2, p: 2,gap:1.5, borderRadius: 2, border: "1px solid black", display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', ...style }}>
+            {(title)
+            ?<Typography 
+                sx={{
+                    fontFamily:'Roboto',
+                    fontStyle: 'normal',
+                    fontWeight:600,
+                    fontSize:'14px',
+                    color:'#000000',
+                    width:'100%',
+                }}>
+                {title}
+            </Typography>
+            :''}
             {props.children}
         </Grid>
     )
@@ -107,32 +120,68 @@ class Profile extends React.PureComponent {
                         <GridContent  style={{}}>
                             {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Name"} value={userProfile.name} field={"name"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Phone"} value={userProfile.phone} field={"phone"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"DOB:"} value={userProfile.dob} field={"dob"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Father name:"} value={userProfile.father} field={"father"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Mother name:"} value={userProfile.mother} field={"mother"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN:"} value={userProfile.tin} field={"tin"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Blood group:"} value={userProfile.blood_group} field={"blood_group"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status:"} value={userProfile.blood_group} field={"blood_group"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Address:"} value={userProfile.address} field={"address"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Permanent Address:"} value={userProfile.permanent_address} field={"permanent_address"}/>
-                        </GridContent>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Employee ID"} value={userProfile.employee_id} field={"employee_id"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Contact No"} value={userProfile.personal_contact_no} field={"personal_contact_no"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"House Address"} value={userProfile.house_address} field={"house_address"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Birth Date"} value={userProfile.birth_date} field={"birth_date"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status"} value={userProfile.marritial_status} field={"marritial_status"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"NID"} value={userProfile.nid} field={"nid"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN"} value={userProfile.tin} field={"tin"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Educational Qualification"} value={userProfile.educational_qualification} field={"educational_qualification"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
+
+
+
+                         </GridContent>
 
                         {/* Grid 2*/}
                         <GridContent >
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Job Status:"}  value={userProfile.job_status} field={"job_status"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Department:"}  value={userProfile.department} field={"department"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation:"} value={userProfile.designation} field={"designation"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Joining date:"} value={userProfile.joining_date} field={"joining_date"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Reliving date:"} value={userProfile.reliving_date} field={"reliving_date"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Offical Email"} value={userProfile.official_email} field={"official_email"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Office Phone No"} value={userProfile.office_phone_no} field={"office_phone_no"} />
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.designation} field={"designation"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Job Status"}  value={userProfile.job_status} field={"job_status"}/> 
+
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Reporting Person"}  value={userProfile.reporting_person} field={"reporting_person"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Joining date"} value={userProfile.joining_date} field={"joining_date"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"End of Probation"}  value={userProfile.end_of_robation} field={"end_of_robation"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Last Performance Review"}  value={userProfile.last_performance_review} field={"last_performance_review"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Next Performance Review"}  value={userProfile.next_performance_review} field={"next_performance_review"}/> 
                         </GridContent>
 
-                        {/* Grid 2*/}
-                        <GridContent >
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Gross:"} value={userProfile.gross} field={"gross"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Basic:"} value={userProfile.basic} field={"basic"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Medical:"} value={userProfile.medical} field={"medical"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Convenience fee:"} value={userProfile.convenience_fee} field={"convenience_fee"}/> 
+                        {/* Grid 3*/}
+                        <GridContent title={"Last Work Place"} >
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Company Name"} value={userProfile.previous_company} field={"previous_company"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.previous_designation} field={"previous_designation"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Responsibilities"} value={userProfile.previous_responsibilities} field={"previous_responsibilities"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.previous_salary} field={"previous_salary"}/> 
+                        </GridContent>
+                        {/* Grid 4*/}
+                        <GridContent title={"Emergency"}>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Blood group"} value={userProfile.blood_group} field={"blood_group"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Contact Person"} value={userProfile.contact_person} field={"contact_person"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Contact No"} value={userProfile.emergency_contact_no} field={"emergency_contact_no"}/>
+                        </GridContent>
+
+                        {/* Grid 5*/}
+
+                        <GridContent title={"Benefits"}>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.salary} field={"salary"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Bank Name"} value={userProfile.casual_leave} field={"casual_leave"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Sick Leave"}  value={userProfile.sick_leave} field={"sick_leave"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Festival Bonus"} value={userProfile.festival_bonus} field={"festival_bonus"}/>
+                        </GridContent>
+                        <GridContent title={"Bank Account Details"}>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Account Title"} value={userProfile.account_title} field={"account_title"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Account No"} value={userProfile.account_no} field={"account_no"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Bank Name"} value={userProfile.bank_name} field={"bank_name"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Branch Name"} value={userProfile.branch_name} field={"branch_name"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Routing No"} value={userProfile.routing_no} field={"routing_no"}/>
+                        </GridContent>
+
+                        {/* Grid 6*/}
+                        <GridContent title={"Cv/Resume"}>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"CV URL"} value={userProfile.cv_url} field={"cv_url"}/>
                         </GridContent>
                         <GridContent style={{flexDirection:'row'}} >
                             <Grid item xs={6}><StyledButton style={{width:'100%', bg:'orange'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</StyledButton></Grid>

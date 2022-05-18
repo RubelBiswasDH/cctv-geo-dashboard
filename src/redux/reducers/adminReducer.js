@@ -18,7 +18,11 @@ const initialState = {
   fileInput:null,
   announcementMessage: '',
   userProfile: {},
-  profileEdit: false
+  profileEdit: false,
+  lateTime: '',
+  workingDays: '',
+  monthYear: '',
+  companySettings: {},
   }
 
 const adminSlice = createSlice({
@@ -74,9 +78,24 @@ const adminSlice = createSlice({
     setProfileEdit: (state, action) => {
         state.profileEdit = action.payload
       },
-
+    setLateTime: (state, action) => {
+      state.lateTime = action.payload
+    },
+    setMonthYear: (state, action) => {
+      state.monthYear = action.payload
+    },
+    setWorkingDays: (state, action) => {
+      state.workingDays = action.payload
+    },
+    setCompanySettings: (state, action) => {
+      state.companySettings = action.payload
+    },
+    updateCompanySettings: (state, action) => {
+    // console.log("admin : ",action, action.payload)
+      state.companySettings = {...state.companySettings, ...action.payload}
+    },
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings } = adminSlice.actions
 export default adminSlice.reducer
