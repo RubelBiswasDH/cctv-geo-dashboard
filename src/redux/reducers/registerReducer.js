@@ -6,6 +6,7 @@ const initialState = {
   employeeEmail: '',
   employeePhone: '',
   companyName: '',
+  companyAddress: '',
   companyNameOptions: [],
   companyLatitude: '',
   companyLongitude:'',
@@ -43,6 +44,9 @@ const registerSlice = createSlice({
     setCompanyName: (state, action) => {
       state.companyName = action.payload
     },
+    setCompanyAddress: (state, action) => {
+      state.companyAddress = action.payload
+    },
     setPassword: (state, action) => {
       state.password = action.payload
     },
@@ -55,5 +59,5 @@ const registerSlice = createSlice({
   }
 })
 
-export const { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanyName,setCompanyNameOptions, setCompanyLongitude,setCompanyLatitude, setPassword, setPassword_2, setError } = registerSlice.actions
+export const { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setCompanyLongitude,setCompanyLatitude, setPassword, setPassword_2, setError } = registerSlice.actions
 export default registerSlice.reducer
