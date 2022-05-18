@@ -272,7 +272,9 @@ switch (e.target.name) {
         <Hidden mdDown={ true }>
           <Box
             sx={{
-              height: '70vh'
+              height: 'auto',
+              width: '780px',
+              p: '32px',
             }}
           >
             <img
@@ -285,22 +287,23 @@ switch (e.target.name) {
           </Box>
         </Hidden>
 
-        <Paper elevation={ 8 } sx={ paperStyles }>
+        <Paper elevation={ 8 } sx={ {...paperStyles }}>
           <Box sx={{ width: '100%' }}>
             <Typography
               component={ 'h2' }
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'Hr Trace Register' }
+              { 'Registration' }
             </Typography>
           </Box>
 
-          <Box sx={{ width: '100%', mt: '1rem' }}>
+          <Box sx={{ width: '100%', mt: '1rem'}}>
             <form onSubmit={ this._onSubmit }>
-              <Stack spacing={ 2 }>
-              <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Name' }</Typography>
+              <Stack spacing={ 0 } sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',width: '100%',boxSizing:'border-box'}}>
+                
+              <Box sx={{...boxStyle}}>
+                  <Typography variant='h6'>{ 'Name' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -322,8 +325,8 @@ switch (e.target.name) {
                 </Box>
 
                 {/* 'Employee Email' */}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Email' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography variant='h6'>{ 'Email' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -344,8 +347,8 @@ switch (e.target.name) {
                   />
                 </Box>
                 {/*phone*/}
-                <Box sx={{boxStyle}}>
-                  <Typography variant='h6'>{ 'Employee Phone' }</Typography>
+                <Box sx={{...boxStyle}}>
+                  <Typography variant='h6'>{ 'Phone' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -355,7 +358,7 @@ switch (e.target.name) {
                     name='employeePhone'
                     type='text'
                     value={ employeePhone }
-                    placeholder='Enter Employee Phone...'
+                    placeholder='Enter Phone...'
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -367,7 +370,7 @@ switch (e.target.name) {
                 </Box>
 
                 {/* Company Name */}
-                <Box sx={{boxStyle}}>
+                <Box sx={{...boxStyle}}>
                   <Typography variant='h6'>{ 'Company Name' }</Typography>
 
                   <TextField
@@ -388,10 +391,32 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
-                  
+                
+                 {/* Company Address */}
+                 <Box sx={{...boxStyle}}>
+                  <Typography variant='h6'>{ 'Company Address' }</Typography>
+
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='companyAddress'
+                    type='text'
+                    value={ companyName }
+                    placeholder='Enter Company Address...'
+                    onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeeAddress ? error.employeeAddress : null
+                    }
+                  />
+                </Box>
                  
                 {/*Autocomplete Company Name*/}
-                {/* <Box sx={{boxStyle}}>
+                {/* <Box sx={{...boxStyle}}>
                   <Typography variant='h6'>{ 'Company Name ' }</Typography>
                   <Autocomplete
                   onChange={handleAutoCompChange}
@@ -439,7 +464,7 @@ switch (e.target.name) {
                 />
                 </Box>  */}
                 {/* Password */}
-                <Box sx={{boxStyle}}>
+                <Box sx={{...boxStyle}}>
                   <Typography variant='h6'>{ 'Password' }</Typography>
                   
                   <TextField
@@ -461,7 +486,7 @@ switch (e.target.name) {
                   />
                 </Box>
 
-                <Box sx={{boxStyle}}>
+                <Box sx={{...boxStyle}}>
                   <Typography variant='h6'>{ 'Retype Password' }</Typography>
                   
                   <TextField
@@ -546,7 +571,7 @@ const imgStyles = {
 }
 
 const paperStyles = {
-  width: '320px',
+  width: '780px',
   p: '32px',
   mx: {
     xs: '20px'
@@ -558,8 +583,15 @@ const attributionLinkStyles = {
   fontSize: '11px'
 }
 const boxStyle = {
-    display:'flex',
-    flexDirection: 'row'
+    display: 'flex',
+    flexDirection: 'column',
+    // border:'1px solid red',
+    boxSizing: 'border-box',
+    width: '46%',
+    p: "2%",
+    m: "2%",
+    my:0,
+    py:1
 }
 // Prop Types
 Register.propTypes = {
