@@ -151,10 +151,10 @@ class Profile extends React.PureComponent {
 
                         {/* Grid 3*/}
                         <GridContent title={"Last Work Place"} >
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Company Name"} value={userProfile.company} field={"company"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.designation} field={"designation"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Responsibilities"} value={userProfile.responsibilities} field={"responsibilities"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.salary} field={"salary"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Company Name"} value={userProfile.previous_company} field={"previous_company"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.previous_designation} field={"previous_designation"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Responsibilities"} value={userProfile.previous_responsibilities} field={"previous_responsibilities"}/> 
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.previous_salary} field={"previous_salary"}/> 
                         </GridContent>
                         {/* Grid 4*/}
                         <GridContent title={"Emergency"}>
