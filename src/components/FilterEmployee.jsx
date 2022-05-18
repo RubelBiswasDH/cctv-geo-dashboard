@@ -46,6 +46,9 @@ class FilterEmpolyee extends React.PureComponent{
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('attendance'))} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
                     </Grid>
+                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('announcements'))} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
+                    </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))} name={'total_employees'} currentView ={currentView} >Total employees: 346</CustomButton>
                     </Grid>
