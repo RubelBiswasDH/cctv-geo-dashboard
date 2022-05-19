@@ -161,7 +161,7 @@ class EmployeeList extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load Tasks
-    dispatch( getEmployee() )
+    // dispatch( getEmployee() )
 
     // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 
