@@ -43,10 +43,10 @@ const InputButton = (props) => {
     var title = (fileInput?.current && fileInput.current.files.length > 0)?fileInput.current?.files[0]?.name:"CSV File"
 
     // (fileInput.current.files?.length > 0 )?console.log("file : ",fileInput.current.files[0].name):''
-    if(fileInput?.current && fileInput.current.files.length > 0){
-        // console.log(fileInput.current.files.length > 0)
-        // console.log({file: fileInput.current?.files[0]?.name})
-    }
+    // if(fileInput?.current && fileInput.current.files.length > 0){
+    //     // console.log(fileInput.current.files.length > 0)
+    //     // console.log({file: fileInput.current?.files[0]?.name})
+    // }
     
     return (
         <Paper
@@ -172,21 +172,46 @@ class AdminPanel extends React.PureComponent{
 
     handleSetLateTime = (e) => {
         e.preventDefault()
-        const {dispatch, lateTime, } = this.props
-        const late_time = {
-            late_time: lateTime
+        const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
+        if (lateTime.length > 0) {
+            const new_settings = {
+                late_time: lateTime
+            }
+
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
-        dispatch(setLateTimeAction(late_time))
+        else {
+            alert('Field is required')
+        }
     }
-    handleSetWorkingDays = () => {
-        // setWorkingDaysAction()
+
+    handleSetWorkingDays = (e) => {
+        e.preventDefault()
+        const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
+        if (workingDays.length > 0 && monthYear.length > 0) {
+            const new_settings = {
+                "working_day": {
+                    ...companySettings.working_day,
+                    [monthYear]: workingDays,
+                }
+            }
+
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
+        }
+        else {
+            alert('both fields are required')
+        }
     }
 
     handleCompanySettings = (e) => {
         e.preventDefault()
         const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
         const new_settings = {
-            [monthYear]:workingDays,
+            "working_day": {
+                ...companySettings.working_day,
+                [monthYear]:workingDays,
+            },
+           
             late_time: lateTime
         }
     
@@ -298,7 +323,7 @@ class AdminPanel extends React.PureComponent{
                                 </Grid>
             
                                 <Grid xs={4} xl={1.5} item>
-                                    <StyledButton onClick= {handleCompanySettings} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                    <StyledButton onClick= {handleSetWorkingDays} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
                            <Grid xs={12} spacing={2} item container>
@@ -325,7 +350,7 @@ class AdminPanel extends React.PureComponent{
                                     <StyledInputField onChange={setLateTime} value={lateTime} placeholder={"Time, Ex: 10:10"} ariaLabel={"Time"} style={{borderRadius:2}}/>
                                 </Grid>
                                 <Grid xs={4} xl={1.5} item>
-                                    <StyledButton onClick= {handleCompanySettings} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                    <StyledButton onClick= {handleSetLateTime} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
                             

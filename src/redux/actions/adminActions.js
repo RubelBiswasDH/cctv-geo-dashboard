@@ -41,7 +41,7 @@ export function setCompanySettingsAction(data) {
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    getCompanySettingsAction()
+                    dispatch(getCompanySettingsAction())
                     alert("Company Setting Successfully Updated")
                 }
                 //console.log('res :', res)
