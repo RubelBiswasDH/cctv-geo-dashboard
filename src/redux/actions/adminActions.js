@@ -98,7 +98,7 @@ export function getUserProfile(user_id) {
         const token = getAuthToken()
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-        console.log('user_id in actions ',user_id)
+        // console.log('user_id in actions ',user_id)
         //console.log('token: ',token)
         axios.get(API.GET_USER_PROFILE+user_id, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {

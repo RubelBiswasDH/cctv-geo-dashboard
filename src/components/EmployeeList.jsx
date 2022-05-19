@@ -405,7 +405,7 @@ class EmployeeList extends React.PureComponent {
       ...emp,
       serial_no:i+1,
       viewProfile: () => {
-        console.log({id:emp.id})
+        // console.log({id:emp.id})
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
