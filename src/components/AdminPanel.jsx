@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase,Button} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
@@ -37,6 +37,52 @@ const FileInput = (props) => {
         </Paper>
     );
 }
+const InputButton = (props) => {
+    const {style, onChange} = props
+    const fileInput = React.useRef();
+  
+    return (
+        <Paper
+sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white',borderRadius:2 }}
+    >
+        <Button 
+          variant="text" 
+          color="primary" 
+          fullWidth
+          sx={{textTransform:'none',borderRadius:2,m:0}}
+          onClick={()=>fileInput.current.click()}
+        >
+            <Typography 
+                sx={{
+                    color:'white',
+                    fontSize:'.8em',
+                    fontWeight:800,
+                    pt:.5,
+                    pl:1, 
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start', 
+                    fontSize:"14px",
+                    fontWeight:500,
+                    flex: 1, 
+                    color: 'white', 
+                    opacity: 1,
+                    borderRadius:2
+                }}>
+                    CSV File
+                </Typography>
+        </Button>
+  
+        <input 
+          ref={fileInput} 
+          type="file" 
+          style={{ display: 'none' }} 
+          onChange={onChange}
+        />
+      </Paper>
+    );
+  }
+
 const GridContent = (props) => {
     const {style} = props
     return (
@@ -221,8 +267,11 @@ class AdminPanel extends React.PureComponent{
                                 </Grid>
                            </Grid>
                            <Grid xs={12} item container spacing={2}>
-                                <Grid xs={4} item>
+                                {/* <Grid xs={4} item>
                                     <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
+                                </Grid> */}
+                                <Grid xs={4} item>
+                                    <InputButton onChange={handleFileInput}></InputButton>
                                 </Grid>
                                 <Grid xs={4} item>
                                     <StyledButton onClick= {handleFileUpload} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Upload</StyledButton>
