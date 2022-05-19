@@ -14,9 +14,9 @@ export function getCompanySettingsAction() {
         //console.log('token: ',token)
         axios.get(API.GET_COMPANY_SETTINGS, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log('res: ', res)
+                // console.log('res: ', res)
                 const data = res.data;
-                    console.log({ SETTING_res : data})
+                    // console.log({ SETTING_res : data})
                 if(res.status===200){
                     dispatch(setCompanySettings(data))
                 }

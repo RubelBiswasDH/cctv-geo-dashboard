@@ -8,6 +8,7 @@ import StyledSelect from './common/StyledSelect'
 
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+import dayjs from 'dayjs'
 
 const FileInput = (props) => {
     const {style, onChange} = props
@@ -112,6 +113,7 @@ class AdminPanel extends React.PureComponent{
     }
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
+        // console.log('get company settings')
     }
     handleNotice = e => {
         e.preventDefault()
@@ -220,7 +222,7 @@ class AdminPanel extends React.PureComponent{
 
     render(){
         const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
-        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear} = this.props
+        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={
@@ -314,6 +316,46 @@ class AdminPanel extends React.PureComponent{
                     {/*Company Settings*/}
                     <GridContent title={"Company Settings"} >
                     <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                        <Grid xs={12} spacing={2} item container>
+                            <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                <Typography 
+                                    sx={{
+                                        py:1,
+                                        pl:3, 
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-start', 
+                                        backgroundColor: '#887A7A',
+                                        fontSize:"14px",
+                                        fontWeight:500,
+                                        flex: 1, 
+                                        color: 'white', 
+                                        opacity: 1,
+                                        borderRadius:2
+                                        }}>
+                                        {`Late Time: ${companySettings.late_time}`}
+                                </Typography>                            
+                            </Grid>
+                            <Grid xs={4} xl={3} item>
+                                <Typography 
+                                        sx={{
+                                            py:1,
+                                            pl:3, 
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'flex-start', 
+                                            backgroundColor: '#887A7A',
+                                            fontSize:"14px",
+                                            fontWeight:500,
+                                            flex: 1, 
+                                            color: 'white', 
+                                            opacity: 1,
+                                            borderRadius:2
+                                            }}>
+                                            {`Working Days : ${(companySettings && companySettings.working_day)?companySettings?.working_day[dayjs(new Date()).format('YY-MM').toString()]:""}`}
+                                </Typography>  
+                            </Grid>
+                        </Grid>
                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setMonthYear} value={monthYear} placeholder={"Year-Month, Ex: 22-04"} ariaLabel={"Year/Month"} style={{borderRadius:2}}/>    
