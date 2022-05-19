@@ -108,7 +108,7 @@ class AdminPanel extends React.PureComponent{
         this.handleNotice = this.handleNotice.bind(this)
         this.handleSetLateTime = this.handleSetLateTime.bind(this)
         this.handleSetWorkingDays = this.handleSetWorkingDays.bind(this)
-        this.handleCompanySettings = this.handleCompanySettings.bind(this)
+        // this.handleCompanySettings = this.handleCompanySettings.bind(this)
     }
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
@@ -203,23 +203,23 @@ class AdminPanel extends React.PureComponent{
         }
     }
 
-    handleCompanySettings = (e) => {
-        e.preventDefault()
-        const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
-        const new_settings = {
-            "working_day": {
-                ...companySettings.working_day,
-                [monthYear]:workingDays,
-            },
+    // handleCompanySettings = (e) => {
+    //     e.preventDefault()
+    //     const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
+    //     const new_settings = {
+    //         "working_day": {
+    //             ...companySettings.working_day,
+    //             [monthYear]:workingDays,
+    //         },
            
-            late_time: lateTime
-        }
+    //         late_time: lateTime
+    //     }
     
-        dispatch(setCompanySettingsAction({...companySettings,...new_settings}))
-    }
+    //     dispatch(setCompanySettingsAction({...companySettings,...new_settings}))
+    // }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays,handleCompanySettings} = this
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
         const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
