@@ -52,12 +52,12 @@ class FilterEmpolyee extends React.PureComponent{
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))} name={'total_employees'} currentView ={currentView} >Total employees: 346</CustomButton>
                     </Grid>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
+                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('in_service'))} name={'in_service'} currentView ={currentView} >In service: 232</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('not_in_service'))} name={'not_in_service'} currentView ={currentView} >Not in service: 43</CustomButton>
-                    </Grid>
+                    </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('males'))} name={'males'} currentView ={currentView} >Total males: 234</CustomButton>
                     </Grid>
@@ -66,6 +66,9 @@ class FilterEmpolyee extends React.PureComponent{
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('probational_period'))} name={'probational_period'} currentView ={currentView} >Probationary period: 12</CustomButton>
+                    </Grid>
+                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('intern'))} name={'intern'} currentView ={currentView} >Intern: 12</CustomButton>
                     </Grid>
                   
                     {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               

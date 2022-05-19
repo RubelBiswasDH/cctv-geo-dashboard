@@ -333,7 +333,7 @@ class AdminPanel extends React.PureComponent{
                                         opacity: 1,
                                         borderRadius:2
                                         }}>
-                                        {`Late Time: ${companySettings.late_time}`}
+                                        {`Late Time: ${(companySettings && companySettings.late_time)?companySettings.late_time:""}`}
                                 </Typography>                            
                             </Grid>
                             <Grid xs={4} xl={3} item>

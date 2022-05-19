@@ -125,6 +125,7 @@ class Profile extends React.PureComponent {
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"House Address"} value={userProfile.house_address} field={"house_address"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Birth Date"} value={userProfile.birth_date} field={"birth_date"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Gender"} value={userProfile.gender} field={"gender"}/>
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status"} value={userProfile.marritial_status} field={"marritial_status"}/>
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"NID"} value={userProfile.nid} field={"nid"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN"} value={userProfile.tin} field={"tin"}/>
