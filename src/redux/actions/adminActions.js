@@ -14,9 +14,9 @@ export function getCompanySettingsAction() {
         //console.log('token: ',token)
         axios.get(API.GET_COMPANY_SETTINGS, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log('res: ', res)
+                // console.log('res: ', res)
                 const data = res.data;
-                    console.log({ SETTING_res : data})
+                    // console.log({ SETTING_res : data})
                 if(res.status===200){
                     dispatch(setCompanySettings(data))
                 }
@@ -41,7 +41,7 @@ export function setCompanySettingsAction(data) {
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    getCompanySettingsAction()
+                    dispatch(getCompanySettingsAction())
                     alert("Company Setting Successfully Updated")
                 }
                 //console.log('res :', res)
@@ -98,7 +98,7 @@ export function getUserProfile(user_id) {
         const token = getAuthToken()
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-        console.log('user_id in actions ',user_id)
+        // console.log('user_id in actions ',user_id)
         //console.log('token: ',token)
         axios.get(API.GET_USER_PROFILE+user_id, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {

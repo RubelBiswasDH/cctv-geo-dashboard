@@ -28,6 +28,7 @@ import {getAnnouncements} from '../redux/actions/announcementsActions'
 // import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
+import {getEmployee}  from '../redux/actions/employeeActions'
 
 class DmsDashboard extends React.PureComponent {
   state = {
@@ -51,7 +52,7 @@ class DmsDashboard extends React.PureComponent {
 
     // Activate Socket
     dispatch( activateSocket_A() )
-
+    dispatch( getEmployee() )
     // Get Query Categories
     // dispatch( getQueryCategories() )
 

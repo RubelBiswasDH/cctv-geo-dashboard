@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase,Button} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
@@ -8,6 +8,7 @@ import StyledSelect from './common/StyledSelect'
 
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+import dayjs from 'dayjs'
 
 const FileInput = (props) => {
     const {style, onChange} = props
@@ -37,6 +38,58 @@ const FileInput = (props) => {
         </Paper>
     );
 }
+const InputButton = (props) => {
+    const { style, onChange } = props
+    const fileInput = React.useRef();
+    var title = (fileInput?.current && fileInput.current.files.length > 0)?fileInput.current?.files[0]?.name:"CSV File"
+
+    // (fileInput.current.files?.length > 0 )?console.log("file : ",fileInput.current.files[0].name):''
+    // if(fileInput?.current && fileInput.current.files.length > 0){
+    //     // console.log(fileInput.current.files.length > 0)
+    //     // console.log({file: fileInput.current?.files[0]?.name})
+    // }
+    
+    return (
+        <Paper
+            sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white', borderRadius: 2 }}
+        >
+            <Button
+                variant="text"
+                color="primary"
+                fullWidth
+                sx={{ textTransform: 'none', borderRadius: 2, m: 0 }}
+                onClick={() => fileInput.current.click()}
+            >
+                <Typography
+                    sx={{
+                        color: 'white',
+                        fontSize: '.8em',
+                        fontWeight: 800,
+                        pt: .5,
+                        pl: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        flex: 1,
+                        color: 'white',
+                        opacity: 1,
+                        borderRadius: 2
+                    }}>
+                    {title}
+                </Typography>
+            </Button>
+            <input
+                ref={fileInput}
+                type="file"
+                style={{ display: 'none' }}
+                onChange={onChange}
+            />
+        </Paper>
+    );
+}
+
 const GridContent = (props) => {
     const {style} = props
     return (
@@ -56,10 +109,11 @@ class AdminPanel extends React.PureComponent{
         this.handleNotice = this.handleNotice.bind(this)
         this.handleSetLateTime = this.handleSetLateTime.bind(this)
         this.handleSetWorkingDays = this.handleSetWorkingDays.bind(this)
-        this.handleCompanySettings = this.handleCompanySettings.bind(this)
+        // this.handleCompanySettings = this.handleCompanySettings.bind(this)
     }
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
+        // console.log('get company settings')
     }
     handleNotice = e => {
         e.preventDefault()
@@ -120,30 +174,55 @@ class AdminPanel extends React.PureComponent{
 
     handleSetLateTime = (e) => {
         e.preventDefault()
-        const {dispatch, lateTime, } = this.props
-        const late_time = {
-            late_time: lateTime
+        const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
+        if (lateTime.length > 0) {
+            const new_settings = {
+                late_time: lateTime
+            }
+
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
-        dispatch(setLateTimeAction(late_time))
-    }
-    handleSetWorkingDays = () => {
-        // setWorkingDaysAction()
+        else {
+            alert('Field is required')
+        }
     }
 
-    handleCompanySettings = (e) => {
+    handleSetWorkingDays = (e) => {
         e.preventDefault()
-        const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
-        const new_settings = {
-            [monthYear]:workingDays,
-            late_time: lateTime
+        const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
+        if (workingDays.length > 0 && monthYear.length > 0) {
+            const new_settings = {
+                "working_day": {
+                    ...companySettings.working_day,
+                    [monthYear]: workingDays,
+                }
+            }
+
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
-    
-        dispatch(setCompanySettingsAction({...companySettings,...new_settings}))
+        else {
+            alert('both fields are required')
+        }
     }
+
+    // handleCompanySettings = (e) => {
+    //     e.preventDefault()
+    //     const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
+    //     const new_settings = {
+    //         "working_day": {
+    //             ...companySettings.working_day,
+    //             [monthYear]:workingDays,
+    //         },
+           
+    //         late_time: lateTime
+    //     }
+    
+    //     dispatch(setCompanySettingsAction({...companySettings,...new_settings}))
+    // }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays,handleCompanySettings} = this
-        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear} = this.props
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
+        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings} = this.props
         //console.log('props options ',this.props, activityStatusOptions)
         return (
             <Box sx={
@@ -221,8 +300,11 @@ class AdminPanel extends React.PureComponent{
                                 </Grid>
                            </Grid>
                            <Grid xs={12} item container spacing={2}>
-                                <Grid xs={4} item>
+                                {/* <Grid xs={4} item>
                                     <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
+                                </Grid> */}
+                                <Grid xs={4} item>
+                                    <InputButton onChange={handleFileInput}></InputButton>
                                 </Grid>
                                 <Grid xs={4} item>
                                     <StyledButton onClick= {handleFileUpload} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Upload</StyledButton>
@@ -234,6 +316,46 @@ class AdminPanel extends React.PureComponent{
                     {/*Company Settings*/}
                     <GridContent title={"Company Settings"} >
                     <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                        <Grid xs={12} spacing={2} item container>
+                            <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                <Typography 
+                                    sx={{
+                                        py:1,
+                                        pl:3, 
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-start', 
+                                        backgroundColor: '#887A7A',
+                                        fontSize:"14px",
+                                        fontWeight:500,
+                                        flex: 1, 
+                                        color: 'white', 
+                                        opacity: 1,
+                                        borderRadius:2
+                                        }}>
+                                        {`Late Time: ${(companySettings && companySettings.late_time)?companySettings.late_time:""}`}
+                                </Typography>                            
+                            </Grid>
+                            <Grid xs={4} xl={3} item>
+                                <Typography 
+                                        sx={{
+                                            py:1,
+                                            pl:3, 
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'flex-start', 
+                                            backgroundColor: '#887A7A',
+                                            fontSize:"14px",
+                                            fontWeight:500,
+                                            flex: 1, 
+                                            color: 'white', 
+                                            opacity: 1,
+                                            borderRadius:2
+                                            }}>
+                                            {`Working Days : ${(companySettings && companySettings.working_day)?companySettings?.working_day[dayjs(new Date()).format('YY-MM').toString()]:""}`}
+                                </Typography>  
+                            </Grid>
+                        </Grid>
                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setMonthYear} value={monthYear} placeholder={"Year-Month, Ex: 22-04"} ariaLabel={"Year/Month"} style={{borderRadius:2}}/>    
@@ -243,7 +365,7 @@ class AdminPanel extends React.PureComponent{
                                 </Grid>
             
                                 <Grid xs={4} xl={1.5} item>
-                                    <StyledButton onClick= {handleCompanySettings} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                    <StyledButton onClick= {handleSetWorkingDays} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
                            <Grid xs={12} spacing={2} item container>
@@ -270,7 +392,7 @@ class AdminPanel extends React.PureComponent{
                                     <StyledInputField onChange={setLateTime} value={lateTime} placeholder={"Time, Ex: 10:10"} ariaLabel={"Time"} style={{borderRadius:2}}/>
                                 </Grid>
                                 <Grid xs={4} xl={1.5} item>
-                                    <StyledButton onClick= {handleCompanySettings} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
+                                    <StyledButton onClick= {handleSetLateTime} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
                             

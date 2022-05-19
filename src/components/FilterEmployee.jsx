@@ -29,9 +29,31 @@ const CustomButton = (props) => {
 class FilterEmpolyee extends React.PureComponent{
     constructor(props){
         super(props)
+        this.countEmployee = this.countEmployee.bind(this)
     }
+
+    countEmployee = (key,value) => {
+       
+        // console.log({key,value})
+        if(this.props.employeeList && this.props.employeeList?.length>0){
+            
+            if(key.length <= 0 || value.length <= 0){
+                return this.props.employeeList.length
+            }
+
+            const empList = this.props.employeeList.map(emp => ({
+                ...emp,
+                profile:JSON.parse(emp.profile)
+            }))
+            // console.log(empList)
+            return empList.filter(emp => emp?.profile[key]?.toLowerCase() === value).length
+        }
+        return 0
+    }
+
     render(){
         const {currentView} = this.props
+        const {countEmployee} = this
         return (
         <Box sx={theme => ({padding: {
             xs: `${ theme.spacing(0,2) }`,
@@ -50,22 +72,25 @@ class FilterEmpolyee extends React.PureComponent{
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('announcements'))} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))} name={'total_employees'} currentView ={currentView} >Total employees: 346</CustomButton>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
                     </Grid>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
+                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('in_service'))} name={'in_service'} currentView ={currentView} >In service: 232</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
                         <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('not_in_service'))} name={'not_in_service'} currentView ={currentView} >Not in service: 43</CustomButton>
+                    </Grid> */}
+                    <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('males'))} name={'males'} currentView ={currentView} >Total males: {countEmployee("gender","male")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('males'))} name={'males'} currentView ={currentView} >Total males: 234</CustomButton>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('females'))} name={'females'} currentView ={currentView} >Total females {countEmployee("gender","female")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('females'))} name={'females'} currentView ={currentView} >Total females 99</CustomButton>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('probational_period'))} name={'probational_period'} currentView ={currentView} >Probationary period: {countEmployee("job_status","probation")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('probational_period'))} name={'probational_period'} currentView ={currentView} >Probationary period: 12</CustomButton>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('intern'))} name={'intern'} currentView ={currentView} >Intern: {countEmployee("job_status","intern")}</CustomButton>
                     </Grid>
                   
                     {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
@@ -82,7 +107,8 @@ const mapStateToProps = state => ({
     employeeEmail: state.auth.employeeEmail,
     password: state.auth.password,
     authError: state.auth.error,
-    currentView: state.dashboard.currentView
+    currentView: state.dashboard.currentView,
+    employeeList: state?.employeeList?.employeeList,
   })
 
 const boxStyle = {

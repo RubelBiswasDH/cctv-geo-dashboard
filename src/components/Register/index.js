@@ -9,6 +9,7 @@ import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Aut
 import loginCover from '../../assets/login-cover.jpg'
 import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
 import { register,getCompanyList } from '../../redux/actions/registerActions'
+import bkoiLogo from '../../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 //import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
@@ -298,8 +299,30 @@ switch (e.target.name) {
               height: 'auto',
               width: '780px',
               p: '32px',
+              display:'flex',
+              flexDirection:'column'
             }}
           >
+            <Box sx={{display:'flex',gap:4}}>
+                <Box>
+                  <a href='/'>
+                    <img
+                      src={ bkoiLogo }
+                      alt='Brand Logo'
+                      height='32px'
+                      style={ imgStyles }
+                    />
+                  </a>
+                </Box>
+                <Box>
+                <Typography
+                  variant='h5'
+                  color='text.secondary'
+                  sx={{fontSize: { xs: '18px', sm: '20px', md: '24px'} }}
+                >
+                  { 'HR Trace' }
+                </Typography>                </Box>
+            </Box>
             <img
               src={ loginCover }
               alt='Login Cover'
@@ -627,6 +650,7 @@ const labelStyle = {
     xs: 10
   }
 }
+
 // Prop Types
 Register.propTypes = {
   employeeEmail: PropTypes.string,

@@ -161,7 +161,7 @@ class EmployeeList extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load Tasks
-    dispatch( getEmployee() )
+    // dispatch( getEmployee() )
 
     // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
 
@@ -330,43 +330,82 @@ class EmployeeList extends React.PureComponent {
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
   }
 
-  filteredEmployees = () => {
+  // filteredEmployees = (empData) => {
+  //   const currentView = this.props.currentView
+  //   //console.log('current view ',currentView)
+  //   // if (currentView === 'all_employees'){
+  //   //     return empData
+  //   // }
+
+
+  //   var data = []
+  //   switch (currentView) {
+  //       // case 'in_service':
+  //       //     data = empData.filter(emp => emp.in_service===true);
+  //       //     break;
+  //       // case 'not_in_service':
+  //       //     data = empData.filter(emp => emp.in_service===false);
+  //       //     break;
+  //       case 'intern':
+  //           data = empData.filter(emp => emp?.profile?.job_status.tolowercase()==='intern');
+  //           break;
+  //       case 'probational_period':
+  //           data = empData.filter(emp => emp?.profile?.job_status.tolowercase()==='probation');
+  //           break;
+  //       case 'males':
+  //           data = empData.filter(emp => emp?.profile?.gender.tolowercase() === 'male');
+  //           break;
+  //       case 'females':
+  //           data = empData.filter(emp => emp?.profile?.gender.tolowercase() === 'female');
+  //           break;
+  //       default:
+  //         data = empData;
+  //     } 
+  //     return data
+  // }
+
+  transformedEmployeeList = () => {
+
     const currentView = this.props.currentView
-    //console.log('current view ',currentView)
-    // if (currentView === 'all_employees'){
-    //     return empData
-    // }
-
-
+    var empData = (this.props.employeeList)?.map(emp => ({
+      ...emp,
+      profile:JSON.parse(emp.profile)
+    }))
+    // console.log(empData)
+    // console.log(JSON.parse(empData[0].profile))
+    // console.log(empData[0]?.profile?.toJSON())
     var data = []
+    if(empData.length > 0){
+
     switch (currentView) {
-        case 'in_service':
-            data = empData.filter(emp => emp.in_service===true);
-            break;
-        case 'not_in_service':
-            data = empData.filter(emp => emp.in_service===false);
+        // case 'in_service':
+        //     data = empData.filter(emp => emp.in_service===true);
+        //     break;
+        // case 'not_in_service':
+        //     data = empData.filter(emp => emp.in_service===false);
+        //     break;
+        case 'intern':
+            data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='intern');
             break;
         case 'probational_period':
-            data = empData.filter(emp => emp.probation===true);
+            data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='probation');
             break;
         case 'males':
-            data = empData.filter(emp => emp.gender==='male');
+            data = empData.filter(emp => emp?.profile?.gender?.toLowerCase() === 'male');
             break;
         case 'females':
-            data = empData.filter(emp => emp.gender==='female');
+            data = empData.filter(emp => emp?.profile?.gender?.toLowerCase() === 'female');
             break;
         default:
           data = empData;
       } 
-      return data
-  }
-
-  transformedEmployeeList = () => {
-    return this.props.employeeList.map((emp,i) => ({
+      
+    }
+    return data.map((emp,i) => ({
       ...emp,
       serial_no:i+1,
       viewProfile: () => {
-        console.log({id:emp.id})
+        // console.log({id:emp.id})
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
@@ -379,7 +418,7 @@ class EmployeeList extends React.PureComponent {
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
    
-    let employee_rows = this.filteredEmployees()
+    // let employee_rows = this.filteredEmployees()
     return (
       <Box width='100%' height='84vh'>
         <StyledDataGrid

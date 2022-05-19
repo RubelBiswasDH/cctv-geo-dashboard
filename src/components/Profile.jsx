@@ -50,18 +50,24 @@ const ProfileRow = (props) => {
 
     }
     return (
-    <Grid xs={12} item container sx={{ border:'none' }}>
+    <Grid xs={12} item container sx={{ border:'none', borderTop:'1px solid pink',pb:0,pt:.5 }}>
         <Grid item xs={5}><Typography sx={{...textStyle, opacity: 0.7, fontWeight:300}}>{title}</Typography></Grid>
-        <Grid item xs={7}>{(!profileEdit)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
+        <Grid item xs={7} sx={{p:0}}>{(!profileEdit)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
         : <TextField
             hiddenLabel
             fullWidth
             value={(value)?value:""}
+            placeholder={title}
             variant="standard"
             size="small"
             sx={{border:'none',outline:'none',m:0,p:0}}
-            inputProps={{border:'none',outline:'none',p:0,pl:.25}}
-            onChange={handleChange}          
+            inputProps={{border:'none',outline:'none',m:0,p:0,pl:.25,
+
+                }}
+            InputProps={{border:'none',outline:'none',m:0,p:0,
+            disableUnderline: false        
+        }}
+            onChange={handleChange}      
         />  
       }</Grid>
     </Grid>
@@ -125,6 +131,7 @@ class Profile extends React.PureComponent {
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"House Address"} value={userProfile.house_address} field={"house_address"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Birth Date"} value={userProfile.birth_date} field={"birth_date"}/>
+                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Gender"} value={userProfile.gender} field={"gender"}/>
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status"} value={userProfile.marritial_status} field={"marritial_status"}/>
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"NID"} value={userProfile.nid} field={"nid"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN"} value={userProfile.tin} field={"tin"}/>
@@ -202,7 +209,7 @@ ProfileRow.propTypes = {
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: "-"
+    value: ""
 }
 
 
