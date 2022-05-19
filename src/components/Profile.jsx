@@ -50,18 +50,24 @@ const ProfileRow = (props) => {
 
     }
     return (
-    <Grid xs={12} item container sx={{ border:'none' }}>
+    <Grid xs={12} item container sx={{ border:'none', borderTop:'1px solid pink',pb:0,pt:.5 }}>
         <Grid item xs={5}><Typography sx={{...textStyle, opacity: 0.7, fontWeight:300}}>{title}</Typography></Grid>
-        <Grid item xs={7}>{(!profileEdit)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
+        <Grid item xs={7} sx={{p:0}}>{(!profileEdit)?<Typography sx={{...textStyle, fontWeight:600}}>{(value)?value:"-- -- -- -- -- --"}</Typography>
         : <TextField
             hiddenLabel
             fullWidth
             value={(value)?value:""}
+            placeholder={title}
             variant="standard"
             size="small"
             sx={{border:'none',outline:'none',m:0,p:0}}
-            inputProps={{border:'none',outline:'none',p:0,pl:.25}}
-            onChange={handleChange}          
+            inputProps={{border:'none',outline:'none',m:0,p:0,pl:.25,
+
+                }}
+            InputProps={{border:'none',outline:'none',m:0,p:0,
+            disableUnderline: false        
+        }}
+            onChange={handleChange}      
         />  
       }</Grid>
     </Grid>
@@ -203,7 +209,7 @@ ProfileRow.propTypes = {
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: "-"
+    value: ""
 }
 
 
