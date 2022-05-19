@@ -38,50 +38,56 @@ const FileInput = (props) => {
     );
 }
 const InputButton = (props) => {
-    const {style, onChange} = props
+    const { style, onChange } = props
     const fileInput = React.useRef();
-  
+    var title = (fileInput?.current && fileInput.current.files.length > 0)?fileInput.current?.files[0]?.name:"CSV File"
+
+    // (fileInput.current.files?.length > 0 )?console.log("file : ",fileInput.current.files[0].name):''
+    if(fileInput?.current && fileInput.current.files.length > 0){
+        // console.log(fileInput.current.files.length > 0)
+        // console.log({file: fileInput.current?.files[0]?.name})
+    }
+    
     return (
         <Paper
-sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white',borderRadius:2 }}
-    >
-        <Button 
-          variant="text" 
-          color="primary" 
-          fullWidth
-          sx={{textTransform:'none',borderRadius:2,m:0}}
-          onClick={()=>fileInput.current.click()}
+            sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white', borderRadius: 2 }}
         >
-            <Typography 
-                sx={{
-                    color:'white',
-                    fontSize:'.8em',
-                    fontWeight:800,
-                    pt:.5,
-                    pl:1, 
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start', 
-                    fontSize:"14px",
-                    fontWeight:500,
-                    flex: 1, 
-                    color: 'white', 
-                    opacity: 1,
-                    borderRadius:2
-                }}>
-                    CSV File
+            <Button
+                variant="text"
+                color="primary"
+                fullWidth
+                sx={{ textTransform: 'none', borderRadius: 2, m: 0 }}
+                onClick={() => fileInput.current.click()}
+            >
+                <Typography
+                    sx={{
+                        color: 'white',
+                        fontSize: '.8em',
+                        fontWeight: 800,
+                        pt: .5,
+                        pl: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        flex: 1,
+                        color: 'white',
+                        opacity: 1,
+                        borderRadius: 2
+                    }}>
+                    {title}
                 </Typography>
-        </Button>
-  
-        <input 
-          ref={fileInput} 
-          type="file" 
-          style={{ display: 'none' }} 
-          onChange={onChange}
-        />
-      </Paper>
+            </Button>
+            <input
+                ref={fileInput}
+                type="file"
+                style={{ display: 'none' }}
+                onChange={onChange}
+            />
+        </Paper>
     );
-  }
+}
 
 const GridContent = (props) => {
     const {style} = props
