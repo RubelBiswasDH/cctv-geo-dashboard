@@ -406,25 +406,25 @@ class AdminPanel extends React.PureComponent{
 
 // export default AdminPanel;
 const mapStateToProps = state => ({
-    activityStatus: state.admin.activityStatus,
-    activityStatusOptions: state.admin.activityStatusOptions,
-    department: state.admin.department,
-    departmentOptions: state.admin.departmentOptions,
-    contractType: state.admin.contractType,
-    contractTypeOptions: state.admin.contractTypeOptions,
-    designation: state.admin.designation,
-    designationOptions: state.admin.designationOptions,
-    newUserName: state.admin.newUserName,
-    newUserEmail: state.admin.newUserEmail,
-    newUserMobile:state.admin.newUserMobile,
-    newUserRole: state.admin.newUserRole,
-    newUserRoleOptions: state.admin.newUserRoleOptions,
-    fileInput: state.admin.fileInput,
-    announcementMessage: state.admin.announcementMessage,
-    lateTime: state.admin.lateTime,
-    monthYear: state.admin.monthYear,
-    workingDays: state.admin.workingDays,
-    companySettings: state.admin.companySettings
+    activityStatus: state?.admin?.activityStatus,
+    activityStatusOptions: state?.admin?.activityStatusOptions,
+    department: state?.admin?.department,
+    departmentOptions: state?.admin?.departmentOptions,
+    contractType: state?.admin?.contractType,
+    contractTypeOptions: state?.admin?.contractTypeOptions,
+    designation: state?.admin?.designation,
+    designationOptions: state?.admin?.designationOptions,
+    newUserName: state?.admin?.newUserName,
+    newUserEmail: state?.admin?.newUserEmail,
+    newUserMobile:state?.admin?.newUserMobile,
+    newUserRole: state?.admin?.newUserRole,
+    newUserRoleOptions: state?.admin?.newUserRoleOptions,
+    fileInput: state?.admin?.fileInput,
+    announcementMessage: state?.admin?.announcementMessage,
+    lateTime: state?.admin?.lateTime,
+    monthYear: state?.admin?.monthYear,
+    workingDays: state?.admin?.workingDays,
+    companySettings: state?.admin?.companySettings
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

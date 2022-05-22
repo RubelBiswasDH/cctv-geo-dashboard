@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
-import {setUserProfile, setProfileEdit, setCompanySettings} from '../reducers/adminReducer';
-
+import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
@@ -43,6 +42,9 @@ export function setCompanySettingsAction(data) {
                 if(res.status===200){
                     dispatch(getCompanySettingsAction())
                     alert("Company Setting Successfully Updated")
+                    dispatch(setMonthYear(''))
+                    dispatch(setWorkingDays(''))
+                    dispatch(setLateTime(''))
                 }
                 //console.log('res :', res)
             })
@@ -58,11 +60,14 @@ export function setWorkingDaysAction(data) {
         const token = getAuthToken()
         axios.post(API.SET_WORKING_DAYS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
+                console.log({ response: res})
                 if(res.status===200){
                     // getUserProfile(id)
                     // dispatch(setProfileEdit(false))
-                    // alert("User Successfully Updated")
+                    alert("Working Days Successfully Updated")
+                    dispatch(setMonthYear(''))
+                    dispatch(setWorkingDays(''))
+                    dispatch(setLateTime(''))
                 }
                 //console.log('res :', res)
             })
@@ -82,7 +87,8 @@ export function setLateTimeAction(data) {
                 if(res.status===200){
                     // getUserProfile(id)
                     // dispatch(setProfileEdit(false))
-                    // alert("User Successfully Updated")
+                    alert("Late Successfully Updated")
+                    dispatch(setLateTime(''))
                 }
                 //console.log('res :', res)
             })
@@ -149,10 +155,14 @@ export function createUser(user) {
         //console.log('token: ',token)
         axios.post(API.CREATE_USER, user, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ create_user_response: res.data})
+                // console.log({ create_user_response: res.data})
                 if(res.status===200){
 
                     alert("User Successfully Created")
+                    dispatch(setNewUserEmail(''))
+                    dispatch(setNewUserName(''))
+                    dispatch(setNewUserMobile(''))
+                    dispatch(setNewUserRole('GENERAL'))
                 }
                 //console.log('res :', res)
             })
@@ -203,10 +213,11 @@ export function createNotice(notice) {
         //console.log('token: ',token)
         axios.post(API.SEND_ANNOUNCEMENT, notice, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ notice_response: res.data})
+                // console.log({ notice_response: res.data})
                 if(res.status===200){
 
                     alert("Notice Successfully Send")
+                    dispatch(setAnnouncementMessage(''))
                 }
                 //console.log('res :', res)
             })
