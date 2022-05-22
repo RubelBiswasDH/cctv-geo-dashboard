@@ -25,7 +25,7 @@ export function activateSocket_A() {
       const token = getAuthToken()
       const companyId = localStorage.getItem("companyId")
 
-      window.Pusher.logToConsole = true;
+      window.Pusher.logToConsole = false;
   
       window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
           
@@ -90,8 +90,6 @@ export function activateSocket_A() {
             // Retry?
           }
         });
-        var state = window.pusher.connection.state;
-        console.log("pusher state  after subscribe: ",state)
   
     }
   }
