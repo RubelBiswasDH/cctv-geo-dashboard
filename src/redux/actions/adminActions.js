@@ -2,6 +2,7 @@ import axios from 'axios'
 import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
+import { setToastIsOpen, setToastMessage } from '../reducers/dashboardReducer';
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
@@ -32,19 +33,17 @@ export function setCompanySettingsAction(data) {
     //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValdataating`
-       // dispatch( setIsValdataating(true) )
-        // console.log('user in actions ',data)
-        //console.log('token: ',token)
         axios.post(API.SET_COMPANY_SETTINGS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     dispatch(getCompanySettingsAction())
-                    alert("Company Setting Successfully Updated")
+                    // alert("Company Setting Successfully Updated")
                     dispatch(setMonthYear(''))
                     dispatch(setWorkingDays(''))
                     dispatch(setLateTime(''))
+                    dispatch(setToastMessage("Settings Successfully Updated"))
+                    dispatch(setToastIsOpen(true))
                 }
                 //console.log('res :', res)
             })
@@ -87,8 +86,8 @@ export function setLateTimeAction(data) {
                 if(res.status===200){
                     // getUserProfile(id)
                     // dispatch(setProfileEdit(false))
-                    alert("Late Successfully Updated")
-                    dispatch(setLateTime(''))
+                    // alert("Late Successfully Updated")
+                   
                 }
                 //console.log('res :', res)
             })
@@ -134,7 +133,9 @@ export function setUserProfileAction(id,data) {
                 if(res.status===200){
                     getUserProfile(id)
                     dispatch(setProfileEdit(false))
-                    alert("User Successfully Updated")
+                    dispatch(setToastMessage("User Profile Successfully Updated"))
+                    dispatch(setToastIsOpen(true))
+                    // alert("User Successfully Updated")
                 }
                 //console.log('res :', res)
             })
@@ -151,14 +152,15 @@ export function createUser(user) {
         const token = getAuthToken()
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-        console.log('user in actions ',user)
+        // console.log('user in actions ',user)
         //console.log('token: ',token)
         axios.post(API.CREATE_USER, user, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 // console.log({ create_user_response: res.data})
                 if(res.status===200){
 
-                    alert("User Successfully Created")
+                    dispatch(setToastMessage("User Successfully Created"))
+                    dispatch(setToastIsOpen(true))
                     dispatch(setNewUserEmail(''))
                     dispatch(setNewUserName(''))
                     dispatch(setNewUserMobile(''))
@@ -192,7 +194,8 @@ export function createBulkUser(file) {
             .then(res => {
                 console.log({ create_user_response: res.data})
                 if(res.status===200){
-                    alert("User Successfully Created")
+                    dispatch(setToastMessage("User Successfully Created"))
+                    dispatch(setToastIsOpen(true))
                 }
                 //console.log('res :', res)
             })
@@ -216,7 +219,8 @@ export function createNotice(notice) {
                 // console.log({ notice_response: res.data})
                 if(res.status===200){
 
-                    alert("Notice Successfully Send")
+                    dispatch(setToastMessage("Notice Successfully Send"))
+                    dispatch(setToastIsOpen(true))
                     dispatch(setAnnouncementMessage(''))
                 }
                 //console.log('res :', res)
