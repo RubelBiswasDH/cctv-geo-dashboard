@@ -359,7 +359,7 @@ switch (e.target.name) {
                     name='employeeName'
                     type='text'
                     value={ employeeName }
-                    placeholder='Enter Employee Name...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -382,7 +382,7 @@ switch (e.target.name) {
                     name='employeeEmail'
                     type='text'
                     value={ employeeEmail }
-                    placeholder='Enter Employee Email...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -404,7 +404,7 @@ switch (e.target.name) {
                     name='employeePhone'
                     type='text'
                     value={ employeePhone }
-                    placeholder='Enter Phone...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -427,7 +427,7 @@ switch (e.target.name) {
                     name='companyName'
                     type='text'
                     value={ companyName }
-                    placeholder='Enter Company Name...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -500,7 +500,7 @@ switch (e.target.name) {
                     name='password'
                     type='password'
                     value={ password }
-                    placeholder='Enter Password...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && authError.includes('password') ) || error.password ? true : false
@@ -522,7 +522,7 @@ switch (e.target.name) {
                     name='companyAddress'
                     type='text'
                     value={ companyAddress }
-                    placeholder='Enter Company Address...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.companyAddress? true : false
@@ -544,7 +544,7 @@ switch (e.target.name) {
                     name='password_2'
                     type='password'
                     value={ password_2 }
-                    placeholder='Retype Password...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && authError.includes('password') ) || error.password_2 ? true : false
