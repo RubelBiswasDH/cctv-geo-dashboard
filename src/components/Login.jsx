@@ -171,7 +171,7 @@ class Login extends React.PureComponent {
             <form onSubmit={ this._onSubmit }>
               <Stack spacing={ 2 }>
                 <Box>
-                  <Typography variant='h6'>{ 'Employee Email' }</Typography>
+                  <Typography variant='h6'>{ 'Email' }</Typography>
 
                   <TextField
                     variant='outlined'
