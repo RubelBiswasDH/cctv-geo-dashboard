@@ -286,7 +286,6 @@ switch (e.target.name) {
     const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError } = this.props
     const { error } = this.state
     const {handleAutoCompInputChange, handleAutoCompChange} = this
-    console.log('ac :',companyNameOptions)
     // const autoCompleteOptons = companyNameOptions.map(c => c.Address)
 
     // console.log('autoComplate optons: ', autoCompleteOptons)
