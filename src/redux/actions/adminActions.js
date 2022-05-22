@@ -2,7 +2,7 @@ import axios from 'axios'
 import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
-import { setToastIsOpen, setToastMessage } from '../reducers/dashboardReducer';
+import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
@@ -43,6 +43,7 @@ export function setCompanySettingsAction(data) {
                     dispatch(setWorkingDays(''))
                     dispatch(setLateTime(''))
                     dispatch(setToastMessage("Settings Successfully Updated"))
+                    dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
                 }
                 //console.log('res :', res)
@@ -134,6 +135,7 @@ export function setUserProfileAction(id,data) {
                     getUserProfile(id)
                     dispatch(setProfileEdit(false))
                     dispatch(setToastMessage("User Profile Successfully Updated"))
+                    dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
                     // alert("User Successfully Updated")
                 }
@@ -160,6 +162,7 @@ export function createUser(user) {
                 if(res.status===200){
 
                     dispatch(setToastMessage("User Successfully Created"))
+                    dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
                     dispatch(setNewUserEmail(''))
                     dispatch(setNewUserName(''))
@@ -194,6 +197,7 @@ export function createBulkUser(file) {
             .then(res => {
                 console.log({ create_user_response: res.data})
                 if(res.status===200){
+                    dispatch(setToastSeverity('success'))
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastIsOpen(true))
                 }
@@ -220,6 +224,7 @@ export function createNotice(notice) {
                 if(res.status===200){
 
                     dispatch(setToastMessage("Notice Successfully Send"))
+                    dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
                     dispatch(setAnnouncementMessage(''))
                 }

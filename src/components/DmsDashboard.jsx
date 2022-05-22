@@ -137,7 +137,7 @@ class DmsDashboard extends React.PureComponent {
 
   render() {
     const { start_date, end_date, isAnalyticsDialogOpen } = this.state
-    const { isTaskThreadOpen, isTaskLoading, user, feedback, toastIsOpen, toastMessage } = this.props
+    const { isTaskThreadOpen, isTaskLoading, user, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
     return (
       <Box sx={ containerStyles }>
         <NavBar />
@@ -284,7 +284,7 @@ class DmsDashboard extends React.PureComponent {
         <Snackbar 
           anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
           open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
-          <Alert onClose={this._handleToastClose} severity="success" sx={{ width: '100%' }}>
+          <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
             {toastMessage}
           </Alert>
         </Snackbar>
@@ -323,6 +323,7 @@ const mapStateToProps = state => ({
   currentView: state?.dashboard?.currentView,
   toastIsOpen: state?.dashboard?.toastIsOpen,
   toastMessage: state?.dashboard?.toastMessage,
+  toastSeverity: state?.dashboard?.toastSeverity
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
