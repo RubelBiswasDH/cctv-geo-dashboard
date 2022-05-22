@@ -5,7 +5,7 @@ const initialState = {
     currentView: 'attendance',
     toastIsOpen: false,
     toastMessage: '',
-    toastSeverity: ''
+    toastSeverity: 'success'
 }
 
 const dashboardSlice = createSlice({

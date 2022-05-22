@@ -24,12 +24,12 @@ class StyledInputField extends React.PureComponent {
         return (
             <Paper
                 xs={12}
-                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#887A7A', color: 'white', ...style }}
+                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000', border:'1px solid #000000', ...style }}
             >
                 <InputBase
-                    sx={{ ml: 3, mt: .5, flex: 1, color: 'white', opacity: 1 }}
+                    sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
                     placeholder={placeholder}
-                    inputProps={{ 'aria-label': {ariaLabel}, color: 'white' }}
+                    inputProps={{ 'aria-label': {ariaLabel}, color: '#000000' }}
                     value={value}
                     onChange={handleChange}
                 />

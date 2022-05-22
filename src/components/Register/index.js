@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete, Grid } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete, Grid, Snackbar, Alert } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
 import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
 import { register,getCompanyList } from '../../redux/actions/registerActions'
 import bkoiLogo from '../../assets/barikoi-logo.png'
+import { setToastIsOpen } from '../../redux/reducers/dashboardReducer'
 
 // Import Actions & Methods
 //import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
@@ -39,7 +40,10 @@ class Register extends React.PureComponent {
     }
   }
 
-
+  _handleToastClose = () => {
+    const { dispatch } = this.props
+    dispatch( setToastIsOpen(false) )
+  }
   // handleAutoCompInputChange
   handleAutoCompInputChange = e => {
     const { dispatch } = this.props
@@ -283,7 +287,7 @@ switch (e.target.name) {
   }
 
   render() {
-    const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
     const { error } = this.state
     const {handleAutoCompInputChange, handleAutoCompChange} = this
     // const autoCompleteOptons = companyNameOptions.map(c => c.Address)
@@ -594,6 +598,13 @@ switch (e.target.name) {
             </Box>
           </Box>
         </Paper>
+        <Snackbar 
+          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+          open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
+          <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
+            {toastMessage}
+          </Alert>
+        </Snackbar>
       </Container>
     )
   }
@@ -676,7 +687,10 @@ const mapStateToProps = state => ({
   companyLatitude: state.register.companyNameLatiitude,
   password: state.register.password,
   password_2: state.register.password_2,
-  authError: state.register.error
+  authError: state.register.error,
+  toastIsOpen: state?.dashboard?.toastIsOpen,
+  toastMessage: state?.dashboard?.toastMessage,
+  toastSeverity: state?.dashboard?.toastSeverity
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
