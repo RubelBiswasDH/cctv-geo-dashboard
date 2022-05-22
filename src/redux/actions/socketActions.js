@@ -25,7 +25,7 @@ export function activateSocket_A() {
       const token = getAuthToken()
       const companyId = localStorage.getItem("companyId")
 
-      window.Pusher.logToConsole = true;
+      window.Pusher.logToConsole = false;
   
       window.pusher = new window.Pusher(SOCKET_A.PUSHER_APP_KEY, {
           
@@ -67,11 +67,11 @@ export function activateSocket_A() {
       // Task Channel
       window.pusher.subscribe(SOCKET_A.CHANNEL+companyId)
         .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
-          console.log("Socket data: ",data)
+          // console.log("Socket data: ",data)
   
           //dispatch( updateAnnouncements(data) )
           const transformedAnnouncements = transformAnnouncements([ data ])
-          console.log('test transformedAnnouncements ', transformedAnnouncements)
+          // console.log('test transformedAnnouncements ', transformedAnnouncements)
           // Add Socket Data To Redux State
           dispatch( updateAnnouncements(transformedAnnouncements))
   
@@ -90,8 +90,6 @@ export function activateSocket_A() {
             // Retry?
           }
         });
-        var state = window.pusher.connection.state;
-        console.log("pusher state  after subscribe: ",state)
   
     }
   }

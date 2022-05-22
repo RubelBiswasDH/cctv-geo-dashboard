@@ -10,7 +10,7 @@ export function login(user) {
 
         axios.post(AUTH.LOGIN_API, user)
             .then(res => {
-                console.log({ auth: res.data})
+                // console.log({ auth: res.data})
                 if(res.data && res.data.token) {
                     const token = res.data.token
                     //console.log("token at login api ",token)

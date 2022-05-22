@@ -1,0 +1,125 @@
+DATE: May 21, 2022
+==================
+
+-- `getAuthToken()` method repeated across multiple files
+-- Some action params are unused
+-- Semi-colon usage inconsistent
+-- Class components constructor not needed from ES6
+-- Lots of indentation inconsistency
+-- `.map()` methods inconsistent in some places. Should only return values. For external operation, use `.forEach()`
+-- `const` vs `var` inconsistency
+-- Remove Pusher Logs on production
+-- Company Settings should have 1 `Update` button
+
+/src/components/common/MapGL.jsx
+    -- commented out codes
+    -- Line 35 should be `if(prevState.map !== map && map) {` only execute when map is valid
+    -- Line 200 missing return in `if` condition
+
+
+/src/components/common/StyledDataGrid.jsx
+    -- commented out codes
+
+
+/src/components/common/StyledDataGrid.jsx
+    -- commented out codes
+
+
+/src/components/common/StyledSelect.jsx
+    -- commented out codes
+
+
+/src/components/common/Register/index.js
+    -- commented out codes
+    -- indentation inconsistent
+    -- `switch()` default missing
+    -- component file structure inconsistent
+
+/src/components/Login.jsx
+    -- State value variable names inconsistent
+    -- Some indentation inconsistent in `render()` method
+
+
+/src/components/FilterEmployee.jsx
+    -- `countEmployee` naming inconsistent
+
+
+/src/components/Profile.jsx
+    -- ternary conditions inconsistent
+
+
+/src/redux/reducers/adminReducer.js
+    -- Some unnecessary comments
+    -- Minor indentation inconsistency
+
+
+/src/redux/reducers/announcementReducer.js
+    -- `dayjs` import unused
+
+
+/src/redux/reducers/attendanceReducer.js
+    -- `console.log()` not removed
+
+
+/src/redux/reducers/dashboardReducer.js
+    -- `console.log()` not removed
+
+
+/src/redux/reducers/employeeReducer.js
+    -- `import { unionArrayOfObjects } from '../../utils/utils'` unused
+    -- `import { sortByDate } from '../actions/taskActions'` unused
+
+
+/src/redux/actions/adminActions.js
+    -- `console.log` not removed
+    -- Lots of unnecessary commented out codes
+    -- Unused `import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'`
+    -- `createNotice(notice)` method comments not clear enough. No params purity check
+    -- `createBulkUser(file)` parmas purity check missing
+    -- `createUser(user)` method comments not clear enough. Params purity check missing
+    -- `setUserProfileAction(id,data)` comments not clear enough. Params purity check missing
+    -- `getUserProfile(user_id)` Params purity check missing
+    -- Actions comments need to be clearer
+
+
+/src/redux/actions/announcementsActions.js
+    -- Unused imports
+    -- Too many codes commented out
+    -- `generatePushNotifications(tasks, prevTasks)` unused
+
+
+/src/redux/actions/attendanceActions.js
+    -- Unused imports
+    -- Too many codes commented out
+
+
+/src/redux/actions/authActions.js
+    -- commented out codes
+
+
+/src/redux/actions/dashboardActions.js
+    -- unused file
+
+
+/src/redux/actions/employeeActions.js
+    -- commented out codes
+
+
+/src/redux/actions/registerActions.js
+    -- Unused imports
+    -- commented out codes
+
+
+/src/redux/actions/socketActions.js
+    -- Unused imports
+    -- commented out codes
+    -- `const` and `var` inconsistency
+
+
+/src/utils/utils.js
+    -- All file scope global variables should be on top
+    -- `transformAttendance(attendance)` method ternary conditions are not spaced properly
+    -- `dayjs()` params undefined or null check missing
+    -- `const` and `var` inconsistent
+    -- `playNotificationSound(key)` params undefined or null check missing
+    -- `unionArrayOfObjects(array1, array2, key)` params undefined or null check missing

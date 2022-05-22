@@ -171,7 +171,7 @@ class Login extends React.PureComponent {
             <form onSubmit={ this._onSubmit }>
               <Stack spacing={ 2 }>
                 <Box>
-                  <Typography variant='h6'>{ 'Employee Email' }</Typography>
+                  <Typography variant='h6'>{ 'Email' }</Typography>
 
                   <TextField
                     variant='outlined'
@@ -181,7 +181,7 @@ class Login extends React.PureComponent {
                     name='employeeEmail'
                     type='text'
                     value={ employeeEmail }
-                    placeholder='Enter Employee Email...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
@@ -203,7 +203,7 @@ class Login extends React.PureComponent {
                     name='password'
                     type='password'
                     value={ password }
-                    placeholder='Enter Password...'
+                    placeholder=''
                     onChange={ this._onChange }
                     error={
                       ( authError && authError.includes('password') ) || error.password ? true : false

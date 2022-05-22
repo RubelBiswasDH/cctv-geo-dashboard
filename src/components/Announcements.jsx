@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
+  { field: 'announced_time', headerName: 'Announced At', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'announcement', headerName: 'Announcement', minWidth: 250, sortable: false,flex: 1.6, filter: true, filterable: true  },
   { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
@@ -72,14 +72,13 @@ class Announcements extends React.PureComponent {
 
   mappedAnnouncements= () => {
     const {announcements} = this.props;
-
     const announcementInfo = announcements.map((a,i) => {
 
       return ({
         "id": a.id,
         "serial_no":i+1,
         "name": a.name,
-        "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "announced_time": dayjs(a.created_at).format('YYYY-MM-DD h:mm:ss') ,
         "announcement": a.description,
       })
     })

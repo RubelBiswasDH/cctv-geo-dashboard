@@ -46,7 +46,17 @@ class FilterEmpolyee extends React.PureComponent{
                 profile:JSON.parse(emp.profile)
             }))
             // console.log(empList)
-            return empList.filter(emp => emp?.profile[key]?.toLowerCase() === value).length
+            let count=0
+            empList.forEach(
+                (emp) => {
+                    if(emp.profile && emp?.profile[key]){
+                        if(emp?.profile[key]?.toLowerCase() === value){
+                            count+=1
+                        }
+                    }
+                })
+            return count
+            // return empList.filter(emp => emp?.profile[key]?.toLowerCase() === value).length
         }
         return 0
     }
@@ -104,10 +114,10 @@ class FilterEmpolyee extends React.PureComponent{
 }
 
 const mapStateToProps = state => ({
-    employeeEmail: state.auth.employeeEmail,
-    password: state.auth.password,
-    authError: state.auth.error,
-    currentView: state.dashboard.currentView,
+    employeeEmail: state?.auth?.employeeEmail,
+    password: state?.auth?.password,
+    authError: state?.auth?.error,
+    currentView: state?.dashboard?.currentView,
     employeeList: state?.employeeList?.employeeList,
   })
 

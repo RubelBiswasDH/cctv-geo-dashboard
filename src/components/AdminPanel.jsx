@@ -8,6 +8,7 @@ import StyledSelect from './common/StyledSelect'
 
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
 
 const FileInput = (props) => {
@@ -128,7 +129,11 @@ class AdminPanel extends React.PureComponent{
             // console.log('dipatch create user')
         }
         else{ 
-            alert('Notice field is empty')
+            dispatch(setToastMessage('Notice field is empty'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+
+            // alert('Notice field is empty')
         }
     }
 
@@ -167,7 +172,9 @@ class AdminPanel extends React.PureComponent{
             // console.log('dipatch create user')
         }
         else{ 
-            alert('All fields are required')
+            dispatch(setToastMessage('All fields are required'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
         }
         //console.log('create user clicked, user is: ', user)
     }
@@ -183,7 +190,9 @@ class AdminPanel extends React.PureComponent{
             dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
         else {
-            alert('Field is required')
+            dispatch(setToastMessage('Time is required'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
         }
     }
 
@@ -201,7 +210,9 @@ class AdminPanel extends React.PureComponent{
             dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
         else {
-            alert('both fields are required')
+            dispatch(setToastMessage('both fields are required'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
         }
     }
 
@@ -406,25 +417,25 @@ class AdminPanel extends React.PureComponent{
 
 // export default AdminPanel;
 const mapStateToProps = state => ({
-    activityStatus: state.admin.activityStatus,
-    activityStatusOptions: state.admin.activityStatusOptions,
-    department: state.admin.department,
-    departmentOptions: state.admin.departmentOptions,
-    contractType: state.admin.contractType,
-    contractTypeOptions: state.admin.contractTypeOptions,
-    designation: state.admin.designation,
-    designationOptions: state.admin.designationOptions,
-    newUserName: state.admin.newUserName,
-    newUserEmail: state.admin.newUserEmail,
-    newUserMobile:state.admin.newUserMobile,
-    newUserRole: state.admin.newUserRole,
-    newUserRoleOptions: state.admin.newUserRoleOptions,
-    fileInput: state.admin.fileInput,
-    announcementMessage: state.admin.announcementMessage,
-    lateTime: state.admin.lateTime,
-    monthYear: state.admin.monthYear,
-    workingDays: state.admin.workingDays,
-    companySettings: state.admin.companySettings
+    activityStatus: state?.admin?.activityStatus,
+    activityStatusOptions: state?.admin?.activityStatusOptions,
+    department: state?.admin?.department,
+    departmentOptions: state?.admin?.departmentOptions,
+    contractType: state?.admin?.contractType,
+    contractTypeOptions: state?.admin?.contractTypeOptions,
+    designation: state?.admin?.designation,
+    designationOptions: state?.admin?.designationOptions,
+    newUserName: state?.admin?.newUserName,
+    newUserEmail: state?.admin?.newUserEmail,
+    newUserMobile:state?.admin?.newUserMobile,
+    newUserRole: state?.admin?.newUserRole,
+    newUserRoleOptions: state?.admin?.newUserRoleOptions,
+    fileInput: state?.admin?.fileInput,
+    announcementMessage: state?.admin?.announcementMessage,
+    lateTime: state?.admin?.lateTime,
+    monthYear: state?.admin?.monthYear,
+    workingDays: state?.admin?.workingDays,
+    companySettings: state?.admin?.companySettings
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

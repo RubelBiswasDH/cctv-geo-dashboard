@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
-import {setUserProfile, setProfileEdit, setCompanySettings} from '../reducers/adminReducer';
-
+import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
+import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
@@ -33,16 +33,18 @@ export function setCompanySettingsAction(data) {
     //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValdataating`
-       // dispatch( setIsValdataating(true) )
-        // console.log('user in actions ',data)
-        //console.log('token: ',token)
         axios.post(API.SET_COMPANY_SETTINGS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     dispatch(getCompanySettingsAction())
-                    alert("Company Setting Successfully Updated")
+                    // alert("Company Setting Successfully Updated")
+                    dispatch(setMonthYear(''))
+                    dispatch(setWorkingDays(''))
+                    dispatch(setLateTime(''))
+                    dispatch(setToastMessage("Settings Successfully Updated"))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
                 }
                 //console.log('res :', res)
             })
@@ -58,11 +60,14 @@ export function setWorkingDaysAction(data) {
         const token = getAuthToken()
         axios.post(API.SET_WORKING_DAYS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
+                console.log({ response: res})
                 if(res.status===200){
                     // getUserProfile(id)
                     // dispatch(setProfileEdit(false))
-                    // alert("User Successfully Updated")
+                    alert("Working Days Successfully Updated")
+                    dispatch(setMonthYear(''))
+                    dispatch(setWorkingDays(''))
+                    dispatch(setLateTime(''))
                 }
                 //console.log('res :', res)
             })
@@ -82,7 +87,8 @@ export function setLateTimeAction(data) {
                 if(res.status===200){
                     // getUserProfile(id)
                     // dispatch(setProfileEdit(false))
-                    // alert("User Successfully Updated")
+                    // alert("Late Successfully Updated")
+                   
                 }
                 //console.log('res :', res)
             })
@@ -128,7 +134,10 @@ export function setUserProfileAction(id,data) {
                 if(res.status===200){
                     getUserProfile(id)
                     dispatch(setProfileEdit(false))
-                    alert("User Successfully Updated")
+                    dispatch(setToastMessage("User Profile Successfully Updated"))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
+                    // alert("User Successfully Updated")
                 }
                 //console.log('res :', res)
             })
@@ -145,14 +154,20 @@ export function createUser(user) {
         const token = getAuthToken()
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-        console.log('user in actions ',user)
+        // console.log('user in actions ',user)
         //console.log('token: ',token)
         axios.post(API.CREATE_USER, user, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ create_user_response: res.data})
+                // console.log({ create_user_response: res.data})
                 if(res.status===200){
 
-                    alert("User Successfully Created")
+                    dispatch(setToastMessage("User Successfully Created"))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
+                    dispatch(setNewUserEmail(''))
+                    dispatch(setNewUserName(''))
+                    dispatch(setNewUserMobile(''))
+                    dispatch(setNewUserRole('GENERAL'))
                 }
                 //console.log('res :', res)
             })
@@ -182,7 +197,9 @@ export function createBulkUser(file) {
             .then(res => {
                 console.log({ create_user_response: res.data})
                 if(res.status===200){
-                    alert("User Successfully Created")
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastMessage("User Successfully Created"))
+                    dispatch(setToastIsOpen(true))
                 }
                 //console.log('res :', res)
             })
@@ -203,10 +220,13 @@ export function createNotice(notice) {
         //console.log('token: ',token)
         axios.post(API.SEND_ANNOUNCEMENT, notice, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ notice_response: res.data})
+                // console.log({ notice_response: res.data})
                 if(res.status===200){
 
-                    alert("Notice Successfully Send")
+                    dispatch(setToastMessage("Notice Successfully Send"))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
+                    dispatch(setAnnouncementMessage(''))
                 }
                 //console.log('res :', res)
             })

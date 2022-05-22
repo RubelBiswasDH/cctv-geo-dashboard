@@ -14,7 +14,7 @@ function CustomizedInputBase() {
     return (
       <Paper
         component="form"
-        sx={{ display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px' }}
+        sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px',pl:3.5 }}
       >
         <InputBase
           sx={{ mt:.5, flex: 1,color:'white',opacity: 1}}

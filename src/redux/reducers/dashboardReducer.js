@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     currentView: 'attendance',
+    toastIsOpen: false,
+    toastMessage: '',
+    toastSeverity: ''
 }
 
 const dashboardSlice = createSlice({
@@ -13,9 +16,18 @@ const dashboardSlice = createSlice({
     //console.log("action data: ",action, action.payload)
       state.currentView = action.payload
     },
-
+    setToastIsOpen: (state, action) => {
+      state.toastIsOpen = action.payload
+    },
+    setToastMessage: (state, action) => {
+      state.toastMessage = action.payload
+    },
+    setToastSeverity: (state, action) => {
+      state.toastSeverity = action.payload
+    }
+    
   }
 })
 
-export const { setCurrentView } = dashboardSlice.actions
+export const { setCurrentView, setToastIsOpen, setToastMessage, setToastSeverity } = dashboardSlice.actions
 export default dashboardSlice.reducer

@@ -25,10 +25,12 @@ import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
 import {getAttendance}  from '../redux/actions/attendanceActions'
 import {getAnnouncements} from '../redux/actions/announcementsActions'
-// import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
-import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
 import {getEmployee}  from '../redux/actions/employeeActions'
+import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
+
+// import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
+import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 
 class DmsDashboard extends React.PureComponent {
   state = {
@@ -79,7 +81,12 @@ class DmsDashboard extends React.PureComponent {
     // Deactivate Socket
     dispatch( deactivateSocket() )
   }
+  //handleToastClose
 
+  _handleToastClose = () => {
+    const { dispatch } = this.props
+    dispatch( setToastIsOpen(false) )
+  }
   // Open task thread
   _openTaskThread = () => {
     const { dispatch } = this.props
@@ -130,7 +137,7 @@ class DmsDashboard extends React.PureComponent {
 
   render() {
     const { start_date, end_date, isAnalyticsDialogOpen } = this.state
-    const { isTaskThreadOpen, isTaskLoading, user, feedback } = this.props
+    const { isTaskThreadOpen, isTaskLoading, user, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
     return (
       <Box sx={ containerStyles }>
         <NavBar />
@@ -274,6 +281,13 @@ class DmsDashboard extends React.PureComponent {
                 { feedback?.message ? feedback.message : 'Something went wrong!' }
             </Alert>
         </Snackbar>
+        <Snackbar 
+          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+          open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
+          <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
+            {toastMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     )
   }
@@ -306,7 +320,10 @@ const mapStateToProps = state => ({
   queryCategory: state.task.queryCategory,
   user: state.auth.user,
   feedback: state.analytics.errorAnalytics,
-  currentView: state.dashboard.currentView
+  currentView: state?.dashboard?.currentView,
+  toastIsOpen: state?.dashboard?.toastIsOpen,
+  toastMessage: state?.dashboard?.toastMessage,
+  toastSeverity: state?.dashboard?.toastSeverity
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

@@ -105,7 +105,7 @@ class Profile extends React.PureComponent {
                 )}
             >
                 <Grid xs={12} container spacing={0} sx={{ mt: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <StyledAppBar title={`Name: ${userProfile.name}`} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
+                    <StyledAppBar title={`Name: ${(userProfile?.name)?userProfile?.name:""}`} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
                 </Grid>
                 <Grid xs={12} container spacing={0} sx={{ display: 'flex',flexDirection:'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
                     {/* Left */}
