@@ -2,6 +2,7 @@ import axios from 'axios'
 import { AUTH, API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanyName,setCompanyNameOptions, setPassword, setError  } from '../reducers/registerReducer'
 import {login} from '../actions/authActions'
+import {setToastMessage, setToastSeverity, setToastIsOpen} from "../reducers/dashboardReducer"
 // Login Action
 export function register(user) {
     return dispatch => {
@@ -10,7 +11,7 @@ export function register(user) {
 
         axios.post(AUTH.REGISTER_API, user)
             .then(res => {
-                // console.log({ register: res.data})
+                // console.log({ register: res})
                 dispatch( login({ email: user.email, password:user.password }) )
                 //window.location.href = '/login';
                 // if(res.data && res.data.token) {
@@ -25,7 +26,17 @@ export function register(user) {
             })
             .catch(err => {
                 console.error(err)
-
+                // console.log({err})
+                // console.log("err: ", err?.response?.data?.message.phone[0])
+                if(err?.response?.data?.message?.email){
+                    dispatch(setToastMessage(err?.response?.data?.message?.email[0]))
+                }
+                else if(err?.response?.data?.message?.phone){
+                    dispatch(setToastMessage(err?.response?.data?.message?.phone[0]))
+                }
+                    
+                dispatch(setToastSeverity('error'))
+                dispatch(setToastIsOpen(true))
                 // Dispatch `authReducer` Values to Redux State
                 // dispatch( setIsAuthenticated(false) )
                 // dispatch( setToken(null) )
