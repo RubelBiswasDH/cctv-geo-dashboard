@@ -140,17 +140,21 @@ class AdminPanel extends React.PureComponent{
     handleFileUpload = e => {
         e.preventDefault()
         const {dispatch,fileInput} = this.props
-        const file = {users:fileInput}
+        console.log('fileInput: ',fileInput)
+        // // const file = {users:fileInput}
+        const formData = new FormData();
+        formData.append("users",fileInput)
         // const users = {users: fileInput}
-        dispatch(createBulkUser(fileInput))
+        dispatch(createBulkUser(formData))
         //console.log('file uploaded, file: ',this.props.fileInput)
     }
-
 
     handleFileInput = e => {
         const {dispatch,fileInput} = this.props
         e.preventDefault()
         const file = e.target.files[0]
+        // const formData = new FormData();
+        // formData.append("users",file)
         dispatch(setFileInput(file))
         //console.log('file ',file)
     }

@@ -178,20 +178,24 @@ export function createUser(user) {
 }
 
 // Create Bulk User
-export function createBulkUser(file) {
+export function createBulkUser(data) {
     //console.log('user: ',user)
     return dispatch => {
+        for(var pair of data) {
+            console.log('f ; ', pair);
+        }
+        // console.log("Data : ", data[1])
         const token = getAuthToken()
-        console.log('user in actions ',file)
+        console.log(' users data in actions ',data)
         //console.log('token: ',token)
-        axios.post(API.CREATE_BULK_USER,file, { 
+        axios.post(API.CREATE_BULK_USER, {'users':data}, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
                 'Content-Type': 'multipart/form-data',
-                Accept:'application/octet-stream',
+                // Accept:'application/octet-stream',
                 // 'Access-Control-Allow-Origin': '*',
 
-                },
+                }
             // params:{users:file} 
         })
             .then(res => {
