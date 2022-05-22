@@ -81,6 +81,10 @@ const theme = createTheme({
       main: '#77DD77',
       contrastText: '#fff',
     },
+    btnSubmit: {
+      main: '#009688',
+      contrastText: '#fff',
+    },
     btnOrange: {
       main: '#FF6961',
       contrastText: '#fff',

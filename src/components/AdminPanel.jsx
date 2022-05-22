@@ -340,13 +340,14 @@ class AdminPanel extends React.PureComponent{
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'flex-start', 
-                                        backgroundColor: '#887A7A',
+                                        backgroundColor: 'white',
                                         fontSize:"14px",
                                         fontWeight:500,
                                         flex: 1, 
-                                        color: 'white', 
+                                        color: 'black', 
                                         opacity: 1,
-                                        borderRadius:2
+                                        borderRadius:2,
+                                        border:'1px solid black'
                                         }}>
                                         {`Late Time: ${(companySettings && companySettings.late_time)?companySettings.late_time:""}`}
                                 </Typography>                            
@@ -359,13 +360,14 @@ class AdminPanel extends React.PureComponent{
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'flex-start', 
-                                            backgroundColor: '#887A7A',
+                                            backgroundColor: 'white',
                                             fontSize:"14px",
                                             fontWeight:500,
                                             flex: 1, 
-                                            color: 'white', 
+                                            color: 'black', 
                                             opacity: 1,
-                                            borderRadius:2
+                                            borderRadius:2,
+                                            border:'1px solid black'
                                             }}>
                                             {`Working Days : ${(companySettings && companySettings.working_day)?companySettings?.working_day[dayjs(new Date()).format('YY-MM').toString()]:""}`}
                                 </Typography>  
@@ -392,13 +394,14 @@ class AdminPanel extends React.PureComponent{
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'flex-start', 
-                                            backgroundColor: '#887A7A',
+                                            backgroundColor: 'white',
                                             fontSize:"14px",
                                             fontWeight:500,
                                             flex: 1, 
-                                            color: 'white', 
+                                            color: 'black',  
                                             opacity: 1,
-                                            borderRadius:2
+                                            borderRadius:2,
+                                            border:'1px solid black'
                                             }}>
                                             {"Late Count Policy"}
                                     </Typography>

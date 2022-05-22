@@ -21,7 +21,7 @@ class StyledButton extends React.PureComponent{
         const {onClick,style,children,sx} = this.props
         // console.log('sx: ',sx)
         return (
-        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnGreen">
+        <Button onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnSubmit">
             <Typography sx={{fontSize:'.8em',fontWeight:800,p:.5,pt:.75,...sx}}>{children}</Typography>
         </Button>
     )
