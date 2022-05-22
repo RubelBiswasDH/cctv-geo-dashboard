@@ -72,7 +72,6 @@ class Announcements extends React.PureComponent {
 
   mappedAnnouncements= () => {
     const {announcements} = this.props;
-    console.log({announcements})
     const announcementInfo = announcements.map((a,i) => {
 
       return ({
