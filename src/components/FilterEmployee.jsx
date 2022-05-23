@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Grid, Box, Typography } from '@mui/material'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import { setView } from '../utils/utils'
 
 const CustomButton = (props) => {
         const {sx, name, currentView} = props
@@ -30,8 +31,12 @@ class FilterEmpolyee extends React.PureComponent{
     constructor(props){
         super(props)
         this.countEmployee = this.countEmployee.bind(this)
+        this.handleView = this.handleView.bind(this)
     }
-
+    handleView = (view) => {
+        this.props.dispatch(setCurrentView(view))
+        setView(view)
+    }
     countEmployee = (key,value) => {
        
         // console.log({key,value})
@@ -63,7 +68,7 @@ class FilterEmpolyee extends React.PureComponent{
 
     render(){
         const {currentView} = this.props
-        const {countEmployee} = this
+        const {countEmployee, handleView} = this
         return (
         <Box sx={theme => ({padding: {
             xs: `${ theme.spacing(0,2) }`,
@@ -73,38 +78,38 @@ class FilterEmpolyee extends React.PureComponent{
           width: '100%'})} >
             <Grid container spacing={1} direction="row" sx={{p:0,m:0,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
                 {/* <Grid item sx={4} lg={1.7}>
-                    <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))}>Total employees: 346</CustomButton>
+                    <CustomButton sx={{}} onClick={() => this.props.dispatch(setView('total_employees'))}>Total employees: 346</CustomButton>
                 </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('attendance'))} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('attendance')} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('announcements'))} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('announcements')} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('total_employees')} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
                     </Grid>
                     {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('in_service'))} name={'in_service'} currentView ={currentView} >In service: 232</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('in_service'))} name={'in_service'} currentView ={currentView} >In service: 232</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('not_in_service'))} name={'not_in_service'} currentView ={currentView} >Not in service: 43</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('not_in_service'))} name={'not_in_service'} currentView ={currentView} >Not in service: 43</CustomButton>
                     </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('males'))} name={'males'} currentView ={currentView} >Total males: {countEmployee("gender","male")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('males')} name={'males'} currentView ={currentView} >Total males: {countEmployee("gender","male")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('females'))} name={'females'} currentView ={currentView} >Total females {countEmployee("gender","female")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('females')} name={'females'} currentView ={currentView} >Total females {countEmployee("gender","female")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('probational_period'))} name={'probational_period'} currentView ={currentView} >Probationary period: {countEmployee("job_status","probation")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('probational_period')} name={'probational_period'} currentView ={currentView} >Probationary period: {countEmployee("job_status","probation")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('intern'))} name={'intern'} currentView ={currentView} >Intern: {countEmployee("job_status","intern")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleView('intern')} name={'intern'} currentView ={currentView} >Intern: {countEmployee("job_status","intern")}</CustomButton>
                     </Grid>
                   
                     {/* <Grid sx={{m:0,p:0}} item xs={6} sm={4} md={3} xl={1.7}>               
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('profile'))}>Profile</CustomButton>
+                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setView('profile'))}>Profile</CustomButton>
                     </Grid> */}
  
             </Grid>
