@@ -1,18 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Stack, Item, Button, Grid, Box, Typography } from '@mui/material'
+import { Button, Grid, Box, Typography } from '@mui/material'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 
 const CustomButton = (props) => {
         const {sx, name, currentView} = props
-        const [btnStyle,setBtnStyle] = React.useState({
+        const btnStyle = {
             textTransform:'none',
             fontSize: '.8em',
             borderRadius: '.3em',
             minWidth:'100%',
             background:'transparent',
             border: '2px solid black',
-        })
+        }
 
         const activeBtn = (currentView === name)? {background:'#ADD8E6'}:{}
 
@@ -71,7 +71,7 @@ class FilterEmpolyee extends React.PureComponent{
           },
          
           width: '100%'})} >
-            <Grid container xs={12} spacing={1} direction="row" sx={{p:0,m:0,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
+            <Grid container spacing={1} direction="row" sx={{p:0,m:0,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
                 {/* <Grid item sx={4} lg={1.7}>
                     <CustomButton sx={{}} onClick={() => this.props.dispatch(setCurrentView('total_employees'))}>Total employees: 346</CustomButton>
                 </Grid> */}
@@ -120,18 +120,6 @@ const mapStateToProps = state => ({
     currentView: state?.dashboard?.currentView,
     employeeList: state?.employeeList?.employeeList,
   })
-
-const boxStyle = {
-    display:'flex',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    padding: '10px',
-    pb:0,
-    mt:'10px',
-    mb:'0px',
-    gap:'4vw'
-}
 
 const mapDispatchToProps = dispatch => ({ dispatch })
   

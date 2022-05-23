@@ -1,15 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography, Paper, InputBase, Button, TextField } from '@mui/material'
+import { Box, Grid, Typography, TextField } from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
-import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
-import StyledSelect from './common/StyledSelect'
 import image from '../assets/profile-image.jpg'
 
-import {getUserProfile, setUserProfileAction} from '../redux/actions/adminActions'
-import { setUserProfile, updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
+import {setUserProfileAction} from '../redux/actions/adminActions'
+import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 // import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
 // import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
@@ -36,9 +34,7 @@ const GridContent = (props) => {
 }
 
 const ProfileRow = (props) => {
-    const {title, value,field, dispatch, profileEdit,userProfile} = props
-    const [focus,setFocus] = React.useState(false)
-
+    const {title, value,field, dispatch, profileEdit} = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize:'12px',
@@ -74,11 +70,7 @@ const ProfileRow = (props) => {
 }
 
 class Profile extends React.PureComponent {
-    constructor(props) {
-        super(props)
-    }
 
-    
     componentDidMount(){
         // this.props.dispatch(getUserProfile('22'));
     }
@@ -103,16 +95,16 @@ class Profile extends React.PureComponent {
                 }
                 )}
             >
-                <Grid xs={12} container spacing={0} sx={{ mt: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid container spacing={0} sx={{ mt: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <StyledAppBar title={`Name: ${(userProfile?.name)?userProfile?.name:""}`} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
                 </Grid>
-                <Grid xs={12} container spacing={0} sx={{ display: 'flex',flexDirection:'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+                <Grid container spacing={0} sx={{ display: 'flex',flexDirection:'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
                     {/* Left */}
                     <Grid xs={4} item container sx={{display:'flex',p:0,pl:3,pt:3,flexDirection:'column',alignItems:'center',justifyContent:'flex-start',border:''}}>
                         <Grid item xs={12} sx={{mt: 2, p: 0,gap:1.5,border:'' }}>
                             <img
                                 src={ image }
-                                alt='profile-image'
+                                alt='profile'
                                 width='100%'
                                 height='100%'
                             />    

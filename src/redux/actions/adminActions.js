@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API } from '../../App.config'
-import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
 import {getEmployee}  from '../actions/employeeActions'
