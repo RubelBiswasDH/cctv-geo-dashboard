@@ -59,7 +59,7 @@ class Login extends React.PureComponent {
     const validatePassword = this._validatePassword(password)
     if(validateEmployeeEmail.success && validatePassword.success) {
       // Login
-      dispatch( login({ email: employeeEmail, password }) )
+      dispatch( login({ email: employeeEmail, password, device:'web' }) )
 
     } else {
       this.setState({
