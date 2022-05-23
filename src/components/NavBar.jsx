@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
-import { Logout, Notifications, Assignment, Check, Task, AssignmentLate, Search } from '@mui/icons-material'
+import { Logout, AccountCircle, Notifications, Assignment, Check, Task, AssignmentLate, Search } from '@mui/icons-material'
 import TaskDetailsDialog from './TaskDetailsDialog'
 
 // Import Assets
@@ -17,6 +17,10 @@ import { logout } from '../redux/actions/authActions'
 import { sendTaskClickCount } from '../redux/actions/taskActions'
 import { updatePushNotification, setSearchQuery, setAutocompleteSelectedTask, setSelectedDate, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
+import {getUserProfile} from '../redux/actions/adminActions'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import {setUserProfile} from "../redux/reducers/adminReducer"
+import { setView } from '../utils/utils'
 
 class NavBar extends React.PureComponent {
   state = {
@@ -24,9 +28,13 @@ class NavBar extends React.PureComponent {
     notificationsMenuAnchorEl: null,
     isTaskDetailsOpen: false,
     selectedTask: {},
-    filterOptions: ['option1','option2','option3']
+    filterOptions: ['option1','option2','option3'],
+    user: {}
   }
-
+  componentDidMount = ()=> {
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.setState({user:user})
+  }
   componentDidUpdate = (prevProps) => {
     const { pushNotifications } = this.props
 
@@ -43,7 +51,12 @@ class NavBar extends React.PureComponent {
       }
     }    
   }
-
+  _getUserProfile = () => {
+        this.props.dispatch(setUserProfile({}))
+        this.props.dispatch(getUserProfile(this.state.user.id))
+        this.props.dispatch(setCurrentView('profile'))
+        // setView('profile')
+  }
   // Get Avatar String
   _stringAvatar = name => ({
     sx: {
@@ -139,7 +152,6 @@ class NavBar extends React.PureComponent {
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
     const sortedPushNotifications = this._sortByEmergency(pushNotifications)
-
     return (
       <React.Fragment>
         <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>
@@ -340,6 +352,15 @@ class NavBar extends React.PureComponent {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
+            <MenuItem
+              dense={ true }
+              onClick={this._getUserProfile}
+            >
+              <ListItemIcon>
+                <AccountCircle fontSize='small' />
+              </ListItemIcon>
+              { (this.state.user.username)?this.state.user.username:'User Name' }
+            </MenuItem>
             <MenuItem
               dense={ true }
               onClick={ this._onLogout }
