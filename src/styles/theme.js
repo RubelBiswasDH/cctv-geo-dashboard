@@ -77,6 +77,9 @@ const theme = createTheme({
       main: '#5F5F5F',
       contrastText: '#fff',
     },
+    white: {
+      main:'white'
+    },
     btnGreen: {
       main: '#77DD77',
       contrastText: '#fff',

@@ -14,7 +14,7 @@ function CustomizedInputBase() {
     return (
       <Paper
         component="form"
-        sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '15vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px',pl:3.5 }}
+        sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '15vw', backgroundColor:'white',color:'white',borderRadius:'25px',px:'10px',pl:3.5, border:'1px solid black' }}
       >
         <InputBase
           sx={{ mt:.5, flex: 1,color:'white',opacity: 1}}
@@ -30,17 +30,18 @@ function CustomizedInputBase() {
   }
 
 
-const StyledButton = (props) => {
+const CustomButton = (props) => {
         const btnStyle = {
             textTransform:'none',
             fontSize: '.8em',
-            px:'10px',
+            px:'0',
             borderRadius: '25px',
             width: '15vw',
             minWidth: '15vw',
+            border:'1px solid black'
         }
         return (
-            <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="gray"><Typography sx={{fontSize:'1em',p:.5,pt:.75,}}>{props.children}</Typography></Button>
+            <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="white"><Typography sx={{fontSize:'1em',background:'white',color:'black',width:'100%',borderRadius: '25px'}}>{props.children}</Typography></Button>
         );
 }
 
@@ -59,7 +60,7 @@ class SubNav extends React.PureComponent{
         width: '100%'})}>
             <Stack direction="row" spacing={2}>
                 <CustomizedInputBase/>
-                <StyledButton onClick={() => this.props.dispatch(setCurrentView('admin'))}>Admin</StyledButton>
+                <CustomButton onClick={() => this.props.dispatch(setCurrentView('admin'))}>Admin</CustomButton>
             </Stack>
         </Box>
         );
