@@ -14,8 +14,6 @@ export function setInvalidLateAttendanceAction(data) {
       
         const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
         const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-        //console.log(start_date,end_date)
-        this.setState({ start_date, end_date })
     
         // Load Tasks
         axios.post(API.INVALID_LATE_ATTENDANCE, data, { headers: { Authorization: `Bearer ${ token }` } })
