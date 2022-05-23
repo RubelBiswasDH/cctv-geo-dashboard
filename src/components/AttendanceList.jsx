@@ -77,18 +77,18 @@ class AttendanceList extends React.PureComponent {
     // console.log({announcements})
     //console.log('mappedAttendanceInfo called', attendanceList);
 
-    const isLate = (checked_in_time) => {
-      const today = dayjs(checked_in_time).format('YYYY-MM-DD')
-      const lastCheckinTime = today+' 10:15:00'
-      //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-      //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
-      if(new Date(checked_in_time) > new Date(lastCheckinTime)){
-        return "Yes"
-      }
-      else{
-        return "No"
-      }
-    }
+    // const isLate = (checked_in_time) => {
+    //   const today = dayjs(checked_in_time).format('YYYY-MM-DD')
+    //   const lastCheckinTime = today+' 10:15:00'
+    //   //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
+    //   //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
+    //   if(new Date(checked_in_time) > new Date(lastCheckinTime)){
+    //     return "Yes"
+    //   }
+    //   else{
+    //     return "No"
+    //   }
+    // }
 
     const getAnnouncement = (id) => {
       if(announcements.length > 0){
@@ -104,13 +104,13 @@ class AttendanceList extends React.PureComponent {
     const attendanceInfo = attendanceList.map((a,i) => {
 
       return ({
-        "id": a.id,
+        "id": a?.id,
         "serial_no":i+1,
-        "name": a.name,
-        "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "checked_out_time": a.exit_time?a.exit_time : '-',
-        "is_late": isLate(a.enter_time),
-        "announcement": getAnnouncement(a.user_id)
+        "name": a?.name,
+        "checked_in_time": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "checked_out_time": a?.exit_time?a?.exit_time : '-',
+        "is_late": (a?.is_late)?"Yes":"No",
+        "announcement": getAnnouncement(a?.user_id)
       })
     })
     //console.log("returing attendace info ", attendanceInfo)
