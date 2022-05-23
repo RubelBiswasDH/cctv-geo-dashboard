@@ -3,6 +3,8 @@ import { API } from '../../App.config'
 import { setIsValidating, setEmployeeName, setEmployeeEmail,setEmployeePhone, setCompanayName, setPassword, setError } from '../reducers/registerReducer'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
+import {getEmployee}  from '../actions/employeeActions'
+
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
@@ -132,7 +134,8 @@ export function setUserProfileAction(id,data) {
             .then(res => {
                 // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    getUserProfile(id)
+                    // getUserProfile(id)
+                    dispatch(getEmployee())
                     dispatch(setProfileEdit(false))
                     dispatch(setToastMessage("User Profile Successfully Updated"))
                     dispatch(setToastSeverity('success'))
@@ -160,7 +163,7 @@ export function createUser(user) {
             .then(res => {
                 // console.log({ create_user_response: res.data})
                 if(res.status===200){
-
+                    dispatch(getEmployee())
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))

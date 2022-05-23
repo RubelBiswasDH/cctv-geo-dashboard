@@ -13,7 +13,6 @@ import { setUserProfile, updateUserProfile, setProfileEdit } from '../redux/redu
 // import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
 // import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
-
 const GridContent = (props) => {
     const { style, title } = props
     return (
