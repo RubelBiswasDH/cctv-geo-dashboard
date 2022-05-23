@@ -205,8 +205,8 @@ class AdminPanel extends React.PureComponent{
         const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
         if (workingDays.length > 0 && monthYear.length > 0) {
             const new_settings = {
-                "working_day": {
-                    ...companySettings.working_day,
+                "working_days": {
+                    ...companySettings.working_days,
                     [monthYear]: workingDays,
                 }
             }
@@ -224,8 +224,8 @@ class AdminPanel extends React.PureComponent{
     //     e.preventDefault()
     //     const {dispatch, lateTime, monthYear, workingDays, companySettings} = this.props
     //     const new_settings = {
-    //         "working_day": {
-    //             ...companySettings.working_day,
+    //         "working_days": {
+    //             ...companySettings.working_days,
     //             [monthYear]:workingDays,
     //         },
            
@@ -369,7 +369,7 @@ class AdminPanel extends React.PureComponent{
                                             borderRadius:2,
                                             border:'1px solid black'
                                             }}>
-                                            {`Working Days : ${(companySettings && companySettings.working_day)?companySettings?.working_day[dayjs(new Date()).format('YY-MM').toString()]:""}`}
+                                            {`Working Days : ${(companySettings && companySettings.working_days)?companySettings?.working_days[dayjs(new Date()).format('YYYY-MM').toString()]:""}`}
                                 </Typography>  
                             </Grid>
                         </Grid>
