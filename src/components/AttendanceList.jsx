@@ -15,7 +15,7 @@ import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/red
 import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getAttendance}  from '../redux/actions/attendanceActions'
-
+import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
 import dayjs from 'dayjs'
 
 const columns = [      
@@ -110,7 +110,9 @@ class AttendanceList extends React.PureComponent {
         "checked_in_time": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
         "checked_out_time": a?.exit_time?a?.exit_time : '-',
         "is_late": (a?.is_late)?"Yes":"No",
-        "announcement": getAnnouncement(a?.user_id)
+        "is_valid": a?.is_valid,
+        "announcement": getAnnouncement(a?.user_id),
+        setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
     //console.log("returing attendace info ", attendanceInfo)

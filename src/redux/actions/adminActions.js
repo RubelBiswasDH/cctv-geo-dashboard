@@ -3,6 +3,42 @@ import { API } from '../../App.config'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
 import {getEmployee}  from '../actions/employeeActions'
+import { getAttendance } from './attendanceActions';
+import dayjs from 'dayjs'
+// setUserProfile Action
+export function setInvalidLateAttendanceAction(data) {
+    //console.log('user: ',user)
+    return dispatch => {
+        const token = getAuthToken()
+        let date = new Date()
+      
+        const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+        const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+        //console.log(start_date,end_date)
+        this.setState({ start_date, end_date })
+    
+        // Load Tasks
+        axios.post(API.INVALID_LATE_ATTENDANCE, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                console.log({ update_user_response: res.data})
+                if(res.status===200){
+                    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+                    // getUserProfile(id)
+                    // dispatch(getEmployee())
+                    // dispatch(setProfileEdit(false))
+                    // dispatch(setToastMessage("User Profile Successfully Updated"))
+                    // dispatch(setToastSeverity('success'))
+                    // dispatch(setToastIsOpen(true))
+                    // alert("User Successfully Updated")
+                }
+                //console.log('res :', res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
 
 // getCompanySettingsAction
 

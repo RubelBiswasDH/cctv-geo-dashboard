@@ -3,7 +3,6 @@ import { AUTH,API } from '../../App.config'
 
 import { setAttendance, setError } from '../reducers/attendanceReducer'
 
-
 // User Validation
 export function getAttendance(params) {
     const token = getAuthToken();
