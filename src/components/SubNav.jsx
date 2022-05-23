@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {Stack, Item, Button, Grid, Box} from '@mui/material'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import { setView } from '../utils/utils'
 
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -31,6 +32,8 @@ function CustomizedInputBase() {
 
 
 const CustomButton = (props) => {
+        const {currentView, name} = props
+        const activeBtn = (currentView === name)? {background:'#ADD8E6'}:{}
         const btnStyle = {
             textTransform:'none',
             fontSize: '.8em',
@@ -38,19 +41,26 @@ const CustomButton = (props) => {
             borderRadius: '25px',
             width: '15vw',
             minWidth: '15vw',
+            background:'transparent',
             border:'1px solid black'
         }
         return (
-            <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="white"><Typography sx={{fontSize:'1em',background:'white',color:'black',width:'100%',borderRadius: '25px'}}>{props.children}</Typography></Button>
+            <Button onClick={props.onClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{fontSize:'1em',color:'black',width:'100%',borderRadius: '25px'}}>{props.children}</Typography></Button>
         );
 }
 
 class SubNav extends React.PureComponent{
     constructor(props){
         super(props)
+        this.handleView = this.handleView.bind(this)
+    }
+    handleView = (view) => {
+      this.props.dispatch(setCurrentView(view))
+      setView(view)
     }
     render(){
-        
+        const {handleView} = this
+        const {currentView} = this.props
         return (
         <Box sx={(theme) => ({...boxStyle,  padding: {
           xs: `${ theme.spacing(0,2) }`,
@@ -60,7 +70,7 @@ class SubNav extends React.PureComponent{
         width: '100%'})}>
             <Stack direction="row" spacing={2}>
                 <CustomizedInputBase/>
-                <CustomButton onClick={() => this.props.dispatch(setCurrentView('admin'))}>Admin</CustomButton>
+                <CustomButton onClick={() => handleView('admin')} name={'admin'} currentView ={currentView}>Admin</CustomButton>
             </Stack>
         </Box>
         );
@@ -68,9 +78,10 @@ class SubNav extends React.PureComponent{
 }
 
 const mapStateToProps = state => ({
-    employeeEmail: state.auth.employeeEmail,
-    password: state.auth.password,
-    authError: state.auth.error
+    employeeEmail: state?.auth?.employeeEmail,
+    password: state?.auth?.password,
+    authError: state?.auth?.error,
+    currentView: state?.dashboard?.currentView,
   })
 
 const boxStyle = {

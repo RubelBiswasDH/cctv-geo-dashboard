@@ -74,7 +74,7 @@ const InputButton = (props) => {
                         fontSize: "14px",
                         fontWeight: 500,
                         flex: 1,
-                        color: 'white',
+                        color: '#fff',
                         opacity: 1,
                         borderRadius: 2
                     }}>
@@ -256,10 +256,10 @@ class AdminPanel extends React.PureComponent{
                 }
                 )}
                 >
-                <Grid xs={12} container spacing={0} sx={{mt:0,pl:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid container spacing={0} sx={{mt:0,pl:1,display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <StyledAppBar title={'Admin Panel'} bgColor={'#FF6961'}  style={{borderRadius: '4px'}} />
                 </Grid>
-                <Grid xs={12} container spacing={0} sx={{mt:1,px:4,display:'flex', alignItems:'center', justifyContent:'center'}}>
+                <Grid container spacing={0} sx={{mt:1,px:4,display:'flex', alignItems:'center', justifyContent:'center'}}>
 
                     {/*Job Statuc*/}
                     {/* <GridContent title={"Job Status"} >
@@ -296,7 +296,7 @@ class AdminPanel extends React.PureComponent{
 
                     {/*Add User*/}
                     <GridContent title={"Add User"} style={{p:1}}>
-                        <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                        <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
@@ -330,7 +330,7 @@ class AdminPanel extends React.PureComponent{
                     </GridContent>
                     {/*Company Settings*/}
                     <GridContent title={"Company Settings"} >
-                    <Grid xs={12} container spacing={2} sx={{p:4,pt:2,background:''}}>
+                    <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
                         <Grid xs={12} spacing={2} item container>
                             <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                 <Typography 
