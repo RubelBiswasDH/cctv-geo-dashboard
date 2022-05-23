@@ -18,15 +18,16 @@ export function setInvalidLateAttendanceAction(data) {
         // Load Tasks
         axios.post(API.INVALID_LATE_ATTENDANCE, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ update_user_response: res.data})
+                // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
                     // getUserProfile(id)
                     // dispatch(getEmployee())
                     // dispatch(setProfileEdit(false))
-                    // dispatch(setToastMessage("User Profile Successfully Updated"))
-                    // dispatch(setToastSeverity('success'))
-                    // dispatch(setToastIsOpen(true))
+                    // console.log('res: ',res.data.message)
+                    dispatch(setToastMessage(res.data.message))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
                     // alert("User Successfully Updated")
                 }
                 //console.log('res :', res)
