@@ -15,10 +15,11 @@ import {getAnnouncements}  from '../redux/actions/announcementsActions'
 import dayjs from 'dayjs'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'announced_time', headerName: 'Announced At', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
-  { field: 'announcement', headerName: 'Announcement', minWidth: 250, sortable: false,flex: 1.6, filter: true, filterable: true  },
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 75,flex:.75, sortable: false, filter: true, filterable: true },
+  { field: 'announced_time', headerName: 'Announced At', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
+  { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
   // { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
 const rows = [
