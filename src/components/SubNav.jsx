@@ -14,7 +14,7 @@ function CustomizedInputBase() {
     return (
       <Paper
         component="form"
-        sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '12vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px',pl:3.5 }}
+        sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '15vw', backgroundColor:'#5F5F5F',color:'white',borderRadius:'25px',px:'10px',pl:3.5 }}
       >
         <InputBase
           sx={{ mt:.5, flex: 1,color:'white',opacity: 1}}
@@ -36,8 +36,8 @@ const StyledButton = (props) => {
             fontSize: '.8em',
             px:'10px',
             borderRadius: '25px',
-            width: '12vw',
-            minWidth: '12vw',
+            width: '15vw',
+            minWidth: '15vw',
         }
         return (
             <Button onClick={props.onClick} sx={btnStyle} variant="contained" color="gray"><Typography sx={{fontSize:'1em',p:.5,pt:.75,}}>{props.children}</Typography></Button>
