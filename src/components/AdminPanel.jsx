@@ -1,15 +1,51 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase, TextField} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings } from '../redux/reducers/adminReducer'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
+
+const UserField = (props) => {
+    const {title, value, field, subField, dispatch, style} = props
+    const textStyle = {
+        fontFamily: 'Roboto',
+        fontSize:'12px',
+    }
+    const handleChange = e => {
+        e.preventDefault()
+        if(field === 'profile'){
+            dispatch(updateNewUserProfile({
+               [subField]: e.target.value
+        }))
+        }
+        else{
+            dispatch(updateNewUser({[field]: e.target.value}))
+        }
+        
+    }
+    return (
+        <Grid xs={2.2} spacing={2} item >
+            <Paper
+                xs={12}
+                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000', border:'1px solid #000000', borderRadius:2, ...style }}
+            >
+                <InputBase
+                    sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
+                    placeholder={title}
+                    inputProps={{ 'aria-label': {title}, color: '#000000' }}
+                    value={value||''}
+                    onChange={handleChange}
+                />
+            </Paper>
+        </Grid>
+    )
+}
 
 const CustomButton = (props) => {
     const {sx, name, currentTab} = props
@@ -128,7 +164,8 @@ class AdminPanel extends React.PureComponent{
     constructor(props){
         super(props)
         this.state = {
-            currentTab: 'notice'
+            currentTab: 'notice',
+            seeMore:false
         }
         this.handleCreateUser = this.handleCreateUser.bind(this)
         this.handleFileInput = this.handleFileInput.bind(this)
@@ -141,6 +178,9 @@ class AdminPanel extends React.PureComponent{
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
         // console.log('get company settings')
+    }
+    handleNewUserFieldChange = e => {
+
     }
     handleNotice = e => {
         e.preventDefault()
@@ -263,7 +303,7 @@ class AdminPanel extends React.PureComponent{
 
     render(){
         const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
-        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings} = this.props
+        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser} = this.props
         const {currentTab} = this.state
         return (
             <Box sx={
@@ -338,6 +378,7 @@ class AdminPanel extends React.PureComponent{
                     {(this.state.currentTab === 'add_user')
                     ?(
                     <GridContent title={"Add User"} style={{p:1}}>
+                        {(!this.state.seeMore)?(
                         <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
@@ -355,6 +396,9 @@ class AdminPanel extends React.PureComponent{
                                 <Grid xs={4} xl={1.5} item>
                                     <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Create</StyledButton>
                                 </Grid>
+                                <Grid xs={4} xl={1.5} item>
+                                    <StyledButton onClick= {() => this.setState(state => ({seeMore:!state.seeMore}))} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>See More</StyledButton>
+                                </Grid>
                            </Grid>
                            <Grid xs={12} item container spacing={2}>
                                 {/* <Grid xs={4} item>
@@ -369,8 +413,84 @@ class AdminPanel extends React.PureComponent{
                            </Grid>
                             
                         </Grid>
+                    )
+                    :(
+                        <Grid container spacing={2} sx={{p:4,pt:2}}>
+                            
+                                <Grid spacing={2} container item >
+                                    <UserField  dispatch={dispatch} field={'name'}  title={"Name"} value={newUser?.name}/>
+                                    <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail"} value={newUser?.email}/>
+                                    <UserField  dispatch={dispatch} field={'phone'}  title={"Phone"} value={newUser?.phone}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'birth_date'}  title={"Birth Date"} value={newUser?.profile?.birth_date}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'gender'}  title={"Gender"} value={newUser?.profile?.gender}/>    
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'marritial_status'}  title={"Marritial Status"} value={newUser?.profile?.marritial_status}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'educational_qualification'}  title={"Educational Qualification"} value={newUser?.profile?.educational_qualification}/>
+                                </Grid>
+                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
+                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Office Details</Typography>
+                                </Grid>
+                                   
+                                <Grid spacing={2} container item >
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_phone_no'}  title={"Office Phone No"} value={newUser?.profile?.office_phone_no}/> 
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'job_status'}  title={"Job Status"} value={newUser?.profile?.job_status}/> 
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'joining_data'}  title={"Joining Date"} value={newUser?.profile?.joining_data}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'end_of_probation'}  title={"End of Probation"} value={newUser?.profile?.end_of_probation}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_performance_review'}  title={"Last Performance Review"} value={newUser?.profile?.last_performance_review}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'next_performance_review'}  title={"Next Performance Review"} value={newUser?.profile?.next_performance_review}/>
+                                </Grid>
+                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
+                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Emergency</Typography>
+                                </Grid>
+                                    
+                                <Grid spacing={2} container item >
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person_no'}  title={"Contact Person No"} value={newUser?.profile?.contact_person_no}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'relationship_with_contact_perso'}  title={"Relationship with contact person"} value={newUser?.profile?.relationship_with_contact_perso}/>
+                                </Grid>
+                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
+                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Benefits</Typography>
+                                </Grid>
+                                <Grid spacing={2} container item >
+                                    
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'salary'}  title={"Salary"} value={newUser?.profile?.salary}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'casual_leave'}  title={"Casual Leave"} value={newUser?.profile?.casual_leave}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'sick_leave'}  title={"Sick Leave"} value={newUser?.profile?.sick_leave}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'festival_bonus'}  title={"Fastival Bonus"} value={newUser?.profile?.festival_bonus}/>
+                                </Grid>
+                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
+                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Bank Account Details</Typography>
+                                </Grid>
+                                    
+                                <Grid spacing={2} container item >
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account"} value={newUser?.profile?.account_title}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_no'}  title={"Account No"} value={newUser?.profile?.account_no}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'routing_no'}  title={"Routing No"} value={newUser?.profile?.routing_no}/>
+                                </Grid>
+                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
+                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Last Work Place</Typography>
+                                </Grid>
+                                   
+                                <Grid spacing={2} container item >
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'company_name'}  title={"Company Name"} value={newUser?.profile?.company_name}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary}/>
+                                </Grid>
+                        </Grid>
+                    )}
                     </GridContent>
-                     ):''}
+                     )
+                     :''}
+
                     {/*Company Settings*/}
                     {(this.state.currentTab === 'company_policy')
                     ?(
@@ -488,7 +608,8 @@ const mapStateToProps = state => ({
     lateTime: state?.admin?.lateTime,
     monthYear: state?.admin?.monthYear,
     workingDays: state?.admin?.workingDays,
-    companySettings: state?.admin?.companySettings
+    companySettings: state?.admin?.companySettings,
+    newUser:state?.admin?.newUser
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })
