@@ -249,6 +249,20 @@ class AdminPanel extends React.PureComponent{
         //console.log('create user clicked, user is: ', user)
     }
 
+    handleSaveUser = e => {
+        const {dispatch, newUser} = this.props
+        if(newUser.name && newUser.phone&& newUser.email){
+            // console.log('all field filled')
+            dispatch(createUser(newUser))
+            // console.log('dispatch createUser',dispatch,createUser)
+            // console.log('dipatch create user')
+        }
+        else{ 
+            dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
+    }
     handleSetLateTime = (e) => {
         e.preventDefault()
         const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
@@ -302,7 +316,7 @@ class AdminPanel extends React.PureComponent{
     // }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays} = this
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser} = this
         const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser} = this.props
         const {currentTab} = this.state
         return (
@@ -484,6 +498,10 @@ class AdminPanel extends React.PureComponent{
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities}/>
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary}/>
+                                </Grid>
+                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
+                                    <StyledButton onClick= {handleSaveUser} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
+                                    <StyledButton onClick= {() => this.setState(state => ({seeMore:!state.seeMore}))} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>See Less</StyledButton>
                                 </Grid>
                         </Grid>
                     )}
