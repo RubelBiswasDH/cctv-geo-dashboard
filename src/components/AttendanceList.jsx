@@ -90,9 +90,9 @@ class AttendanceList extends React.PureComponent {
     //   }
     // }
 
-    const getAnnouncement = (id) => {
+    const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
-        const announcement = announcements.filter( (an => an.user_id === id))[0]
+        const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
         if (announcement && announcement?.type=="LATE"){
           return announcement?.description
         }
@@ -111,7 +111,7 @@ class AttendanceList extends React.PureComponent {
         "checked_out_time": a?.exit_time?a?.exit_time : '-',
         "is_late": (a?.is_late)?"Yes":"No",
         "is_valid": a?.is_valid,
-        "announcement": getAnnouncement(a?.user_id),
+        "announcement": getAnnouncement(a?.user_id, a?.created_at),
         setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
