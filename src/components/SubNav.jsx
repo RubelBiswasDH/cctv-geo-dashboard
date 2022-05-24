@@ -9,12 +9,15 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import {Typography} from '@mui/material'
+import {Typography, Autocomplete, TextField} from '@mui/material'
+import {getUserProfile} from '../redux/actions/adminActions'
+import {setUserProfile} from "../redux/reducers/adminReducer"
 
-function CustomizedInputBase() {
+function CustomizedInputBase(props) {
+    // const {params} = props
     return (
       <Paper
-        component="form"
+        // component="form"
         sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '15vw', backgroundColor:'white',color:'white',borderRadius:'25px',px:'10px',pl:3.5, border:'1px solid black' }}
       >
         <InputBase
@@ -52,15 +55,47 @@ const CustomButton = (props) => {
 class SubNav extends React.PureComponent{
     constructor(props){
         super(props)
+        this.state = {
+          employeeList:[]
+        }
         this.handleView = this.handleView.bind(this)
     }
+    componentDidMount(){
+      if(this.props.employeeList.length>0){
+        this.setState({employeeList:this.props.employeeList})
+      }
+    }
+    // static getDerivedStateFromProp(nextProps, prevState) {
+    //   console.log('nextPros ',nextProps)
+    //   return {employeeList: nextProps.employeeList} // this will propagate as component state
+    // }
     handleView = (view) => {
       this.props.dispatch(setCurrentView(view))
       setView(view)
     }
+      // handleAutoCompInputChange
+    handleAutoCompInputChange = e => {
+      const name = e.target.value
+      if (name && name?.length > 0) {
+        const empList = this.props.employeeList.filter(emp => emp?.name?.toLowerCase().startsWith(name?.toLowerCase()))
+        this.setState({ employeeList: empList })
+      }
+    }
+
+  // handleAutoCompChange
+    handleAutoCompChange = (e,value) => {
+      if(value && value?.id){
+        this.props.dispatch(setUserProfile({}))
+        this.props.dispatch(getUserProfile(value?.id))
+        this.props.dispatch(setCurrentView('profile'))
+      }
+    }
+
     render(){
-        const {handleView} = this
+        const {handleView, handleAutoCompInputChange, handleAutoCompChange} = this
         const {currentView} = this.props
+        const {employeeList} = this.state
+        // console.log(employeeList)
         return (
         <Box sx={(theme) => ({...boxStyle,  padding: {
           xs: `${ theme.spacing(0,2) }`,
@@ -69,7 +104,67 @@ class SubNav extends React.PureComponent{
       
         width: '100%'})}>
             <Stack direction="row" spacing={2}>
-                <CustomizedInputBase/>
+            <Paper
+              // component="form"
+              sx={{
+                boxSizing:'border-box', 
+                display: 'flex', 
+                alignItems: 'center',
+                justifyContent:'center', 
+                width: '15vw', 
+                backgroundColor:'white',
+                color:'white',
+                borderRadius:'25px',
+                px:'0',
+                pl:2,
+                border:'1px solid black' 
+              }}
+            >
+            <Autocomplete
+                  onChange={handleAutoCompChange}
+                  onInputChange={handleAutoCompInputChange}
+
+                  disablePortal
+                  id="employeeSearch"
+                  options={(employeeList?.length > 0)?employeeList:[]}
+                  getOptionLabel={(option) => {
+                    // e.g value selected with enter, right from the input
+                    if (typeof option === 'string') {
+                      return option
+                    }
+                    if (option.inputValue) {
+                      return option.inputValue
+                    }
+                    return option.name
+                  }}
+                  renderOption={(props, option) => (
+                    <Grid container {...props} key={option.id} >
+                        <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option?.name}</Typography></Grid>
+                        <Grid item xs={12}><Typography>{option.email}</Typography></Grid>
+                    </Grid>)}
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => 
+                    <TextField
+                    {...params}
+                     sx={{ mt:.5, flex: 1,color:'white',opacity: 1}}
+                     placeholder="Search"
+                     variant='standard'
+                      margin='none'
+                      size='small'
+                      fullWidth={ true }
+                      name='employeeName'
+                      type='text'
+                      // value={ companyName }
+                    //  inputProps={{ 'aria-label': 'search',color:'white'  }}
+                    InputProps={{ ...params.InputProps, disableUnderline: true }}
+                   />
+                }
+                />
+                 <IconButton sx={{ p:0,pr:2 }} aria-label="search">
+                  <SearchIcon sx={{color:'white'}}/>
+                </IconButton>
+                {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" /> */}
+              </Paper>
                 <CustomButton onClick={() => handleView('admin')} name={'admin'} currentView ={currentView}>Admin</CustomButton>
             </Stack>
         </Box>
@@ -82,6 +177,7 @@ const mapStateToProps = state => ({
     password: state?.auth?.password,
     authError: state?.auth?.error,
     currentView: state?.dashboard?.currentView,
+    employeeList:state?.employeeList?.employeeList
   })
 
 const boxStyle = {

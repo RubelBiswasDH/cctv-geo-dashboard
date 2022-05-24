@@ -44,7 +44,7 @@ class DmsDashboard extends React.PureComponent {
 
     let date = new Date()
       
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+    const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     this.setState({ start_date, end_date })
