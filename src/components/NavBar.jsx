@@ -208,14 +208,15 @@ class NavBar extends React.PureComponent {
 
                   {
                     user?.user_type &&
-                    <Chip                        
+                    <Chip
+                        sx={{px:2,mr:1}}                        
                         color='primary'
                         label={ user?.user_type? user.user_type : 'Unassigned' }
                         size={ 'small' }
                     />
                   }
                   
-                  <Tooltip
+                  {/* <Tooltip
                     title={ 'Notifications' }
                     arrow={ true }
                   >
@@ -243,7 +244,7 @@ class NavBar extends React.PureComponent {
                         </Avatar>
                       </Badge>
                     </IconButton>
-                  </Tooltip>
+                  </Tooltip> */}
 
                   <Tooltip
                     title={ user.name ? user.name : 'Account Settings' }
