@@ -469,7 +469,7 @@ switch (e.target.name) {
                   />
                 </Box>
                 {/*Autocomplete Company Address*/}
-                <Box sx={{...boxStyle}}>
+                {/* <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address ' }</Typography>
                   <Autocomplete
                   onChange={handleAutoCompChange}
@@ -515,9 +515,9 @@ switch (e.target.name) {
                   />
                 }
                 />
-                </Box> 
+                </Box>  */}
                 {/* Company Address */}
-                {/* <Box sx={{...boxStyle}}>
+                <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
 
                   <TextField
@@ -537,8 +537,8 @@ switch (e.target.name) {
                       authError && !authError.includes('password') ? authError : error.companyAddress ? error.companyAddress : null
                     }
                   />
-                </Box> */}
-                  {/* Retype Password */}
+                </Box>
+                {/* Retype Password */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>
                   
