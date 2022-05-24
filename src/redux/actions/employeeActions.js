@@ -38,6 +38,5 @@ export function getAuthToken() {
     if(token) {
         return token
     }
-
     return null
 }
