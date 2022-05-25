@@ -193,17 +193,12 @@ class AdminPanel extends React.PureComponent{
             message: announcementMessage,
         }
         if(announcementMessage){
-            // console.log('all field filled')
             dispatch(createNotice(message))
-            // console.log('dispatch createUser',dispatch,createUser)
-            // console.log('dipatch create user')
         }
         else{ 
             dispatch(setToastMessage('Notice field is empty'))
             dispatch(setToastIsOpen(true))
             dispatch(setToastSeverity('warning'))
-
-            // alert('Notice field is empty')
         }
     }
 
@@ -521,30 +516,10 @@ class AdminPanel extends React.PureComponent{
                     {(this.state.currentTab === 'company_policy')
                     ?(
                     <GridContent title={"Company Settings"} >
-                    <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
-                        <Grid xs={12} spacing={2} item container>
-                            <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
-                                <Typography 
-                                    sx={{
-                                        py:1,
-                                        pl:3, 
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'flex-start', 
-                                        backgroundColor: 'white',
-                                        fontSize:"14px",
-                                        fontWeight:500,
-                                        flex: 1, 
-                                        color: 'black', 
-                                        opacity: 1,
-                                        borderRadius:2,
-                                        border:'1px solid black'
-                                        }}>
-                                        {`Late Time: ${(companySettings && companySettings.late_time)?companySettings.late_time:""}`}
-                                </Typography>                            
-                            </Grid>
-                            <Grid xs={4} xl={3} item>
-                                <Typography 
+                        <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
+                            <Grid xs={12} spacing={2} item container>
+                                <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                    <Typography 
                                         sx={{
                                             py:1,
                                             pl:3, 
@@ -560,11 +535,31 @@ class AdminPanel extends React.PureComponent{
                                             borderRadius:2,
                                             border:'1px solid black'
                                             }}>
-                                            {`Working Days : ${(companySettings && companySettings.working_days)?companySettings?.working_days[dayjs(new Date()).format('YYYY-MM').toString()]:""}`}
-                                </Typography>  
+                                            {`Late Time: ${(companySettings && companySettings.late_time)?companySettings.late_time:""}`}
+                                    </Typography>                            
+                                </Grid>
+                                <Grid xs={4} xl={3} item>
+                                    <Typography 
+                                            sx={{
+                                                py:1,
+                                                pl:3, 
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'flex-start', 
+                                                backgroundColor: 'white',
+                                                fontSize:"14px",
+                                                fontWeight:500,
+                                                flex: 1, 
+                                                color: 'black', 
+                                                opacity: 1,
+                                                borderRadius:2,
+                                                border:'1px solid black'
+                                                }}>
+                                                {`Working Days : ${(companySettings && companySettings.working_days)?companySettings?.working_days[dayjs(new Date()).format('YYYY-MM').toString()]:""}`}
+                                    </Typography>  
+                                </Grid>
                             </Grid>
-                        </Grid>
-                           <Grid xs={12} spacing={2} item container>
+                            <Grid xs={12} spacing={2} item container>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setMonthYear} value={monthYear} placeholder={"Year-Month, Ex: 22-04"} ariaLabel={"Year/Month"} style={{borderRadius:2}}/>    
                                 </Grid>
@@ -604,7 +599,16 @@ class AdminPanel extends React.PureComponent{
                                     <StyledButton onClick= {handleSetLateTime} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
-                            
+                        </Grid>
+                        <Grid container spacing={2} sx={{p:4,pt:2}}>
+                            <Grid xs={12} spacing={2} item container>
+                                <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                    <Typography sx={{fontSize:'1em',fontWeight:600}}>Company Address</Typography>
+                                </Grid>
+                                <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid red'}} >
+
+                                </Grid>
+                            </Grid>    
                         </Grid>
                     </GridContent>
                      ):''}
