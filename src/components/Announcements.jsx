@@ -19,6 +19,7 @@ const columns = [
   { field: 'name', headerName: 'Name', minWidth: 75,flex:.75, sortable: false, filter: true, filterable: true },
   { field: 'announced_time', headerName: 'Announced At', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
   { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
+  { field: 'type', headerName: 'Type', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
   { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
   // { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
@@ -76,11 +77,12 @@ class Announcements extends React.PureComponent {
     const announcementInfo = announcements.map((a,i) => {
 
       return ({
-        "id": a.id,
+        "id": a?.id,
         "serial_no":i+1,
-        "name": a.name,
-        "announced_time": dayjs(a.created_at).format('YYYY-MM-DD h:mm:ss') ,
-        "announcement": a.description,
+        "name": a?.name,
+        "announced_time": dayjs(a?.created_at).format('YYYY-MM-DD h:mm:ss') ,
+        "announcement": a?.description,
+        "type":a?.type,
       })
     })
     //console.log("returing attendace info ", attendanceInfo)
