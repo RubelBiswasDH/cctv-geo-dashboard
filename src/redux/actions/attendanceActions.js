@@ -46,28 +46,35 @@ export function getAttendance(params) {
 
 // get reports
 
+// export function getAttendanceReport(params) {
+//     const token = getAuthToken();
+//     return dispatch => {
+//         axios.get(API.GET_ATTENDANCE_STATISTICS, { headers: { Authorization: `Bearer ${ token }` }, params } )
+//             .then(res => {
+//                 //console.log("data , ",res.data )
+//                 const type = res.headers['content-type']
+//                 const blob = new Blob([res.data], { type: type, encoding: 'UTF-8' })
+//                 const link = document.createElement('a')
+//                 link.href = window.URL.createObjectURL(blob)
+//                 link.download = 'attendance_report.xlsx'
+//                 link.click()
+
+//             })
+//             .catch(err => {
+//                 //console.error(err)
+//                 dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
+
+//             })
+//     }
+// }
 export function getAttendanceReport(params) {
-    const token = getAuthToken();
-    return dispatch => {
-        axios.get(API.GET_ATTENDANCE_STATISTICS, { headers: { Authorization: `Bearer ${ token }` }, params } )
-            .then(res => {
-                //console.log("data , ",res.data )
-                const type = res.headers['content-type']
-                const blob = new Blob([res.data], { type: type, encoding: 'UTF-8' })
-                const link = document.createElement('a')
-                link.href = window.URL.createObjectURL(blob)
-                link.download = 'attendance_report.xlsx'
-                link.click()
+    const token = getAuthToken()
+    const exportParams = `?token=${token}&start_date=${params.start_date}&end_date=${params.end_date}`
+    const exportURL = API.GET_ATTENDANCE_STATISTICS + exportParams
 
-            })
-            .catch(err => {
-                //console.error(err)
-                dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
-
-            })
-    }
+    const newWindow = window.open(exportURL, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
 }
-
 ///////////////
 // Utilities //
 ///////////////
