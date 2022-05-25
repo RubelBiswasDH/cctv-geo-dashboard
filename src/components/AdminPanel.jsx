@@ -6,6 +6,7 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 
+import downloadDemoCSV from '../assets/demo_users.xlsx'
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
@@ -30,7 +31,7 @@ const UserField = (props) => {
         
     }
     return (
-        <Grid xs={2.2} spacing={2} item >
+        <Grid xs={2.2} item >
             <Paper
                 xs={12}
                 sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000', border:'1px solid #000000', borderRadius:2, ...style }}
@@ -498,6 +499,9 @@ class AdminPanel extends React.PureComponent{
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities}/>
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary}/>
+                                </Grid>
+                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
+                                    <StyledButton href={downloadDemoCSV} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'20%'}}>Download Demo CSV File</StyledButton>
                                 </Grid>
                                 <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
                                     <StyledButton onClick= {handleSaveUser} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
