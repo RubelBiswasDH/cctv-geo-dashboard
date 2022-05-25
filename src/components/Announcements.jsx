@@ -12,10 +12,10 @@ import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledInputField from './common/StyledInputField'
 // Import Actions & Methods
-import { getAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
+import { getAnnouncement, updateAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
 
 import dayjs from 'dayjs'
-import { setCurrentAnnouncement, setEditAnnouncementDialogIsOpen } from '../redux/reducers/announcementReducer'
+import { setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen } from '../redux/reducers/announcementReducer'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
@@ -59,18 +59,22 @@ class Announcements extends React.PureComponent {
     const { dispatch } = this.props
     dispatch(setEditAnnouncementDialogIsOpen(false))
     dispatch(setCurrentAnnouncement(''))
+    dispatch(setCurrentAnnouncementId(''))
   }
 
   _handleAnnouncementEdit = (id) => {
     const { dispatch } = this.props
-    console.log('clicked: ',id)
     dispatch( getAnnouncement(id))
   }
-  _handleAnnouncementEditSubmit = (id) => {
-    const { dispatch } = this.props
-    console.log('clicked: ',id)
-    // dispatch( getAnnouncement(id))
+
+  _handleAnnouncementEditSubmit = () => {
+    const { dispatch, currentAnnouncement, currentAnnouncementId } = this.props
+    const data = {
+      description: currentAnnouncement
+    }
+    dispatch(updateAnnouncement(currentAnnouncementId, data))
   }
+
   mappedAnnouncements = () => {
     const {announcements} = this.props;
     const announcementInfo = announcements.map((a,i) => {
@@ -121,11 +125,11 @@ class Announcements extends React.PureComponent {
         <StyledDialog
           title={'Edit Announcement'} 
           isDialogOpen={ editAnnouncementDialogIsOpen } 
-          handleDialogOnClose={() => this.props.dispatch(setEditAnnouncementDialogIsOpen(false))}
+          handleDialogOnClose={this._handleCloseAnnouncementDialog}
           footer={
           <>
-            <Button onClick={this._handleCloseAnnouncementDialog}>Cancle</Button>
-            <Button onClick={() => console.log('data submited')}>Submit</Button>
+            {/* <Button onClick={this._handleCloseAnnouncementDialog}>Cancle</Button> */}
+            <Button onClick={this._handleAnnouncementEditSubmit}>Submit</Button>
           </>
           }
         >
@@ -148,9 +152,10 @@ Announcements.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  announcements: state.announcements.announcements,
-  currentAnnouncement: state.announcements.currentAnnouncement,
-  editAnnouncementDialogIsOpen: state.announcements.editAnnouncementDialogIsOpen,
+  announcements: state?.announcements?.announcements,
+  currentAnnouncement: state?.announcements?.currentAnnouncement,
+  editAnnouncementDialogIsOpen: state?.announcements?.editAnnouncementDialogIsOpen,
+  currentAnnouncementId:state?.announcements?.currentAnnouncementId,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
