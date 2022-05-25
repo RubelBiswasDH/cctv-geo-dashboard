@@ -2,7 +2,7 @@ import { getAuthToken } from './authActions'
 import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
 import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
-import { setAnnouncements, updateAnnouncements, setError } from "../reducers/announcementReducer"
+import { setAnnouncements, updateAnnouncements, setCurrentAnnouncement, setEditAnnouncementDialogIsOpen, setError } from "../reducers/announcementReducer"
 import axios from 'axios'
 import { AUTH,API } from '../../App.config'
 import dayjs from 'dayjs'
@@ -18,8 +18,11 @@ export function getAnnouncement(id) {
     axios.get(API.GET_ANNOUNCEMENT + id, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         const announcementData = res.data
+        const msg = announcementData.announcement.description
         if (announcementData) {
-          console.log(" announcement data : ", announcementData.announcement.description)
+          dispatch(setCurrentAnnouncement(msg))
+          dispatch(setEditAnnouncementDialogIsOpen(true))
+          // console.log(" announcement data : ", announcementData.announcement.description)
         }
       })
       .catch(err => {

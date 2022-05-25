@@ -6,21 +6,16 @@ import { connect } from 'react-redux'
 import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
 import { GridActionsCellItem } from '@mui/x-data-grid'
 import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
-import StyledDataGrid from './common/StyledDataGrid'
-
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
-
+import StyledDataGrid from './common/StyledDataGrid'
+import StyledDialog from './common/StyledDialog'
+import StyledInputField from './common/StyledInputField'
 // Import Actions & Methods
 import { getAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
 
 import dayjs from 'dayjs'
+import { setCurrentAnnouncement, setEditAnnouncementDialogIsOpen } from '../redux/reducers/announcementReducer'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
@@ -42,9 +37,9 @@ const rows = [
   },
 ]
 
+
 class Announcements extends React.PureComponent {
     state = {
-
     }
 
   componentDidMount() {
@@ -60,12 +55,22 @@ class Announcements extends React.PureComponent {
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
 
+  _handleCloseAnnouncementDialog = () => {
+    const { dispatch } = this.props
+    dispatch(setEditAnnouncementDialogIsOpen(false))
+    dispatch(setCurrentAnnouncement(''))
+  }
+
   _handleAnnouncementEdit = (id) => {
     const { dispatch } = this.props
     console.log('clicked: ',id)
     dispatch( getAnnouncement(id))
   }
-
+  _handleAnnouncementEditSubmit = (id) => {
+    const { dispatch } = this.props
+    console.log('clicked: ',id)
+    // dispatch( getAnnouncement(id))
+  }
   mappedAnnouncements = () => {
     const {announcements} = this.props;
     const announcementInfo = announcements.map((a,i) => {
@@ -102,7 +107,7 @@ class Announcements extends React.PureComponent {
 
 
   render() {
-    const {  } = this.props
+    const { editAnnouncementDialogIsOpen } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
    
@@ -113,6 +118,19 @@ class Announcements extends React.PureComponent {
           columns={columns }
           rows={ announcement_rows }
         />
+        <StyledDialog
+          title={'Edit Announcement'} 
+          isDialogOpen={ editAnnouncementDialogIsOpen } 
+          handleDialogOnClose={() => this.props.dispatch(setEditAnnouncementDialogIsOpen(false))}
+          footer={
+          <>
+            <Button onClick={this._handleCloseAnnouncementDialog}>Cancle</Button>
+            <Button onClick={() => console.log('data submited')}>Submit</Button>
+          </>
+          }
+        >
+           <StyledInputField multiline={true} minRows={4} maxRows={6} onChange={setCurrentAnnouncement} value={this.props.currentAnnouncement} placeholder={"Edit Announcement"} ariaLabel={""} inputStyle={{m:0,p:1,px:2}} style={{borderRadius:2,height:'10vh', boxSizing:'border-box',height:'auto'}}/>
+        </StyledDialog>
       </Box>
     )
   }
@@ -131,6 +149,8 @@ Announcements.defaultProps = {
 
 const mapStateToProps = state => ({
   announcements: state.announcements.announcements,
+  currentAnnouncement: state.announcements.currentAnnouncement,
+  editAnnouncementDialogIsOpen: state.announcements.editAnnouncementDialogIsOpen,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

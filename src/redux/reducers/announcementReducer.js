@@ -9,6 +9,8 @@ const initialState = {
   pushNotifications: [],
   isAnnouncementThreadOpen: true,
   error: '',
+  currentAnnouncement: ' Its time for the offcial inspection. The pitch has been uncovered and a few areas around the square',
+  editAnnouncementDialogIsOpen: true,
 }
 
 const announcementsSlice = createSlice({
@@ -20,6 +22,12 @@ const announcementsSlice = createSlice({
     },
     setAnnouncements: (state, action) => {
       state.announcements = action.payload
+    },
+    setCurrentAnnouncement: (state, action) => {
+      state.currentAnnouncement = action.payload
+    },
+    setEditAnnouncementDialogIsOpen: (state, action) => {
+      state.editAnnouncementDialogIsOpen = action.payload
     },
     updateAnnouncements: (state, action) => {
       //console.log("state in store ", action.payload)
@@ -50,5 +58,5 @@ const announcementsSlice = createSlice({
   }
 })
 
-export const { setAnnouncementLoading, setAnnouncements,updateAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory } = announcementsSlice.actions
+export const { setAnnouncementLoading, setAnnouncements,updateAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory, setCurrentAnnouncement, setEditAnnouncementDialogIsOpen } = announcementsSlice.actions
 export default announcementsSlice.reducer
