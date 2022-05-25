@@ -102,7 +102,7 @@ const FileInput = (props) => {
 const InputButton = (props) => {
     const { style, onChange } = props
     const fileInput = React.useRef();
-    var title = (fileInput?.current && fileInput.current.files.length > 0)?fileInput.current?.files[0]?.name:"CSV File"
+    var title = (fileInput?.current && fileInput.current.files.length > 0)?fileInput.current?.files[0]?.name:"Upload CSV File"
 
     // (fileInput.current.files?.length > 0 )?console.log("file : ",fileInput.current.files[0].name):''
     // if(fileInput?.current && fileInput.current.files.length > 0){
@@ -112,7 +112,7 @@ const InputButton = (props) => {
     
     return (
         <Paper
-            sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white', borderRadius: 2 }}
+            sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white', borderRadius: 2, ...style }}
         >
             <Button
                 variant="text"
@@ -122,6 +122,8 @@ const InputButton = (props) => {
                 onClick={() => fileInput.current.click()}
             >
                 <Typography
+                    noWrap
+
                     sx={{
                         color: 'white',
                         fontSize: '.8em',
@@ -136,7 +138,8 @@ const InputButton = (props) => {
                         flex: 1,
                         color: '#fff',
                         opacity: 1,
-                        borderRadius: 2
+                        borderRadius: 2,
+                        overflow:'ellipsis'
                     }}>
                     {title}
                 </Typography>
@@ -500,8 +503,9 @@ class AdminPanel extends React.PureComponent{
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities}/>
                                     <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary}/>
                                 </Grid>
-                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
-                                    <StyledButton href={downloadDemoCSV} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'20%'}}>Download Demo CSV File</StyledButton>
+                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
+                                    <InputButton onChange={handleFileInput} style={{width:'20%'}}></InputButton>
+                                    <StyledButton href={downloadDemoCSV} sx={{overflow:'ellipsis'}} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'20%'}}>Demo CSV File Download</StyledButton>
                                 </Grid>
                                 <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
                                     <StyledButton onClick= {handleSaveUser} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>

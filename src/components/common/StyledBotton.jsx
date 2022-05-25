@@ -23,7 +23,7 @@ class StyledButton extends React.PureComponent{
         // console.log('sx: ',sx)
         return (
         <Button {...rest} onClick={onClick} sx={{overflow:'auto',...btnStyle,...style}} variant="contained" color="btnSubmit">
-            <Typography sx={{fontSize:'.8em',fontWeight:800,p:.5,pt:.75,...sx}}>{children}</Typography>
+            <Typography noWrap sx={{fontSize:'.8em',fontWeight:800,p:.5,pt:.75,...sx}}>{children}</Typography>
         </Button>
     )
     }
