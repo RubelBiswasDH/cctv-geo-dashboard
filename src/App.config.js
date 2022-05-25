@@ -36,7 +36,7 @@ export const API = {
   SET_LATE_TIME: `${BASE_URL}/`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
   AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
-  GET_ATTENDANCE_STATISTICS: `${BASE_URL}/api/get-attendance-statistics/`,
+  GET_ATTENDANCE_STATISTICS: `${BASE_URL}/api/get-attendance-statistics`,
 
 }
 

@@ -51,7 +51,13 @@ export function getAttendanceReport(params) {
     return dispatch => {
         axios.get(API.GET_ATTENDANCE_STATISTICS, { headers: { Authorization: `Bearer ${ token }` }, params } )
             .then(res => {
-                console.log("data , ",res.data )
+                //console.log("data , ",res.data )
+                const type = res.headers['content-type']
+                const blob = new Blob([res.data], { type: type, encoding: 'UTF-8' })
+                const link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'attendance_report.xlsx'
+                link.click()
 
             })
             .catch(err => {
@@ -61,6 +67,7 @@ export function getAttendanceReport(params) {
             })
     }
 }
+
 ///////////////
 // Utilities //
 ///////////////
