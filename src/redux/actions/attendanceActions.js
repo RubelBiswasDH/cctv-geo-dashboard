@@ -3,7 +3,7 @@ import { AUTH,API } from '../../App.config'
 
 import { setAttendance, setError } from '../reducers/attendanceReducer'
 
-// User Validation
+// Get Attendance
 export function getAttendance(params) {
     const token = getAuthToken();
     //console.log('token on get Attendance: ', token)
@@ -44,7 +44,23 @@ export function getAttendance(params) {
     }
 }
 
+// get reports
 
+export function getAttendanceReport(params) {
+    const token = getAuthToken();
+    return dispatch => {
+        axios.get(API.GET_ATTENDANCE_STATISTICS, { headers: { Authorization: `Bearer ${ token }` }, params } )
+            .then(res => {
+                console.log("data , ",res.data )
+
+            })
+            .catch(err => {
+                //console.error(err)
+                dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
+
+            })
+    }
+}
 ///////////////
 // Utilities //
 ///////////////
