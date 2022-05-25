@@ -6,7 +6,9 @@ import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
 import MapGL from '../components/common/MapGL'
+import { getCompanyList } from '../redux/actions/registerActions'
 
+import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../redux/reducers/registerReducer'
 import downloadDemoCSV from '../assets/demo_users.xlsx'
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
@@ -300,6 +302,23 @@ class AdminPanel extends React.PureComponent{
             dispatch(setToastSeverity('warning'))
         }
     }
+  // handleAutoCompInputChange
+  handleAutoCompInputChange = e => {
+    const { dispatch } = this.props
+    dispatch(getCompanyList(e.target.value))
+    console.log('onInputChange called, value :', e.target.value)
+
+  }
+
+// handleAutoCompChange
+  handleAutoCompChange = (e,value) => {
+    const { dispatch } = this.props
+    // console.log('selected place: ', value?.Address)
+    dispatch( setCompanyAddress(value?.Address ?? '') )
+    dispatch( setCompanyLongitude(value?.longitude ?? '') )
+    dispatch( setCompanyLatitude(value?.latitude ?? '') )
+    // console.log('onChange Called')
+  }
 
     // handleCompanySettings = (e) => {
     //     e.preventDefault()
@@ -317,8 +336,8 @@ class AdminPanel extends React.PureComponent{
     // }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser} = this
-        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser} = this.props
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange} = this
+        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser, companyNameOptions} = this.props
         const {currentTab, data} = this.state
         return (
             <Box sx={
@@ -624,14 +643,14 @@ class AdminPanel extends React.PureComponent{
                                         />
                                         <Box sx={{width:'20%', position:'absolute',left:"5%",top:"5%",background:'white'}}>
                                         <Autocomplete
-                                        // onChange={handleAutoCompChange}
-                                        // onInputChange={handleAutoCompInputChange}
-                                        onChange={() => null}
-                                        onInputChange={() => null}
+                                        onChange={handleAutoCompChange}
+                                        onInputChange={handleAutoCompInputChange}
+                                        // onChange={() => console.log('onChange')}
+                                        // onInputChange={() =>  console.log('onInputChange')}
                                         disablePortal
                                         id="companySearch"
-                                        options={ []}
-                                        // options={companyNameOptions || []}
+                                        // options={ []}
+                                        options={companyNameOptions || []}
                                         getOptionLabel={(option) => {
                                             // e.g value selected with enter, right from the input
                                             if (typeof option === 'string') {
@@ -751,7 +770,8 @@ const mapStateToProps = state => ({
     monthYear: state?.admin?.monthYear,
     workingDays: state?.admin?.workingDays,
     companySettings: state?.admin?.companySettings,
-    newUser:state?.admin?.newUser
+    newUser:state?.admin?.newUser,
+    companyNameOptions: state?.register?.companyNameOptions,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })
