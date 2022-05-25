@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase, TextField} from '@mui/material'
+import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase, TextField, Autocomplete} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
 import StyledSelect from './common/StyledSelect'
+import MapGL from '../components/common/MapGL'
 
 import downloadDemoCSV from '../assets/demo_users.xlsx'
 import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile } from '../redux/reducers/adminReducer'
@@ -169,7 +170,8 @@ class AdminPanel extends React.PureComponent{
         super(props)
         this.state = {
             currentTab: 'notice',
-            seeMore:false
+            seeMore:false,
+            data: {},
         }
         this.handleCreateUser = this.handleCreateUser.bind(this)
         this.handleFileInput = this.handleFileInput.bind(this)
@@ -317,7 +319,7 @@ class AdminPanel extends React.PureComponent{
     render(){
         const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser} = this
         const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser} = this.props
-        const {currentTab} = this.state
+        const {currentTab, data} = this.state
         return (
             <Box sx={
                 theme => ({
@@ -605,8 +607,118 @@ class AdminPanel extends React.PureComponent{
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                     <Typography sx={{fontSize:'1em',fontWeight:600}}>Company Address</Typography>
                                 </Grid>
-                                <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid red'}} >
-
+                                <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}} >
+                                    <Paper
+                                        variant='outlined'
+                                        sx={{
+                                            width: '60%',
+                                            height: '100%',
+                                            p:0,
+                                            m:0,
+                                            position: 'relative'
+                                        }}
+                                    >
+                                        <MapGL
+                                            markerData={ Object.keys(data).length ? [ data ] : []}
+                                            getUpdatedAddress={ () => console.log("this._updateExactAddress") }
+                                        />
+                                        <Box sx={{width:'20%', position:'absolute',left:"5%",top:"5%",background:'white'}}>
+                                        <Autocomplete
+                                        // onChange={handleAutoCompChange}
+                                        // onInputChange={handleAutoCompInputChange}
+                                        onChange={() => null}
+                                        onInputChange={() => null}
+                                        disablePortal
+                                        id="companySearch"
+                                        options={ []}
+                                        // options={companyNameOptions || []}
+                                        getOptionLabel={(option) => {
+                                            // e.g value selected with enter, right from the input
+                                            if (typeof option === 'string') {
+                                            return option;
+                                            }
+                                            if (option.inputValue) {
+                                            return option.inputValue;
+                                            }
+                                            return option.Address
+                                        }}
+                                        renderOption={(props, option) => (
+                                            <Grid container {...props} key={option.id} >
+                                                <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
+                                                <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
+                                            </Grid>)}
+                                        sx={{ width: '100%' }}
+                                        renderInput={(params) => 
+                                        <TextField
+                                        {...params}
+                                            variant='outlined'
+                                            margin='none'
+                                            size='small'
+                                            fullWidth={ true }
+                                            name='companyAddress'
+                                            type='text'
+                                            // value={ companyName }
+                                            placeholder=''
+                                            // onChange={ this._onChange }
+                                        
+                                        />
+                                        }
+                                        />
+                                    </Box> 
+                                    </Paper>
+                                    
+                                </Grid>
+                                <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
+                                    <StyledButton onClick= {() => console.log('clicked')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Select</StyledButton>
+                                </Grid>
+                                <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
+                                    <StyledButton onClick= {() => console.log('saved')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
+                                </Grid>
+                                <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
+                                     {/*Autocomplete Company Address*/}
+                                    {/* <Box sx={{width:'15%'}}>
+                                        <Autocomplete
+                                        // onChange={handleAutoCompChange}
+                                        // onInputChange={handleAutoCompInputChange}
+                                        onChange={() => null}
+                                        onInputChange={() => null}
+                                        disablePortal
+                                        id="companySearch"
+                                        options={ []}
+                                        // options={companyNameOptions || []}
+                                        getOptionLabel={(option) => {
+                                            // e.g value selected with enter, right from the input
+                                            if (typeof option === 'string') {
+                                            return option;
+                                            }
+                                            if (option.inputValue) {
+                                            return option.inputValue;
+                                            }
+                                            return option.Address
+                                        }}
+                                        renderOption={(props, option) => (
+                                            <Grid container {...props} key={option.id} >
+                                                <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
+                                                <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
+                                            </Grid>)}
+                                        sx={{ width: '100%' }}
+                                        renderInput={(params) => 
+                                        <TextField
+                                        {...params}
+                                            variant='outlined'
+                                            margin='none'
+                                            size='small'
+                                            fullWidth={ true }
+                                            name='companyAddress'
+                                            type='text'
+                                            // value={ companyName }
+                                            placeholder=''
+                                            // onChange={ this._onChange }
+                                        
+                                        />
+                                        }
+                                        />
+                                    </Box>  */}
                                 </Grid>
                             </Grid>    
                         </Grid>
