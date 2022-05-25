@@ -12,7 +12,7 @@ export function register(user) {
         axios.post(AUTH.REGISTER_API, user)
             .then(res => {
                 // console.log({ register: res})
-                dispatch( login({ email: user.email, password:user.password }) )
+                dispatch( login({ email: user.email, password:user.password, device:'web' }) )
                 //window.location.href = '/login';
                 // if(res.data && res.data.token) {
                 //     const token = res.data.token
@@ -55,7 +55,7 @@ export function getCompanyList(name) {
     return dispatch => {
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
-        if(name.length > 0){
+        if(name && name?.length > 0){
         axios.get(API.AUTOCOMPLETE+name)
             .then(res => {
                 console.log({ list : res.data.places})

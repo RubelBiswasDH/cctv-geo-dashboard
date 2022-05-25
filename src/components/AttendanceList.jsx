@@ -15,17 +15,17 @@ import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/red
 import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getAttendance}  from '../redux/actions/attendanceActions'
-
+import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
 import dayjs from 'dayjs'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
-  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .3, filter: true, filterable: true  },
-  { field: 'announcement', headerName: 'Announcement', minWidth: 150, sortable: false,flex: 1, filter: true, filterable: true  },
-  { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 100,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
+  { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
+  { field: 'validation', headerName: 'Validation', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
 ]
 const rows = [
   {
@@ -77,22 +77,22 @@ class AttendanceList extends React.PureComponent {
     // console.log({announcements})
     //console.log('mappedAttendanceInfo called', attendanceList);
 
-    const isLate = (checked_in_time) => {
-      const today = dayjs(checked_in_time).format('YYYY-MM-DD')
-      const lastCheckinTime = today+' 10:15:00'
-      //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-      //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
-      if(new Date(checked_in_time) > new Date(lastCheckinTime)){
-        return "Yes"
-      }
-      else{
-        return "No"
-      }
-    }
+    // const isLate = (checked_in_time) => {
+    //   const today = dayjs(checked_in_time).format('YYYY-MM-DD')
+    //   const lastCheckinTime = today+' 10:15:00'
+    //   //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
+    //   //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
+    //   if(new Date(checked_in_time) > new Date(lastCheckinTime)){
+    //     return "Yes"
+    //   }
+    //   else{
+    //     return "No"
+    //   }
+    // }
 
-    const getAnnouncement = (id) => {
+    const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
-        const announcement = announcements.filter( (an => an.user_id === id))[0]
+        const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
         if (announcement && announcement?.type=="LATE"){
           return announcement?.description
         }
@@ -104,13 +104,15 @@ class AttendanceList extends React.PureComponent {
     const attendanceInfo = attendanceList.map((a,i) => {
 
       return ({
-        "id": a.id,
+        "id": a?.id,
         "serial_no":i+1,
-        "name": a.name,
-        "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "checked_out_time": a.exit_time?a.exit_time : '-',
-        "is_late": isLate(a.enter_time),
-        "announcement": getAnnouncement(a.user_id)
+        "name": a?.name,
+        "checked_in_time": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "checked_out_time": a?.exit_time?a?.exit_time : '-',
+        "is_late": (a?.is_late)?"Yes":"No",
+        "is_valid": a?.is_valid,
+        "announcement": getAnnouncement(a?.user_id, a?.created_at),
+        setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
     //console.log("returing attendace info ", attendanceInfo)

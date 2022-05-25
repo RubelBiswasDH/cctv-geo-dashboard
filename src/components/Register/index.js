@@ -54,8 +54,10 @@ class Register extends React.PureComponent {
 
 // handleAutoCompChange
   handleAutoCompChange = (e,value) => {
-    console.log('selected place: ', e.target, value)
-    console.log('onChange Called')
+    const { dispatch } = this.props
+    // console.log('selected place: ', value?.Address)
+    dispatch( setCompanyAddress(value?.Address ?? '') )
+    // console.log('onChange Called')
   }
 
 
@@ -98,7 +100,8 @@ switch (e.target.name) {
     case 'password_2':
         dispatch( setPassword_2(e.target.value?.trim() ?? '') )
         break;
-    // default:
+    default:
+
     //   data = empData;
   } 
 
@@ -443,54 +446,6 @@ switch (e.target.name) {
                 
                  
                  
-                {/*Autocomplete Company Name*/}
-                {/* <Box sx={{...boxStyle}}>
-                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Name ' }</Typography>
-                  <Autocomplete
-                  onChange={handleAutoCompChange}
-                  onInputChange={handleAutoCompInputChange}
-
-                  disablePortal
-                  id="companySearch"
-                  options={companyNameOptions}
-                  getOptionLabel={(option) => {
-                    // e.g value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                      return option;
-                    }
-                    if (option.inputValue) {
-                      return option.inputValue;
-                    }
-                    return option.Address.split(',')[0];
-                  }}
-                  renderOption={(props, option) => (
-                    <Grid container xs={12} {...props} key={option.id} >
-                        <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
-                        <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
-                    </Grid>)}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => 
-                  <TextField
-                  {...params}
-                    variant='outlined'
-                    margin='none'
-                    size='small'
-                    fullWidth={ true }
-                    name='companyName'
-                    type='text'
-                    // value={ companyName }
-                    placeholder='Enter Company Name...'
-                    // onChange={ this._onChange }
-                    error={
-                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
-                    }
-                    helperText={
-                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
-                    }
-                  />
-                }
-                />
-                </Box>  */}
                 {/* Password */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Password' }</Typography>
@@ -513,6 +468,54 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
+                {/*Autocomplete Company Address*/}
+                {/* <Box sx={{...boxStyle}}>
+                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address ' }</Typography>
+                  <Autocomplete
+                  onChange={handleAutoCompChange}
+                  onInputChange={handleAutoCompInputChange}
+
+                  disablePortal
+                  id="companySearch"
+                  options={companyNameOptions || []}
+                  getOptionLabel={(option) => {
+                    // e.g value selected with enter, right from the input
+                    if (typeof option === 'string') {
+                      return option;
+                    }
+                    if (option.inputValue) {
+                      return option.inputValue;
+                    }
+                    return option.Address
+                  }}
+                  renderOption={(props, option) => (
+                    <Grid container {...props} key={option.id} >
+                        <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
+                        <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
+                    </Grid>)}
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => 
+                  <TextField
+                  {...params}
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='companyAddress'
+                    type='text'
+                    // value={ companyName }
+                    placeholder=''
+                    // onChange={ this._onChange }
+                    error={
+                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                    }
+                    helperText={
+                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
+                    }
+                  />
+                }
+                />
+                </Box>  */}
                 {/* Company Address */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
@@ -535,7 +538,7 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
-                  {/* Retype Password */}
+                {/* Retype Password */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>
                   
@@ -677,17 +680,17 @@ Register.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  employeeName: state.register.employeeName, 
-  employeeEmail: state.register.employeeEmail,
-  employeePhone: state.register.employeePhone,
-  companyName: state.register.companyName,
-  companyAddress: state.register.companyAddress,
-  companyNameOptions: state.register.companyNameOptions,
-  companyLongitude: state.register.companyNameLongitude,
-  companyLatitude: state.register.companyNameLatiitude,
-  password: state.register.password,
-  password_2: state.register.password_2,
-  authError: state.register.error,
+  employeeName: state?.register?.employeeName, 
+  employeeEmail: state?.register?.employeeEmail,
+  employeePhone: state?.register?.employeePhone,
+  companyName: state?.register?.companyName,
+  companyAddress: state?.register?.companyAddress,
+  companyNameOptions: state?.register?.companyNameOptions,
+  companyLongitude: state?.register?.companyNameLongitude,
+  companyLatitude: state?.register?.companyNameLatiitude,
+  password: state?.register?.password,
+  password_2: state?.register?.password_2,
+  authError: state?.register?.error,
   toastIsOpen: state?.dashboard?.toastIsOpen,
   toastMessage: state?.dashboard?.toastMessage,
   toastSeverity: state?.dashboard?.toastSeverity

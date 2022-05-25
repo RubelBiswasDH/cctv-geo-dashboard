@@ -1,10 +1,48 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 
 // Import Components
-import { Box, Chip, LinearProgress,Typography, Button } from '@mui/material'
+import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem  } from '@mui/material'
 import { Refresh } from '@mui/icons-material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid'
+import StyledSelect from './StyledSelect'
+
+const CustomSelect = (props) => {
+    const handleChange = (e) => {
+        props.dispatch(props.onChange)
+    }
+    const {value, options, style, xs, onChange} = props
+    // console.log("optons: ",options)
+    return (
+        <Grid item xs = {xs} sx={{p:0,m:0, ...style}} >
+            <FormControl sx={{m: 0, p:0, width: '100%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">
+                {/* <InputLabel id="demo-select-small">isActive</InputLabel> */}
+                <Select
+                    labelId="select-small"
+                    id="select-small"
+                    value={value}
+               
+                    // label="Age"
+                    onChange={handleChange}
+                    sx={{width:'100%', background:'#8BC6FC',border:'none',m:0,p:0,pt:.5,borderRadius:2,height:'100%',fontSize:'.7em'}}
+                >
+                    {/* <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem> */}
+                    {options.map((option) => (
+                        <MenuItem 
+                            key={option} sx={{fontSize:'.7em'}} value={option}>{(option===1)?'Valid':"Invalid"}
+                        </MenuItem>))}
+                    {/* <MenuItem value={"active"}>Active</MenuItem>
+                    <MenuItem value={"non_active"}>Non Active</MenuItem> */}
+
+                    {/* <MenuItem value={"other"}>Thirty</MenuItem> */}
+                </Select>
+            </FormControl>
+        </Grid>
+    );
+}
 
 class StyledDataGrid extends React.PureComponent {
     // Handle Status Color
@@ -19,7 +57,6 @@ class StyledDataGrid extends React.PureComponent {
                 case 'DISPATCHED':
                     colors = {...colors, background: '#54A0FF'}
                     break;
-
                 case 'ASSIGNED':
                     colors = {...colors, background: '#9B59B6'}
                     break;
@@ -103,9 +140,12 @@ class StyledDataGrid extends React.PureComponent {
                                                 ? <Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}}/>
 
                                                 : <Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
-                                                :cellValues.field === 'view_profile'
+                                                :cellValues?.field === 'view_profile'
                                                 ? <Button onClick={cellValues.row.viewProfile}>View</Button>
-
+                                                :(cellValues.field === 'validation' & cellValues?.row?.is_late === "Yes")
+                                                ?<CustomSelect dispatch={this.props.dispatch} onChange={cellValues?.row?.setValidation} options={[0,1]} value={cellValues?.row?.is_valid}></CustomSelect>
+                                                :(cellValues.field === 'edit')
+                                                ?<Button onClick={() => null}>Edit</Button>
                                                 :cellValues.value
                                         }                                        
                                     </Box>
@@ -191,4 +231,6 @@ StyledDataGrid.defaultProps = {
     renderActions: () => [],
 }
 
-export default StyledDataGrid
+// export default StyledDataGrid
+const mapDispatchToProps = dispatch => ({ dispatch })
+export default connect(mapDispatchToProps)(StyledDataGrid)

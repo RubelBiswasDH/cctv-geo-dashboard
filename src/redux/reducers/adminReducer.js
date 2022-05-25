@@ -23,6 +23,12 @@ const initialState = {
   workingDays: '',
   monthYear: '',
   companySettings: {},
+  newUser: {
+    user_level:'GENERAL',
+    profile:{
+
+    }
+  },
   }
 
 const adminSlice = createSlice({
@@ -94,8 +100,20 @@ const adminSlice = createSlice({
     // console.log("admin : ",action, action.payload)
       state.companySettings = {...state.companySettings, ...action.payload}
     },
+    setNewUser: (state, action) => {
+      // console.log("admin : ",action, action.payload)
+        state.newUser = action.payload
+      },
+    updateNewUser: (state, action) => {
+      // console.log("admin : ",action, action.payload)
+        state.newUser = {...state.newUser, ...action.payload}
+      },
+    updateNewUserProfile: (state, action) => {
+      // console.log("admin : ",action, action.payload)
+        state.newUser.profile = {...state.newUser.profile, ...action.payload}
+      },
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile } = adminSlice.actions
 export default adminSlice.reducer

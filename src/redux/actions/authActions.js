@@ -73,6 +73,7 @@ export function validateUser(token) {
                     // console.log("user Data: ",userData)
                     // console.log("user type: ", userData)
                     const user = {
+                        id:userData.id,
                         username:userData.name,
                         user_type: userData.user_level,
                     }

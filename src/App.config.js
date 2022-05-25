@@ -27,6 +27,7 @@ export const API = {
   CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,
   GET_USER_PROFILE: `${BASE_URL}/api/get-user-profile/`,
   SET_USER_PROFILE: `${BASE_URL}/api/set-user-profile/`,
+  INVALID_LATE_ATTENDANCE: `${BASE_URL}/api/invalid-late-attendance/`,
   GET_USER: `${BASE_URL}/api/get-user/`,
   GET_USERS: `${BASE_URL}/api/get-users/`,
   GET_COMPANY_SETTINGS:  `${BASE_URL}/api/company-settings/`,
@@ -35,6 +36,7 @@ export const API = {
   SET_LATE_TIME: `${BASE_URL}/`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
   AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
+  GET_ATTENDANCE_STATISTICS: `${BASE_URL}/api/get-attendance-statistics`,
 
 }
 

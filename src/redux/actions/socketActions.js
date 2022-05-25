@@ -77,9 +77,9 @@ export function activateSocket_A() {
   
         })
         .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
-          console.log("Attendance event data: ",data)      
+          // console.log("Attendance event data: ",data)      
           const transformedAttendance = transformAttendance([ data ])
-          console.log('test transformedAttendance ', transformedAttendance)
+          // console.log('test transformedAttendance ', transformedAttendance)
           // Add Socket Data To Redux State
           dispatch( updateAttendance(transformedAttendance))
           })

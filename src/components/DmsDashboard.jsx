@@ -20,11 +20,14 @@ import AdminPanel from './AdminPanel'
 import Profile from './Profile'
 import AnalyticsDialog from './AnalyticsDialog'
 
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import Button from '@mui/material/Button';
+
 // Import Actions & Methods
 import { setSndList, setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { loadSndList, loadTasks, getQueryCategories } from '../redux/actions/taskActions'
-import {getAttendance}  from '../redux/actions/attendanceActions'
-import {getAnnouncements} from '../redux/actions/announcementsActions'
+import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
 import {getEmployee}  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
@@ -44,7 +47,7 @@ class DmsDashboard extends React.PureComponent {
 
     let date = new Date()
       
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+    const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     this.setState({ start_date, end_date })
@@ -113,7 +116,13 @@ class DmsDashboard extends React.PureComponent {
     // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
-
+  // Handle Report Download
+  _handleReportDownload = () => {
+    //  console.log('report will be downloaded..')
+    const { start_date, end_date } = this.state
+    const { dispatch } = this.props
+    dispatch( getAttendanceReport({start_date: `${start_date}`, end_date: `${end_date}`}))
+   }
   // Handle Analytics Dialog
   _handleAnalyticsDialog = () => {
     this.setState({ isAnalyticsDialogOpen: true })
@@ -188,6 +197,12 @@ class DmsDashboard extends React.PureComponent {
                   >
                       { 'Get Data' }
                   </LoadingButton>
+                  <Button
+                    onClick={ this._handleReportDownload } 
+                    variant="contained" 
+                    endIcon={<FileDownloadOutlinedIcon />}>
+                    {"Download Report"}
+                  </Button>
                 </Stack>
               }
                 {/* {

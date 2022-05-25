@@ -19,6 +19,7 @@ import {getEmployee}  from '../redux/actions/employeeActions'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import {setUserProfile} from "../redux/reducers/adminReducer"
+import { setView } from '../utils/utils'
 
 import dayjs from 'dayjs'
 
@@ -174,38 +175,7 @@ class EmployeeList extends React.PureComponent {
     // this._setReminderForEmergency()
   }
 
-  mappedAttendanceInfo = () => {
-    const {attendanceList} = this.props;
-    //console.log('mappedAttendanceInfo called', attendanceList);
-
-    const isLate = (checked_in_time) => {
-      const today = dayjs(checked_in_time).format('YYYY-MM-DD')
-      const lastCheckinTime = today+' 10:15:00'
-      //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-      //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
-      if(new Date(checked_in_time) > new Date(lastCheckinTime)){
-        return "Yes"
-      }
-      else{
-        return "No"
-      }
-    }
-
   
-    const attendanceInfo = attendanceList.map((a,i) => {
-
-      return ({
-        "id": a.id,
-        "serial_no":i+1,
-        "name": a.name,
-        "checked_in_time": dayjs(a.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "checked_out_time": a.exit_time?a.exit_time : '-',
-        "is_late": isLate(a.enter_time)
-      })
-    })
-    //console.log("returing attendace info ", attendanceInfo)
-    return attendanceInfo
-  }
   
   // Generate Columns & Rows
   _generateTaskColumnsAndRows = tasks => {
@@ -409,6 +379,7 @@ class EmployeeList extends React.PureComponent {
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
+        // setView('profile')
       }
     }))
   }

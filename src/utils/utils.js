@@ -2,6 +2,7 @@ import regularNotificationAudioClip from '../assets/notification_tone.mp3'
 import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
 
 import dayjs from 'dayjs'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
 
 
 
@@ -108,4 +109,17 @@ export function transformAttendance(attendance) {
   //console.log('tranformAnnouncement : ',transformedAttendance)
   const transformedAttendanceSortByDate = sortByDate(transformedAttendance)  
   return transformedAttendanceSortByDate
+}
+
+export function getCurrentView() {
+  const currentView = localStorage.getItem('currentView')
+  if(currentView) {
+      return currentView
+  }
+  return 'attendance'
+}
+
+export function setView(currentView) {
+  localStorage.setItem('currentView', currentView)
+  setCurrentView(currentView)
 }

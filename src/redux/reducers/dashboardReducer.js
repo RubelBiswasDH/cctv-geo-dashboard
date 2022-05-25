@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import {getCurrentView} from '../../utils/utils'
 
-
+const currentView = getCurrentView()
 const initialState = {
-    currentView: 'attendance',
+    currentView: currentView,
     toastIsOpen: false,
     toastMessage: '',
     toastSeverity: 'success'
