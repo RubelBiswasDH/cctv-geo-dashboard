@@ -8,9 +8,17 @@ import { GridActionsCellItem } from '@mui/x-data-grid'
 import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 // Import Actions & Methods
-import {getAnnouncements}  from '../redux/actions/announcementsActions'
+import { getAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
 
 import dayjs from 'dayjs'
 
@@ -20,7 +28,7 @@ const columns = [
   { field: 'announced_time', headerName: 'Announced At', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
   { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
   { field: 'type', headerName: 'Type', minWidth: 50, sortable: true,flex: .5, filter: true, filterable: true  },
-  // { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
+  { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
   // { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
 const rows = [
@@ -32,26 +40,6 @@ const rows = [
       "checked_out_time": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
       "is_late": "No",
   },
-//   {
-//     id(pin):75
-//     company_id(pin):1
-//     user_id(pin):8
-//     description(pin):"will be late because of some issues.."
-//     created_at(pin):"2022-05-18 09:55:13"
-//     updated_at(pin):"2022-05-18 09:55:13"
-//     is_from_dashboard(pin):0
-//     type(pin):"LATE"
-//     name(pin):"Sayantan"
-//     id(pin):74
-//     company_id(pin):1
-//     user_id(pin):10
-//     description(pin):"will be late by an hour due to unavoidable personal work"
-//     created_at(pin):"2022-05-18 09:37:06"
-//     updated_at(pin):"2022-05-18 09:37:06"
-//     is_from_dashboard(pin):0
-//     type(pin):"LATE"
-//     name(pin):"Rubaiya"
-//   }
 ]
 
 class Announcements extends React.PureComponent {
@@ -72,7 +60,13 @@ class Announcements extends React.PureComponent {
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
 
-  mappedAnnouncements= () => {
+  _handleAnnouncementEdit = (id) => {
+    const { dispatch } = this.props
+    console.log('clicked: ',id)
+    dispatch( getAnnouncement(id))
+  }
+
+  mappedAnnouncements = () => {
     const {announcements} = this.props;
     const announcementInfo = announcements.map((a,i) => {
 
@@ -83,6 +77,9 @@ class Announcements extends React.PureComponent {
         "announced_time": dayjs(a?.created_at).format('YYYY-MM-DD h:mm:ss') ,
         "announcement": a?.description,
         "type":a?.type,
+        editAnnouncement: () => {
+          this._handleAnnouncementEdit(a?.id)
+        }
       })
     })
     //console.log("returing attendace info ", attendanceInfo)

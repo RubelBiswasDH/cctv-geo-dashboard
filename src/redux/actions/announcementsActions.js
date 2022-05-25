@@ -9,6 +9,26 @@ import dayjs from 'dayjs'
 
 import {transformAnnouncements} from '../../utils/utils';
 
+//get single announcement
+
+export function getAnnouncement(id) {
+  const token = getAuthToken();
+  return dispatch => {
+
+    axios.get(API.GET_ANNOUNCEMENT + id, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => {
+        const announcementData = res.data
+        if (announcementData) {
+          console.log(" announcement data : ", announcementData.announcement.description)
+        }
+      })
+      .catch(err => {
+        console.log("error on announcement: ", err)
+
+      })
+  }
+}
+
 
 //get all announcement 
 

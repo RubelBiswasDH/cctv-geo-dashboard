@@ -145,7 +145,7 @@ class StyledDataGrid extends React.PureComponent {
                                                 :(cellValues.field === 'validation' & cellValues?.row?.is_late === "Yes")
                                                 ?<CustomSelect dispatch={this.props.dispatch} onChange={cellValues?.row?.setValidation} options={[0,1]} value={cellValues?.row?.is_valid}></CustomSelect>
                                                 :(cellValues.field === 'edit')
-                                                ?<Button onClick={() => null}>Edit</Button>
+                                                ?<Button onClick={cellValues.row.editAnnouncement}>Edit</Button>
                                                 :cellValues.value
                                         }                                        
                                     </Box>
