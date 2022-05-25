@@ -19,8 +19,8 @@ const columns = [
   { field: 'name', headerName: 'Name', minWidth: 75,flex:.75, sortable: false, filter: true, filterable: true },
   { field: 'announced_time', headerName: 'Announced At', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
   { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
-  { field: 'type', headerName: 'Type', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
-  { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
+  { field: 'type', headerName: 'Type', minWidth: 50, sortable: true,flex: .5, filter: true, filterable: true  },
+  // { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
   // { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
 const rows = [
