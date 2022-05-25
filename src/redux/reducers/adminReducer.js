@@ -24,6 +24,7 @@ const initialState = {
   monthYear: '',
   companySettings: {},
   newUser: {
+    user_level:'GENERAL',
     profile:{
 
     }
