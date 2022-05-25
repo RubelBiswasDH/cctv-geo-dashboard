@@ -51,14 +51,14 @@ export function register(user) {
 
 // getCompanyList
 export function getCompanyList(name) {
-    console.log("name ",name)
+    // console.log("name ",name)
     return dispatch => {
         // Set `isValidating`
        // dispatch( setIsValidating(true) )
         if(name && name?.length > 0){
         axios.get(API.AUTOCOMPLETE+name)
             .then(res => {
-                console.log({ list : res.data.places})
+                // console.log({ list : res.data.places})
                 dispatch(setCompanyNameOptions(res.data.places))
                 // if(res.data && res.data.token) {
                 //     const token = res.data.token

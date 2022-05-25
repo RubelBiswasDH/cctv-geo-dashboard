@@ -306,8 +306,6 @@ class AdminPanel extends React.PureComponent{
   handleAutoCompInputChange = e => {
     const { dispatch } = this.props
     dispatch(getCompanyList(e.target.value))
-    console.log('onInputChange called, value :', e.target.value)
-
   }
 
 // handleAutoCompChange
