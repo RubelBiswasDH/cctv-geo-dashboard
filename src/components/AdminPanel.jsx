@@ -689,7 +689,7 @@ class AdminPanel extends React.PureComponent{
                                             }
                                             getUpdatedAddress={ this.updateExactAddress}
                                         />
-                                        <Box sx={{width:'20%', position:'absolute',left:"5%",top:"5%",background:'white'}}>
+                                        <Box sx={{width:'20%', position:'absolute',left:"3.2em",top:".6em",background:'white'}}>
                                         <Autocomplete
                                         onChange={handleAutoCompChange}
                                         onInputChange={handleAutoCompInputChange}
