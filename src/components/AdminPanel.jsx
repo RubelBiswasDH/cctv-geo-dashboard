@@ -10,7 +10,7 @@ import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../redux/reducers/registerReducer'
 import downloadDemoCSV from '../assets/demo_users.xlsx'
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile } from '../redux/reducers/adminReducer'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile, setCompanyAddressData } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
@@ -181,11 +181,25 @@ class AdminPanel extends React.PureComponent{
         this.handleNotice = this.handleNotice.bind(this)
         this.handleSetLateTime = this.handleSetLateTime.bind(this)
         this.handleSetWorkingDays = this.handleSetWorkingDays.bind(this)
+        this.updateExactAddress = this.updateExactAddress.bind(this)
         // this.handleCompanySettings = this.handleCompanySettings.bind(this)
     }
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
         // console.log('get company settings')
+    }
+    updateExactAddress = (updatedAddress) => {
+        const { data } = this.state        
+        const {dispatch} = this.props
+        const updatedDate = {
+            ...data,
+            exact_address: updatedAddress.exact_address,
+            latitude: updatedAddress.latitude,
+            longitude: updatedAddress.longitude
+        }
+        console.log({updatedDate})
+        dispatch( setCompanyAddressData(updatedDate))
+        // this.setState({ data: updatedDate })        
     }
     handleNewUserFieldChange = e => {
 
@@ -313,6 +327,11 @@ class AdminPanel extends React.PureComponent{
     const { dispatch } = this.props
     // console.log('selected place: ', value?.Address)
     dispatch( setCompanyAddress(value?.Address ?? '') )
+    dispatch( setCompanyAddressData(value?.Address ?{
+        exact_address:value?.Address,
+        longitude:value?.longitude,
+        latitude:value?.latitude,
+    }:{}))
     dispatch( setCompanyLongitude(value?.longitude ?? '') )
     dispatch( setCompanyLatitude(value?.latitude ?? '') )
     // console.log('onChange Called')
@@ -335,7 +354,7 @@ class AdminPanel extends React.PureComponent{
 
     render(){
         const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange} = this
-        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser, companyNameOptions} = this.props
+        const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser, companyNameOptions, companyAddressData } = this.props
         const {currentTab, data} = this.state
         return (
             <Box sx={
@@ -636,8 +655,11 @@ class AdminPanel extends React.PureComponent{
                                         }}
                                     >
                                         <MapGL
-                                            markerData={ Object.keys(data).length ? [ data ] : []}
-                                            getUpdatedAddress={ () => console.log("this._updateExactAddress") }
+                                            // markerData={ Object.keys(data).length ? [ data ] : []}
+                                            markerData={(Object.keys(companyAddressData).length)?[companyAddressData
+                                            ]:[]
+                                            }
+                                            getUpdatedAddress={ this.updateExactAddress}
                                         />
                                         <Box sx={{width:'20%', position:'absolute',left:"5%",top:"5%",background:'white'}}>
                                         <Autocomplete
@@ -770,6 +792,9 @@ const mapStateToProps = state => ({
     companySettings: state?.admin?.companySettings,
     newUser:state?.admin?.newUser,
     companyNameOptions: state?.register?.companyNameOptions,
+    companyLatitude: state?.register?.companyLatitude,
+    companyLongitude: state?.register?.companyLongitude,
+    companyAddressData: state?.admin?.companyAddressData,
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

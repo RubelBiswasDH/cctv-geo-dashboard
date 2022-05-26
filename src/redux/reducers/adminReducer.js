@@ -29,6 +29,9 @@ const initialState = {
 
     }
   },
+  companyAddressData:{
+
+  }
   }
 
 const adminSlice = createSlice({
@@ -112,8 +115,11 @@ const adminSlice = createSlice({
       // console.log("admin : ",action, action.payload)
         state.newUser.profile = {...state.newUser.profile, ...action.payload}
       },
+    setCompanyAddressData: (state, action) => {
+      state.companyAddressData = action.payload
+    }
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData } = adminSlice.actions
 export default adminSlice.reducer
