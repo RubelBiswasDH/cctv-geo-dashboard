@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Box, Grid, Typography, Paper, InputBase, Button, ButtonBase, TextField, Autocomplete} from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
@@ -234,6 +235,7 @@ class AdminPanel extends React.PureComponent{
 
     handleFileInput = e => {
         const {dispatch,fileInput} = this.props
+        console.log('tyoe of file inpt: ',typeof(fileInput))
         e.preventDefault()
         const file = e.target.files[0]
         // const formData = new FormData();
@@ -795,6 +797,49 @@ class AdminPanel extends React.PureComponent{
         );
     }
 }
+
+// Prop Types
+AdminPanel.propTypes = {
+    designation: PropTypes.string,
+    designationOptions: PropTypes.array,
+    newUserName: PropTypes.string,
+    newUserEmail: PropTypes.string,
+    newUserMobile: PropTypes.string,
+    newUserRole: PropTypes.string,
+    newUserRoleOptions: PropTypes.array,
+    fileInput: PropTypes.object,
+    announcementMessage: PropTypes.string,
+    lateTime: PropTypes.string,
+    monthYear: PropTypes.string,
+    workingDays: PropTypes.string,
+    companySettings: PropTypes.object,
+    newUser: PropTypes.object,
+    companyNameOptions: PropTypes.array,
+    companyLatitude: PropTypes.string,
+    companyLongitude: PropTypes.string,
+    companyAddressData: PropTypes.object,
+  }
+  
+AdminPanel.defaultProps = {
+    designation: '',
+    designationOptions: [],
+    newUserName: '',
+    newUserEmail: '',
+    newUserMobile: '',
+    newUserRole: '',
+    newUserRoleOptions: [],
+    fileInput: {},
+    announcementMessage: '',
+    lateTime: '',
+    monthYear: '',
+    workingDays: '',
+    companySettings: {},
+    newUser: {},
+    companyNameOptions: [],
+    companyLatitude: '',
+    companyLongitude: '',
+    companyAddressData: {},
+  }
 
 // export default AdminPanel;
 const mapStateToProps = state => ({
