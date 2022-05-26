@@ -684,7 +684,7 @@ class AdminPanel extends React.PureComponent{
                                     >
                                         <MapGL
                                             // markerData={ Object.keys(data).length ? [ data ] : []}
-                                            markerData={(Object.keys(companySettings.companyAddressData).length)?[companySettings.companyAddressData
+                                            markerData={(Object.keys(companySettings?.companyAddressData).length)?[companySettings.companyAddressData
                                             ]:[]
                                             }
                                             getUpdatedAddress={ this.updateExactAddress}

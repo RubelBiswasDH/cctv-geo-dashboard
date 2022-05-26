@@ -22,7 +22,9 @@ const initialState = {
   lateTime: '',
   workingDays: '',
   monthYear: '',
-  companySettings: {},
+  companySettings: {
+    companyAddressData:{}
+  },
   newUser: {
     user_level:'GENERAL',
     profile:{
