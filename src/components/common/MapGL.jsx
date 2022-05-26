@@ -7,7 +7,7 @@ import { Map, NavigationControl, Popup, Marker } from 'bkoi-gl'
 import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
 import { bbox } from '@turf/turf'
 import { MAP } from '../../App.config'
-import { setCompanyAddressData } from '../../redux/reducers/adminReducer'
+import { setCompanyAddressData, setCompanySettings } from '../../redux/reducers/adminReducer'
 // Import Styles
 import 'mapbox-gl-style-switcher/styles.css'
 
@@ -31,8 +31,6 @@ class MapGL extends React.PureComponent {
   componentDidUpdate(prevProps, prevState) {
     const { markerData } = this.props
     const { map } = this.state
-    console.log({markerData})
-    console.log({map})
 
     // If map changes in state
     if(prevState.map !== map) {
@@ -77,17 +75,23 @@ class MapGL extends React.PureComponent {
     // get Current Location
     map.on('click', e => {
       // document.getElementById('mouse-click-pos').innerHTML = `Location: ${ e.lngLat }`
-      console.log("current position: ",e.lngLat)
+      // console.log("current position: ",e.lngLat)
       const {lngLat} = e
       getReverseGeoAddress({ longitude: lngLat.lng, latitude: lngLat.lat })
       .then(res => {
         const reverseData = res.place
         if(reverseData) {
           // Get Updated Address from Reverse Geo Code
-          const updatedAddress = { exact_address: reverseData.address, longitude: lngLat.lng, latitude: lngLat.lat }
+          const updatedAddress = {
+            exact_address: reverseData.address,
+            longitude: lngLat.lng,
+            latitude: lngLat.lat 
+          }
 
           // Update Address
-          this.props.dispatch(setCompanyAddressData(updatedAddress))
+          console.log({updatedAddress})
+          // this.props.dispatch(setCompanyAddressData(updatedAddress))
+          this.props.dispatch(setCompanySettings({...this.props.companySettings, ...{companyAddressData:updatedAddress}}))
         }
       })
       .catch(err => {
@@ -293,5 +297,9 @@ MapGL.defaultProps = {
 }
 
 // export default MapGL
+const mapStateToProps = state => ({
+  companySettings: state?.admin?.companySettings,
+})
+
 const mapDispatchToProps = dispatch => ({ dispatch })
-export default connect(mapDispatchToProps)(MapGL)
+export default connect(mapStateToProps, mapDispatchToProps)(MapGL)

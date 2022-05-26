@@ -10,7 +10,7 @@ import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../redux/reducers/registerReducer'
 import downloadDemoCSV from '../assets/demo_users.xlsx'
-import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile, setCompanyAddressData } from '../redux/reducers/adminReducer'
+import { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setLateTime, setWorkingDays, setMonthYear, updateCompanySettings, setNewUser, updateNewUser,updateNewUserProfile, setCompanyAddressData, setCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, setLateTimeAction, setWorkingDaysAction, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
@@ -316,6 +316,22 @@ class AdminPanel extends React.PureComponent{
             dispatch(setToastSeverity('warning'))
         }
     }
+    handleSaveCompanyAddress = (e) => {
+        e.preventDefault()
+        const { dispatch, companySettings, companyAddressData } = this.props
+        if (companyAddressData) {
+            const new_settings = {
+                companyAddressData
+            }
+
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
+        }
+        else {
+            dispatch(setToastMessage('Something went wrong, try again..'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
+    }
   // handleAutoCompInputChange
   handleAutoCompInputChange = e => {
     const { dispatch } = this.props
@@ -324,7 +340,7 @@ class AdminPanel extends React.PureComponent{
 
 // handleAutoCompChange
   handleAutoCompChange = (e,value) => {
-    const { dispatch } = this.props
+    const { dispatch, companySettings } = this.props
     // console.log('selected place: ', value?.Address)
     dispatch( setCompanyAddress(value?.Address ?? '') )
     dispatch( setCompanyAddressData(value?.Address ?{
@@ -332,6 +348,13 @@ class AdminPanel extends React.PureComponent{
         longitude:value?.longitude,
         latitude:value?.latitude,
     }:{}))
+    const newAddress = value?.Address ?{
+            exact_address:value?.Address,
+            longitude:value?.longitude,
+            latitude:value?.latitude,
+        }:{}
+    // const companyAddress = newAddress
+    dispatch(setCompanySettings({...companySettings, ...{companyAddressData:newAddress}}))
     dispatch( setCompanyLongitude(value?.longitude ?? '') )
     dispatch( setCompanyLatitude(value?.latitude ?? '') )
     // console.log('onChange Called')
@@ -353,7 +376,7 @@ class AdminPanel extends React.PureComponent{
     // }
 
     render(){
-        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange} = this
+        const {handleCreateUser,handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange, handleSaveCompanyAddress } = this
         const {dispatch, activityStatus, activityStatusOptions, department, departmentOptions, contractType, contractTypeOptions, designation, designationOptions, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, newUser, companyNameOptions, companyAddressData } = this.props
         const {currentTab, data} = this.state
         return (
@@ -656,7 +679,7 @@ class AdminPanel extends React.PureComponent{
                                     >
                                         <MapGL
                                             // markerData={ Object.keys(data).length ? [ data ] : []}
-                                            markerData={(Object.keys(companyAddressData).length)?[companyAddressData
+                                            markerData={(Object.keys(companySettings.companyAddressData).length)?[companySettings.companyAddressData
                                             ]:[]
                                             }
                                             getUpdatedAddress={ this.updateExactAddress}
@@ -711,7 +734,7 @@ class AdminPanel extends React.PureComponent{
                                     <StyledButton onClick= {() => console.log('clicked')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Select</StyledButton>
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
-                                    <StyledButton onClick= {() => console.log('saved')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
+                                    <StyledButton onClick= {handleSaveCompanyAddress} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
                                      {/*Autocomplete Company Address*/}
