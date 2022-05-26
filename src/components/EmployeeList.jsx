@@ -18,7 +18,7 @@ import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getEmployee}  from '../redux/actions/employeeActions'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile} from "../redux/reducers/adminReducer"
+import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
 import { setView } from '../utils/utils'
 
 import dayjs from 'dayjs'
@@ -376,6 +376,7 @@ class EmployeeList extends React.PureComponent {
       serial_no:i+1,
       viewProfile: () => {
         // console.log({id:emp.id})
+        this.props.dispatch(setProfileEdit(false))
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))

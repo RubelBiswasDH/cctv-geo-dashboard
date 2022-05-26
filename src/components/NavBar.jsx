@@ -19,7 +19,7 @@ import { updatePushNotification, setSearchQuery, setAutocompleteSelectedTask, se
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile} from "../redux/reducers/adminReducer"
+import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
 import { setView } from '../utils/utils'
 
 class NavBar extends React.PureComponent {
@@ -53,6 +53,7 @@ class NavBar extends React.PureComponent {
   }
   _getUserProfile = () => {
         this.props.dispatch(setUserProfile({}))
+        this.props.dispatch(setProfileEdit(false))
         this.props.dispatch(getUserProfile(this.state.user.id))
         this.props.dispatch(setCurrentView('profile'))
         // setView('profile')
