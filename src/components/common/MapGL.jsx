@@ -89,7 +89,7 @@ class MapGL extends React.PureComponent {
           }
 
           // Update Address
-          console.log({updatedAddress})
+          // console.log({updatedAddress})
           // this.props.dispatch(setCompanyAddressData(updatedAddress))
           this.props.dispatch(setCompanySettings({...this.props.companySettings, ...{companyAddressData:updatedAddress}}))
         }

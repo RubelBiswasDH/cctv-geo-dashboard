@@ -577,8 +577,8 @@ class AdminPanel extends React.PureComponent{
                     {(this.state.currentTab === 'company_policy')
                     ?(
                     <GridContent title={"Company Settings"} >
-                        <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
-                            <Grid xs={12} spacing={2} item container>
+                        <Grid container spacing={2} sx={{p:4,pt:2}}>
+                            <Grid xs={12} spacing={2} item container sx={{p:4,pt:2,alignItems:'center',justifyContent:'center'}}>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <Typography 
                                         sx={{
@@ -620,7 +620,7 @@ class AdminPanel extends React.PureComponent{
                                     </Typography>  
                                 </Grid>
                             </Grid>
-                            <Grid xs={12} spacing={2} item container>
+                            <Grid xs={12} spacing={2} item container sx={{p:4,pt:2,alignItems:'center',justifyContent:'center'}}>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setMonthYear} value={monthYear} placeholder={"Year-Month, Ex: 22-04"} ariaLabel={"Year/Month"} style={{borderRadius:2}}/>    
                                 </Grid>
@@ -632,7 +632,7 @@ class AdminPanel extends React.PureComponent{
                                     <StyledButton onClick= {handleSetWorkingDays} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Update</StyledButton>
                                 </Grid>
                            </Grid>
-                           <Grid xs={12} spacing={2} item container>
+                           <Grid xs={12} spacing={2} item container sx={{p:4,pt:2,alignItems:'center',justifyContent:'center'}}>
                                 <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
                                     <Typography 
                                         sx={{
@@ -667,7 +667,7 @@ class AdminPanel extends React.PureComponent{
                                     <Typography sx={{fontSize:'1em',fontWeight:600}}>Company Address</Typography>
                                 </Grid>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                    <Typography sx={{fontSize:'.7em',fontWeight:600}}>Current Address:{companySettings?.companyAddressData?.exact_address}</Typography>
+                                    <Typography sx={{fontSize:'.7em',fontWeight:600}}>Current Address : {companySettings?.companyAddressData?.exact_address}</Typography>
                                 </Grid>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}} >
                                     <Paper
