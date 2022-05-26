@@ -321,7 +321,7 @@ class AdminPanel extends React.PureComponent{
         const { dispatch, companySettings, companyAddressData } = this.props
         if (companyAddressData) {
             const new_settings = {
-                companyAddressData
+                companyAddressData:companySettings.companyAddressData
             }
 
             dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
@@ -666,6 +666,9 @@ class AdminPanel extends React.PureComponent{
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                                     <Typography sx={{fontSize:'1em',fontWeight:600}}>Company Address</Typography>
                                 </Grid>
+                                <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                    <Typography sx={{fontSize:'.7em',fontWeight:600}}>Current Address:{companySettings?.companyAddressData?.exact_address}</Typography>
+                                </Grid>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}} >
                                     <Paper
                                         variant='outlined'
@@ -731,7 +734,8 @@ class AdminPanel extends React.PureComponent{
                                     
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
-                                    <StyledButton onClick= {() => console.log('clicked')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Select</StyledButton>
+
+                                    {/* <StyledButton onClick= {() => console.log('clicked')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Select</StyledButton> */}
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
                                     <StyledButton onClick= {handleSaveCompanyAddress} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
