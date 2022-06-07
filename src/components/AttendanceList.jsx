@@ -18,17 +18,24 @@ import {getAttendance}  from '../redux/actions/attendanceActions'
 import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
 import dayjs from 'dayjs'
 
+
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 100,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
-  { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
-  { field: 'validation', headerName: 'Validation', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
+  { field: 'day1', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'day2', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'day3', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'day4', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'day5', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+  
+ // { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+ // { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
+ // { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
+ // { field: 'validation', headerName: 'Validation', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
 ]
-const rows = [
-  {
+
+
+const rows = [{
       "id": 684,
       "name": "tkt-023846-1169",
       "checked_in_time": "AL- HAJ ABDUL JABBER",
@@ -39,6 +46,9 @@ const rows = [
 ]
 
 class AttendanceList extends React.PureComponent {
+ 
+  
+
   state = {
     start_date:null,
     start_date: null,
@@ -72,8 +82,31 @@ class AttendanceList extends React.PureComponent {
     // Pending Emergency Reminder
     // this._setReminderForEmergency()
   }
+
+// mapAttendanceColums=()=>{
+//   const {attendanceList} =this.props;
+// const columns = attendanceList.map((a,i)=>{
+
+//   return({
+     
+//   })
+// }) 
+// }
+
   mappedAttendanceInfo = () => {
     const {attendanceList, announcements} = this.props;
+    // console.log(attendanceList);
+   
+    let dates = []
+    attendanceList.map(data=>(
+      dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+    
+
+    ))
+    const unique = [...new Set(dates)]
+    console.log(unique)
+   
+
     // console.log({announcements})
     //console.log('mappedAttendanceInfo called', attendanceList);
 
@@ -101,13 +134,19 @@ class AttendanceList extends React.PureComponent {
       else return ''
     }
 
+   
+
     const attendanceInfo = attendanceList.map((a,i) => {
 
       return ({
         "id": a?.id,
         "serial_no":i+1,
         "name": a?.name,
-        "checked_in_time": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "day1": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "day2": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "day3": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "day4": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        "day5": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
         "checked_out_time": a?.exit_time?a?.exit_time : '-',
         "is_late": (a?.is_late)?"Yes":"No",
         "is_valid": a?.is_valid,
@@ -115,8 +154,9 @@ class AttendanceList extends React.PureComponent {
         setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
-    //console.log("returing attendace info ", attendanceInfo)
+    // console.log("returing attendace info ", attendanceInfo)
     return attendanceInfo
+    
   }
 
   // Generate Columns & Rows

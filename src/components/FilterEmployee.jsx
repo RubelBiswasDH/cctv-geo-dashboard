@@ -22,7 +22,7 @@ const CustomButton = (props) => {
         }
 
         return (
-            <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.5em', sm:'.4em',md:'.5em',lg:'.6em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
+            <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
         );
 }
 

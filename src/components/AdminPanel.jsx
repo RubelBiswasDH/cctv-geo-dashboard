@@ -70,7 +70,7 @@ const CustomButton = (props) => {
     }
 
     return (
-        <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.5em', sm:'.4em',md:'.5em',lg:'.6em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
+        <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
     );
 }
 
@@ -454,32 +454,35 @@ class AdminPanel extends React.PureComponent{
                     {(this.state.currentTab === 'add_user')
                     ?(
                     <GridContent title={"Add User"} style={{p:1}}>
-                        {(!this.state.seeMore)?(
+                        {/* {(!this.state.seeMore)?( */}
                         <Grid container spacing={2} sx={{p:4,pt:2,background:''}}>
                            <Grid xs={12} spacing={2} item container>
-                                <Grid xs={4} xl={3} item sx={{backgroundColor:''}}>
+                                <Grid xs={4} xl={4} item sx={{backgroundColor:''}}>
                                     <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{borderRadius:2}}/>    
                                 </Grid>
-                                <Grid xs={4} xl={3} item>
+                                <Grid xs={4} xl={4} item>
                                     <StyledInputField onChange={setNewUserEmail} value={newUserEmail} placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{borderRadius:2}}/>
                                 </Grid>
-                                <Grid xs={4} xl={3} item>
+                                <Grid xs={4} xl={4} item>
                                     <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{borderRadius:2}}/>
                                 </Grid>
-                                <Grid xs={4} xl={1.5} item>
+                                <Grid xs={6} xl={6} item>
                                     <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{minWidth:'100%'}}/>
                                 </Grid>
-                                <Grid xs={4} xl={1.5} item>
+                                <Grid xs={6} xl={6} item>
                                     <StyledButton onClick= {handleCreateUser} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Create</StyledButton>
                                 </Grid>
-                                <Grid xs={4} xl={1.5} item>
+                                {/* <Grid xs={4} xl={1.5} item>
                                     <StyledButton onClick= {() => this.setState(state => ({seeMore:!state.seeMore}))} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>See More</StyledButton>
-                                </Grid>
+                                </Grid> */}
                            </Grid>
                            <Grid xs={12} item container spacing={2}>
                                 {/* <Grid xs={4} item>
                                     <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
                                 </Grid> */}
+                                <Grid xs={4} item>
+                                <StyledButton href={downloadDemoCSV} sx={{overflow:'ellipsis'}} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Demo CSV File Download</StyledButton>
+                                </Grid>
                                 <Grid xs={4} item>
                                     <InputButton onChange={handleFileInput}></InputButton>
                                 </Grid>
@@ -489,9 +492,9 @@ class AdminPanel extends React.PureComponent{
                            </Grid>
                             
                         </Grid>
-                    )
-                    :(
-                        <Grid container spacing={2} sx={{p:4,pt:2}}>
+                    {/* )
+                    :( */}
+                        {/* <Grid container spacing={2} sx={{p:4,pt:2}}>
                             
                                 <Grid spacing={2} container item >
                                     <UserField  dispatch={dispatch} field={'name'}  title={"Name"} value={newUser?.name}/>
@@ -569,8 +572,8 @@ class AdminPanel extends React.PureComponent{
                                     <StyledButton onClick= {handleSaveUser} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
                                     <StyledButton onClick= {() => this.setState(state => ({seeMore:!state.seeMore}))} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>See Less</StyledButton>
                                 </Grid>
-                        </Grid>
-                    )}
+                        </Grid> */}
+                    {/* )} */}
                     </GridContent>
                      )
                      :''}
