@@ -45,9 +45,6 @@ class DmsDashboard extends React.PureComponent {
     dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     this.setState({ start_date, end_date })
 
-    // Load Tasks
-    //dispatch( loadTasks({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
-
     // Activate Socket
     dispatch( activateSocket_A() )
     dispatch( getEmployee() )
@@ -161,20 +158,17 @@ class DmsDashboard extends React.PureComponent {
               }
 
               </Box>                                        
-              {/* <TaskTypeFilter /> */}
             </Grid>
 
             <Grid
               item={ true }
               xs={ 12 }
 
-              // md={ isTaskThreadOpen ? 8 : 12 }
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
-                // border:'1px solid red'
               }}
             > 
               {

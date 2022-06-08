@@ -37,8 +37,6 @@ class FilterEmpolyee extends React.PureComponent{
         setView(view)
     }
     countEmployee = (key,value) => {
-       
-        // console.log({key,value})
         if(this.props.employeeList && this.props.employeeList?.length>0){
             
             if(key.length <= 0 || value.length <= 0){
@@ -60,7 +58,6 @@ class FilterEmpolyee extends React.PureComponent{
                     }
                 })
             return count
-            // return empList.filter(emp => emp?.profile[key]?.toLowerCase() === value).length
         }
         return 0
     }
@@ -76,9 +73,6 @@ class FilterEmpolyee extends React.PureComponent{
          
           width: '100%'})} >
             <Grid container spacing={1} direction="row" sx={{p:0,m:0,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
-                {/* <Grid item sx={4} lg={1.7}>
-                    <CustomButton sx={{}} onClick={() => this.props.dispatch(setView('total_employees'))}>Total employees: 346</CustomButton>
-                </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
                         <CustomButton sx={{}} onClick={() => handleView('attendance')} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
                     </Grid>
@@ -88,12 +82,6 @@ class FilterEmpolyee extends React.PureComponent{
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
                         <CustomButton sx={{}} onClick={() => handleView('total_employees')} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
                     </Grid>
-                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
-                        <CustomButton sx={{}} onClick={() => handleView('in_service'))} name={'in_service'} currentView ={currentView} >In service: 21.72</CustomButton>
-                    </Grid>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
-                        <CustomButton sx={{}} onClick={() => handleView('not_in_service'))} name={'not_in_service'} currentView ={currentView} >Not in service: 41.7</CustomButton>
-                    </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
                         <CustomButton sx={{}} onClick={() => handleView('males')} name={'males'} currentView ={currentView} >Total males: {countEmployee("gender","male")}</CustomButton>
                     </Grid>
@@ -106,10 +94,7 @@ class FilterEmpolyee extends React.PureComponent{
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
                         <CustomButton sx={{}} onClick={() => handleView('intern')} name={'intern'} currentView ={currentView} >Intern: {countEmployee("job_status","intern")}</CustomButton>
                     </Grid>
-                  
-                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
-                        <CustomButton sx={{}} onClick={() => this.props.dispatch(setView('profile'))}>Profile</CustomButton>
-                    </Grid> */}
+                
  
             </Grid>
         </Box>

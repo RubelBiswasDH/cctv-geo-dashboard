@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Stack, Item, Button, Grid, Box} from '@mui/material'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
@@ -6,7 +7,6 @@ import { setView } from '../utils/utils'
 
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import {Typography, Autocomplete, TextField} from '@mui/material'
@@ -14,10 +14,8 @@ import {getUserProfile} from '../redux/actions/adminActions'
 import {setUserProfile} from "../redux/reducers/adminReducer"
 
 function CustomizedInputBase(props) {
-    // const {params} = props
     return (
       <Paper
-        // component="form"
         sx={{boxSizing:'border-box', display: 'flex', alignItems: 'center',justifyContent:'center', width: '15vw', backgroundColor:'white',color:'white',borderRadius:'25px',px:'10px',pl:3.5, border:'1px solid black' }}
       >
         <InputBase
@@ -65,10 +63,7 @@ class SubNav extends React.PureComponent{
         this.setState({employeeList:this.props.employeeList})
       }
     }
-    // static getDerivedStateFromProp(nextProps, prevState) {
-    //   console.log('nextPros ',nextProps)
-    //   return {employeeList: nextProps.employeeList} // this will propagate as component state
-    // }
+
     handleView = (view) => {
       this.props.dispatch(setCurrentView(view))
       setView(view)
@@ -95,7 +90,6 @@ class SubNav extends React.PureComponent{
         const {handleView, handleAutoCompInputChange, handleAutoCompChange} = this
         const {currentView} = this.props
         const {employeeList} = this.state
-        // console.log(employeeList)
         return (
         <Box sx={(theme) => ({...boxStyle,  padding: {
           xs: `${ theme.spacing(0,2) }`,
@@ -105,7 +99,6 @@ class SubNav extends React.PureComponent{
         width: '100%'})}>
             <Stack direction="row" spacing={2}>
             <Paper
-              // component="form"
               sx={{
                 boxSizing:'border-box', 
                 display: 'flex', 
@@ -154,8 +147,6 @@ class SubNav extends React.PureComponent{
                       fullWidth={ true }
                       name='employeeName'
                       type='text'
-                      // value={ companyName }
-                    //  inputProps={{ 'aria-label': 'search',color:'white'  }}
                     InputProps={{ ...params.InputProps, disableUnderline: true }}
                    />
                 }
@@ -163,7 +154,6 @@ class SubNav extends React.PureComponent{
                  <IconButton sx={{ p:0,pr:2 }} aria-label="search">
                   <SearchIcon sx={{color:'white'}}/>
                 </IconButton>
-                {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" /> */}
               </Paper>
                 <CustomButton onClick={() => handleView('admin')} name={'admin'} currentView ={currentView}>Admin</CustomButton>
             </Stack>
@@ -172,6 +162,23 @@ class SubNav extends React.PureComponent{
     }
 }
 
+SubNav.propTypes = {
+  dispatch: PropTypes.func,
+  employeeEmail : PropTypes.string,
+  password : PropTypes.string,
+  authError : PropTypes.string,
+  currentView : PropTypes.string,
+  employeeList : PropTypes.array,
+}
+
+SubNav.defaultProps = {
+  dispatch: () => null,
+  employeeEmail: '',
+  password: '',
+  authError: '',
+  currentView: '',
+  employeeList: []
+}
 const mapStateToProps = state => ({
     employeeEmail: state?.auth?.employeeEmail,
     password: state?.auth?.password,

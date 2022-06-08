@@ -24,8 +24,6 @@ const columns = [
 
 class AttendanceList extends React.PureComponent {
  
-  
-
   state = {
     start_date:null,
     start_date: null,
@@ -45,7 +43,6 @@ class AttendanceList extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    //console.log(start_date,end_date)
     this.setState({ start_date, end_date })
     this._getUniqueDates()
     // Load Tasks
@@ -84,8 +81,7 @@ class AttendanceList extends React.PureComponent {
 
   mappedAttendanceInfo = () => {
     const {attendanceList, announcements, employeeList } = this.props;
-    // console.log(attendanceList);
-   
+  
     let dates = []
     attendanceList.forEach(data => {
       dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
@@ -133,39 +129,12 @@ class AttendanceList extends React.PureComponent {
         "serial_no":i+1,
         "name": a?.name,
         ...individualAttendance
-        // "day2": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        // "day3": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        // "day4": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        // "day5": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        // "checked_out_time": a?.exit_time?a?.exit_time : '-',
-        // "is_late": (a?.is_late)?"Yes":"No",
-        // "is_valid": a?.is_valid,
-        // "announcement": getAnnouncement(a?.user_id, a?.created_at),
-        // setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
-    // console.log("returing attendace info ", attendanceInfo)
     return attendanceInfo
     
   }
 
-
-  // Sort Tasks By Emergency
-
-  // Filter Tasks By Request Date
-
-
-  // Filter Tasks By Status Type
-
-
-  // Filter Tasks By Search
-
-  // Open Task Details Dialog
-
- 
-  // Close Task Details Dialog
-
-  // Open Task Timeline Dialog
   _openTaskTimeline = selectedTask => {
     const { sndList } = this.props
 
@@ -191,9 +160,6 @@ class AttendanceList extends React.PureComponent {
     // Stop Notification Sound
     stopNotificationSound()
   }
-
-  // Open Reminder for Emergency Tasks Periodically
- 
 
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
@@ -223,24 +189,6 @@ class AttendanceList extends React.PureComponent {
           columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
           loading={ isTaskLoading }
-          // renderActions={ cellValues => ([
-          //   <GridActionsCellItem
-          //     icon={
-          //       <Tooltip title='Dispatch' arrow={ true } placement='top'>
-          //         <AssignmentInd fontSize='small' />
-          //       </Tooltip>
-          //     }
-          //     onClick={ () => ("this._openTaskDetails(cellValues.row)") }
-          //   />,
-          //   <GridActionsCellItem
-          //     icon={
-          //       <Tooltip title='Timeline' arrow={ true } placement='top'>
-          //         <Timeline fontSize='small' />
-          //       </Tooltip>
-          //     }
-          //     onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
-          //   />
-          // ])}
         />
 
         <Snackbar
@@ -312,7 +260,6 @@ AttendanceList.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  // attendanceList
   attendanceList: state.attendanceList.attendanceList,
   announcements: state.announcements.announcements,
   employeeList: state.employeeList.employeeList
