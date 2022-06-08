@@ -123,7 +123,6 @@ class AttendanceList extends React.PureComponent {
         } })
 
         getIndividualAttendance(a?.id)
-        // console.log(individualAttendance)
       return ({
         "id": a?.id,
         "serial_no":i+1,
@@ -180,7 +179,6 @@ class AttendanceList extends React.PureComponent {
     const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
-   
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (

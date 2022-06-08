@@ -13,31 +13,20 @@ const CustomSelect = (props) => {
         props.dispatch(props.onChange)
     }
     const {value, options, style, xs, onChange} = props
-    // console.log("optons: ",options)
     return (
         <Grid item xs = {xs} sx={{p:0,m:0, ...style}} >
             <FormControl sx={{m: 0, p:0, width: '100%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">
-                {/* <InputLabel id="demo-select-small">isActive</InputLabel> */}
                 <Select
                     labelId="select-small"
                     id="select-small"
                     value={value}
-               
-                    // label="Age"
                     onChange={handleChange}
                     sx={{width:'100%', background:'#8BC6FC',border:'none',m:0,p:0,pt:.5,borderRadius:2,height:'100%',fontSize:'.7em'}}
                 >
-                    {/* <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem> */}
                     {options.map((option) => (
                         <MenuItem 
                             key={option} sx={{fontSize:'.7em'}} value={option}>{(option===1)?'Valid':"Invalid"}
                         </MenuItem>))}
-                    {/* <MenuItem value={"active"}>Active</MenuItem>
-                    <MenuItem value={"non_active"}>Non Active</MenuItem> */}
-
-                    {/* <MenuItem value={"other"}>Thirty</MenuItem> */}
                 </Select>
             </FormControl>
         </Grid>
@@ -90,8 +79,7 @@ class StyledDataGrid extends React.PureComponent {
     }
 
     render() {
-        const { rows, columns, renderActions, rowHeight, ...restProps } = this.props  
-        // console.log({renderActions})      
+        const { rows, columns, renderActions, rowHeight, ...restProps } = this.props       
         return (
             <DataGrid
                 rows={ rows }
@@ -100,15 +88,6 @@ class StyledDataGrid extends React.PureComponent {
                 }
                 columns={
                     [   
-                        // (renderActions.length > 0)?
-                        // {
-                        //     field: 'actions',
-                        //     type: 'actions',
-                        //     headerName: 'Actions',
-                        //     minWidth: 100,
-                        //     maxWidth: 600,
-                        //     getActions: renderActions
-                        // }:{},
                        
                         ...columns.map(c => ({
                             ...c,
@@ -146,6 +125,12 @@ class StyledDataGrid extends React.PureComponent {
                                                 ?<CustomSelect dispatch={this.props.dispatch} onChange={cellValues?.row?.setValidation} options={[0,1]} value={cellValues?.row?.is_valid}></CustomSelect>
                                                 :(cellValues.field === 'edit')
                                                 ?<Button onClick={cellValues.row.editAnnouncement}>Edit</Button>
+                                                :(cellValues.value === 'P')
+                                                ?<Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                :(cellValues.value === 'L')
+                                                ?<Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                :(cellValues.value === 'A')
+                                                ?<Chip color='error' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :cellValues.value
                                         }                                        
                                     </Box>
