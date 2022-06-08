@@ -10,14 +10,14 @@ import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
-import {getAttendance}  from '../redux/actions/attendanceActions'
+import { getAttendance }  from '../redux/actions/attendanceActions'
 import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
 import dayjs from 'dayjs'
-
+import { unionArrayOfObjects } from '../utils/utils'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 100,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
   // { field: 'day1', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
 
  // { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
@@ -83,6 +83,7 @@ class AttendanceList extends React.PureComponent {
         this._getUniqueDates()
       }
     }
+
   _getUniqueDates = () => {
      const { attendanceList } = this.props
       let dates = []
@@ -93,14 +94,16 @@ class AttendanceList extends React.PureComponent {
       const unique = [...new Set(dates)]
       this.setState(() => ({ uniqueDates:unique }))
     }
+
   _generateAttendanceColumns = () => {
     const { uniqueDates } = this.state
-    const dyanmicColumns = uniqueDates.map( (date) => (  { field: date, headerName: 'Date '+date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false }
+    const dyanmicColumns = uniqueDates.map( (date) => (  { field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false }
     ))
     return dyanmicColumns
   }
+
   mappedAttendanceInfo = () => {
-    const {attendanceList, announcements} = this.props;
+    const {attendanceList, announcements, employeeList } = this.props;
     // console.log(attendanceList);
    
     let dates = []
@@ -123,22 +126,38 @@ class AttendanceList extends React.PureComponent {
 
    
 
-    const attendanceInfo = attendanceList.map((a,i) => {
+    const attendanceInfo = employeeList.map((a,i) => {
 
+      const uniqueEmployee = unionArrayOfObjects([],attendanceList,'user_id')
+      let individualAttendance = {}
+      const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
+        // console.log({a})
+        if (a.user_id === id) {
+          const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
+          if (enter_time) {
+            individualAttendance[enter_time] = "P"
+          }
+          else {
+            individualAttendance[enter_time] = "A"
+          }
+        } })
+
+        getIndividualAttendance(a?.id)
+        // console.log(individualAttendance)
       return ({
         "id": a?.id,
         "serial_no":i+1,
         "name": a?.name,
-        "day1": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "day2": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "day3": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "day4": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "day5": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "checked_out_time": a?.exit_time?a?.exit_time : '-',
-        "is_late": (a?.is_late)?"Yes":"No",
-        "is_valid": a?.is_valid,
-        "announcement": getAnnouncement(a?.user_id, a?.created_at),
-        setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
+        ...individualAttendance
+        // "day2": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        // "day3": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        // "day4": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        // "day5": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
+        // "checked_out_time": a?.exit_time?a?.exit_time : '-',
+        // "is_late": (a?.is_late)?"Yes":"No",
+        // "is_valid": a?.is_valid,
+        // "announcement": getAnnouncement(a?.user_id, a?.created_at),
+        // setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
       })
     })
     // console.log("returing attendace info ", attendanceInfo)
@@ -146,49 +165,6 @@ class AttendanceList extends React.PureComponent {
     
   }
 
-  // Generate Columns & Rows
-  _generateTaskColumnsAndRows = tasks => {
-    const { sndList, user } = this.props
-
-    const columns = [      
-      { field: 'serial_no', headerName: 'Sl no', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
-      { field: 'ticket_number', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
-      { field: 'created_by', headerName: 'Checked In', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
-      { field: 'created_at', headerName: 'Created Date & Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-      { field: 'snd_name', headerName: 'S&D Name', minWidth: 200, maxWidth: 350, sortable: false, filter: false, type: 'singleSelect', valueOptions: sndList },
-      { field: 'etd_total_time', headerName: 'TAT', minWidth: 150, maxWidth: 200, sortable: false, filter: false, filterable: false },
-      { field: 'status', headerName: 'Name', minWidth: 150, maxWidth: 220, sortable: false, filter: false, type: 'singleSelect', valueOptions: [
-        { value: 'OPEN', label: 'OPEN' },
-        { value: 'DISPATCHED', label: 'DISPATCHED' },
-        { value: 'ASSIGNED', label: 'ASSIGNED' },
-        { value: 'ONGOING', label: 'ONGOING' },
-        { value: 'PRECOMPLETION', label: 'TASK CLOSED' },
-        { value: 'RESOLVED', label: 'RESOLVED' },
-        { value: 'CLOSED', label: 'CLOSED' },
-        { value: 'CANCELLED', label: 'CANCELLED' }        
-      ] },
-      { field: 'ticket_sla', headerName: 'Ticket SLA', minWidth: 150, maxWidth: 180, sortable: false, filter: false, filterable: false },
-    ]
-
-    const rows = tasks ?
-      tasks.map((t, index) => ({
-        ...t,
-        serial_no: index + 1,
-        snd: sndList.find(s => s.snd.id === t.snd_id)?.snd?.snd_name ?? ''
-      }))
-      :
-      []
-
-    // Check if user is 'SUPERVISOR' and add a new column in columns at 3rd position
-    if (user.user_type === 'ADMIN') {      
-      columns.splice(3, 0, { field: 'dispatcher_name', headerName: 'Dispatcher Name', minWidth: 200, maxWidth: 350, sortable: false, filter: true, type: 'string'})
-    }
-
-    return {
-      columns,
-      rows
-    }
-  }
 
   // Sort Tasks By Emergency
 
@@ -355,7 +331,7 @@ const mapStateToProps = state => ({
   // attendanceList
   attendanceList: state.attendanceList.attendanceList,
   announcements: state.announcements.announcements,
-
+  employeeList: state.employeeList.employeeList
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
