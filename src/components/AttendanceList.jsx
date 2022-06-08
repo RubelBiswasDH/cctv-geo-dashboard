@@ -18,12 +18,8 @@ import dayjs from 'dayjs'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 100,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'day1', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'day2', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'day3', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'day4', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'day5', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  
+  // { field: 'day1', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
+
  // { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
  // { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
  // { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
@@ -52,7 +48,9 @@ class AttendanceList extends React.PureComponent {
     isTaskTimelineOpen: false,
     selectedTask: {},
     isTimelineLoading: false,
-    feedback: null
+    feedback: null,
+    uniqueDates: [],
+    tableColumns: []
   }
 
   componentDidMount() {
@@ -64,7 +62,7 @@ class AttendanceList extends React.PureComponent {
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     //console.log(start_date,end_date)
     this.setState({ start_date, end_date })
-
+    this._getUniqueDates()
     // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
 
@@ -79,26 +77,37 @@ class AttendanceList extends React.PureComponent {
     // this._setReminderForEmergency()
   }
 
-// mapAttendanceColums=()=>{
-//   const {attendanceList} =this.props;
-// const columns = attendanceList.map((a,i)=>{
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+      if (this.props.attendanceList !== prevProps.attendanceList) {
+        this._getUniqueDates()
+      }
+    }
+  _getUniqueDates = () => {
+     const { attendanceList } = this.props
+      let dates = []
+      attendanceList.forEach(data => {
+        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+      })
 
-//   return({
-     
-//   })
-// }) 
-// }
-
+      const unique = [...new Set(dates)]
+      this.setState(() => ({ uniqueDates:unique }))
+    }
+  _generateAttendanceColumns = () => {
+    const { uniqueDates } = this.state
+    const dyanmicColumns = uniqueDates.map( (date) => (  { field: date, headerName: 'Date '+date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false }
+    ))
+    return dyanmicColumns
+  }
   mappedAttendanceInfo = () => {
     const {attendanceList, announcements} = this.props;
     // console.log(attendanceList);
    
     let dates = []
-    attendanceList.map(data=>(
+    attendanceList.forEach(data => {
       dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
-    
+    })
 
-    ))
     const unique = [...new Set(dates)]
 
     const getAnnouncement = (id,date) => {
@@ -247,10 +256,11 @@ class AttendanceList extends React.PureComponent {
     
    
     let attendance_rows = this.mappedAttendanceInfo()
+    const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='84vh'>
         <StyledDataGrid
-          columns={columns }
+          columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
           loading={ isTaskLoading }
           // renderActions={ cellValues => ([
