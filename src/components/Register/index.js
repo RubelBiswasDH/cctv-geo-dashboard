@@ -48,16 +48,13 @@ class Register extends React.PureComponent {
   handleAutoCompInputChange = e => {
     const { dispatch } = this.props
     dispatch(getCompanyList(e.target.value))
-    console.log('onInputChange called, value :', e.target.value)
 
   }
 
 // handleAutoCompChange
   handleAutoCompChange = (e,value) => {
     const { dispatch } = this.props
-    // console.log('selected place: ', value?.Address)
     dispatch( setCompanyAddress(value?.Address ?? '') )
-    // console.log('onChange Called')
   }
 
 
@@ -65,18 +62,6 @@ class Register extends React.PureComponent {
   _onChange = e => {
     const { dispatch, authError } = this.props
     const { error } = this.state
-
-//     if(e.target.name === 'employeeEmail') {
-//       // If Employee Id
-//       dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
-
-//     } else if(e.target.name === 'password') {
-//       // If Password
-//       dispatch( setPassword(e.target.value?.trim() ?? '') )
-
-//     } else {
-//       this.setState({ [ e.target.name ]: e.target.value })
-//     }
 
 switch (e.target.name) {
     case 'employeeName':
@@ -102,7 +87,6 @@ switch (e.target.name) {
         break;
     default:
 
-    //   data = empData;
   } 
 
     // Clear Error
@@ -139,7 +123,6 @@ switch (e.target.name) {
         company_address: companyAddress,
         password: password
       }
-      //console.log('submited register data: ',user)
       dispatch( register(user) )
 
     } else {
@@ -293,9 +276,6 @@ switch (e.target.name) {
     const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
     const { error } = this.state
     const {handleAutoCompInputChange, handleAutoCompChange} = this
-    // const autoCompleteOptons = companyNameOptions.map(c => c.Address)
-
-    // console.log('autoComplate optons: ', autoCompleteOptons)
 
     return (
       <Container sx={ containerStyles }>

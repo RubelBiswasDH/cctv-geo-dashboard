@@ -7,7 +7,6 @@ import { getAttendance } from './attendanceActions';
 import dayjs from 'dayjs'
 // setUserProfile Action
 export function setInvalidLateAttendanceAction(data) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
         let date = new Date()
@@ -79,7 +78,6 @@ export function setWorkingDaysAction(data) {
         const token = getAuthToken()
         axios.post(API.SET_WORKING_DAYS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                console.log({ response: res})
                 if(res.status===200){
                     alert("Working Days Successfully Updated")
                     dispatch(setMonthYear(''))
@@ -170,11 +168,7 @@ export function createUser(user) {
 // Create Bulk User
 export function createBulkUser(data) {
     return dispatch => {
-        for(var pair of data) {
-            console.log('f ; ', pair);
-        }
         const token = getAuthToken()
-        console.log(' users data in actions ',data)
         axios.post(API.CREATE_BULK_USER, {'users':data}, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
@@ -183,7 +177,6 @@ export function createBulkUser(data) {
                 } 
         })
             .then(res => {
-                console.log({ create_user_response: res.data})
                 if(res.status===200){
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastMessage("User Successfully Created"))

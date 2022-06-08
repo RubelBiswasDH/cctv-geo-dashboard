@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
-import { GridActionsCellItem } from '@mui/x-data-grid'
-import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
-import TextField from '@mui/material/TextField';
-
+import { Box, Button } from '@mui/material'
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledInputField from './common/StyledInputField'
@@ -84,9 +80,7 @@ class Announcements extends React.PureComponent {
 
   render() {
     const { editAnnouncementDialogIsOpen } = this.props
-    const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
-    
-   
+       
     let announcement_rows = this.mappedAnnouncements()
     return (
       <Box width='100%' height='84vh'>

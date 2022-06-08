@@ -18,7 +18,6 @@ const CustomButton = (props) => {
 
         const handleClick = () => {
             props.onClick()
-            // setBtnStyle(pre => ({...pre, background:'green'}))
         }
 
         return (
@@ -47,7 +46,6 @@ class FilterEmpolyee extends React.PureComponent{
                 ...emp,
                 profile:JSON.parse(emp.profile)
             }))
-            // console.log(empList)
             let count=0
             empList.forEach(
                 (emp) => {
@@ -63,8 +61,8 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const {currentView} = this.props
-        const {countEmployee, handleView} = this
+        const { currentView } = this.props
+        const { countEmployee, handleView } = this
         return (
         <Box sx={theme => ({padding: {
             xs: `${ theme.spacing(0,2) }`,

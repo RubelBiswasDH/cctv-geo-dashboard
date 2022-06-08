@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AUTH, API } from '../../App.config'
+import { API } from '../../App.config'
 
 import { setEmployeeList, setError } from '../reducers/employeeReducer'
 import { getAuthToken } from '../../utils/utils'
@@ -11,10 +11,8 @@ export function getEmployee(params) {
         axios.get(API.GET_USERS, { headers: { Authorization: `Bearer ${ token }` }, params } )
             .then(res => {
                 const employeeData = res.data.data
-                if(employeeData) {
-                           
+                if(employeeData) {        
                     dispatch(setEmployeeList(employeeData))
-                 
                 }
 
             })

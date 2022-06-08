@@ -20,7 +20,6 @@ class StyledSelect extends React.PureComponent {
     render() {
         const {handleChange} = this
         const {value, options, style, xs} = this.props
-        // console.log("optons: ",options)
         return (
             <Grid item xs = {xs} sx={{p:0,m:0, ...style}} >
                 <FormControl sx={{m: 0, p:0, width: '100%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">

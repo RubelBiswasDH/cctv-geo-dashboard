@@ -74,8 +74,6 @@ class MapGL extends React.PureComponent {
     map.doubleClickZoom.disable()
     // get Current Location
     map.on('click', e => {
-      // document.getElementById('mouse-click-pos').innerHTML = `Location: ${ e.lngLat }`
-      // console.log("current position: ",e.lngLat)
       const {lngLat} = e
       getReverseGeoAddress({ longitude: lngLat.lng, latitude: lngLat.lat })
       .then(res => {
@@ -87,10 +85,6 @@ class MapGL extends React.PureComponent {
             longitude: lngLat.lng,
             latitude: lngLat.lat 
           }
-
-          // Update Address
-          // console.log({updatedAddress})
-          // this.props.dispatch(setCompanyAddressData(updatedAddress))
           this.props.dispatch(setCompanySettings({...this.props.companySettings, ...{companyAddressData:updatedAddress}}))
         }
       })

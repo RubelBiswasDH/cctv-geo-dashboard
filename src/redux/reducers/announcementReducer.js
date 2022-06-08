@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import dayjs from 'dayjs'
 import { unionArrayOfObjects } from '../../utils/utils'
 import { sortByDate } from '../../utils/utils'
 

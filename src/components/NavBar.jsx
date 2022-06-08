@@ -1,13 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import dayjs from 'dayjs'
 
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
-import { Logout, AccountCircle, Notifications, Assignment, Check, Task, AssignmentLate, Search } from '@mui/icons-material'
+import { Logout, AccountCircle } from '@mui/icons-material'
 
-// Import Assets
 // import descoLogo from '../assets/desco-logo.png'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
@@ -17,7 +15,6 @@ import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
-import { setView } from '../utils/utils'
 
 class NavBar extends React.PureComponent {
   state = {
@@ -94,7 +91,7 @@ class NavBar extends React.PureComponent {
 
   // On Notification Click
   _onNotificationClick = notification => {
-    const { dispatch, tasks } = this.props
+    const { tasks } = this.props
 
     // Open Task Details Dialog
     const task = tasks.find(t => t.id === notification.task.id)    
@@ -120,7 +117,6 @@ class NavBar extends React.PureComponent {
     const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
-    const sortedPushNotifications = this._sortByEmergency(pushNotifications)
     return (
       <React.Fragment>
         <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>

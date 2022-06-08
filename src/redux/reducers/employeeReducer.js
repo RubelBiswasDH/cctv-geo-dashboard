@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { unionArrayOfObjects, sortByDate } from '../../utils/utils'
 
 const initialState = {
     employeeList: [],

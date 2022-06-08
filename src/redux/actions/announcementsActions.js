@@ -1,11 +1,10 @@
 import { getAuthToken } from './authActions'
-import { SOCKET,SOCKET_A } from '../../App.config'
-import { setAnnouncements, updateAnnouncements, setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen, setError } from "../reducers/announcementReducer"
+import { setAnnouncements, setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen, setError } from "../reducers/announcementReducer"
 import axios from 'axios'
-import { AUTH,API } from '../../App.config'
+import { API } from '../../App.config'
 import dayjs from 'dayjs'
 
-import {transformAnnouncements} from '../../utils/utils';
+import { transformAnnouncements } from '../../utils/utils';
 
 
 //submit announcement edit
@@ -78,43 +77,4 @@ export function getAnnouncements(params) {
               dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
           })
   }
-}
-
-// Generate Push Notification
-function generatePushNotifications(tasks, prevTasks) {
-  if(!tasks) {
-    return []
-  }
-
-  // Filter Tasks In Contrast With Prev Tasks. Accept if newly opened, flagged emergency or resolved
-  const pushNotifications = tasks.filter(t =>
-    (t.status === 'OPEN' && prevTasks && !prevTasks.find(pt =>
-      pt.id === t.id
-    )) ||
-    t.status === 'RESOLVED' ||
-    (prevTasks && prevTasks.find(pt =>
-      pt.id === t.id &&
-      pt.is_emergency !== t.is_emergency &&
-      t.is_emergency
-    ))
-  )
-  .map((t, i) => ({
-    id: `t${ t.id }-${ i }-${ t.updated_at }`,
-    title: (prevTasks && prevTasks.find(pt =>
-        pt.id === t.id &&
-        pt.is_emergency !== t.is_emergency &&
-        t.is_emergency
-      )) ?
-      `[${ t.ticket_number }] task flagged emergency!`
-      :
-      t.status === 'OPEN' ?
-      `[${ t.ticket_number }] New task opened`
-      :
-      `[${ t.ticket_number }] task resolved`,
-    time: t.updated_at ? t.updated_at : '',
-    opened: false,
-    task: t
-  }))
-
-  return pushNotifications
 }

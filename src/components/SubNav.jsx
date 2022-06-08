@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {Stack, Item, Button, Grid, Box} from '@mui/material'
+import {Stack, Button, Grid, Box} from '@mui/material'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setView } from '../utils/utils'
 
@@ -9,9 +9,9 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import {Typography, Autocomplete, TextField} from '@mui/material'
-import {getUserProfile} from '../redux/actions/adminActions'
-import {setUserProfile} from "../redux/reducers/adminReducer"
+import { Typography, Autocomplete, TextField } from '@mui/material'
+import { getUserProfile } from '../redux/actions/adminActions'
+import { setUserProfile } from "../redux/reducers/adminReducer"
 
 function CustomizedInputBase(props) {
     return (

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AUTH,API } from '../../App.config'
+import { API } from '../../App.config'
 import { setAttendance, setError } from '../reducers/attendanceReducer'
 
 // Get Attendance

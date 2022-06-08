@@ -4,15 +4,14 @@ import {connect} from 'react-redux'
 
 // Import Components
 import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem  } from '@mui/material'
-import { Refresh } from '@mui/icons-material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid'
-import StyledSelect from './StyledSelect'
+
 
 const CustomSelect = (props) => {
     const handleChange = (e) => {
         props.dispatch(props.onChange)
     }
-    const {value, options, style, xs, onChange} = props
+    const {value, options, style, xs } = props
     return (
         <Grid item xs = {xs} sx={{p:0,m:0, ...style}} >
             <FormControl sx={{m: 0, p:0, width: '100%',height:'100%',fontFamily:'Roboto', fontWeight:500}} size="small">

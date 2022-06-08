@@ -13,10 +13,7 @@ class StyledInputField extends React.PureComponent {
     }
     handleChange = (e) => {
         e.preventDefault()
-        //console.log("input value: ",e.target.value)
         this.props.dispatch(this.props.onChange(e.target.value))
-        //console.log(`changed ${e.target.value}`)
-    
     }
     render() {
         const {placeholder, ariaLabel, style, value, onChange, inputStyle, dispatch, ...rest} = this.props;
@@ -34,15 +31,11 @@ class StyledInputField extends React.PureComponent {
                     value={value}
                     onChange={handleChange}
                 />
-                {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
-                    <SearchIcon sx={{ color: 'white' }} />
-                </IconButton> */}
             </Paper>
             );
     }
 }
 
-// export default StyledInputField;
 
   const mapDispatchToProps = dispatch => ({ dispatch })
   export default connect(mapDispatchToProps)(StyledInputField)
