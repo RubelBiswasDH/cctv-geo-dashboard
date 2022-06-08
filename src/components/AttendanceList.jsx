@@ -65,16 +65,6 @@ class AttendanceList extends React.PureComponent {
     this._getUniqueDates()
     // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
-
-    // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
-
-    //dispatch(getAttendance());
-    //console.log(dateToday())
-    // // Get All Task List
-    // dispatch( loadTasks() )
-
-    // Pending Emergency Reminder
-    // this._setReminderForEmergency()
   }
 
   componentDidUpdate(prevProps) {
@@ -97,7 +87,12 @@ class AttendanceList extends React.PureComponent {
 
   _generateAttendanceColumns = () => {
     const { uniqueDates } = this.state
-    const dyanmicColumns = uniqueDates.map( (date) => (  { field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false }
+    
+    const dyanmicColumns = uniqueDates.map(
+       (date) => ( { 
+         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "A",
+
+        }
     ))
     return dyanmicColumns
   }
@@ -131,11 +126,15 @@ class AttendanceList extends React.PureComponent {
       const uniqueEmployee = unionArrayOfObjects([],attendanceList,'user_id')
       let individualAttendance = {}
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
-        // console.log({a})
         if (a.user_id === id) {
           const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
           if (enter_time) {
-            individualAttendance[enter_time] = "P"
+            if(a.is_late){
+              individualAttendance[enter_time] = "L"
+            }
+            else{
+              individualAttendance[enter_time] = "P"
+            }
           }
           else {
             individualAttendance[enter_time] = "A"
