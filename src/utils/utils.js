@@ -61,7 +61,6 @@ export function convertSecondsToTime(seconds) {
     ${sec ? sec + 'sec' : ''}`
 }
 
-// // //
 
 export function sortByDate(data) {
   return data.sort((a, b) => {
@@ -88,7 +87,6 @@ export function transformAnnouncements(announcements) {
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
-  //console.log('tranformAnnouncement : ',transformedAnnouncements)
   const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
   return transformedAnnouncementsSortByDate
 }
@@ -105,7 +103,6 @@ export function transformAttendance(attendance) {
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
-  //console.log('tranformAnnouncement : ',transformedAttendance)
   const transformedAttendanceSortByDate = sortByDate(transformedAttendance)  
   return transformedAttendanceSortByDate
 }

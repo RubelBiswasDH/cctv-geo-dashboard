@@ -12,11 +12,9 @@ const employeeSlice = createSlice({
   initialState,
   reducers: {
     setEmployee: (state, action) => {
-    //console.log("action data: ",action, action.payload)
       state.employee = action.payload
     },
     setEmployeeList: (state, action) => {
-        //console.log("action data: ",action, action.payload)
           state.employeeList = action.payload
         },
     setError: (state, action) => {

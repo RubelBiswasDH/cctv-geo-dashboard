@@ -14,7 +14,6 @@ const dashboardSlice = createSlice({
   initialState,
   reducers: {
     setCurrentView: (state, action) => {
-    //console.log("action data: ",action, action.payload)
       state.currentView = action.payload
     },
     setToastIsOpen: (state, action) => {
