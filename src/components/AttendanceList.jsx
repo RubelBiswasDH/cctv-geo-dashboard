@@ -18,24 +18,9 @@ import { unionArrayOfObjects } from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  // { field: 'day1', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-
- // { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
- // { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
- // { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
- // { field: 'validation', headerName: 'Validation', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
-]
+ ]
 
 
-const rows = [{
-      "id": 684,
-      "name": "tkt-023846-1169",
-      "checked_in_time": "AL- HAJ ABDUL JABBER",
-      "caller_contact": "01778200359",
-      "checked_out_time": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
-      "is_late": "No",
-  }
-]
 
 class AttendanceList extends React.PureComponent {
  

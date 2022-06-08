@@ -217,21 +217,6 @@ class EmployeeList extends React.PureComponent {
     }
   }
 
-  // Sort Tasks By Emergency
-
-  // Filter Tasks By Request Date
-
-
-  // Filter Tasks By Status Type
-
-
-  // Filter Tasks By Search
-
-  // Open Task Details Dialog
-
- 
-  // Close Task Details Dialog
-
   // Open Task Timeline Dialog
   _openTaskTimeline = selectedTask => {
     const { sndList } = this.props
@@ -257,10 +242,7 @@ class EmployeeList extends React.PureComponent {
 
     // Stop Notification Sound
     stopNotificationSound()
-  }
-
-  // Open Reminder for Emergency Tasks Periodically
- 
+  } 
 
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
@@ -278,40 +260,6 @@ class EmployeeList extends React.PureComponent {
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
   }
 
-  // filteredEmployees = (empData) => {
-  //   const currentView = this.props.currentView
-  //   //console.log('current view ',currentView)
-  //   // if (currentView === 'all_employees'){
-  //   //     return empData
-  //   // }
-
-
-  //   var data = []
-  //   switch (currentView) {
-  //       // case 'in_service':
-  //       //     data = empData.filter(emp => emp.in_service===true);
-  //       //     break;
-  //       // case 'not_in_service':
-  //       //     data = empData.filter(emp => emp.in_service===false);
-  //       //     break;
-  //       case 'intern':
-  //           data = empData.filter(emp => emp?.profile?.job_status.tolowercase()==='intern');
-  //           break;
-  //       case 'probational_period':
-  //           data = empData.filter(emp => emp?.profile?.job_status.tolowercase()==='probation');
-  //           break;
-  //       case 'males':
-  //           data = empData.filter(emp => emp?.profile?.gender.tolowercase() === 'male');
-  //           break;
-  //       case 'females':
-  //           data = empData.filter(emp => emp?.profile?.gender.tolowercase() === 'female');
-  //           break;
-  //       default:
-  //         data = empData;
-  //     } 
-  //     return data
-  // }
-
   transformedEmployeeList = () => {
 
     const currentView = this.props.currentView
@@ -319,19 +267,11 @@ class EmployeeList extends React.PureComponent {
       ...emp,
       profile:JSON.parse(emp.profile)
     }))
-    // console.log(empData)
-    // console.log(JSON.parse(empData[0].profile))
-    // console.log(empData[0]?.profile?.toJSON())
+
     var data = []
     if(empData.length > 0){
 
     switch (currentView) {
-        // case 'in_service':
-        //     data = empData.filter(emp => emp.in_service===true);
-        //     break;
-        // case 'not_in_service':
-        //     data = empData.filter(emp => emp.in_service===false);
-        //     break;
         case 'intern':
             data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='intern');
             break;
@@ -353,12 +293,10 @@ class EmployeeList extends React.PureComponent {
       ...emp,
       serial_no:i+1,
       viewProfile: () => {
-        // console.log({id:emp.id})
         this.props.dispatch(setProfileEdit(false))
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
-        // setView('profile')
       }
     }))
   }
@@ -367,13 +305,10 @@ class EmployeeList extends React.PureComponent {
     const { isTaskLoading, employeeList } = this.props
     const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
     
-   
-    // let employee_rows = this.filteredEmployees()
     return (
       <Box width='100%' height='84vh'>
         <StyledDataGrid
           columns={columns }
-          // rows={ employee_rows }
           rows={this.transformedEmployeeList()}
           loading={ isTaskLoading }
           renderActions={ cellValues => ([
@@ -434,27 +369,27 @@ class EmployeeList extends React.PureComponent {
 }
 
 // Prop Types
-// AttendanceList.propTypes = {
-//   user: PropTypes.object,
-//   isTaskLoading: PropTypes.bool,
-//   tasks: PropTypes.array,
-//   selectedStatus: PropTypes.string,
-//   selectedDate: PropTypes.string,
-//   sndList: PropTypes.array,
-//   autocompleteSelectedTask: PropTypes.object,
-//   dispatch: PropTypes.func,
-// }
+EmployeeList.propTypes = {
+  user: PropTypes.object,
+  isTaskLoading: PropTypes.bool,
+  tasks: PropTypes.array,
+  selectedStatus: PropTypes.string,
+  selectedDate: PropTypes.string,
+  sndList: PropTypes.array,
+  autocompleteSelectedTask: PropTypes.object,
+  dispatch: PropTypes.func,
+}
 
-// AttendanceList.defaultProps = {
-//   user: {},
-//   isTaskLoading: false,
-//   tasks: [],
-//   selectedStatus: '',
-//   selectedDate: '',
-//   sndList: [],
-//   autocompleteSelectedTask: null,
-//   dispatch: () => null
-// }
+EmployeeList.defaultProps = {
+  user: {},
+  isTaskLoading: false,
+  tasks: [],
+  selectedStatus: '',
+  selectedDate: '',
+  sndList: [],
+  autocompleteSelectedTask: null,
+  dispatch: () => null
+}
 
 const mapStateToProps = state => ({
   user: state.auth.user,
