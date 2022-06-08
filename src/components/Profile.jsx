@@ -68,10 +68,6 @@ const ProfileRow = (props) => {
 }
 
 class Profile extends React.PureComponent {
-
-    componentDidMount(){
-        // this.props.dispatch(getUserProfile('22'));
-    }
     render() {
         const {userProfile, profileEdit, dispatch} = this.props
         return (
@@ -190,12 +186,14 @@ class Profile extends React.PureComponent {
 // Prop Types
 ProfileRow.propTypes = {
     title: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
+    dispatch: PropTypes.func
 }
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: ""
+    value: "",
+    dispatch: () => null
 }
 
 

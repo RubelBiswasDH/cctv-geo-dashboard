@@ -11,16 +11,12 @@ import StyledDataGrid from './common/StyledDataGrid'
 // Import Actions & Methods
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import { getAttendance }  from '../redux/actions/attendanceActions'
-import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
 import dayjs from 'dayjs'
-import { unionArrayOfObjects } from '../utils/utils'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
  ]
-
-
 
 class AttendanceList extends React.PureComponent {
  
@@ -57,12 +53,11 @@ class AttendanceList extends React.PureComponent {
     }
 
   _getUniqueDates = () => {
-     const { attendanceList } = this.props
+      const { attendanceList } = this.props
       let dates = []
       attendanceList.forEach(data => {
         dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
       })
-
       const unique = [...new Set(dates)]
       this.setState(() => ({ uniqueDates:unique }))
     }
@@ -81,13 +76,6 @@ class AttendanceList extends React.PureComponent {
 
   mappedAttendanceInfo = () => {
     const {attendanceList, announcements, employeeList } = this.props;
-  
-    let dates = []
-    attendanceList.forEach(data => {
-      dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
-    })
-
-    const unique = [...new Set(dates)]
 
     const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
@@ -100,12 +88,10 @@ class AttendanceList extends React.PureComponent {
       else return ''
     }
 
-   
-
     const attendanceInfo = employeeList.map((a,i) => {
-
-      const uniqueEmployee = unionArrayOfObjects([],attendanceList,'user_id')
+      
       let individualAttendance = {}
+      
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
           const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
@@ -117,29 +103,18 @@ class AttendanceList extends React.PureComponent {
               individualAttendance[enter_time] = "P"
             }
           }
-          else {
-            individualAttendance[enter_time] = "A"
-          }
         } })
 
-        getIndividualAttendance(a?.id)
-      return ({
-        "id": a?.id,
-        "serial_no":i+1,
-        "name": a?.name,
-        ...individualAttendance
-      })
+      getIndividualAttendance(a?.id)
+        return ({
+          "id": a?.id,
+          "serial_no":i+1,
+          "name": a?.name,
+          ...individualAttendance
+        })
     })
     return attendanceInfo
     
-  }
-
-  _openTaskTimeline = selectedTask => {
-    const { sndList } = this.props
-
-    // Set Loading
-    this.setState({ isTimelineLoading: true, isTaskTimelineOpen: true })
-
   }
 
   // Close Task Timeline Dialog
@@ -177,7 +152,7 @@ class AttendanceList extends React.PureComponent {
 
   render() {
     const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
-    const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
+    const { feedback } = this.state
     
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()

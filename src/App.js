@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 // Import Components
 import { Box, CircularProgress } from '@mui/material'
-import DmsDashboard from './components/DmsDashboard'
+import HrTraceDashboard from './components/HrTraceDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
 import ProtectedRoute from './components/common/ProtectedRoute'
@@ -67,7 +67,7 @@ class App extends React.PureComponent {
                   <ProtectedRoute
                     isAuthenticated={ isAuthenticated }
                     element={
-                      <DmsDashboard />
+                      <HrTraceDashboard />
                     }
                   />
                 }

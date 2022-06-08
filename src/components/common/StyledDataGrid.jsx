@@ -102,17 +102,6 @@ class StyledDataGrid extends React.PureComponent {
                                     >
                                         {
                                             cellValues.field === 'name' ?
-                                                // <Chip
-                                                //     icon={ cellValues?.row?.reopen && <Refresh sx={{ color: '#ffffff !important' }} /> }
-                                                //     sx={ this._getStatusColor(cellValues.value) }
-                                                //     label={ 
-                                                //         cellValues.value === 'PRECOMPLETION' ?
-                                                //         `TASK CLOSED${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
-                                                //         :
-                                                //         `${ cellValues.value }${ cellValues?.row?.reopen ? ` (${ cellValues?.row?.reopen })` : '' }`
-                                                //     }
-                                                //     size={ 'small' }
-                                                // />
                                                 <Typography sx={{fontSize:'1.5em',fontWeight:500}}>{cellValues.value}</Typography>
                                                 : cellValues.field === 'is_late' 
                                                 ? cellValues.value === 'Yes'
@@ -184,7 +173,6 @@ const LinearProgressFactory = () => (
 // JSS Styles
 const dataGridStyles = theme => ({    
     '& .MuiDataGrid-columnHeaders': {
-        // background: theme.palette.grey[200],
         background: theme.palette.tableHeader.main,
         boxShadow: theme.shadows[2]
     },

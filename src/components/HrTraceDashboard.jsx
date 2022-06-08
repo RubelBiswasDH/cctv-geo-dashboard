@@ -26,10 +26,9 @@ import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
-// import { activateSocket, deactivateSocket } from '../redux/actions/socketActions'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 
-class DmsDashboard extends React.PureComponent {
+class HrTraceDashboard extends React.PureComponent {
   state = {
     start_date: null,
     end_date: null,
@@ -84,20 +83,14 @@ class DmsDashboard extends React.PureComponent {
   }
   // Handle Report Download
   _handleReportDownload = () => {
-    //  console.log('report will be downloaded..')
     const { start_date, end_date } = this.state
     const { dispatch } = this.props
     dispatch( getAttendanceReport({start_date: `${start_date}`, end_date: `${end_date}`}))
    }
 
-  // On Feedback Close
-  _onFeedbackClose = () => {
-    const { dispatch } = this.props
-  }
-
   render() {
     const { start_date, end_date } = this.state
-    const { isTaskThreadOpen, isTaskLoading, user, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
+    const { isTaskLoading, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
     return (
       <Box sx={ containerStyles }>
         <NavBar />
@@ -189,21 +182,6 @@ class DmsDashboard extends React.PureComponent {
             </Grid>
           </Grid>
         </Box>
-
-        <Snackbar
-            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-            open={ Boolean(feedback) }
-            autoHideDuration={ 6000 }
-            onClose={ this._onFeedbackClose }
-        >
-            <Alert
-                severity={ feedback?.status === 200 ? 'success' : 'error' }
-                onClose={ this._onFeedbackClose }
-                sx={{ width: '100%' }}
-            >
-                { feedback?.message ? feedback.message : 'Something went wrong!' }
-            </Alert>
-        </Snackbar>
         <Snackbar 
           anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
           open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
@@ -227,13 +205,21 @@ const containerStyles = {
 }
 
 // Prop Types
-DmsDashboard.propTypes = {
-  isTaskThreadOpen: PropTypes.bool,
+HrTraceDashboard.propTypes = {
+  user: PropTypes.object,
+  currentView: PropTypes.string,
+  toastIsOpen: PropTypes.bool,
+  toastMessage: PropTypes.string,
+  toastSeverity: PropTypes.string,
   dispatch: PropTypes.func
 }
 
-DmsDashboard.defaultProps = {
-  isTaskThreadOpen: true,
+HrTraceDashboard.defaultProps = {
+  user: {},
+  currentView: '',
+  toastIsOpen: false,
+  toastMessage: '',
+  toastSeverity: 'success',
   dispatch: () => null
 }
 
@@ -247,4 +233,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({ dispatch })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DmsDashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(HrTraceDashboard)
