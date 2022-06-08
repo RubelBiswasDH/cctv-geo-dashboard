@@ -1,6 +1,4 @@
 import { getAuthToken } from './authActions'
-import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
-import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
 import { setAnnouncements, updateAnnouncements, setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen, setError } from "../reducers/announcementReducer"
 import axios from 'axios'

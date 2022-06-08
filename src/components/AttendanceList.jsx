@@ -9,8 +9,6 @@ import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
-import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getAttendance}  from '../redux/actions/attendanceActions'
 import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
@@ -102,24 +100,6 @@ class AttendanceList extends React.PureComponent {
 
     ))
     const unique = [...new Set(dates)]
-    console.log(unique)
-   
-
-    // console.log({announcements})
-    //console.log('mappedAttendanceInfo called', attendanceList);
-
-    // const isLate = (checked_in_time) => {
-    //   const today = dayjs(checked_in_time).format('YYYY-MM-DD')
-    //   const lastCheckinTime = today+' 10:15:00'
-    //   //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-    //   //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
-    //   if(new Date(checked_in_time) > new Date(lastCheckinTime)){
-    //     return "Yes"
-    //   }
-    //   else{
-    //     return "No"
-    //   }
-    // }
 
     const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
@@ -223,16 +203,6 @@ class AttendanceList extends React.PureComponent {
     // Set Loading
     this.setState({ isTimelineLoading: true, isTaskTimelineOpen: true })
 
-    // Get Timeline Data
-    getTimelineData(selectedTask.id, sndList)
-      .then(selectedTimeline => {
-        //console.log("selectedTimeline",selectedTimeline)
-        //this.setState({ selectedTimeline, isTimelineLoading: false })
-      })
-      .catch(err => {
-        console.error(err)
-        this.setState({ isTimelineLoading: false, selectedTimeline: [] })
-      })
   }
 
   // Close Task Timeline Dialog
@@ -263,18 +233,9 @@ class AttendanceList extends React.PureComponent {
     // Stop Notification Sound
     stopNotificationSound()
 
-    if(!task) {
-      dispatch( setAutocompleteSelectedTask(null) )
-      return
-    }
 
     // Close Feedback
-    this._onFeedbackClose()
-
-    dispatch( setAutocompleteSelectedTask(task) )    
-
-    // Auto Select All Status Type
-    dispatch( setSelectedStatusType('ALL') )
+    this._onFeedbackClose()  
 
     // Open Task Details Dialog with Selected Task
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
@@ -381,12 +342,6 @@ AttendanceList.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  isTaskLoading: state.task.isTaskLoading,
-  tasks: state.task.tasks,
-  selectedStatus: state.task.selectedStatus,
-  selectedDate: state.task.selectedDate,
-  sndList: state.task.sndList,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
   // attendanceList
   attendanceList: state.attendanceList.attendanceList,
   announcements: state.announcements.announcements,

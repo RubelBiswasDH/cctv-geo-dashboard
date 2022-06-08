@@ -10,8 +10,6 @@ import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
-import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getEmployee}  from '../redux/actions/employeeActions'
 import {getUserProfile} from '../redux/actions/adminActions'
@@ -241,16 +239,6 @@ class EmployeeList extends React.PureComponent {
     // Set Loading
     this.setState({ isTimelineLoading: true, isTaskTimelineOpen: true })
 
-    // Get Timeline Data
-    getTimelineData(selectedTask.id, sndList)
-      .then(selectedTimeline => {
-        //console.log("selectedTimeline",selectedTimeline)
-        //this.setState({ selectedTimeline, isTimelineLoading: false })
-      })
-      .catch(err => {
-        console.error(err)
-        this.setState({ isTimelineLoading: false, selectedTimeline: [] })
-      })
   }
 
   // Close Task Timeline Dialog
@@ -281,18 +269,10 @@ class EmployeeList extends React.PureComponent {
     // Stop Notification Sound
     stopNotificationSound()
 
-    if(!task) {
-      dispatch( setAutocompleteSelectedTask(null) )
-      return
-    }
 
     // Close Feedback
     this._onFeedbackClose()
-
-    dispatch( setAutocompleteSelectedTask(task) )    
-
-    // Auto Select All Status Type
-    dispatch( setSelectedStatusType('ALL') )
+ 
 
     // Open Task Details Dialog with Selected Task
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
@@ -478,12 +458,6 @@ class EmployeeList extends React.PureComponent {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  isTaskLoading: state.task.isTaskLoading,
-  tasks: state.task.tasks,
-  selectedStatus: state.task.selectedStatus,
-  selectedDate: state.task.selectedDate,
-  sndList: state.task.sndList,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
   // attendanceList
   attendanceList: state.attendanceList.attendanceList,
   employeeList: state.employeeList.employeeList,

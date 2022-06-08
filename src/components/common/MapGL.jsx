@@ -12,7 +12,7 @@ import { setCompanyAddressData, setCompanySettings } from '../../redux/reducers/
 import 'mapbox-gl-style-switcher/styles.css'
 
 // Import Actions
-import { getReverseGeoAddress } from '../../redux/actions/taskActions'
+import { getReverseGeoAddress } from '../../utils/utils'
 
 class MapGL extends React.PureComponent {
   state = {

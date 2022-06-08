@@ -13,8 +13,6 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
-import { sendTaskClickCount } from '../redux/actions/taskActions'
-import { updatePushNotification, setSearchQuery, setAutocompleteSelectedTask, setSelectedDate, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
@@ -98,7 +96,6 @@ class NavBar extends React.PureComponent {
   // On Notification Click
   _onNotificationClick = notification => {
     const { dispatch, tasks } = this.props
-    dispatch( updatePushNotification({ ...notification, opened: true }) )
 
     // Open Task Details Dialog
     const task = tasks.find(t => t.id === notification.task.id)    
@@ -114,10 +111,6 @@ class NavBar extends React.PureComponent {
 
     this.setState({ isTaskDetailsOpen: true, selectedTask: { ...selectedTask, snd } })
 
-    // Send Task Click Count
-    if(selectedTask.id && user.user_type === 'HR') {
-      sendTaskClickCount(selectedTask.id)
-    }
   }
 
   // Close Task Details Dialog
@@ -468,11 +461,6 @@ NavBar.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  pushNotifications: state.task.pushNotifications,
-  searchQuery: state.task.searchQuery,
-  tasks: state.task.tasks,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
-  sndList: state.task.sndList
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

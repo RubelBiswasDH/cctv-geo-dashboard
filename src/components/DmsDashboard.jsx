@@ -23,7 +23,6 @@ import Button from '@mui/material/Button';
 // Import Actions & Methods
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
-import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
 import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
@@ -52,24 +51,6 @@ class DmsDashboard extends React.PureComponent {
     // Activate Socket
     dispatch( activateSocket_A() )
     dispatch( getEmployee() )
-    // Get Query Categories
-    // dispatch( getQueryCategories() )
-
-    // Load SND List
-    // loadSndList()
-    //   .then(_sndList => {
-    //       const sndList = _sndList.map(s => ({
-    //           value: s.snd_name,
-    //           label: s.snd_name,
-    //           snd: s
-    //       }))
-
-    //       dispatch( setSndList(sndList) )
-    //   })
-    //   .catch(err => {
-    //       //console.error(err)
-    //       dispatch( setSndList([]) )
-    //   })
   }
 
   componentWillUnmount() {
@@ -115,7 +96,6 @@ class DmsDashboard extends React.PureComponent {
   // On Feedback Close
   _onFeedbackClose = () => {
     const { dispatch } = this.props
-    dispatch( setErrorAnalytics(null) )
   }
 
   render() {
@@ -198,7 +178,7 @@ class DmsDashboard extends React.PureComponent {
               }}
             > 
               {
-              (this.props.currentView === 'admin') && <AdminPanel />
+                (this.props.currentView === 'admin') && <AdminPanel />
               }
               {
                 (this.props.currentView === 'attendance') && <AttendanceList />
@@ -206,8 +186,8 @@ class DmsDashboard extends React.PureComponent {
               {
                 (this.props.currentView === 'announcements') && <Announcements />
               }
-               {
-              (this.props.currentView === 'profile') && <Profile />
+              {
+                (this.props.currentView === 'profile') && <Profile />
               }
               {
                 (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
@@ -264,11 +244,7 @@ DmsDashboard.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  isTaskThreadOpen: state.task.isTaskThreadOpen,
-  isTaskLoading: state.task.isTaskLoading,
-  queryCategory: state.task.queryCategory,
   user: state.auth.user,
-  feedback: state.analytics.errorAnalytics,
   currentView: state?.dashboard?.currentView,
   toastIsOpen: state?.dashboard?.toastIsOpen,
   toastMessage: state?.dashboard?.toastMessage,

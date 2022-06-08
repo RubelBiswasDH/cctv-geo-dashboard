@@ -1,13 +1,5 @@
-// import { getAuthToken } from './authActions'
-// import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
-// import { loadThreadMessage, transformTasks } from '../actions/taskActions'
-// import { SOCKET } from '../../App.config'
-
-//new imports
 
 import { getAuthToken } from './authActions'
-import { updateTasks, updatePushNotifications } from '../reducers/taskReducer'
-import { loadThreadMessage, transformTasks } from '../actions/taskActions'
 import { SOCKET,SOCKET_A } from '../../App.config'
 import { setAnnouncements, updateAnnouncements, setError } from "../reducers/announcementReducer"
 import { updateAttendance } from '../reducers/attendanceReducer'

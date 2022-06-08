@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 import { unionArrayOfObjects } from '../../utils/utils'
-import { sortByDate } from '../actions/taskActions'
+import { sortByDate } from '../../utils/utils'
 
 const initialState = {
   isAnnouncementLoading: false,

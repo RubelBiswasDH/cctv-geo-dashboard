@@ -2,10 +2,10 @@ import regularNotificationAudioClip from '../assets/notification_tone.mp3'
 import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
 
 import dayjs from 'dayjs'
+import axios from 'axios'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-
-
-
+import { API } from '../App.config'
+import { getAuthToken } from '../redux/actions/authActions'
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
   const array = [ ...array1 ]
@@ -122,4 +122,18 @@ export function getCurrentView() {
 export function setView(currentView) {
   localStorage.setItem('currentView', currentView)
   setCurrentView(currentView)
+}
+
+
+export const getReverseGeoAddress = (params) => {  
+  // Get Auth Token
+  const token = getAuthToken()
+
+  return axios.get(API.REVERSEGEO, { headers: { Authorization: `Bearer ${token}` }, params })      
+      .then(res => {
+          return res.data
+      })
+      .catch(err => {
+          throw err
+      })
 }

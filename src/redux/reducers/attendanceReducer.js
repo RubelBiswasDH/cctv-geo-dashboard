@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { unionArrayOfObjects } from '../../utils/utils'
-import { sortByDate } from '../actions/taskActions'
+import { sortByDate } from '../../utils/utils'
 
 const initialState = {
     attendanceList: [],
