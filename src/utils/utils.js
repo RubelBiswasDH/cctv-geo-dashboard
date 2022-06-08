@@ -2,10 +2,9 @@ import regularNotificationAudioClip from '../assets/notification_tone.mp3'
 import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
 
 import dayjs from 'dayjs'
+import axios from 'axios'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-
-
-
+import { API } from '../App.config'
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
   const array = [ ...array1 ]
@@ -62,7 +61,6 @@ export function convertSecondsToTime(seconds) {
     ${sec ? sec + 'sec' : ''}`
 }
 
-// // //
 
 export function sortByDate(data) {
   return data.sort((a, b) => {
@@ -89,7 +87,6 @@ export function transformAnnouncements(announcements) {
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
-  //console.log('tranformAnnouncement : ',transformedAnnouncements)
   const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
   return transformedAnnouncementsSortByDate
 }
@@ -106,7 +103,6 @@ export function transformAttendance(attendance) {
     created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
     updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
-  //console.log('tranformAnnouncement : ',transformedAttendance)
   const transformedAttendanceSortByDate = sortByDate(transformedAttendance)  
   return transformedAttendanceSortByDate
 }
@@ -122,4 +118,27 @@ export function getCurrentView() {
 export function setView(currentView) {
   localStorage.setItem('currentView', currentView)
   setCurrentView(currentView)
+}
+
+
+export const getReverseGeoAddress = (params) => {  
+  // Get Auth Token
+  const token = getAuthToken()
+
+  return axios.get(API.REVERSEGEO, { headers: { Authorization: `Bearer ${token}` }, params })      
+      .then(res => {
+          return res.data
+      })
+      .catch(err => {
+          throw err
+      })
+}
+
+// Get User Auth Token
+export function getAuthToken() {
+  const token = localStorage.getItem('token')
+  if(token) {
+      return token
+  }
+  return null
 }

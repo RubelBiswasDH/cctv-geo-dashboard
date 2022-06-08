@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import dayjs from 'dayjs'
 import { unionArrayOfObjects } from '../../utils/utils'
-import { sortByDate } from '../actions/taskActions'
+import { sortByDate } from '../../utils/utils'
 
 const initialState = {
   isAnnouncementLoading: false,
@@ -34,7 +33,6 @@ const announcementsSlice = createSlice({
       state.editAnnouncementDialogIsOpen = action.payload
     },
     updateAnnouncements: (state, action) => {
-      //console.log("state in store ", action.payload)
       state.announcements = sortByDate(unionArrayOfObjects(state.announcements, action.payload, 'id'))
     },
     setPushNotifications: (state, action) => {
@@ -51,14 +49,12 @@ const announcementsSlice = createSlice({
 
       state.pushNotifications[index] = { ...state.pushNotifications[index], ...action.payload }
     },
-
     setIsAnnouncementThread: (state, action) => {
       state.isTaskThreadOpen = action.payload
     },
     setError: (state, action) => {
       state.error = action.payload
     },
-
   }
 })
 

@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
-import { GridActionsCellItem } from '@mui/x-data-grid'
-import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
-import TextField from '@mui/material/TextField';
-
+import { Box, Button } from '@mui/material'
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledInputField from './common/StyledInputField'
@@ -24,19 +20,7 @@ const columns = [
   { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
   { field: 'type', headerName: 'Type', minWidth: 50, sortable: true,flex: .5, filter: true, filterable: true  },
   { field: 'edit', headerName: 'Edit', minWidth: 40, sortable: false,flex: .40, filter: false, filterable: false  },
-  // { field: 'validation', headerName: 'Validation', minWidth: 100, sortable: false,flex: .6, filter: true, filterable: true  },
 ]
-const rows = [
-  {
-      "id": 684,
-      "name": "tkt-023846-1169",
-      "checked_in_time": "AL- HAJ ABDUL JABBER",
-      "caller_contact": "01778200359",
-      "checked_out_time": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
-      "is_late": "No",
-  },
-]
-
 
 class Announcements extends React.PureComponent {
     state = {
@@ -91,30 +75,12 @@ class Announcements extends React.PureComponent {
         }
       })
     })
-    //console.log("returing attendace info ", attendanceInfo)
     return announcementInfo
   }
 
-  // Generate Columns & Rows
-
-  // Sort Tasks By Emergency
-
-  // Filter Tasks By Request Date
-
-  // Filter Tasks By Status Type
-
-  // Filter Tasks By Search
-
-  // Open Task Details Dialog
-
-  // Close Task Details Dialog
-
-
   render() {
     const { editAnnouncementDialogIsOpen } = this.props
-    const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
-    
-   
+       
     let announcement_rows = this.mappedAnnouncements()
     return (
       <Box width='100%' height='84vh'>
@@ -128,7 +94,6 @@ class Announcements extends React.PureComponent {
           handleDialogOnClose={this._handleCloseAnnouncementDialog}
           footer={
           <>
-            {/* <Button onClick={this._handleCloseAnnouncementDialog}>Cancle</Button> */}
             <Button onClick={this._handleAnnouncementEditSubmit}>Submit</Button>
           </>
           }

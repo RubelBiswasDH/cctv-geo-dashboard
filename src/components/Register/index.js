@@ -3,17 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete, Grid, Snackbar, Alert } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack, Autocomplete, Snackbar, Alert } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
-import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
+import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
 import { register,getCompanyList } from '../../redux/actions/registerActions'
 import bkoiLogo from '../../assets/barikoi-logo.png'
 import { setToastIsOpen } from '../../redux/reducers/dashboardReducer'
 
-// Import Actions & Methods
-//import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
 
 function CustomInput() {
   return (
@@ -48,16 +46,13 @@ class Register extends React.PureComponent {
   handleAutoCompInputChange = e => {
     const { dispatch } = this.props
     dispatch(getCompanyList(e.target.value))
-    console.log('onInputChange called, value :', e.target.value)
 
   }
 
 // handleAutoCompChange
   handleAutoCompChange = (e,value) => {
     const { dispatch } = this.props
-    // console.log('selected place: ', value?.Address)
     dispatch( setCompanyAddress(value?.Address ?? '') )
-    // console.log('onChange Called')
   }
 
 
@@ -65,18 +60,6 @@ class Register extends React.PureComponent {
   _onChange = e => {
     const { dispatch, authError } = this.props
     const { error } = this.state
-
-//     if(e.target.name === 'employeeEmail') {
-//       // If Employee Id
-//       dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
-
-//     } else if(e.target.name === 'password') {
-//       // If Password
-//       dispatch( setPassword(e.target.value?.trim() ?? '') )
-
-//     } else {
-//       this.setState({ [ e.target.name ]: e.target.value })
-//     }
 
 switch (e.target.name) {
     case 'employeeName':
@@ -102,7 +85,6 @@ switch (e.target.name) {
         break;
     default:
 
-    //   data = empData;
   } 
 
     // Clear Error
@@ -139,7 +121,6 @@ switch (e.target.name) {
         company_address: companyAddress,
         password: password
       }
-      //console.log('submited register data: ',user)
       dispatch( register(user) )
 
     } else {
@@ -292,10 +273,6 @@ switch (e.target.name) {
   render() {
     const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
     const { error } = this.state
-    const {handleAutoCompInputChange, handleAutoCompChange} = this
-    // const autoCompleteOptons = companyNameOptions.map(c => c.Address)
-
-    // console.log('autoComplate optons: ', autoCompleteOptons)
 
     return (
       <Container sx={ containerStyles }>

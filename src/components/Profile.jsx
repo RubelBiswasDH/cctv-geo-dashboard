@@ -8,8 +8,6 @@ import image from '../assets/profile-image.jpg'
 
 import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
-// import { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage } from '../redux/reducers/adminReducer'
-// import { createUser, createBulkUser, createNotice } from '../redux/actions/adminActions'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -70,13 +68,8 @@ const ProfileRow = (props) => {
 }
 
 class Profile extends React.PureComponent {
-
-    componentDidMount(){
-        // this.props.dispatch(getUserProfile('22'));
-    }
     render() {
         const {userProfile, profileEdit, dispatch} = this.props
-        // console.log({setProfileEdit})
         return (
             <Box sx={
                 theme => ({
@@ -90,7 +83,6 @@ class Profile extends React.PureComponent {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '4px',
-                    // border:'1px solid green',
                     ml:'8px'
                 }
                 )}
@@ -115,7 +107,6 @@ class Profile extends React.PureComponent {
                     <Grid xs={8} sx={{p:3,border:'none' }} item container>
                         {/* Grid 1 */}
                         <GridContent  style={{}}>
-                            {/* <ProfileRow  title={"Title"} value={'Value'}/> */}
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Name"} value={userProfile.name} field={"name"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Employee ID"} value={userProfile.employee_id} field={"employee_id"} />
                             <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Contact No"} value={userProfile.personal_contact_no} field={"personal_contact_no"} />
@@ -195,12 +186,14 @@ class Profile extends React.PureComponent {
 // Prop Types
 ProfileRow.propTypes = {
     title: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
+    dispatch: PropTypes.func
 }
 
 ProfileRow.defaultProps = {
     title: "Title",
-    value: ""
+    value: "",
+    dispatch: () => null
 }
 
 
@@ -212,7 +205,6 @@ GridContent.defaultProps = {
     style: {}
 }
 
-// export default Profile;
 const mapStateToProps = state => ({
     userProfile: state.admin.userProfile,
     profileEdit: state.admin.profileEdit,

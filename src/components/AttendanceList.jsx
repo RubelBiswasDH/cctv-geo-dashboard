@@ -7,38 +7,19 @@ import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material
 import { GridActionsCellItem } from '@mui/x-data-grid'
 import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
-import TaskDetailsDialog from './TaskDetailsDialog'
-import TaskTimelineDialog from './TaskTimelineDialog'
 
 // Import Actions & Methods
-import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
-import { getTimelineData, sendTaskClickCount } from '../redux/actions/taskActions'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
-import {getAttendance}  from '../redux/actions/attendanceActions'
-import { setInvalidLateAttendanceAction } from '../redux/actions/adminActions'
+import { getAttendance }  from '../redux/actions/attendanceActions'
 import dayjs from 'dayjs'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 100,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'checked_in_time', headerName: 'Checked In Time', minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false },
-  { field: 'checked_out_time', headerName: 'Checked Out Time', minWidth: 75,flex: .75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'is_late', headerName: 'Late', minWidth: 50, sortable: false,flex: .50, filter: true, filterable: true  },
-  { field: 'announcement', headerName: 'Announcement', minWidth: 100, sortable: false,flex: 1, filter: true, filterable: true  },
-  { field: 'validation', headerName: 'Validation', minWidth: 50, sortable: false,flex: .5, filter: true, filterable: true  },
-]
-const rows = [
-  {
-      "id": 684,
-      "name": "tkt-023846-1169",
-      "checked_in_time": "AL- HAJ ABDUL JABBER",
-      "caller_contact": "01778200359",
-      "checked_out_time": "SUVASTU NAZARVALLEY GA-2, SHAJADPUR TOWER-01 3-E1",
-      "is_late": "No",
-  }
-]
+  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
+  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
+ ]
 
 class AttendanceList extends React.PureComponent {
+ 
   state = {
     start_date:null,
     start_date: null,
@@ -46,7 +27,9 @@ class AttendanceList extends React.PureComponent {
     isTaskTimelineOpen: false,
     selectedTask: {},
     isTimelineLoading: false,
-    feedback: null
+    feedback: null,
+    uniqueDates: [],
+    tableColumns: []
   }
 
   componentDidMount() {
@@ -56,39 +39,43 @@ class AttendanceList extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    //console.log(start_date,end_date)
     this.setState({ start_date, end_date })
-
+    this._getUniqueDates()
     // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
-
-    // dispatch( getAttendance({start_date: `${start_date} 00:00:00`, end_date: `${end_date} 23:59:59`}) )
-
-    //dispatch(getAttendance());
-    //console.log(dateToday())
-    // // Get All Task List
-    // dispatch( loadTasks() )
-
-    // Pending Emergency Reminder
-    // this._setReminderForEmergency()
   }
-  mappedAttendanceInfo = () => {
-    const {attendanceList, announcements} = this.props;
-    // console.log({announcements})
-    //console.log('mappedAttendanceInfo called', attendanceList);
 
-    // const isLate = (checked_in_time) => {
-    //   const today = dayjs(checked_in_time).format('YYYY-MM-DD')
-    //   const lastCheckinTime = today+' 10:15:00'
-    //   //const checkedInTime = dayjs(checked_in_time).format('YYYY-MM-DD h:mm:ss')
-    //   //console.log("lst chtime chtime: ", lastCheckinTime, checkedInTime)
-    //   if(new Date(checked_in_time) > new Date(lastCheckinTime)){
-    //     return "Yes"
-    //   }
-    //   else{
-    //     return "No"
-    //   }
-    // }
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+      if (this.props.attendanceList !== prevProps.attendanceList) {
+        this._getUniqueDates()
+      }
+    }
+
+  _getUniqueDates = () => {
+      const { attendanceList } = this.props
+      let dates = []
+      attendanceList.forEach(data => {
+        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+      })
+      const unique = [...new Set(dates)]
+      this.setState(() => ({ uniqueDates:unique }))
+    }
+
+  _generateAttendanceColumns = () => {
+    const { uniqueDates } = this.state
+    
+    const dyanmicColumns = uniqueDates.map(
+       (date) => ( { 
+         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "A",
+
+        }
+    ))
+    return dyanmicColumns
+  }
+
+  mappedAttendanceInfo = () => {
+    const {attendanceList, announcements, employeeList } = this.props;
 
     const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
@@ -101,100 +88,33 @@ class AttendanceList extends React.PureComponent {
       else return ''
     }
 
-    const attendanceInfo = attendanceList.map((a,i) => {
+    const attendanceInfo = employeeList.map((a,i) => {
+      
+      let individualAttendance = {}
+      
+      const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
+        if (a.user_id === id) {
+          const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
+          if (enter_time) {
+            if(a.is_late){
+              individualAttendance[enter_time] = "L"
+            }
+            else{
+              individualAttendance[enter_time] = "P"
+            }
+          }
+        } })
 
-      return ({
-        "id": a?.id,
-        "serial_no":i+1,
-        "name": a?.name,
-        "checked_in_time": dayjs(a?.enter_time).format('YYYY-MM-DD h:mm:ss') ,
-        "checked_out_time": a?.exit_time?a?.exit_time : '-',
-        "is_late": (a?.is_late)?"Yes":"No",
-        "is_valid": a?.is_valid,
-        "announcement": getAnnouncement(a?.user_id, a?.created_at),
-        setValidation : setInvalidLateAttendanceAction({attendence_id:a?.id})
-      })
+      getIndividualAttendance(a?.id)
+        return ({
+          "id": a?.id,
+          "serial_no":i+1,
+          "name": a?.name,
+          ...individualAttendance
+        })
     })
-    //console.log("returing attendace info ", attendanceInfo)
     return attendanceInfo
-  }
-
-  // Generate Columns & Rows
-  _generateTaskColumnsAndRows = tasks => {
-    const { sndList, user } = this.props
-
-    const columns = [      
-      { field: 'serial_no', headerName: 'Sl no', minWidth: 50, maxWidth: 50, sortable: false, filter: false, filterable: false },
-      { field: 'ticket_number', headerName: 'Name', minWidth: 100, maxWidth: 120, sortable: false, filter: false, filterable: false },
-      { field: 'created_by', headerName: 'Checked In', minWidth: 200, maxWidth: 350, sortable: false, filter: false },
-      { field: 'created_at', headerName: 'Created Date & Time', minWidth: 150, maxWidth: 180, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-      { field: 'snd_name', headerName: 'S&D Name', minWidth: 200, maxWidth: 350, sortable: false, filter: false, type: 'singleSelect', valueOptions: sndList },
-      { field: 'etd_total_time', headerName: 'TAT', minWidth: 150, maxWidth: 200, sortable: false, filter: false, filterable: false },
-      { field: 'status', headerName: 'Name', minWidth: 150, maxWidth: 220, sortable: false, filter: false, type: 'singleSelect', valueOptions: [
-        { value: 'OPEN', label: 'OPEN' },
-        { value: 'DISPATCHED', label: 'DISPATCHED' },
-        { value: 'ASSIGNED', label: 'ASSIGNED' },
-        { value: 'ONGOING', label: 'ONGOING' },
-        { value: 'PRECOMPLETION', label: 'TASK CLOSED' },
-        { value: 'RESOLVED', label: 'RESOLVED' },
-        { value: 'CLOSED', label: 'CLOSED' },
-        { value: 'CANCELLED', label: 'CANCELLED' }        
-      ] },
-      { field: 'ticket_sla', headerName: 'Ticket SLA', minWidth: 150, maxWidth: 180, sortable: false, filter: false, filterable: false },
-    ]
-
-    const rows = tasks ?
-      tasks.map((t, index) => ({
-        ...t,
-        serial_no: index + 1,
-        snd: sndList.find(s => s.snd.id === t.snd_id)?.snd?.snd_name ?? ''
-      }))
-      :
-      []
-
-    // Check if user is 'SUPERVISOR' and add a new column in columns at 3rd position
-    if (user.user_type === 'ADMIN') {      
-      columns.splice(3, 0, { field: 'dispatcher_name', headerName: 'Dispatcher Name', minWidth: 200, maxWidth: 350, sortable: false, filter: true, type: 'string'})
-    }
-
-    return {
-      columns,
-      rows
-    }
-  }
-
-  // Sort Tasks By Emergency
-
-  // Filter Tasks By Request Date
-
-
-  // Filter Tasks By Status Type
-
-
-  // Filter Tasks By Search
-
-  // Open Task Details Dialog
-
- 
-  // Close Task Details Dialog
-
-  // Open Task Timeline Dialog
-  _openTaskTimeline = selectedTask => {
-    const { sndList } = this.props
-
-    // Set Loading
-    this.setState({ isTimelineLoading: true, isTaskTimelineOpen: true })
-
-    // Get Timeline Data
-    getTimelineData(selectedTask.id, sndList)
-      .then(selectedTimeline => {
-        //console.log("selectedTimeline",selectedTimeline)
-        //this.setState({ selectedTimeline, isTimelineLoading: false })
-      })
-      .catch(err => {
-        console.error(err)
-        this.setState({ isTimelineLoading: false, selectedTimeline: [] })
-      })
+    
   }
 
   // Close Task Timeline Dialog
@@ -215,9 +135,6 @@ class AttendanceList extends React.PureComponent {
     stopNotificationSound()
   }
 
-  // Open Reminder for Emergency Tasks Periodically
- 
-
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
     const { dispatch } = this.props
@@ -225,18 +142,9 @@ class AttendanceList extends React.PureComponent {
     // Stop Notification Sound
     stopNotificationSound()
 
-    if(!task) {
-      dispatch( setAutocompleteSelectedTask(null) )
-      return
-    }
 
     // Close Feedback
-    this._onFeedbackClose()
-
-    dispatch( setAutocompleteSelectedTask(task) )    
-
-    // Auto Select All Status Type
-    dispatch( setSelectedStatusType('ALL') )
+    this._onFeedbackClose()  
 
     // Open Task Details Dialog with Selected Task
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
@@ -244,47 +152,16 @@ class AttendanceList extends React.PureComponent {
 
   render() {
     const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
-    const { isTaskDetailsOpen, isTaskTimelineOpen, selectedTask, selectedTimeline, isTimelineLoading, feedback } = this.state
+    const { feedback } = this.state
     
-   
     let attendance_rows = this.mappedAttendanceInfo()
+    const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='84vh'>
         <StyledDataGrid
-          columns={columns }
+          columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
           loading={ isTaskLoading }
-          // renderActions={ cellValues => ([
-          //   <GridActionsCellItem
-          //     icon={
-          //       <Tooltip title='Dispatch' arrow={ true } placement='top'>
-          //         <AssignmentInd fontSize='small' />
-          //       </Tooltip>
-          //     }
-          //     onClick={ () => ("this._openTaskDetails(cellValues.row)") }
-          //   />,
-          //   <GridActionsCellItem
-          //     icon={
-          //       <Tooltip title='Timeline' arrow={ true } placement='top'>
-          //         <Timeline fontSize='small' />
-          //       </Tooltip>
-          //     }
-          //     onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
-          //   />
-          // ])}
-        />
-
-        <TaskDetailsDialog
-          data={ selectedTask }
-          handleDialogOnClose={ this._closeTaskDetails }
-          isDialogOpen={ isTaskDetailsOpen }
-        />
-
-        <TaskTimelineDialog
-          isDialogOpen={ isTaskTimelineOpen }
-          handleDialogOnClose={ this._closeTaskTimeline }
-          timelineData={ selectedTimeline }
-          loading={ isTimelineLoading }
         />
 
         <Snackbar
@@ -356,16 +233,9 @@ AttendanceList.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  isTaskLoading: state.task.isTaskLoading,
-  tasks: state.task.tasks,
-  selectedStatus: state.task.selectedStatus,
-  selectedDate: state.task.selectedDate,
-  sndList: state.task.sndList,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
-  // attendanceList
   attendanceList: state.attendanceList.attendanceList,
   announcements: state.announcements.announcements,
-
+  employeeList: state.employeeList.employeeList
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

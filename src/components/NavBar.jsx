@@ -1,26 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import dayjs from 'dayjs'
 
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
-import { Logout, AccountCircle, Notifications, Assignment, Check, Task, AssignmentLate, Search } from '@mui/icons-material'
-import TaskDetailsDialog from './TaskDetailsDialog'
+import { Logout, AccountCircle } from '@mui/icons-material'
 
-// Import Assets
 // import descoLogo from '../assets/desco-logo.png'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
-import { sendTaskClickCount } from '../redux/actions/taskActions'
-import { updatePushNotification, setSearchQuery, setAutocompleteSelectedTask, setSelectedDate, setSelectedStatusType } from '../redux/reducers/taskReducer'
 import { playNotificationSound, stopNotificationSound } from '../utils/utils'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
-import { setView } from '../utils/utils'
 
 class NavBar extends React.PureComponent {
   state = {
@@ -56,7 +50,6 @@ class NavBar extends React.PureComponent {
         this.props.dispatch(setProfileEdit(false))
         this.props.dispatch(getUserProfile(this.state.user.id))
         this.props.dispatch(setCurrentView('profile'))
-        // setView('profile')
   }
   // Get Avatar String
   _stringAvatar = name => ({
@@ -98,32 +91,10 @@ class NavBar extends React.PureComponent {
 
   // On Notification Click
   _onNotificationClick = notification => {
-    const { dispatch, tasks } = this.props
-    dispatch( updatePushNotification({ ...notification, opened: true }) )
+    const { tasks } = this.props
 
     // Open Task Details Dialog
     const task = tasks.find(t => t.id === notification.task.id)    
-    this._openTaskDetails(task ?? {})
-  }
-
-  // Open Task Details Dialog
-  _openTaskDetails = selectedTask => {
-    const { user, sndList } = this.props
-
-    // Selected SND
-    const snd = sndList.find(s => s.snd.id === selectedTask.snd_id)?.snd?.snd_name ?? ''
-
-    this.setState({ isTaskDetailsOpen: true, selectedTask: { ...selectedTask, snd } })
-
-    // Send Task Click Count
-    if(selectedTask.id && user.user_type === 'HR') {
-      sendTaskClickCount(selectedTask.id)
-    }
-  }
-
-  // Close Task Details Dialog
-  _closeTaskDetails = () => {
-    this.setState({ isTaskDetailsOpen: false, selectedTask: {} })
   }
 
   // Sort Norifications By Emergency
@@ -140,19 +111,12 @@ class NavBar extends React.PureComponent {
     })
   }
 
-  // On Search Input Change
-
-  // On Autocomplete Select Change
-
-  // On Autocomplete Filter
-
   
   render() {
     const { user, appBarProps, pushNotifications, searchQuery, tasks, autocompleteSelectedTask } = this.props
     const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
-    const sortedPushNotifications = this._sortByEmergency(pushNotifications)
     return (
       <React.Fragment>
         <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>
@@ -181,31 +145,6 @@ class NavBar extends React.PureComponent {
 
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
                 <Toolbar variant='dense' sx={ {...toolbarStyles , justifyContent:'flex-end'} }>
-                  {/* <Autocomplete
-                    fullWidth={ true }
-                    size='small'
-                    popupIcon={ <Search fontSize='small' /> }
-                    openOnFocus={ false }
-                    options={ this.state.filterOptions }
-                    getOptionLabel={ o => o?.ticket_number ?? '' }
-                    filterOptions={ x => (x)}
-                    value={ autocompleteSelectedTask }
-                    inputValue={ searchQuery }
-                    onChange={ () => console.log('Autocopmplete changed') }
-                    onInputChange={ () => console.log('onInputChange') }
-                    sx={ autocompleteStyles }
-                    renderInput={params =>
-                      <TextField
-                        { ...params }
-                        variant='outlined'
-                        margin='none'
-                        size='small'
-                        fullWidth={ true }
-                        type='text'
-                        placeholder='Search tickets...'
-                      />
-                    }
-                  /> */}
 
                   {
                     user?.user_type &&
@@ -217,36 +156,6 @@ class NavBar extends React.PureComponent {
                     />
                   }
                   
-                  {/* <Tooltip
-                    title={ 'Notifications' }
-                    arrow={ true }
-                  >
-                    <IconButton
-                      size='small'
-                      aria-controls={
-                        notificationsMenuOpen ? 'notifications-menu' : undefined
-                      }
-                      aria-haspopup='true'
-                      aria-expanded={ notificationsMenuOpen ? 'true' : undefined }
-                      onClick={ this._openNotificataionsMenu }
-                    >
-                      <Badge
-                        badgeContent={ sortedPushNotifications.filter(n => !n.opened).length }
-                        color='primary'
-                        overlap='circular'
-                      >
-                        <Avatar
-                          sx={{
-                            width: '32px',
-                            height: '32px'
-                          }}
-                        >
-                          <Notifications />
-                        </Avatar>
-                      </Badge>
-                    </IconButton>
-                  </Tooltip> */}
-
                   <Tooltip
                     title={ user.name ? user.name : 'Account Settings' }
                     arrow={ true }
@@ -285,61 +194,6 @@ class NavBar extends React.PureComponent {
               }
             }}
           >
-            <Box maxHeight='240px' overflow='auto'>
-              { sortedPushNotifications && sortedPushNotifications.length > 0 ?
-                  sortedPushNotifications.map((n, i) =>
-                    <MenuItem
-                      key={ i }
-                      dense={ true }
-                      selected={ n.opened ? false : true }
-                      onClick={ () => this._onNotificationClick(n) }
-                    >
-                      <Tooltip
-                        title={
-                          n.task?.status === 'RESOLVED' ?
-                            'Resolved'
-                            :
-                            n.task?.is_emergency ?
-                            'Emergency'
-                            :
-                            'Opened'
-                        }
-                      >
-                        <ListItemIcon>
-                          { n.task?.status === 'RESOLVED' ?
-                            <Task fontSize='small' />
-                            :
-                            n.task?.is_emergency ?
-                            <AssignmentLate fontSize='small' color='error' />
-                            :
-                            <Assignment fontSize='small' />
-                          }
-                        </ListItemIcon>
-                      </Tooltip>
-                      <Box width='100%'>
-                        <Typography variant='body2'>{ n.title }</Typography>
-                        <Typography
-                          variant='body2'
-                          color='text.secondary'
-                          textAlign='end'
-                          sx={{ fontSize: '9px' }}
-                        >
-                          { n.time }
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  )
-                  :
-                  <MenuItem
-                    dense={ true }
-                  >
-                    <ListItemIcon>
-                      <Check fontSize='small' />
-                    </ListItemIcon>
-                    { 'Empty' }
-                  </MenuItem>
-              }
-            </Box>
           </Menu>
         </React.Fragment>
 
@@ -373,14 +227,6 @@ class NavBar extends React.PureComponent {
               { 'Logout' }
             </MenuItem>
           </Menu>
-        </React.Fragment>
-
-        <React.Fragment>
-          <TaskDetailsDialog
-            data={ selectedTask }
-            handleDialogOnClose={ this._closeTaskDetails }
-            isDialogOpen={ isTaskDetailsOpen }
-          />
         </React.Fragment>
       </React.Fragment>
     )
@@ -477,11 +323,6 @@ NavBar.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  pushNotifications: state.task.pushNotifications,
-  searchQuery: state.task.searchQuery,
-  tasks: state.task.tasks,
-  autocompleteSelectedTask: state.task.autocompleteSelectedTask,
-  sndList: state.task.sndList
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

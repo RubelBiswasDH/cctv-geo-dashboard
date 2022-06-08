@@ -138,13 +138,14 @@ class Login extends React.PureComponent {
                   </a>
                 </Box>
                 <Box>
-                <Typography
-                  variant='h5'
-                  color='text.secondary'
-                  sx={{fontSize: { xs: '18px', sm: '20px', md: '24px'} }}
-                >
-                  { 'HR Trace' }
-                </Typography>                </Box>
+                  <Typography
+                    variant='h5'
+                    color='text.secondary'
+                    sx={{fontSize: { xs: '18px', sm: '20px', md: '24px'} }}
+                  >
+                    { 'HR Trace' }
+                  </Typography>                
+                </Box>
             </Box>
             <img
               src={ loginCover }
