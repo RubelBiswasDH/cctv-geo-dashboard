@@ -90,7 +90,7 @@ class HrTraceDashboard extends React.PureComponent {
 
   render() {
     const { start_date, end_date } = this.state
-    const { isTaskLoading, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
+    const { isTaskLoading, toastIsOpen, toastMessage, toastSeverity } = this.props
     return (
       <Box sx={ containerStyles }>
         <NavBar />

@@ -66,7 +66,6 @@ const CustomButton = (props) => {
 
     const handleClick = () => {
         props.onClick()
-        // setBtnStyle(pre => ({...pre, background:'green'}))
     }
 
     return (
@@ -90,16 +89,6 @@ const FileInput = (props) => {
                 onChange={onChange}
 
             />
-            {/* <IconButton sx={{ p: '10px' }} aria-label={ariaLabel}>
-                <SearchIcon sx={{ color: 'white' }} />
-            </IconButton> */}
-            {/* <Button>
-            Upload File
-                <input
-                    type="file"
-                    hidden
-                />
-            </Button> */}
         </Paper>
     );
 }
@@ -176,7 +165,6 @@ class AdminPanel extends React.PureComponent{
         this.handleSetLateTime = this.handleSetLateTime.bind(this)
         this.handleSetWorkingDays = this.handleSetWorkingDays.bind(this)
         this.updateExactAddress = this.updateExactAddress.bind(this)
-        // this.handleCompanySettings = this.handleCompanySettings.bind(this)
     }
     componentDidMount(){
         this.props.dispatch(getCompanySettingsAction())
@@ -191,8 +179,7 @@ class AdminPanel extends React.PureComponent{
             longitude: updatedAddress.longitude
         }
         console.log({updatedDate})
-        dispatch( setCompanyAddressData(updatedDate))
-        // this.setState({ data: updatedDate })        
+        dispatch( setCompanyAddressData(updatedDate))     
     }
     handleNewUserFieldChange = e => {
 
@@ -217,12 +204,9 @@ class AdminPanel extends React.PureComponent{
         e.preventDefault()
         const {dispatch,fileInput} = this.props
         console.log('fileInput: ',fileInput)
-        // // const file = {users:fileInput}
         const formData = new FormData();
         formData.append("users",fileInput)
-        // const users = {users: fileInput}
         dispatch(createBulkUser(formData))
-        //console.log('file uploaded, file: ',this.props.fileInput)
     }
 
     handleFileInput = e => {
@@ -230,10 +214,7 @@ class AdminPanel extends React.PureComponent{
         console.log('tyoe of file inpt: ',typeof(fileInput))
         e.preventDefault()
         const file = e.target.files[0]
-        // const formData = new FormData();
-        // formData.append("users",file)
         dispatch(setFileInput(file))
-        //console.log('file ',file)
     }
 
 
@@ -247,26 +228,19 @@ class AdminPanel extends React.PureComponent{
             email: newUserEmail
         }
         if(newUserName && newUserMobile && newUserEmail && newUserRole){
-            // console.log('all field filled')
             dispatch(createUser(user))
-            // console.log('dispatch createUser',dispatch,createUser)
-            // console.log('dipatch create user')
         }
         else{ 
             dispatch(setToastMessage('All fields are required'))
             dispatch(setToastIsOpen(true))
             dispatch(setToastSeverity('warning'))
         }
-        //console.log('create user clicked, user is: ', user)
     }
 
     handleSaveUser = e => {
         const {dispatch, newUser} = this.props
         if(newUser.name && newUser.phone&& newUser.email){
-            // console.log('all field filled')
             dispatch(createUser(newUser))
-            // console.log('dispatch createUser',dispatch,createUser)
-            // console.log('dipatch create user')
         }
         else{ 
             dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
@@ -276,7 +250,7 @@ class AdminPanel extends React.PureComponent{
     }
     handleSetLateTime = (e) => {
         e.preventDefault()
-        const { dispatch, lateTime, monthYear, workingDays, companySettings } = this.props
+        const { dispatch, lateTime, companySettings } = this.props
         if (lateTime.length > 0) {
             const new_settings = {
                 late_time: lateTime
@@ -377,7 +351,6 @@ class AdminPanel extends React.PureComponent{
                         xs: `${theme.spacing(0)}`,
                         md: theme.spacing(0)
                     },
-                    // border:'1px solid red',
                     width: '100%',
                     display: 'flex', 
                     flexDirection: 'column', 
@@ -445,9 +418,6 @@ class AdminPanel extends React.PureComponent{
                                 </Grid> */}
                            </Grid>
                            <Grid xs={12} item container spacing={2}>
-                                {/* <Grid xs={4} item>
-                                    <FileInput placeholder={"CSV File"} ariaLabel={"CSV File"} onChange={handleFileInput} style={{borderRadius:2}}/>
-                                </Grid> */}
                                 <Grid xs={4} item>
                                 <StyledButton href={downloadDemoCSV} sx={{overflow:'ellipsis'}} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'100%'}}>Demo CSV File Download</StyledButton>
                                 </Grid>
@@ -462,86 +432,7 @@ class AdminPanel extends React.PureComponent{
                         </Grid>
                     {/* )
                     :( */}
-                        {/* <Grid container spacing={2} sx={{p:4,pt:2}}>
-                            
-                                <Grid spacing={2} container item >
-                                    <UserField  dispatch={dispatch} field={'name'}  title={"Name"} value={newUser?.name}/>
-                                    <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail"} value={newUser?.email}/>
-                                    <UserField  dispatch={dispatch} field={'phone'}  title={"Phone"} value={newUser?.phone}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'birth_date'}  title={"Birth Date"} value={newUser?.profile?.birth_date}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'gender'}  title={"Gender"} value={newUser?.profile?.gender}/>    
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'marritial_status'}  title={"Marritial Status"} value={newUser?.profile?.marritial_status}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'educational_qualification'}  title={"Educational Qualification"} value={newUser?.profile?.educational_qualification}/>
-                                </Grid>
-                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
-                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Office Details</Typography>
-                                </Grid>
-                                   
-                                <Grid spacing={2} container item >
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_phone_no'}  title={"Office Phone No"} value={newUser?.profile?.office_phone_no}/> 
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'job_status'}  title={"Job Status"} value={newUser?.profile?.job_status}/> 
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'joining_data'}  title={"Joining Date"} value={newUser?.profile?.joining_data}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'end_of_probation'}  title={"End of Probation"} value={newUser?.profile?.end_of_probation}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_performance_review'}  title={"Last Performance Review"} value={newUser?.profile?.last_performance_review}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'next_performance_review'}  title={"Next Performance Review"} value={newUser?.profile?.next_performance_review}/>
-                                </Grid>
-                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
-                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Emergency</Typography>
-                                </Grid>
-                                    
-                                <Grid spacing={2} container item >
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person_no'}  title={"Contact Person No"} value={newUser?.profile?.contact_person_no}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'relationship_with_contact_perso'}  title={"Relationship with contact person"} value={newUser?.profile?.relationship_with_contact_perso}/>
-                                </Grid>
-                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
-                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Benefits</Typography>
-                                </Grid>
-                                <Grid spacing={2} container item >
-                                    
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'salary'}  title={"Salary"} value={newUser?.profile?.salary}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'casual_leave'}  title={"Casual Leave"} value={newUser?.profile?.casual_leave}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'sick_leave'}  title={"Sick Leave"} value={newUser?.profile?.sick_leave}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'festival_bonus'}  title={"Fastival Bonus"} value={newUser?.profile?.festival_bonus}/>
-                                </Grid>
-                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
-                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Bank Account Details</Typography>
-                                </Grid>
-                                    
-                                <Grid spacing={2} container item >
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account"} value={newUser?.profile?.account_title}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_no'}  title={"Account No"} value={newUser?.profile?.account_no}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'routing_no'}  title={"Routing No"} value={newUser?.profile?.routing_no}/>
-                                </Grid>
-                                <Grid spacing={2} container item sx={{pl:0,ml:2,mt:0}} >
-                                    <Typography sx={{fontSize:'1em', fontWeight:600}}>Last Work Place</Typography>
-                                </Grid>
-                                   
-                                <Grid spacing={2} container item >
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'company_name'}  title={"Company Name"} value={newUser?.profile?.company_name}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities}/>
-                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary}/>
-                                </Grid>
-                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
-                                    <InputButton onChange={handleFileInput} style={{width:'20%'}}></InputButton>
-                                    <StyledButton href={downloadDemoCSV} sx={{overflow:'ellipsis'}} onClick= {() => null} variant="contained" style={{borderRadius:2,pt:.5,width:'20%'}}>Demo CSV File Download</StyledButton>
-                                </Grid>
-                                <Grid spacing={2} container sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,mt:2}}>
-                                    <StyledButton onClick= {handleSaveUser} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
-                                    <StyledButton onClick= {() => this.setState(state => ({seeMore:!state.seeMore}))} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>See Less</StyledButton>
-                                </Grid>
-                        </Grid> */}
-                    {/* )} */}
+                       
                     </GridContent>
                      )
                      :''}
@@ -637,10 +528,10 @@ class AdminPanel extends React.PureComponent{
                         <Grid container spacing={2} sx={{p:4,pt:2}}>
                             <Grid xs={12} spacing={2} item container>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                    <Typography sx={{fontSize:'1em',fontWeight:600}}>Company Address</Typography>
+                                    <Typography sx={{fontSize:'1.2em',fontWeight:600}}>Company Address</Typography>
                                 </Grid>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                    <Typography sx={{fontSize:'.7em',fontWeight:600}}>Current Address : {companySettings?.companyAddressData?.exact_address}</Typography>
+                                    <Typography sx={{fontSize:'1em',fontWeight:600}}>Current Address : {companySettings?.companyAddressData?.exact_address}</Typography>
                                 </Grid>
                                 <Grid xs={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}} >
                                     <Paper
@@ -700,8 +591,6 @@ class AdminPanel extends React.PureComponent{
                                     
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
-
-                                    {/* <StyledButton onClick= {() => console.log('clicked')} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Select</StyledButton> */}
                                 </Grid>
                                 <Grid xs={12} xl={12} item sx={{display:'flex',alignItems:'center',justifyContent:'center',p:0}}>
                                     <StyledButton onClick= {handleSaveCompanyAddress} variant="contained" style={{borderRadius:2,pt:.5,width:'10%'}}>Save</StyledButton>
