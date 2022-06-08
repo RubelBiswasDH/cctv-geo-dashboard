@@ -3,17 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack,Autocomplete, Grid, Snackbar, Alert } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack, Autocomplete, Snackbar, Alert } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
-import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setCompanyNameOptions, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
+import { setEmployeeName, setEmployeeEmail, setEmployeePhone, setCompanyName,setCompanyAddress, setPassword, setPassword_2, setError } from '../../redux/reducers/registerReducer'
 import { register,getCompanyList } from '../../redux/actions/registerActions'
 import bkoiLogo from '../../assets/barikoi-logo.png'
 import { setToastIsOpen } from '../../redux/reducers/dashboardReducer'
 
-// Import Actions & Methods
-//import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
 
 function CustomInput() {
   return (
@@ -275,7 +273,6 @@ switch (e.target.name) {
   render() {
     const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
     const { error } = this.state
-    const {handleAutoCompInputChange, handleAutoCompChange} = this
 
     return (
       <Container sx={ containerStyles }>
