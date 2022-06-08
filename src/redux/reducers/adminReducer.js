@@ -55,35 +55,28 @@ const adminSlice = createSlice({
       state.designation = action.payload
     },
     setNewUserName: (state, action) => {
-      // console.log('payload: ',action.payload)
       state.newUserName = action.payload
     },
     setNewUserEmail: (state, action) => {
-      // console.log('payload: ',action.payload)
       state.newUserEmail = action.payload
     },
     setNewUserMobile: (state, action) => {
-      // console.log('payload: ',action.payload)
       state.newUserMobile = action.payload
     },
     setNewUserRole: (state, action) => {
-      // console.log('payload: ',action.payload)
       state.newUserRole = action.payload
     },
 
     setFileInput: (state, action) => {
-      //console.log('file payload ',action.payload)
       state.fileInput = action.payload
     },
     setAnnouncementMessage: (state, action) => {
       state.announcementMessage = action.payload
     },
     setUserProfile: (state, action) => {
-      // console.log("admin : ",action, action.payload)
         state.userProfile = action.payload
       },
     updateUserProfile: (state, action) => {
-      // console.log("admin : ",action, action.payload)
         state.userProfile = {...state.userProfile, ...action.payload}
       },
     setProfileEdit: (state, action) => {
@@ -102,19 +95,16 @@ const adminSlice = createSlice({
       state.companySettings = action.payload
     },
     updateCompanySettings: (state, action) => {
-    // console.log("admin : ",action, action.payload)
       state.companySettings = {...state.companySettings, ...action.payload}
     },
     setNewUser: (state, action) => {
-      // console.log("admin : ",action, action.payload)
+
         state.newUser = action.payload
       },
     updateNewUser: (state, action) => {
-      // console.log("admin : ",action, action.payload)
         state.newUser = {...state.newUser, ...action.payload}
       },
     updateNewUserProfile: (state, action) => {
-      // console.log("admin : ",action, action.payload)
         state.newUser.profile = {...state.newUser.profile, ...action.payload}
       },
     setCompanyAddressData: (state, action) => {

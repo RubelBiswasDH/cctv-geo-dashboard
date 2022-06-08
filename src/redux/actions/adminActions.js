@@ -18,19 +18,12 @@ export function setInvalidLateAttendanceAction(data) {
         // Load Tasks
         axios.post(API.INVALID_LATE_ATTENDANCE, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
-                    // getUserProfile(id)
-                    // dispatch(getEmployee())
-                    // dispatch(setProfileEdit(false))
-                    // console.log('res: ',res.data.message)
                     dispatch(setToastMessage(res.data.message))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
-                    // alert("User Successfully Updated")
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -42,17 +35,11 @@ export function setInvalidLateAttendanceAction(data) {
 // getCompanySettingsAction
 
 export function getCompanySettingsAction() {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValidating`
-
-        //console.log('token: ',token)
         axios.get(API.GET_COMPANY_SETTINGS, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log('res: ', res)
                 const data = res.data;
-                    // console.log({ SETTING_res : data})
                 if(res.status===200){
                     dispatch(setCompanySettings(data))
                 }
@@ -66,15 +53,12 @@ export function getCompanySettingsAction() {
 
 // setCompanySettingsAction
 export function setCompanySettingsAction(data) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
         axios.post(API.SET_COMPANY_SETTINGS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
                 if(res.status===200){
                     dispatch(getCompanySettingsAction())
-                    // alert("Company Setting Successfully Updated")
                     dispatch(setMonthYear(''))
                     dispatch(setWorkingDays(''))
                     dispatch(setLateTime(''))
@@ -82,7 +66,6 @@ export function setCompanySettingsAction(data) {
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -98,14 +81,11 @@ export function setWorkingDaysAction(data) {
             .then(res => {
                 console.log({ response: res})
                 if(res.status===200){
-                    // getUserProfile(id)
-                    // dispatch(setProfileEdit(false))
                     alert("Working Days Successfully Updated")
                     dispatch(setMonthYear(''))
                     dispatch(setWorkingDays(''))
                     dispatch(setLateTime(''))
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -119,14 +99,9 @@ export function setLateTimeAction(data) {
         const token = getAuthToken()
         axios.post(API.SET_LATE_TIME, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    // getUserProfile(id)
-                    // dispatch(setProfileEdit(false))
-                    // alert("Late Successfully Updated")
                    
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -135,17 +110,11 @@ export function setLateTimeAction(data) {
 }
 // Get User Profile
 export function getUserProfile(user_id) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValidating`
-       // dispatch( setIsValidating(true) )
-        // console.log('user_id in actions ',user_id)
-        //console.log('token: ',token)
         axios.get(API.GET_USER_PROFILE+user_id, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 const data = res.data.data;
-                // console.log({ user__response: data})
                 dispatch(setUserProfile({...data,user_id:user_id}))
               
             })
@@ -157,26 +126,17 @@ export function getUserProfile(user_id) {
 
 // setUserProfile Action
 export function setUserProfileAction(id,data) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValdataating`
-       // dispatch( setIsValdataating(true) )
-        // console.log('user in actions ',data)
-        //console.log('token: ',token)
         axios.post(API.SET_USER_PROFILE+id, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ update_user_response: res.data})
                 if(res.status===200){
-                    // getUserProfile(id)
                     dispatch(getEmployee())
                     dispatch(setProfileEdit(false))
                     dispatch(setToastMessage("User Profile Successfully Updated"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
-                    // alert("User Successfully Updated")
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -186,16 +146,10 @@ export function setUserProfileAction(id,data) {
 
 // Create User Action
 export function createUser(user) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValidating`
-       // dispatch( setIsValidating(true) )
-        // console.log('user in actions ',user)
-        //console.log('token: ',token)
         axios.post(API.CREATE_USER, user, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ create_user_response: res.data})
                 if(res.status===200){
                     dispatch(getEmployee())
                     dispatch(setToastMessage("User Successfully Created"))
@@ -206,7 +160,6 @@ export function createUser(user) {
                     dispatch(setNewUserMobile(''))
                     dispatch(setNewUserRole('GENERAL'))
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -216,24 +169,18 @@ export function createUser(user) {
 
 // Create Bulk User
 export function createBulkUser(data) {
-    //console.log('user: ',user)
     return dispatch => {
         for(var pair of data) {
             console.log('f ; ', pair);
         }
-        // console.log("Data : ", data[1])
         const token = getAuthToken()
         console.log(' users data in actions ',data)
-        //console.log('token: ',token)
         axios.post(API.CREATE_BULK_USER, {'users':data}, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
                 'Content-Type': 'multipart/form-data',
-                // Accept:'application/octet-stream',
-                // 'Access-Control-Allow-Origin': '*',
 
-                }
-            // params:{users:file} 
+                } 
         })
             .then(res => {
                 console.log({ create_user_response: res.data})
@@ -242,7 +189,6 @@ export function createBulkUser(data) {
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastIsOpen(true))
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)
@@ -252,16 +198,10 @@ export function createBulkUser(data) {
 
 // Create User Action
 export function createNotice(notice) {
-    //console.log('user: ',user)
     return dispatch => {
         const token = getAuthToken()
-        // Set `isValidating`
-       // dispatch( setIsValidating(true) )
-        console.log('notice in actions ',notice)
-        //console.log('token: ',token)
         axios.post(API.SEND_ANNOUNCEMENT, notice, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                // console.log({ notice_response: res.data})
                 if(res.status===200){
 
                     dispatch(setToastMessage("Notice Successfully Send"))
@@ -269,7 +209,6 @@ export function createNotice(notice) {
                     dispatch(setToastIsOpen(true))
                     dispatch(setAnnouncementMessage(''))
                 }
-                //console.log('res :', res)
             })
             .catch(err => {
                 console.error(err)

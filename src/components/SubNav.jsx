@@ -26,7 +26,6 @@ function CustomizedInputBase(props) {
         <IconButton sx={{ p: '10px' }} aria-label="search">
           <SearchIcon sx={{color:'white'}}/>
         </IconButton>
-        {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" /> */}
       </Paper>
     );
   }

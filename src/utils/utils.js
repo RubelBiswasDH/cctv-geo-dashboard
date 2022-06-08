@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import axios from 'axios'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { API } from '../App.config'
-import { getAuthToken } from '../redux/actions/authActions'
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
   const array = [ ...array1 ]
@@ -136,4 +135,13 @@ export const getReverseGeoAddress = (params) => {
       .catch(err => {
           throw err
       })
+}
+
+// Get User Auth Token
+export function getAuthToken() {
+  const token = localStorage.getItem('token')
+  if(token) {
+      return token
+  }
+  return null
 }

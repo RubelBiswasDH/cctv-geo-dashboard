@@ -34,7 +34,6 @@ const announcementsSlice = createSlice({
       state.editAnnouncementDialogIsOpen = action.payload
     },
     updateAnnouncements: (state, action) => {
-      //console.log("state in store ", action.payload)
       state.announcements = sortByDate(unionArrayOfObjects(state.announcements, action.payload, 'id'))
     },
     setPushNotifications: (state, action) => {
@@ -51,14 +50,12 @@ const announcementsSlice = createSlice({
 
       state.pushNotifications[index] = { ...state.pushNotifications[index], ...action.payload }
     },
-
     setIsAnnouncementThread: (state, action) => {
       state.isTaskThreadOpen = action.payload
     },
     setError: (state, action) => {
       state.error = action.payload
     },
-
   }
 })
 

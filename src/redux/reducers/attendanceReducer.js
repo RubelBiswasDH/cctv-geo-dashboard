@@ -12,11 +12,9 @@ const attendanceSlice = createSlice({
   initialState,
   reducers: {
     setAttendance: (state, action) => {
-    //console.log("action data: ",action, action.payload)
       state.attendanceList = sortByDate(action.payload)
     },
     updateAttendance: (state, action) => {
-      console.log("state in store attendanceList ", action.payload)
       state.attendanceList = sortByDate(unionArrayOfObjects(state.attendanceList, action.payload, 'id'))
     },
     setError: (state, action) => {

@@ -8,7 +8,6 @@ import { AUTH,API } from '../../App.config'
 import dayjs from 'dayjs'
 
 import {transformAnnouncements, transformAttendance} from '../../utils/utils'
-// // //
 
 export function activateSocket_A() {
     return (dispatch, getState) => {
@@ -36,42 +35,22 @@ export function activateSocket_A() {
         }
       }) 
       
-      // window.pusher.connection.bind("connecting", function () {
-      //   // $("div#status").text("Realtime is go!");
-      //   //console.log("Channel Connecting")
-      // });
-      // var state = window.pusher.connection.state;
-      // //console.log("pusher state  before subscribe: ",state)
-      // window.pusher.connection.bind("connected", function () {
-      //     // $("div#status").text("Realtime is go!");
-      //     //console.log("Channel Connected")
-      //   });
-  
-      //   window.pusher.connection.bind("error", function (err) {
-      //     //console.log('error on pusher channel not connected')
-      //     if (err.error.data.code === 4004) {
-      //       //console.log(">>> detected limit error");
-      //     }
-      //   });
-  
-      //   var state = window.pusher.connection.state;
-      //   //console.log("pusher state  before subscribe: ",state)
+    
       // Task Channel
       window.pusher.subscribe(SOCKET_A.CHANNEL+companyId)
         .bind(SOCKET_A.ANNOUNCEMENT_EVENT, data => {         
-          // console.log("Socket data: ",data)
   
           //dispatch( updateAnnouncements(data) )
           const transformedAnnouncements = transformAnnouncements([ data ])
-          // console.log('test transformedAnnouncements ', transformedAnnouncements)
+
           // Add Socket Data To Redux State
           dispatch( updateAnnouncements(transformedAnnouncements))
   
         })
         .bind(SOCKET_A.ATTENDANCE_EVENT, data => {  
-          // console.log("Attendance event data: ",data)      
+   
           const transformedAttendance = transformAttendance([ data ])
-          // console.log('test transformedAttendance ', transformedAttendance)
+
           // Add Socket Data To Redux State
           dispatch( updateAttendance(transformedAttendance))
           })

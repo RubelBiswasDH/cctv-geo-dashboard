@@ -10,10 +10,8 @@ export function login(user) {
 
         axios.post(AUTH.LOGIN_API, user)
             .then(res => {
-                // console.log({ auth: res.data})
                 if(res.data && res.data.token) {
                     const token = res.data.token
-                    //console.log("token at login api ",token)
                     // Validate User
                     localStorage.setItem('companyId', res.data.user.company.id)
                     dispatch( validateUser(token) )
@@ -23,7 +21,7 @@ export function login(user) {
                 }
             })
             .catch(err => {
-                //console.error(err)
+                console.error(err)
 
                 // Dispatch `authReducer` Values to Redux State
                 dispatch( setIsAuthenticated(false) )
@@ -59,25 +57,20 @@ export function logout() {
 
 // User Validation
 export function validateUser(token) {
-    //console.log('validate user..')
-    //console.log({ token })
+
     return dispatch => {
         // Set `isValidating`
         dispatch( setIsValidating(true) )
         
         axios.get(AUTH.GET_USER_API, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
-                //console.log("data , ",res.data )
                 const userData = res.data.data
                 if(userData) {
-                    // console.log("user Data: ",userData)
-                    // console.log("user type: ", userData)
                     const user = {
                         id:userData.id,
                         username:userData.name,
                         user_type: userData.user_level,
                     }
-                    //console.log(user)
                     // Authenticate only for user_type = DISPATCHER & SUPERVISOR
                     if(user.user_type !== 'HR' && user.user_type !== 'ADMIN') {
                         throw new Error('User not authorized')
@@ -108,7 +101,7 @@ export function validateUser(token) {
 
             })
             .catch(err => {
-                //console.error(err)
+                console.error(err)
 
                 // Dispatch authReducer Values to Redux State
                 dispatch( setIsAuthenticated(false) )
