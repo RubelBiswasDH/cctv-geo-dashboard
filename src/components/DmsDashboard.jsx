@@ -9,8 +9,6 @@ import { ChevronLeft, ArrowRightAlt } from '@mui/icons-material'
 import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import NavBar from './NavBar'
-// import TaskDateFilter from './TaskDateFilter'
-import TaskTypeFilter from './TaskTypeFilter'
 import AttendanceList from './AttendanceList'
 import EmployeeList from './EmployeeList'
 import FilterEmployee from './FilterEmployee'
@@ -18,13 +16,11 @@ import SubNav from './SubNav'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
 import Profile from './Profile'
-import AnalyticsDialog from './AnalyticsDialog'
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import Button from '@mui/material/Button';
 
 // Import Actions & Methods
-import { setIsTaskThreadOpen } from '../redux/reducers/taskReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { setErrorAnalytics } from '../redux/reducers/analyticsReducer'
@@ -39,7 +35,6 @@ class DmsDashboard extends React.PureComponent {
     start_date: null,
     end_date: null,
     dateValues: [],
-    isAnalyticsDialogOpen: false,
   }
   componentDidMount() {
     const { dispatch } = this.props
@@ -89,12 +84,6 @@ class DmsDashboard extends React.PureComponent {
     const { dispatch } = this.props
     dispatch( setToastIsOpen(false) )
   }
-  // Open task thread
-  _openTaskThread = () => {
-    const { dispatch } = this.props
-    dispatch( setIsTaskThreadOpen(true) )
-  }
-
    // Handle Date Range Change
    _handleDateRangeChange = dateValues => {
     const { start_date, end_date } = this.state            
@@ -122,20 +111,6 @@ class DmsDashboard extends React.PureComponent {
     const { dispatch } = this.props
     dispatch( getAttendanceReport({start_date: `${start_date}`, end_date: `${end_date}`}))
    }
-  // Handle Analytics Dialog
-  _handleAnalyticsDialog = () => {
-    this.setState({ isAnalyticsDialogOpen: true })
-  }
-
-   // Close Task Timeline Dialog
-   _closeAnalyticsDialog = (e, reason) => {
-    if (reason && reason === 'backdropClick') {
-      return
-
-    } else {
-      this.setState({ isAnalyticsDialogOpen: false })
-    }
-  }
 
   // On Feedback Close
   _onFeedbackClose = () => {
@@ -144,7 +119,7 @@ class DmsDashboard extends React.PureComponent {
   }
 
   render() {
-    const { start_date, end_date, isAnalyticsDialogOpen } = this.state
+    const { start_date, end_date } = this.state
     const { isTaskThreadOpen, isTaskLoading, user, feedback, toastIsOpen, toastMessage, toastSeverity } = this.props
     return (
       <Box sx={ containerStyles }>
@@ -204,18 +179,7 @@ class DmsDashboard extends React.PureComponent {
                   </Button>
                 </Stack>
               }
-                {/* {
-                  user.user_type === 'SUPERVISOR' &&
-                  <LoadingButton 
-                    loading={ false }
-                    variant={ 'contained' }
-                    onClick={ this._handleAnalyticsDialog }
-                    size={ 'small' }
-                    disableTouchRipple={ true }                      
-                  >
-                      { 'Analytics' }
-                  </LoadingButton>
-                }                 */}
+
               </Box>                                        
               {/* <TaskTypeFilter /> */}
             </Grid>
@@ -248,38 +212,9 @@ class DmsDashboard extends React.PureComponent {
               {
                 (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
               }
-              
-              { !isTaskThreadOpen &&
-                  <Tooltip title='Open Thread'>
-                    <IconButton
-                      onClick={ this._openTaskThread }
-                      sx={{ padding: 0 }}
-                    >
-                      <ChevronLeft fontSize='large' />
-                    </IconButton>
-                  </Tooltip>
-              }
             </Grid>
-
-            {/* <Grid
-              item={ true }
-              xs={ 12 }
-              md={ isTaskThreadOpen ? 4 : 0 }
-              sx={{
-                display: isTaskThreadOpen ? 'block' : 'none'
-              }}
-            >
-              <TaskThread />
-            </Grid> */}
           </Grid>
         </Box>
-        {
-          user?.user_type === 'ADMIN' && isAnalyticsDialogOpen &&
-          <AnalyticsDialog 
-            isDialogOpen={ isAnalyticsDialogOpen }
-            handleDialogOnClose={ this._closeAnalyticsDialog }
-          />
-        }
 
         <Snackbar
             anchorOrigin={{ horizontal: 'center', vertical: 'top' }}

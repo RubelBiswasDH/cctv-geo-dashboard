@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
 import { Logout, AccountCircle, Notifications, Assignment, Check, Task, AssignmentLate, Search } from '@mui/icons-material'
-import TaskDetailsDialog from './TaskDetailsDialog'
 
 // Import Assets
 // import descoLogo from '../assets/desco-logo.png'
@@ -373,14 +372,6 @@ class NavBar extends React.PureComponent {
               { 'Logout' }
             </MenuItem>
           </Menu>
-        </React.Fragment>
-
-        <React.Fragment>
-          <TaskDetailsDialog
-            data={ selectedTask }
-            handleDialogOnClose={ this._closeTaskDetails }
-            isDialogOpen={ isTaskDetailsOpen }
-          />
         </React.Fragment>
       </React.Fragment>
     )

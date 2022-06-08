@@ -7,8 +7,6 @@ import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material
 import { GridActionsCellItem } from '@mui/x-data-grid'
 import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
-import TaskDetailsDialog from './TaskDetailsDialog'
-import TaskTimelineDialog from './TaskTimelineDialog'
 
 // Import Actions & Methods
 import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
@@ -312,19 +310,6 @@ class AttendanceList extends React.PureComponent {
           //     onClick={ () => console.log("this._openTaskTimeline(cellValues.row)") }
           //   />
           // ])}
-        />
-
-        <TaskDetailsDialog
-          data={ selectedTask }
-          handleDialogOnClose={ this._closeTaskDetails }
-          isDialogOpen={ isTaskDetailsOpen }
-        />
-
-        <TaskTimelineDialog
-          isDialogOpen={ isTaskTimelineOpen }
-          handleDialogOnClose={ this._closeTaskTimeline }
-          timelineData={ selectedTimeline }
-          loading={ isTimelineLoading }
         />
 
         <Snackbar

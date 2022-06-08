@@ -8,8 +8,6 @@ import { GridActionsCellItem } from '@mui/x-data-grid'
 import { AssignmentInd, Timeline, Close, AccountBoxSharpIcon } from '@mui/icons-material'
 import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
-import TaskDetailsDialog from './TaskDetailsDialog'
-import TaskTimelineDialog from './TaskTimelineDialog'
 
 // Import Actions & Methods
 import { setAutocompleteSelectedTask, setSelectedStatusType } from '../redux/reducers/taskReducer'
@@ -409,19 +407,6 @@ class EmployeeList extends React.PureComponent {
             />
           ]
             )}
-        />
-
-        <TaskDetailsDialog
-          data={ selectedTask }
-          handleDialogOnClose={ this._closeTaskDetails }
-          isDialogOpen={ isTaskDetailsOpen }
-        />
-
-        <TaskTimelineDialog
-          isDialogOpen={ isTaskTimelineOpen }
-          handleDialogOnClose={ this._closeTaskTimeline }
-          timelineData={ selectedTimeline }
-          loading={ isTimelineLoading }
         />
 
         <Snackbar
