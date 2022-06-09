@@ -18,10 +18,12 @@ class StyledDialog extends React.PureComponent {
                 { ...restProps }
             >
                 <DialogTitle >
-                    <Box sx={ center }>
-                        <Typography sx={ titleHeaderTextStyles }>
-                            { title }
-                        </Typography>
+                    <Box sx={{ ...center,height:'100%',minHeight:20 }}>
+                        {title && 
+                            <Typography sx={ titleHeaderTextStyles }>
+                                { title }
+                            </Typography>
+                        }
                         <IconButton
                             sx={ closeIconStyles }
                             onClick={ handleDialogOnClose }
@@ -75,7 +77,7 @@ StyledDialog.propTypes = {
 StyledDialog.defaultProps = {
     handleDialogOnClose: () => null,
     isDialogOpen: false,
-    title: 'Title',
+    title: '',
     footer: null,
 }
 
