@@ -32,6 +32,7 @@ export const API = {
   INVALID_LATE_ATTENDANCE: `${BASE_URL}/api/invalid-late-attendance/`,
   GET_USER: `${BASE_URL}/api/get-user/`,
   GET_USERS: `${BASE_URL}/api/get-users/`,
+  DELETE_USER: `${BASE_URL}/api/delete-user/`,
   GET_COMPANY_SETTINGS:  `${BASE_URL}/api/company-settings/`,
   SET_COMPANY_SETTINGS:  `${BASE_URL}/api/update-company-settings/`,
   SET_WORKING_DAYS: `${BASE_URL}/`,
