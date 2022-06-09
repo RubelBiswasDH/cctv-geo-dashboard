@@ -11,15 +11,16 @@ import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
-import {getUserProfile} from '../redux/actions/adminActions'
+import { getUserProfile, deleteUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
+import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
 
 import dayjs from 'dayjs'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
   { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
+  { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'email', headerName: 'Email', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'phone', headerName: 'Phone', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
@@ -48,9 +49,6 @@ class EmployeeList extends React.PureComponent {
   // On Feedback Close
   _onFeedbackClose = () => {
     this.setState({ feedback: null })
-
-    // Stop Notification Sound
-    stopNotificationSound()
   } 
 
   // On Snackbar View Task Click
@@ -104,7 +102,10 @@ class EmployeeList extends React.PureComponent {
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
-      }
+      },
+      deleteUser: () => {
+        this.props.dispatch(deleteUser(emp.id))
+      },
     }))
   }
 
