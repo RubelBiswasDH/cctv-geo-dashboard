@@ -3,23 +3,25 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
+import { Box, Tooltip, Snackbar, Alert, Button, IconButton, Typography } from '@mui/material'
 import { GridActionsCellItem } from '@mui/x-data-grid'
 import { Close } from '@mui/icons-material'
 import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
+import StyledDialog from './common/StyledDialog'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
-import {getUserProfile} from '../redux/actions/adminActions'
+import { getUserProfile, deleteUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
+import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
 
 import dayjs from 'dayjs'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
   { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
+  { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'email', headerName: 'Email', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
   { field: 'phone', headerName: 'Phone', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
@@ -28,8 +30,8 @@ const columns = [
 class EmployeeList extends React.PureComponent {
   state = {
     start_date:null,
-    isTaskDetailsOpen: false,
-    isTaskTimelineOpen: false,
+    isDeleteDialogOpen: false,
+    selectedUserId: '',
     selectedTask: {},
     selectedTimeline: [
   ],
@@ -48,9 +50,6 @@ class EmployeeList extends React.PureComponent {
   // On Feedback Close
   _onFeedbackClose = () => {
     this.setState({ feedback: null })
-
-    // Stop Notification Sound
-    stopNotificationSound()
   } 
 
   // On Snackbar View Task Click
@@ -104,8 +103,28 @@ class EmployeeList extends React.PureComponent {
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
-      }
+      },
+      deleteUser: () => {
+        this._handleDeleteDialogOpen(emp.id)
+      },
     }))
+  }
+
+  _handleDeleteDialogClose = () => {
+    this.setState({selectedUserId:''})
+    this.setState({isDeleteDialogOpen:false})
+  }
+
+  _handleDeleteDialogOpen = (id) => {
+    this.setState({selectedUserId:id})
+    this.setState({isDeleteDialogOpen:true})
+  }
+
+  _handleDeleteUser = () => {
+    const { selectedUserId } = this.state
+    this.props.dispatch(deleteUser(selectedUserId))
+    this.setState({selectedUserId:''})
+    this.setState({isDeleteDialogOpen:false})
   }
 
   render() {
@@ -130,7 +149,18 @@ class EmployeeList extends React.PureComponent {
           ]
             )}
         />
-
+        <StyledDialog 
+          isDialogOpen={ this.state.isDeleteDialogOpen }
+          handleDialogOnClose = { this._handleDeleteDialogClose }
+          footer={
+            <>
+              <Button onClick={ this._handleDeleteDialogClose }><Typography>Cancel</Typography></Button>
+              <Button onClick={ this._handleDeleteUser }><Typography sx={{color:'red'}}>Yes</Typography></Button>
+            </>
+          }
+        >
+          <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
+        </StyledDialog>
         <Snackbar
           anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
           open={ Boolean(feedback) }

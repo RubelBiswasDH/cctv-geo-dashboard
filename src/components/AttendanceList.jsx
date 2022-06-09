@@ -16,6 +16,9 @@ import dayjs from 'dayjs'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'present', headerName: 'Present', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'late', headerName: 'Late', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'absence', headerName: 'Absence', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
  ]
 
 class AttendanceList extends React.PureComponent {
@@ -91,17 +94,24 @@ class AttendanceList extends React.PureComponent {
     const attendanceInfo = employeeList.map((a,i) => {
       
       let individualAttendance = {}
-      
+      let p = 0
+      let abs = 0
+      let l = 0
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
           const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
           if (enter_time) {
             if(a.is_late){
               individualAttendance[enter_time] = "L"
+              l++
             }
             else{
               individualAttendance[enter_time] = "P"
+              p++
             }
+          }
+          else{
+            abs++
           }
         } })
 
@@ -110,7 +120,10 @@ class AttendanceList extends React.PureComponent {
           "id": a?.id,
           "serial_no":i+1,
           "name": a?.name,
-          ...individualAttendance
+          ...individualAttendance,
+          'late':l,
+          'present':p,
+          'absence':abs,
         })
     })
     return attendanceInfo

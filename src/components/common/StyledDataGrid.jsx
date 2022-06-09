@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 // Import Components
 import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem  } from '@mui/material'
-import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid'
+import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid'
 
 
 const CustomSelect = (props) => {
@@ -109,14 +109,16 @@ class StyledDataGrid extends React.PureComponent {
                                                 : <Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :cellValues?.field === 'view_profile'
                                                 ? <Button onClick={cellValues.row.viewProfile}>View</Button>
+                                                :cellValues?.field === 'delete_user'
+                                                ? <Button onClick={cellValues.row.deleteUser}><Typography sx={{color:'red'}}>Delete</Typography></Button>
                                                 :(cellValues.field === 'validation' & cellValues?.row?.is_late === "Yes")
                                                 ?<CustomSelect dispatch={this.props.dispatch} onChange={cellValues?.row?.setValidation} options={[0,1]} value={cellValues?.row?.is_valid}></CustomSelect>
                                                 :(cellValues.field === 'edit')
                                                 ?<Button onClick={cellValues.row.editAnnouncement}>Edit</Button>
                                                 :(cellValues.value === 'P')
-                                                ?<Chip color='success' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                ?<Chip color='darkGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :(cellValues.value === 'L')
-                                                ?<Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                ?<Chip color='liteGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'black'}} />
                                                 :(cellValues.value === 'A')
                                                 ?<Chip color='error' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :cellValues.value
@@ -150,6 +152,7 @@ const CustomToolbar = () => {
     return (
         <GridToolbarContainer>
             <GridToolbarFilterButton />
+            <GridToolbarExport/>
         </GridToolbarContainer>
     )
 }

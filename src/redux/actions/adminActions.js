@@ -217,3 +217,22 @@ export function getAuthToken() {
 
     return null
 }
+
+// Delete User Action
+export function deleteUser(id) {
+    return dispatch => {
+        const token = getAuthToken()
+        axios.post(API.DELETE_USER + id, { headers: { Authorization: `Bearer ${token}` } })
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch(getEmployee())
+                    dispatch(setToastMessage("User Successfully Deleted"))
+                    dispatch(setToastSeverity('success'))
+                    dispatch(setToastIsOpen(true))
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
