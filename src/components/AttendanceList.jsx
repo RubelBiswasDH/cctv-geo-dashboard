@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
-import { GridActionsCellItem } from '@mui/x-data-grid'
-import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
+import { Box, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { playNotificationSound, stopNotificationSound } from '../utils/utils'
+import { stopNotificationSound } from '../utils/utils'
 import { getAttendance }  from '../redux/actions/attendanceActions'
+import { setFilterOptions, updateFilterOptions } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
 const columns = [      
@@ -32,20 +32,27 @@ class AttendanceList extends React.PureComponent {
     isTimelineLoading: false,
     feedback: null,
     uniqueDates: [],
-    tableColumns: []
+    tableColumns: [],
+    name_filter: '',
+    late_filter: '',
+    attendanceList: []
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-
     let date = new Date()
-      
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    const { dispatch } = this.props
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    const attendanceList = this.props.attendanceList
+
+    if(attendanceList && attendanceList.length){
+      this.setState({ attendanceList })
+    }
+
     this.setState({ start_date, end_date })
     this._getUniqueDates()
-    // Load Tasks
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
   }
 
   componentDidUpdate(prevProps) {
@@ -53,6 +60,9 @@ class AttendanceList extends React.PureComponent {
       if (this.props.attendanceList !== prevProps.attendanceList) {
         this._getUniqueDates()
       }
+      // if (this.props.filterOptions !== prevProps.filterOptions){
+      //   this._filterAttendance()
+      // }
     }
 
   _getUniqueDates = () => {
@@ -77,9 +87,25 @@ class AttendanceList extends React.PureComponent {
     return dyanmicColumns
   }
 
-  mappedAttendanceInfo = () => {
-    const {attendanceList, announcements, employeeList } = this.props;
+    _filteredAttendance = () => {
+      const { attendanceList } = this.props;
+      const { filterOptions } = this.props
+      let attList = attendanceList
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='Late'){
+        attList = attList.filter( a => a.is_late)
+      }
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='In Time'){
+        attList = attList.filter( a => !a.is_late)
+      }
+      if(filterOptions && filterOptions?.type){
+       attList = attList.filter( a => a.name.startsWith(filterOptions.name))
+      }
+      return attList
+    }
 
+  mappedAttendanceInfo = () => {
+    const { announcements, employeeList } = this.props;
+    const attendanceList  = this._filteredAttendance()
     const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
         const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
@@ -164,13 +190,36 @@ class AttendanceList extends React.PureComponent {
   }
 
   render() {
-    const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
+    const {dispatch, isTaskLoading, filterOptions } = this.props
     const { feedback } = this.state
     
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='84vh'>
+        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
+          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value= {filterOptions?.type ?? ''}
+                label="Age"
+                onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+              >
+                <MenuItem value={"Late"}>Late</MenuItem>
+                <MenuItem value={"In Time"}>In Time</MenuItem>
+              </Select>
+          </FormControl>
+          <FilterField
+            field = {'name'}
+            label = {'Name'} 
+            value = {filterOptions?.name ?? ''}
+            dispatch = {dispatch}
+            action = {updateFilterOptions}
+          />
+        </Box>
         <StyledDataGrid
           columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
@@ -221,6 +270,20 @@ class AttendanceList extends React.PureComponent {
   }
 }
 
+const FilterField = (props) => {
+  const { dispatch, action, value, field, label} = props
+  return (
+    <FormControl fullWidth>
+      <TextField
+            value={ value } 
+            onChange={ 
+              e => dispatch(action({ [field]: e.target.value })) } 
+            label={label} 
+            fullWidth> 
+      </TextField>
+    </FormControl>
+  )
+}
 // Prop Types
 AttendanceList.propTypes = {
   user: PropTypes.object,
@@ -245,10 +308,11 @@ AttendanceList.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
-  attendanceList: state.attendanceList.attendanceList,
-  announcements: state.announcements.announcements,
-  employeeList: state.employeeList.employeeList
+  user: state?.auth?.user,
+  attendanceList: state?.attendanceList?.attendanceList,
+  announcements: state?.announcements?.announcements,
+  employeeList: state?.employeeList?.employeeList,
+  filterOptions: state?.attendanceList?.filterOptions
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
