@@ -66,7 +66,10 @@ class AttendanceList extends React.PureComponent {
         this._getUniqueDates()
       }
     }
-
+  componentWillUnmount(){
+    const { dispatch } = this.props
+    dispatch(setFilterOptions({}))
+  }
   _getUniqueDates = () => {
       const { attendanceList } = this.props
       let dates = []

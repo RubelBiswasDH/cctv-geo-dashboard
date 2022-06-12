@@ -38,7 +38,10 @@ class Announcements extends React.PureComponent {
     // Load announcements
     // dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
-
+  componentWillUnmount(){
+    const { dispatch } = this.props
+    dispatch(setFilterOptions({}))
+  }
   _handleCloseAnnouncementDialog = () => {
     const { dispatch } = this.props
     dispatch(setEditAnnouncementDialogIsOpen(false))
