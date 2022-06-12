@@ -13,6 +13,7 @@ import { getAttendance }  from '../redux/actions/attendanceActions'
 import { setFilterOptions, updateFilterOptions } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
+import {unionArrayOfObjects} from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
@@ -32,6 +33,7 @@ class AttendanceList extends React.PureComponent {
     isTimelineLoading: false,
     feedback: null,
     uniqueDates: [],
+    uniqueEmployees : [],
     tableColumns: [],
     name_filter: '',
     late_filter: '',
@@ -45,11 +47,14 @@ class AttendanceList extends React.PureComponent {
     const { dispatch } = this.props
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     const attendanceList = this.props.attendanceList
+    const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
       this.setState({ attendanceList })
     }
-
+    if(employeeList && employeeList.length){
+      this._getUniqueEmployee(employeeList)
+    }
     this.setState({ start_date, end_date })
     this._getUniqueDates()
 
@@ -60,9 +65,6 @@ class AttendanceList extends React.PureComponent {
       if (this.props.attendanceList !== prevProps.attendanceList) {
         this._getUniqueDates()
       }
-      // if (this.props.filterOptions !== prevProps.filterOptions){
-      //   this._filterAttendance()
-      // }
     }
 
   _getUniqueDates = () => {
@@ -74,13 +76,17 @@ class AttendanceList extends React.PureComponent {
       const unique = [...new Set(dates)]
       this.setState(() => ({ uniqueDates:unique }))
     }
+    _getUniqueEmployee = (list) => {
+      const employees = unionArrayOfObjects([], list, 'user_id')
+      return employees
 
+    }
   _generateAttendanceColumns = () => {
     const { uniqueDates } = this.state
     
     const dyanmicColumns = uniqueDates.map(
        (date) => ( { 
-         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "A",
+         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
 
         }
     ))
@@ -97,15 +103,21 @@ class AttendanceList extends React.PureComponent {
       if(filterOptions && filterOptions?.type && filterOptions?.type==='In Time'){
         attList = attList.filter( a => !a.is_late)
       }
-      if(filterOptions && filterOptions?.type){
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
+        attList = attList
+      }
+      if(filterOptions && filterOptions?.name){
        attList = attList.filter( a => a.name.startsWith(filterOptions.name))
       }
       return attList
     }
 
   mappedAttendanceInfo = () => {
-    const { announcements, employeeList } = this.props;
+    const { announcements } = this.props;
+
     const attendanceList  = this._filteredAttendance()
+    
+    const employeeList = this._getUniqueEmployee(attendanceList)
     const getAnnouncement = (id,date) => {
       if(announcements.length > 0){
         const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
@@ -141,16 +153,17 @@ class AttendanceList extends React.PureComponent {
           }
         } })
 
-      getIndividualAttendance(a?.id)
-        return ({
-          "id": a?.id,
-          "serial_no":i+1,
-          "name": a?.name,
-          ...individualAttendance,
-          'late':l,
-          'present':p,
-          'absence':abs,
-        })
+        getIndividualAttendance(a?.user_id)
+          return ({
+            "id": a?.id,
+            "serial_no":i+1,
+            "name": a?.name,
+            ...individualAttendance,
+            'late':l,
+            'present':p,
+            'absence':abs,
+          })
+
     })
     return attendanceInfo
     
@@ -204,10 +217,11 @@ class AttendanceList extends React.PureComponent {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value= {filterOptions?.type ?? ''}
-                label="Age"
+                value= {filterOptions?.type ?? 'All'}
+                label="Type"
                 onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
-              >
+              >                 
+                <MenuItem value={"All"}>All</MenuItem>
                 <MenuItem value={"Late"}>Late</MenuItem>
                 <MenuItem value={"In Time"}>In Time</MenuItem>
               </Select>
