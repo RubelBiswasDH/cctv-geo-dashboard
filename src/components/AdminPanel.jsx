@@ -390,28 +390,72 @@ class AdminPanel extends React.PureComponent {
                     {(this.state.currentTab === 'add_user')
                         ? (
                             <GridContent title={"Add User"} titleStyle={{fontSize:'18px'}} style={{ p: 2 }}>
+                                    { (this.state.seeMore) 
+                                             &&   <StyledButton onClick={() => this.setState({seeMore:false})} variant="contained" style={{ borderRadius: 1, pt: .5, m:2,mt:0.5, width: '10%' }} btnColor={'btnGray'}>See Less</StyledButton>
+                                             }
                                     <Grid xs={12} spacing={2} item container sx={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
-                                        {/* <Grid xs={4} xl={4} item sx={{ backgroundColor: '' }}>
-                                            <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{ borderRadius: 2 }} />
-                                        </Grid>
-                                        <Grid xs={4} xl={4} item>
-                                            <StyledInputField onChange={setNewUserEmail} value={newUserEmail} placeholder={"E-Mail"} ariaLabel={"E-Mail"} style={{ borderRadius: 2 }} />
-                                        </Grid>
-                                        <Grid xs={4} xl={4} item>
-                                            <StyledInputField onChange={setNewUserMobile} value={newUserMobile} placeholder={"Mobile"} ariaLabel={"Mobile"} style={{ borderRadius: 2 }} />
-                                        </Grid>
-                                        <Grid xs={6} xl={6} item>
-                                            <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{ minWidth: '100%' }} />
-                                        </Grid> */}
-
                                         <UserField  dispatch={dispatch} field={'name'}  title={"Name"} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
                                         <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail"} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
                                         <UserField  dispatch={dispatch} field={'phone'}  title={"Phone"} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
                                         <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation} fieldStyle={{ width:'25%' }}/>
-                                       
-                                        <Grid xs={6} xl={6} item>
-                                            <StyledButton onClick={handleSaveUser} variant="contained" style={{ borderRadius: 2, pt: .5, width: '100%' }}>Save</StyledButton>
+                                        {/* starblock */}
+                                        { (this.state.seeMore) 
+                                             && <>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'birth_date'}  title={"Birth Date"} value={newUser?.profile?.birth_date} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'gender'}  title={"Gender"} value={newUser?.profile?.gender} fieldStyle={{ width:'25%' }}/>    
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'marritial_status'}  title={"Marritial Status"} value={newUser?.profile?.marritial_status} fieldStyle={{ width:'30%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:'30%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:'30%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'educational_qualification'}  title={"Educational Qualification"} value={newUser?.profile?.educational_qualification} fieldStyle={{ width:'50%' }}/>
+
+                                    <Typography sx={{fontSize:'22px', fontWeight:300,mt:2}}>Office Details</Typography>
+
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'40%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'office_phone_no'}  title={"Office Phone No"} value={newUser?.profile?.office_phone_no} fieldStyle={{ width:'30%' }}/> 
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'job_status'}  title={"Job Status"} value={newUser?.profile?.job_status} fieldStyle={{ width:'25%' }}/> 
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'joining_data'}  title={"Joining Date"} value={newUser?.profile?.joining_data} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'end_of_probation'}  title={"End of Probation"} value={newUser?.profile?.end_of_probation} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_performance_review'}  title={"Last Performance Review"} value={newUser?.profile?.last_performance_review} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'next_performance_review'}  title={"Next Performance Review"} value={newUser?.profile?.next_performance_review} fieldStyle={{ width:'25%' }}/>
+
+                                    <Typography sx={{fontSize:'22px', fontWeight:300,mt:2}}>Emergency</Typography>
+
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person_no'}  title={"Contact Person No"} value={newUser?.profile?.contact_person_no} fieldStyle={{ width:'30%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'relationship_with_contact_perso'}  title={"Relationship with contact person"} value={newUser?.profile?.relationship_with_contact_perso} fieldStyle={{ width:'30%' }}/>
+
+                                    <Typography sx={{fontSize:'22px', fontWeight:300,mt:2}}>Benefits</Typography>
+                                    
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'salary'}  title={"Salary"} value={newUser?.profile?.salary} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'casual_leave'}  title={"Casual Leave"} value={newUser?.profile?.casual_leave} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'sick_leave'}  title={"Sick Leave"} value={newUser?.profile?.sick_leave} fieldStyle={{ width:'25%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'festival_bonus'}  title={"Fastival Bonus"} value={newUser?.profile?.festival_bonus} fieldStyle={{ width:'25%' }}/>
+
+                                    <Typography sx={{fontSize:'22px', fontWeight:300,mt:2}}>Bank Account Details</Typography>
+
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'account_no'}  title={"Account No"} value={newUser?.profile?.account_no} fieldStyle={{ width:'30%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'routing_no'}  title={"Routing No"} value={newUser?.profile?.routing_no} fieldStyle={{ width:'30%' }}/>
+
+                                    <Typography sx={{fontSize:'22px', fontWeight:300,mt:2}}>Last Work Place</Typography>
+
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'company_name'}  title={"Company Name"} value={newUser?.profile?.company_name} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation} fieldStyle={{ width:'40%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'responsibilities'}  title={"Responsibilities"} value={newUser?.profile?.responsibilities} fieldStyle={{ width:'50%' }}/>
+                                    <UserField  dispatch={dispatch} field={'profile'} subField={'last_salary'}  title={"Salary"} value={newUser?.profile?.last_salary} fieldStyle={{ width:'25%' }}/>
+
+                                </>}
+                                        {/* endblock */}
+                                        <Grid xs={12} xl={6} item sx={{display:'flex', justifyContent: 'center', alignItems: 'center', gap:2,width:'100%'}}>
+                                            <StyledButton onClick={handleSaveUser} variant="contained" style={{ borderRadius: 2, pt: .5, width: '10%' }}>Save</StyledButton>
+                                            { (!this.state.seeMore) 
+                                             &&   <StyledButton onClick={() => this.setState({seeMore:true})} variant="contained" style={{ borderRadius: 1, pt: .5, width: '10%' }} btnColor={'btnGray'}>See More</StyledButton>
+                                             }
                                         </Grid>
                                     {/* <Grid xs={12} item container spacing={2}>
                                         <Grid xs={4} item>
