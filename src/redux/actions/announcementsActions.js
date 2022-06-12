@@ -10,11 +10,11 @@ import { transformAnnouncements } from '../../utils/utils';
 //submit announcement edit
 
 export function updateAnnouncement(id, data) {
-  const token = getAuthToken();
-  const date = new Date()   
-  const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
-  const end_date = dayjs(new Date()).format('YYYY-MM-DD')
   return dispatch => {
+    const token = getAuthToken();
+    const date = new Date()   
+    const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
+    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     axios.post(API.UPDATE_ANNOUNCEMENT + id, data, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         const announcementData = res.data
@@ -35,9 +35,8 @@ export function updateAnnouncement(id, data) {
 //get single announcement
 
 export function getAnnouncement(id) {
-  const token = getAuthToken();
   return dispatch => {
-
+    const token = getAuthToken();
     axios.get(API.GET_ANNOUNCEMENT + id, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         const announcementData = res.data
@@ -59,9 +58,8 @@ export function getAnnouncement(id) {
 //get all announcement 
 
 export function getAnnouncements(params) {
-  const token = getAuthToken();
   return dispatch => {
-
+      const token = getAuthToken();
       axios.get(API.GET_ALL_ANNOUNCEMENT, { headers: { Authorization: `Bearer ${ token }` }, params } )
           .then(res => {
               const announcementData = res.data

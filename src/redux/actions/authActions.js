@@ -119,8 +119,6 @@ export function validateUser(token) {
 }
 
 ///////////////
-// Utilities //
-///////////////
 // Get User Auth Token
 export function getAuthToken() {
     const token = localStorage.getItem('token')
