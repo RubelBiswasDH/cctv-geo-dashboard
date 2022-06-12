@@ -11,6 +11,7 @@ const initialState = {
   currentAnnouncement: '',
   currentAnnouncementId:'',
   editAnnouncementDialogIsOpen: false,
+  filterOptions: {}
 }
 
 const announcementsSlice = createSlice({
@@ -55,8 +56,14 @@ const announcementsSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload
     },
+    setFilterOptions: (state, action) => {
+      state.filterOptions = action.payload
+    },
+    updateFilterOptions: (state, action) => {
+      state.filterOptions = {...state.filterOptions, ...action.payload}
+    },
   }
 })
 
-export const { setAnnouncementLoading, setAnnouncements,updateAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory, setCurrentAnnouncement, setEditAnnouncementDialogIsOpen, setCurrentAnnouncementId } = announcementsSlice.actions
+export const { setAnnouncementLoading, setAnnouncements,updateAnnouncements, updateTasks, setPushNotifications, updatePushNotifications, updatePushNotification, setThreadMessages, updateThreadMessages, setSelectedStatusType, setSelectedDate, setTicketTimeline, setSndList, setSearchQuery, setAutocompleteSelectedTask, setIsTaskThreadOpen, setError, setQueryCategory, setCurrentAnnouncement, setEditAnnouncementDialogIsOpen, setCurrentAnnouncementId, setFilterOptions, updateFilterOptions } = announcementsSlice.actions
 export default announcementsSlice.reducer

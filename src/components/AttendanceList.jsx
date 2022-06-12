@@ -118,16 +118,6 @@ class AttendanceList extends React.PureComponent {
     const attendanceList  = this._filteredAttendance()
     
     const employeeList = this._getUniqueEmployee(attendanceList)
-    const getAnnouncement = (id,date) => {
-      if(announcements.length > 0){
-        const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
-        if (announcement && announcement?.type=="LATE"){
-          return announcement?.description
-        }
-        
-      }
-      else return ''
-    }
 
     const attendanceInfo = employeeList.map((a,i) => {
       
@@ -203,7 +193,7 @@ class AttendanceList extends React.PureComponent {
   }
 
   render() {
-    const {dispatch, isTaskLoading, filterOptions } = this.props
+    const { dispatch, isTaskLoading, filterOptions } = this.props
     const { feedback } = this.state
     
     let attendance_rows = this.mappedAttendanceInfo()
@@ -237,6 +227,7 @@ class AttendanceList extends React.PureComponent {
         <StyledDataGrid
           columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
+          disableColumnFilter={true}
           loading={ isTaskLoading }
         />
 
