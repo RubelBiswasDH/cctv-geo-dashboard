@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Button , FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Button , FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { ArrowRightAlt } from '@mui/icons-material'
+import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledInputField from './common/StyledInputField'
@@ -11,8 +13,11 @@ import StyledInputField from './common/StyledInputField'
 import { getAnnouncement, updateAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
 
 import dayjs from 'dayjs'
+import AdapterDayjs from '@mui/lab/AdapterDayjs'
+
 import { setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen } from '../redux/reducers/announcementReducer'
 import { setFilterOptions, updateFilterOptions } from '../redux/reducers/announcementReducer'
+
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 75,flex:.75, sortable: false, filter: true, filterable: true },
@@ -24,6 +29,8 @@ const columns = [
 
 class Announcements extends React.PureComponent {
     state = {
+      start_date: null,
+      end_date: null,
     }
 
   componentDidMount() {
@@ -42,6 +49,26 @@ class Announcements extends React.PureComponent {
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))
   }
+
+     // Handle Date Range Change
+     _handleDateRangeChange = dateValues => {
+      const { start_date, end_date } = this.state            
+
+      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
+      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+
+      this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+    }
+  
+    // Handle Get Data
+    _handleOnSubmit = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+  
+      // Load Announcements
+      dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    }
+
   _handleCloseAnnouncementDialog = () => {
     const { dispatch } = this.props
     dispatch(setEditAnnouncementDialogIsOpen(false))
@@ -100,11 +127,43 @@ class Announcements extends React.PureComponent {
   }
 
   render() {
-    const { dispatch, editAnnouncementDialogIsOpen, filterOptions } = this.props
+    const { start_date, end_date } = this.state
+    const { dispatch, editAnnouncementDialogIsOpen, filterOptions, isDataLoading } = this.props
        
     let announcement_rows = this.mappedAnnouncements()
     return (
       <Box width='100%' height='84vh'>
+        <Stack spacing={ 1 } direction='row'>
+        <LocalizationProvider dateAdapter={ AdapterDayjs }>
+            <DateRangePicker
+                value={ [ start_date, end_date ] }
+                onChange={ this._handleDateRangeChange }
+                disableMaskedInput={ true }
+                inputFormat={ 'DD-MMM-YYYY' }
+                renderInput={(startProps, endProps) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                            <ArrowRightAlt />
+                            <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                )}
+                PopperProps={{
+                  placement: 'bottom-start',
+                }}
+                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+            />
+        </LocalizationProvider>
+        <LoadingButton 
+            loading={ isDataLoading }
+            variant={ 'contained' }
+            onClick={ this._handleOnSubmit }
+            size={ 'small' }
+            disableTouchRipple={ true }                      
+        >
+            { 'Get Data' }
+        </LoadingButton>
+      </Stack>
         <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
           <Typography sx={{fontSize:'1em'}}>Filter </Typography>
           <FormControl fullWidth>
