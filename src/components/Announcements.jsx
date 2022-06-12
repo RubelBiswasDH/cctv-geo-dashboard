@@ -98,6 +98,9 @@ class Announcements extends React.PureComponent {
     if(filterOptions && filterOptions?.type && filterOptions?.type==='LATE'){
       list = list.filter( a => a.type==='LATE')
     }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='GENERAL'){
+      list = list.filter( a => a.type==='GENERAL')
+    }
     if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
       list = list
     }
@@ -132,7 +135,7 @@ class Announcements extends React.PureComponent {
        
     let announcement_rows = this.mappedAnnouncements()
     return (
-      <Box width='100%' height='84vh'>
+      <Box width='100%' height='54vh'>
         <Stack spacing={ 1 } direction='row'>
         <LocalizationProvider dateAdapter={ AdapterDayjs }>
             <DateRangePicker
@@ -178,6 +181,7 @@ class Announcements extends React.PureComponent {
                 <MenuItem value={"ALL"}>ALL</MenuItem>
                 <MenuItem value={"LATE"}>LATE</MenuItem>
                 <MenuItem value={"LEAVE"}>LEAVE</MenuItem>
+                <MenuItem value={"GENERAL"}>GENERAL</MenuItem>
               </Select>
           </FormControl>
           <FilterField

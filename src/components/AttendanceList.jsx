@@ -202,7 +202,7 @@ class AttendanceList extends React.PureComponent {
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
-      <Box width='100%' height='50vh'>
+      <Box width='100%' height='54vh'>
         <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
           <Typography sx={{fontSize:'1em'}}>Filter </Typography>
           <FormControl fullWidth sx={{p:0,m:0}} ize="small">

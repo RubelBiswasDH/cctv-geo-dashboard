@@ -132,7 +132,7 @@ class EmployeeList extends React.PureComponent {
     const { feedback } = this.state
     
     return (
-      <Box width='100%' height='84vh'>
+      <Box width='100%' height='73vh'>
         <StyledDataGrid
           columns={columns }
           rows={this.transformedEmployeeList()}
