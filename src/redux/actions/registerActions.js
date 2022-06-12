@@ -6,8 +6,6 @@ import {setToastMessage, setToastSeverity, setToastIsOpen} from "../reducers/das
 // Login Action
 export function register(user) {
     return dispatch => {
-        // Set `isValidating`
-
         axios.post(AUTH.REGISTER_API, user)
             .then(res => {
                 dispatch( login({ email: user.email, password:user.password, device:'web' }) )

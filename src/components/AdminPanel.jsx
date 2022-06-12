@@ -11,16 +11,16 @@ import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../redux/reducers/registerReducer'
 import downloadDemoCSV from '../assets/demo_users.xlsx'
-import { setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setLateTime, setWorkingDays, setMonthYear, updateNewUser, updateNewUserProfile, setCompanyAddressData, setCompanySettings } from '../redux/reducers/adminReducer'
+import { setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setLateTime, setWorkingDays, setMonthYear, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
 
 const UserField = (props) => {
-    const { title, value, field, subField, dispatch, style } = props
+    const { title, value, field, subField, dispatch, style, fieldStyle, titleStyle } = props
     const textStyle = {
         fontFamily: 'Roboto',
-        fontSize: '12px',
+        fontSize: '18px',
     }
     const handleChange = e => {
         e.preventDefault()
@@ -35,19 +35,24 @@ const UserField = (props) => {
 
     }
     return (
-        <Grid xs={2.2} item >
-            <Paper
-                xs={12}
-                sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000', border: '1px solid #000000', borderRadius: 2, ...style }}
-            >
-                <InputBase
-                    sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
-                    placeholder={title}
-                    inputProps={{ 'aria-label': { title }, color: '#000000' }}
-                    value={value || ''}
-                    onChange={handleChange}
-                />
-            </Paper>
+        <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%' }}>
+            <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-end',width:'30%'}}>
+                <Typography sx={{ ...textStyle}}>{title}</Typography>
+            </Box>
+            <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>
+                <Paper
+                    xs={12}
+                    sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000',width:'100%', border: '1px solid #000000', borderRadius: 1, ...style }}
+                >   
+                    
+                    <InputBase
+                        sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
+                        inputProps={{ 'aria-label': { title }, color: '#000000' }}
+                        value={value || ''}
+                        onChange={handleChange}
+                    />
+                </Paper>
+            </Box>
         </Grid>
     )
 }
@@ -136,10 +141,10 @@ const InputButton = (props) => {
 }
 
 const GridContent = (props) => {
-    const { style } = props
+    const { style, titleStyle } = props
     return (
         <Grid xs={12} item container sx={{ m: 0, mt: 2, p: 0, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', background: '', ...style }}>
-            <Typography sx={{ textAlign: 'center', width: '90%', fontSize: '1em', fontWeight: 600, background: '', pl: 0, pt: 2 }}>{props.title}</Typography>
+            <Typography sx={{ textAlign: 'center', width: '90%', fontSize: '1em', fontWeight: 600, background: '', pl: 0, pt: 2, ...titleStyle }}>{props.title}</Typography>
             {props.children}
         </Grid>
     )
@@ -163,6 +168,18 @@ class AdminPanel extends React.PureComponent {
     }
     componentDidMount() {
         this.props.dispatch(getCompanySettingsAction())
+    }
+    handleSaveUser = e => {
+        const {dispatch, newUser} = this.props
+        if(newUser.name && newUser.phone&& newUser.email){
+            dispatch(createUser(newUser))
+        }
+        else{ 
+            dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+
+        }
     }
     updateExactAddress = (updatedAddress) => {
         const { data } = this.state
@@ -319,7 +336,7 @@ class AdminPanel extends React.PureComponent {
 
     render() {
         const { handleCreateUser, handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange, handleSaveCompanyAddress } = this
-        const { newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, companyNameOptions } = this.props
+        const { dispatch, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, companyNameOptions, newUser } = this.props
         const { currentTab } = this.state
         return (
             <Box sx={
@@ -372,10 +389,10 @@ class AdminPanel extends React.PureComponent {
                     {/*Add User*/}
                     {(this.state.currentTab === 'add_user')
                         ? (
-                            <GridContent title={"Add User"} style={{ p: 1 }}>
-                                <Grid container spacing={2} sx={{ p: 4, pt: 2, background: '' }}>
-                                    <Grid xs={12} spacing={2} item container>
-                                        <Grid xs={4} xl={4} item sx={{ backgroundColor: '' }}>
+                            <GridContent title={"Add User"} titleStyle={{fontSize:'18px'}} style={{ p: 2 }}>
+                                    <Grid xs={12} spacing={2} item container sx={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
+                                        {/* <Grid xs={4} xl={4} item sx={{ backgroundColor: '' }}>
                                             <StyledInputField onChange={setNewUserName} value={newUserName} placeholder={"Name"} ariaLabel={"Name"} style={{ borderRadius: 2 }} />
                                         </Grid>
                                         <Grid xs={4} xl={4} item>
@@ -386,12 +403,17 @@ class AdminPanel extends React.PureComponent {
                                         </Grid>
                                         <Grid xs={6} xl={6} item>
                                             <StyledSelect onChange={setNewUserRole} value={newUserRole} options={newUserRoleOptions} style={{ minWidth: '100%' }} />
-                                        </Grid>
+                                        </Grid> */}
+
+                                        <UserField  dispatch={dispatch} field={'name'}  title={"Name"} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
+                                        <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail"} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
+                                        <UserField  dispatch={dispatch} field={'phone'}  title={"Phone"} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
+                                        <UserField  dispatch={dispatch} field={'profile'} subField={'designation'}  title={"Designation"} value={newUser?.profile?.designation} fieldStyle={{ width:'25%' }}/>
+                                       
                                         <Grid xs={6} xl={6} item>
-                                            <StyledButton onClick={handleCreateUser} variant="contained" style={{ borderRadius: 2, pt: .5, width: '100%' }}>Create</StyledButton>
+                                            <StyledButton onClick={handleSaveUser} variant="contained" style={{ borderRadius: 2, pt: .5, width: '100%' }}>Save</StyledButton>
                                         </Grid>
-                                    </Grid>
-                                    <Grid xs={12} item container spacing={2}>
+                                    {/* <Grid xs={12} item container spacing={2}>
                                         <Grid xs={4} item>
                                             <StyledButton href={downloadDemoCSV} sx={{ overflow: 'ellipsis' }} onClick={() => null} variant="contained" style={{ borderRadius: 2, pt: .5, width: '100%' }}>Demo CSV File Download</StyledButton>
                                         </Grid>
@@ -401,7 +423,7 @@ class AdminPanel extends React.PureComponent {
                                         <Grid xs={4} item>
                                             <StyledButton onClick={handleFileUpload} variant="contained" style={{ borderRadius: 2, pt: .5, width: '100%' }}>Upload</StyledButton>
                                         </Grid>
-                                    </Grid>
+                                    </Grid> */}
 
                                 </Grid>
                                 {/* )
