@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Button } from '@mui/material'
+import { Box, Stack, Button , FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { ArrowRightAlt } from '@mui/icons-material'
+import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledInputField from './common/StyledInputField'
@@ -11,7 +13,10 @@ import StyledInputField from './common/StyledInputField'
 import { getAnnouncement, updateAnnouncement, getAnnouncements}  from '../redux/actions/announcementsActions'
 
 import dayjs from 'dayjs'
+import AdapterDayjs from '@mui/lab/AdapterDayjs'
+
 import { setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen } from '../redux/reducers/announcementReducer'
+import { setFilterOptions, updateFilterOptions } from '../redux/reducers/announcementReducer'
 
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 25,flex:.25, sortable: false, filter: false, filterable: false },
@@ -24,6 +29,8 @@ const columns = [
 
 class Announcements extends React.PureComponent {
     state = {
+      start_date: null,
+      end_date: null,
     }
 
   componentDidMount() {
@@ -36,8 +43,31 @@ class Announcements extends React.PureComponent {
     this.setState({ start_date, end_date })
 
     // Load announcements
-    dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    // dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
+  componentWillUnmount(){
+    const { dispatch } = this.props
+    dispatch(setFilterOptions({}))
+  }
+
+     // Handle Date Range Change
+     _handleDateRangeChange = dateValues => {
+      const { start_date, end_date } = this.state            
+
+      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
+      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+
+      this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+    }
+  
+    // Handle Get Data
+    _handleOnSubmit = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+  
+      // Load Announcements
+      dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    }
 
   _handleCloseAnnouncementDialog = () => {
     const { dispatch } = this.props
@@ -58,9 +88,30 @@ class Announcements extends React.PureComponent {
     }
     dispatch(updateAnnouncement(currentAnnouncementId, data))
   }
-
+  _filteredAnnouncements = () => {
+    const { announcements } = this.props;
+    const { filterOptions } = this.props
+    let list = announcements
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='LEAVE'){
+      list = list.filter( a => a.type==='LEAVE')
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='LATE'){
+      list = list.filter( a => a.type==='LATE')
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='GENERAL'){
+      list = list.filter( a => a.type==='GENERAL')
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
+      list = list
+    }
+    if(filterOptions && filterOptions?.name){
+     list = list.filter( a => a.name.toLowerCase().startsWith(filterOptions.name.toLowerCase()))
+    }
+    return list
+  }
   mappedAnnouncements = () => {
-    const {announcements} = this.props;
+    // const {announcements} = this.props;
+    const announcements = this._filteredAnnouncements()
     const announcementInfo = announcements.map((a,i) => {
 
       return ({
@@ -79,14 +130,72 @@ class Announcements extends React.PureComponent {
   }
 
   render() {
-    const { editAnnouncementDialogIsOpen } = this.props
+    const { start_date, end_date } = this.state
+    const { dispatch, editAnnouncementDialogIsOpen, filterOptions, isDataLoading } = this.props
        
     let announcement_rows = this.mappedAnnouncements()
     return (
-      <Box width='100%' height='84vh'>
+      <Box width='100%' height='54vh'>
+        <Stack spacing={ 1 } direction='row'>
+        <LocalizationProvider dateAdapter={ AdapterDayjs }>
+            <DateRangePicker
+                value={ [ start_date, end_date ] }
+                onChange={ this._handleDateRangeChange }
+                disableMaskedInput={ true }
+                inputFormat={ 'DD-MMM-YYYY' }
+                renderInput={(startProps, endProps) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                            <ArrowRightAlt />
+                            <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                )}
+                PopperProps={{
+                  placement: 'bottom-start',
+                }}
+                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+            />
+        </LocalizationProvider>
+        <LoadingButton 
+            loading={ isDataLoading }
+            variant={ 'contained' }
+            onClick={ this._handleOnSubmit }
+            size={ 'small' }
+            disableTouchRipple={ true }                      
+        >
+            { 'Get Data' }
+        </LoadingButton>
+      </Stack>
+        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
+          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value= {filterOptions?.type ?? 'ALL'}
+                label="Type"
+                onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+              >                 
+                <MenuItem value={"ALL"}>ALL</MenuItem>
+                <MenuItem value={"LATE"}>LATE</MenuItem>
+                <MenuItem value={"LEAVE"}>LEAVE</MenuItem>
+                <MenuItem value={"GENERAL"}>GENERAL</MenuItem>
+              </Select>
+          </FormControl>
+          <FilterField
+            field = {'name'}
+            label = {'Name'} 
+            value = {filterOptions?.name ?? ''}
+            dispatch = {dispatch}
+            action = {updateFilterOptions}
+          />
+        </Box>
         <StyledDataGrid
           columns={columns }
           rows={ announcement_rows }
+          disableColumnFilter={true}
         />
         <StyledDialog
           title={'Edit Announcement'} 
@@ -104,7 +213,20 @@ class Announcements extends React.PureComponent {
     )
   }
 }
-
+const FilterField = (props) => {
+  const { dispatch, action, value, field, label} = props
+  return (
+    <FormControl fullWidth>
+      <TextField
+            value={ value } 
+            onChange={ 
+              e => dispatch(action({ [field]: e.target.value })) } 
+            label={label} 
+            fullWidth> 
+      </TextField>
+    </FormControl>
+  )
+}
 // Prop Types
 Announcements.propTypes = {
   announcement: PropTypes.array,
@@ -121,6 +243,7 @@ const mapStateToProps = state => ({
   currentAnnouncement: state?.announcements?.currentAnnouncement,
   editAnnouncementDialogIsOpen: state?.announcements?.editAnnouncementDialogIsOpen,
   currentAnnouncementId:state?.announcements?.currentAnnouncementId,
+  filterOptions:state?.announcements?.filterOptions
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

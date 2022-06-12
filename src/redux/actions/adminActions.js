@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { API } from '../../App.config'
-import {setUserProfile, setProfileEdit, setCompanySettings, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
+import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
-import {getEmployee}  from '../actions/employeeActions'
+import { getEmployee }  from '../actions/employeeActions'
 import { getAttendance } from './attendanceActions';
 import dayjs from 'dayjs'
 // setUserProfile Action
@@ -153,10 +153,8 @@ export function createUser(user) {
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
-                    dispatch(setNewUserEmail(''))
-                    dispatch(setNewUserName(''))
-                    dispatch(setNewUserMobile(''))
-                    dispatch(setNewUserRole('GENERAL'))
+                    dispatch(setNewUser({}))
+
                 }
             })
             .catch(err => {

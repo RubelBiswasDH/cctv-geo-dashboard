@@ -78,7 +78,7 @@ class StyledDataGrid extends React.PureComponent {
     }
 
     render() {
-        const { rows, columns, renderActions, rowHeight, ...restProps } = this.props       
+        const { rows, columns, disableColumnFilter, renderActions, rowHeight, ...restProps } = this.props       
         return (
             <DataGrid
                 rows={ rows }
@@ -129,7 +129,7 @@ class StyledDataGrid extends React.PureComponent {
                         })),                        
                     ]
                 }
-                disableColumnFilter={ false }
+                disableColumnFilter={ disableColumnFilter ?? false }
                 hideFooterPagination={ true }
                 hideFooterSelectedRowCount={ true }
                 disableColumnMenu={ false }

@@ -101,6 +101,10 @@ const theme = createTheme({
       main: '#009688',
       contrastText: '#fff',
     },
+    btnGray: {
+      main: '#D9D9D9',
+      contrastText: '#000000',
+    },
     btnOrange: {
       main: '#FF6961',
       contrastText: '#fff',

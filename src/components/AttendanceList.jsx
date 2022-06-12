@@ -3,16 +3,17 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton } from '@mui/material'
-import { GridActionsCellItem } from '@mui/x-data-grid'
-import { AssignmentInd, Timeline, Close } from '@mui/icons-material'
+import { Box, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { playNotificationSound, stopNotificationSound } from '../utils/utils'
+import { stopNotificationSound } from '../utils/utils'
 import { getAttendance }  from '../redux/actions/attendanceActions'
+import { setFilterOptions, updateFilterOptions } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
+import {unionArrayOfObjects} from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
@@ -32,20 +33,31 @@ class AttendanceList extends React.PureComponent {
     isTimelineLoading: false,
     feedback: null,
     uniqueDates: [],
-    tableColumns: []
+    uniqueEmployees : [],
+    tableColumns: [],
+    name_filter: '',
+    late_filter: '',
+    attendanceList: []
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-
     let date = new Date()
-      
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    const { dispatch } = this.props
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    const attendanceList = this.props.attendanceList
+    const employeeList = this.props.employeeList
+
+    if(attendanceList && attendanceList.length){
+      this.setState({ attendanceList })
+    }
+    if(employeeList && employeeList.length){
+      this._getUniqueEmployee(employeeList)
+    }
     this.setState({ start_date, end_date })
     this._getUniqueDates()
-    // Load Tasks
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
   }
 
   componentDidUpdate(prevProps) {
@@ -54,7 +66,10 @@ class AttendanceList extends React.PureComponent {
         this._getUniqueDates()
       }
     }
-
+  componentWillUnmount(){
+    const { dispatch } = this.props
+    dispatch(setFilterOptions({}))
+  }
   _getUniqueDates = () => {
       const { attendanceList } = this.props
       let dates = []
@@ -64,32 +79,48 @@ class AttendanceList extends React.PureComponent {
       const unique = [...new Set(dates)]
       this.setState(() => ({ uniqueDates:unique }))
     }
+    _getUniqueEmployee = (list) => {
+      const employees = unionArrayOfObjects([], list, 'user_id')
+      return employees
 
+    }
   _generateAttendanceColumns = () => {
     const { uniqueDates } = this.state
     
     const dyanmicColumns = uniqueDates.map(
        (date) => ( { 
-         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "A",
+         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
 
         }
     ))
     return dyanmicColumns
   }
 
-  mappedAttendanceInfo = () => {
-    const {attendanceList, announcements, employeeList } = this.props;
-
-    const getAnnouncement = (id,date) => {
-      if(announcements.length > 0){
-        const announcement = announcements.filter(an => (an.user_id === id && dayjs(an?.created_at).format('YYYY-MM-DD')=== dayjs(date).format('YYYY-MM-DD')))[0]
-        if (announcement && announcement?.type=="LATE"){
-          return announcement?.description
-        }
-        
+    _filteredAttendance = () => {
+      const { attendanceList } = this.props;
+      const { filterOptions } = this.props
+      let attList = attendanceList
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='Late'){
+        attList = attList.filter( a => a.is_late)
       }
-      else return ''
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='In Time'){
+        attList = attList.filter( a => !a.is_late)
+      }
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
+        attList = attList
+      }
+      if(filterOptions && filterOptions?.name){
+       attList = attList.filter( a => a.name.startsWith(filterOptions.name))
+      }
+      return attList
     }
+
+  mappedAttendanceInfo = () => {
+    const { announcements } = this.props;
+
+    const attendanceList  = this._filteredAttendance()
+    
+    const employeeList = this._getUniqueEmployee(attendanceList)
 
     const attendanceInfo = employeeList.map((a,i) => {
       
@@ -115,16 +146,17 @@ class AttendanceList extends React.PureComponent {
           }
         } })
 
-      getIndividualAttendance(a?.id)
-        return ({
-          "id": a?.id,
-          "serial_no":i+1,
-          "name": a?.name,
-          ...individualAttendance,
-          'late':l,
-          'present':p,
-          'absence':abs,
-        })
+        getIndividualAttendance(a?.user_id)
+          return ({
+            "id": a?.id,
+            "serial_no":i+1,
+            "name": a?.name,
+            ...individualAttendance,
+            'late':l,
+            'present':p,
+            'absence':abs,
+          })
+
     })
     return attendanceInfo
     
@@ -164,16 +196,41 @@ class AttendanceList extends React.PureComponent {
   }
 
   render() {
-    const { isTaskLoading, tasks, selectedStatus, autocompleteSelectedTask } = this.props
+    const { dispatch, isTaskLoading, filterOptions } = this.props
     const { feedback } = this.state
     
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
-      <Box width='100%' height='84vh'>
+      <Box width='100%' height='54vh'>
+        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
+          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
+          <FormControl fullWidth sx={{p:0,m:0}} ize="small">
+            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value= {filterOptions?.type ?? 'All'}
+                label="Type"
+                onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+              >                 
+                <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Late"}>Late</MenuItem>
+                <MenuItem value={"In Time"}>In Time</MenuItem>
+              </Select>
+          </FormControl>
+          <FilterField
+            field = {'name'}
+            label = {'Name'} 
+            value = {filterOptions?.name ?? ''}
+            dispatch = {dispatch}
+            action = {updateFilterOptions}
+          />
+        </Box>
         <StyledDataGrid
           columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
+          disableColumnFilter={true}
           loading={ isTaskLoading }
         />
 
@@ -221,6 +278,20 @@ class AttendanceList extends React.PureComponent {
   }
 }
 
+const FilterField = (props) => {
+  const { dispatch, action, value, field, label} = props
+  return (
+    <FormControl fullWidth>
+      <TextField
+            value={ value } 
+            onChange={ 
+              e => dispatch(action({ [field]: e.target.value })) } 
+            label={label} 
+            fullWidth> 
+      </TextField>
+    </FormControl>
+  )
+}
 // Prop Types
 AttendanceList.propTypes = {
   user: PropTypes.object,
@@ -245,10 +316,11 @@ AttendanceList.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
-  attendanceList: state.attendanceList.attendanceList,
-  announcements: state.announcements.announcements,
-  employeeList: state.employeeList.employeeList
+  user: state?.auth?.user,
+  attendanceList: state?.attendanceList?.attendanceList,
+  announcements: state?.announcements?.announcements,
+  employeeList: state?.employeeList?.employeeList,
+  filterOptions: state?.attendanceList?.filterOptions
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
