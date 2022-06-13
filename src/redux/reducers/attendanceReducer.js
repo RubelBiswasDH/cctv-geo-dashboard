@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+// import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
 import { unionArrayOfObjects } from '../../utils/utils'
 import { sortByDate } from '../../utils/utils'
-// import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
+
 
 const initialState = {
     attendanceList: [],

@@ -41,12 +41,15 @@ class HrTraceDashboard extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    dispatch( getEmployee() )
     dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
     this.setState({ start_date, end_date })
 
     // Activate Socket
     dispatch( activateSocket_A() )
-    dispatch( getEmployee() )
+
   }
 
   componentWillUnmount() {

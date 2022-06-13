@@ -12,7 +12,13 @@ const getUniqueDates = () => {
 
 const attendanceWithAbsenceInfo = ( attendanceList ) => {
     const employeeList = getEmployeeList()
-    const uniqueDates = getUniqueDates()
+    let dates = []
+    if(attendanceList && attendanceList.length){
+    attendanceList.forEach(data => {
+        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+    })
+    }
+    const uniqueDates = [...new Set(dates)]
     let attendance = []
     for (let i in uniqueDates ){
         for(let j in employeeList){
@@ -21,7 +27,10 @@ const attendanceWithAbsenceInfo = ( attendanceList ) => {
                 .find( a => a.user_id === employeeList[j].id 
                 )
             if(currentAttendance){
-                attendance = [currentAttendance, ...attendance]
+                attendance = [
+                    {...currentAttendance,
+                        is_absent:0
+                    }, ...attendance]
             }
             else{
                 const emp = employeeList[j]
@@ -29,6 +38,9 @@ const attendanceWithAbsenceInfo = ( attendanceList ) => {
                     is_absent:1,
                     user_id:emp?.id,
                     name:emp?.name,
+                    id:emp?.id+uniqueDates[i],
+                    date: uniqueDates[i],
+                    created_at: uniqueDates[i]
                 }
                 if(a){
                     attendance = [a, ...attendance]
@@ -38,6 +50,7 @@ const attendanceWithAbsenceInfo = ( attendanceList ) => {
             
         }
     }
+    return attendance
 }
 
 export { attendanceWithAbsenceInfo }

@@ -46,13 +46,13 @@ class AttendanceList extends React.PureComponent {
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     const { dispatch } = this.props
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    // dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     const attendanceList = this.props.attendanceList
     const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
-      this.setState({ attendanceList })
-      attendanceWithAbsenceInfo(attendanceList)
+      this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
+      // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
@@ -109,7 +109,10 @@ class AttendanceList extends React.PureComponent {
         attList = attList.filter( a => a.is_late)
       }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='In Time'){
-        attList = attList.filter( a => !a.is_late)
+        attList = attList.filter( a => !a.is_late && !a?.is_absent)
+      }
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='Absent'){
+        attList = attList.filter( a => a?.is_absent)
       }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
         attList = attList
@@ -135,6 +138,12 @@ class AttendanceList extends React.PureComponent {
       let l = 0
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
+          if(a.is_absent){
+              const date = a?.date
+              abs++
+              individualAttendance[date] = "A"
+          }
+          else{
           const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
           if (enter_time) {
             if(a.is_late){
@@ -146,9 +155,8 @@ class AttendanceList extends React.PureComponent {
               p++
             }
           }
-          else{
-            abs++
-          }
+        }
+          
         } })
 
         getIndividualAttendance(a?.user_id)
@@ -220,6 +228,7 @@ class AttendanceList extends React.PureComponent {
                 onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
               >                 
                 <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Absent"}>Absent</MenuItem>
                 <MenuItem value={"Late"}>Late</MenuItem>
                 <MenuItem value={"In Time"}>In Time</MenuItem>
               </Select>
