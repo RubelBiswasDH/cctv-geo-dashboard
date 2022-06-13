@@ -230,11 +230,22 @@ const FilterField = (props) => {
 // Prop Types
 Announcements.propTypes = {
   announcement: PropTypes.array,
+  currentAnnouncement: PropTypes.array, 
+  editAnnouncementDialogIsOpen: PropTypes.bool,
+  currentAnnouncementId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  filterOptions: PropTypes.array,
   dispatch: PropTypes.func,
 }
 
 Announcements.defaultProps = {
   announcements: [],
+  currentAnnouncement: {}, 
+  editAnnouncementDialogIsOpen: false,
+  currentAnnouncementId: '',
+  filterOptions: {},
   dispatch: () => null
 }
 
