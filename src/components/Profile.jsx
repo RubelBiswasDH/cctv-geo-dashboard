@@ -206,8 +206,8 @@ GridContent.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-    userProfile: state.admin.userProfile,
-    profileEdit: state.admin.profileEdit,
+    userProfile: state?.admin?.userProfile,
+    profileEdit: state?.admin?.profileEdit,
 
 })
 

@@ -322,7 +322,7 @@ NavBar.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
+  user: state?.auth?.user,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

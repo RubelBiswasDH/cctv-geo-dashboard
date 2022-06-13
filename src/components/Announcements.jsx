@@ -245,7 +245,7 @@ Announcements.defaultProps = {
   currentAnnouncement: {}, 
   editAnnouncementDialogIsOpen: false,
   currentAnnouncementId: '',
-  filterOptions: {},
+  filterOptions: [],
   dispatch: () => null
 }
 
