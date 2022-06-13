@@ -5,20 +5,18 @@ const getEmployeeList = () => {
     const state = store.getState()
   return state?.employeeList?.employeeList;
 }
-const getUniqueDates = () => {
-    const state = store.getState()
-  return state?.attendanceList?.uniqueDates;
-}
 
 const attendanceWithAbsenceInfo = ( attendanceList ) => {
     const employeeList = getEmployeeList()
     let dates = []
     if(attendanceList && attendanceList.length){
-    attendanceList.forEach(data => {
-        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
-    })
+        attendanceList.forEach(data => {
+            dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+        })
     }
+    
     const uniqueDates = [...new Set(dates)]
+
     let attendance = []
     for (let i in uniqueDates ){
         for(let j in employeeList){

@@ -118,9 +118,9 @@ class StyledDataGrid extends React.PureComponent {
                                                 :(cellValues.value === 'P')
                                                 ?<Chip color='darkGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :(cellValues.value === 'L')
-                                                ?<Chip color='liteGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'black'}} />
+                                                ?<Chip color='lightGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'black'}} />
                                                 :(cellValues.value === 'A')
-                                                ?<Chip color='error' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                ?<Chip color='lightSalmon' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
                                                 :cellValues.value
                                         }                                        
                                     </Box>

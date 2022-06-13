@@ -10,7 +10,6 @@ import StyledDataGrid from './common/StyledDataGrid'
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { getAttendance }  from '../redux/actions/attendanceActions'
 import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
@@ -45,8 +44,6 @@ class AttendanceList extends React.PureComponent {
     let date = new Date()
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const { dispatch } = this.props
-    // dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     const attendanceList = this.props.attendanceList
     const employeeList = this.props.employeeList
 
@@ -81,9 +78,6 @@ class AttendanceList extends React.PureComponent {
         const unique = [...new Set(dates)]
         dispatch(setUniqueDates(unique))
       }
-    
-
-      // this.setState(() => ({ uniqueDates:unique }))
     }
     _getUniqueEmployee = (list) => {
       const employees = unionArrayOfObjects([], list, 'user_id')
@@ -124,7 +118,6 @@ class AttendanceList extends React.PureComponent {
     }
 
   mappedAttendanceInfo = () => {
-    const { announcements } = this.props;
 
     const attendanceList  = this._filteredAttendance()
     

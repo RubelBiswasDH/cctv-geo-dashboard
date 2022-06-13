@@ -81,7 +81,7 @@ const theme = createTheme({
       main:'white',
       contrastText: '#fff',
     },
-    liteGreen: {
+    lightGreen: {
       main: '#9AD9B0',
       contrastText: '#000',
     },
@@ -91,6 +91,10 @@ const theme = createTheme({
     },
     orangeRed: {
       main: '#FF4500',
+      contrastText: '#000',
+    },
+    lightSalmon: {
+      main: '#FFA07A',
       contrastText: '#000',
     },
     btnGreen: {
