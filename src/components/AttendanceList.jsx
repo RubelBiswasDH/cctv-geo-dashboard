@@ -9,8 +9,9 @@ import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
+import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { getAttendance }  from '../redux/actions/attendanceActions'
-import { setFilterOptions, updateFilterOptions } from '../redux/reducers/attendanceReducer'
+import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
 import {unionArrayOfObjects} from '../utils/utils'
@@ -51,13 +52,13 @@ class AttendanceList extends React.PureComponent {
 
     if(attendanceList && attendanceList.length){
       this.setState({ attendanceList })
+      attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
     }
     this.setState({ start_date, end_date })
     this._getUniqueDates()
-
   }
 
   componentDidUpdate(prevProps) {
@@ -71,13 +72,18 @@ class AttendanceList extends React.PureComponent {
     dispatch(setFilterOptions({}))
   }
   _getUniqueDates = () => {
-      const { attendanceList } = this.props
+      const {  attendanceList, dispatch } = this.props
       let dates = []
-      attendanceList.forEach(data => {
-        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
-      })
-      const unique = [...new Set(dates)]
-      this.setState(() => ({ uniqueDates:unique }))
+      if(attendanceList && attendanceList.length){
+        attendanceList.forEach(data => {
+          dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+        })
+        const unique = [...new Set(dates)]
+        dispatch(setUniqueDates(unique))
+      }
+    
+
+      // this.setState(() => ({ uniqueDates:unique }))
     }
     _getUniqueEmployee = (list) => {
       const employees = unionArrayOfObjects([], list, 'user_id')
@@ -85,8 +91,7 @@ class AttendanceList extends React.PureComponent {
 
     }
   _generateAttendanceColumns = () => {
-    const { uniqueDates } = this.state
-    
+    const { uniqueDates } = this.props
     const dyanmicColumns = uniqueDates.map(
        (date) => ( { 
          field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
@@ -110,7 +115,7 @@ class AttendanceList extends React.PureComponent {
         attList = attList
       }
       if(filterOptions && filterOptions?.name){
-       attList = attList.filter( a => a.name.startsWith(filterOptions.name))
+       attList = attList.filter( a => a?.name?.toLowerCase().startsWith(filterOptions?.name?.toLowerCase()))
       }
       return attList
     }
@@ -320,7 +325,8 @@ const mapStateToProps = state => ({
   attendanceList: state?.attendanceList?.attendanceList,
   announcements: state?.announcements?.announcements,
   employeeList: state?.employeeList?.employeeList,
-  filterOptions: state?.attendanceList?.filterOptions
+  filterOptions: state?.attendanceList?.filterOptions,
+  uniqueDates: state?.attendanceList?.uniqueDates,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

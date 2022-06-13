@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { unionArrayOfObjects } from '../../utils/utils'
 import { sortByDate } from '../../utils/utils'
+// import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
 
 const initialState = {
     attendanceList: [],
     error: '',
-    filterOptions: {}
+    filterOptions: {},
+    uniqueDates: [],
 }
 
 const attendanceSlice = createSlice({
@@ -27,8 +29,12 @@ const attendanceSlice = createSlice({
     updateFilterOptions: (state, action) => {
       state.filterOptions = {...state.filterOptions, ...action.payload}
     },
+    setUniqueDates: ( state, action ) => {
+      state.uniqueDates = action.payload
+    }
+    
   }
 })
 
-export const { setAttendance, updateAttendance, setError, setFilterOptions, updateFilterOptions } = attendanceSlice.actions
+export const { setAttendance, updateAttendance, setError, setFilterOptions, updateFilterOptions,setUniqueDates } = attendanceSlice.actions
 export default attendanceSlice.reducer
