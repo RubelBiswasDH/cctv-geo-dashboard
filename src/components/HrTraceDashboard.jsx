@@ -13,6 +13,7 @@ import LeftNav from './LeftNav'
 import AttendanceList from './AttendanceList'
 import EmployeeList from './EmployeeList'
 import FilterEmployee from './FilterEmployee'
+import EmployeeProfile from './EmployeeProfile'
 import SubNav from './SubNav'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
@@ -104,7 +105,7 @@ class HrTraceDashboard extends React.PureComponent {
         <Box sx={{ ...containerStyles }}>
         
           <SubNav/>
-          <FilterEmployee/>
+          {/* <FilterEmployee/> */}
           <Box
             sx={ theme => ({
               padding: {
@@ -182,12 +183,15 @@ class HrTraceDashboard extends React.PureComponent {
                 {
                   (this.props.currentView === 'announcements') && <Announcements />
                 }
+                 {
+                  (this.props.currentView === 'employee_profile') && <EmployeeProfile />
+                }
                 {
                   (this.props.currentView === 'profile') && <Profile />
                 }
-                {
+                {/* {
                   (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
-                }
+                } */}
               </Grid>
             </Grid>
           </Box>
