@@ -17,7 +17,7 @@ const store = configureStore({
     register: registerReducer,
     admin:adminReducer,
     employeeList: employeeReducer,
-    hrt:hrtReducer,
+    hrt: hrtReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

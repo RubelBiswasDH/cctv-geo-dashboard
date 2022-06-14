@@ -14,16 +14,45 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography  } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+
 // import reducers
 import { setIsLeftNavOpen } from '../../src/redux/reducers/hrtReducer'
+import { setCurrentView } from '../../src/redux/reducers/dashboardReducer'
+// import actions
+import { setView } from '../utils/utils'
+
+const navOptions = [
+    {
+        'label': "Attendance",
+        'value': "attendance"
+    },
+    {
+        'label': "Announcements",
+        'value': "announcements"
+    },
+    {
+        'label':"Employee Profile",
+        'value': "employee_profile"
+    },
+{
+        'label':"Company Profile",
+        'value': "company_profile"
+    },
+]
 
 class LeftNav extends React.PureComponent {
     _handleNavClose = () => {
         const { dispatch } = this.props
         dispatch( setIsLeftNavOpen(false) )
     }
+    _handleSelectMenu = (value) => {
+        const { dispatch } = this.props
+        dispatch(setCurrentView(value))
+        setView(value)
+    }
     render() {
-        const { isLeftNavOpen } = this.props
+        const { isLeftNavOpen, currentView } = this.props
         return(
             <Drawer
                 anchor={'left'}
@@ -52,13 +81,18 @@ class LeftNav extends React.PureComponent {
                 </List>
                 <Divider />
                 <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                    {navOptions.map((option, index) => (
+                    <ListItem key={option?.label} disablePadding>
+                        <ListItemButton
+                            onClick = { () => this._handleSelectMenu(option.value) }
+                            sx={{
+                                background: (currentView === option.value)?'#ADD8E6':''
+                            }}
+                        >
                         <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            <StarIcon/>
                         </ListItemIcon>
-                        <ListItemText primary={text} />
+                        <ListItemText primary={option?.label} />
                         </ListItemButton>
                     </ListItem>
                     ))}
@@ -84,6 +118,7 @@ LeftNav.propTypes = {
   
   const mapStateToProps = state => ({
     isLeftNavOpen: state?.hrt?.isLeftNavOpen,
+    currentView: state?.dashboard?.currentView
   })
   
   const mapDispatchToProps = dispatch => ({ dispatch })

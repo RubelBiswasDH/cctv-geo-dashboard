@@ -71,12 +71,12 @@ class FilterEmpolyee extends React.PureComponent{
          
           width: '100%'})} >
             <Grid container spacing={1} direction="row" sx={{p:0,m:0,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
+                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
                         <CustomButton sx={{}} onClick={() => handleView('attendance')} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
                         <CustomButton sx={{}} onClick={() => handleView('announcements')} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
-                    </Grid>
+                    </Grid> */}
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>
                         <CustomButton sx={{}} onClick={() => handleView('total_employees')} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
                     </Grid>

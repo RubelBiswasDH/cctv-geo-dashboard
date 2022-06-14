@@ -229,23 +229,23 @@ const FilterField = (props) => {
 }
 // Prop Types
 Announcements.propTypes = {
-  announcement: PropTypes.array,
-  currentAnnouncement: PropTypes.array, 
+  announcements: PropTypes.array,
+  currentAnnouncement: PropTypes.string, 
   editAnnouncementDialogIsOpen: PropTypes.bool,
   currentAnnouncementId: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]),
-  filterOptions: PropTypes.array,
+  filterOptions: PropTypes.object,
   dispatch: PropTypes.func,
 }
 
 Announcements.defaultProps = {
   announcements: [],
-  currentAnnouncement: {}, 
+  currentAnnouncement: "", 
   editAnnouncementDialogIsOpen: false,
   currentAnnouncementId: '',
-  filterOptions: [],
+  filterOptions: {},
   dispatch: () => null
 }
 
