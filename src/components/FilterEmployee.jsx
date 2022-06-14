@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Grid, Box, Typography } from '@mui/material'
-import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import { setView } from '../utils/utils'
+import { setCurrentEmployeeType } from '../redux/reducers/employeeReducer'
 
 const CustomButton = (props) => {
-        const {sx, name, currentView} = props
+        const {sx, name, currentEmployeeType} = props
         const btnStyle = {
             textTransform:'none',
             borderRadius: '.8em',
@@ -14,7 +13,7 @@ const CustomButton = (props) => {
             border: '1px solid black',
         }
 
-        const activeBtn = (currentView === name)? {background:'#ADD8E6'}:{}
+        const activeBtn = (currentEmployeeType === name)? {background:'#ADD8E6'}:{}
 
         const handleClick = () => {
             props.onClick()
@@ -28,19 +27,11 @@ const CustomButton = (props) => {
 class FilterEmpolyee extends React.PureComponent{
     constructor(props){
         super(props)
-        this.state = {
-            currentEmployeeType:''
-        }
         this.countEmployee = this.countEmployee.bind(this)
-        this.handleView = this.handleView.bind(this)
         this.handleEmployeeTypeChange = this.handleEmployeeTypeChange.bind(this)
     }
-    handleView = (view) => {
-        this.props.dispatch(setCurrentView(view))
-        setView(view)
-    }
     handleEmployeeTypeChange = (value) => {
-        this.setState({currentEmployeeType:value})
+        this.props.dispatch( setCurrentEmployeeType(value))
     }
     countEmployee = (key,value) => {
         if(this.props.employeeList && this.props.employeeList?.length>0){
@@ -68,8 +59,8 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const { currentView } = this.props
-        const { countEmployee, handleView } = this
+        const { currentView, currentEmployeeType } = this.props
+        const { countEmployee, handleEmployeeTypeChange } = this
         return (
         <Box sx={theme => ({
           display:'flex',
@@ -81,27 +72,21 @@ class FilterEmpolyee extends React.PureComponent{
                 container 
                 spacing={0} 
                 direction="row" 
-                sx={{p:0,m:0,gap:2,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
-                    {/* <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
-                        <CustomButton sx={{}} onClick={() => handleView('attendance')} name={"attendance"} currentView ={currentView} >Attendance</CustomButton>
-                    </Grid>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={1.7}>               
-                        <CustomButton sx={{}} onClick={() => handleView('announcements')} name={"announcements"} currentView ={currentView} >Announcements</CustomButton>
-                    </Grid> */}
+                sx={{p:0,m:0,mb:1,gap:2,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleView('total_employees')} name={'total_employees'} currentView ={currentView} >Total employees: {countEmployee("","")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('total_employees')} name={'total_employees'} currentEmployeeType ={currentEmployeeType} >Total employees: {countEmployee("","")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleView('males')} name={'males'} currentView ={currentView} >Total males: {countEmployee("gender","male")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('males')} name={'males'} currentEmployeeType ={currentEmployeeType} >Total males: {countEmployee("gender","male")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleView('females')} name={'females'} currentView ={currentView} >Total females: {countEmployee("gender","female")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('females')} name={'females'} currentEmployeeType ={currentEmployeeType} >Total females: {countEmployee("gender","female")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleView('probational_period')} name={'probational_period'} currentView ={currentView} >Probation: {countEmployee("job_status","probation")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('probational_period')} name={'probational_period'} currentEmployeeType ={currentEmployeeType} >Probation: {countEmployee("job_status","probation")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleView('intern')} name={'intern'} currentView ={currentView} >Intern: {countEmployee("job_status","intern")}</CustomButton>
+                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('intern')} name={'intern'} currentEmployeeType ={currentEmployeeType} >Intern: {countEmployee("job_status","intern")}</CustomButton>
                     </Grid>
                 
  
@@ -117,6 +102,7 @@ const mapStateToProps = state => ({
     authError: state?.auth?.error,
     currentView: state?.dashboard?.currentView,
     employeeList: state?.employeeList?.employeeList,
+    currentEmployeeType: state?.employeeList?.currentEmployeeType,
   })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

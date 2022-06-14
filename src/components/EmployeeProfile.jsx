@@ -29,10 +29,10 @@ EmployeeList.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
-  attendanceList: state.attendanceList.attendanceList,
-  employeeList: state.employeeList.employeeList,
-  currentView: state.dashboard.currentView
+  user: state?.auth.user,
+  attendanceList: state?.attendanceList?.attendanceList,
+  employeeList: state?.employeeList?.employeeList,
+  currentView: state?.dashboard?.currentView
 
 })
 

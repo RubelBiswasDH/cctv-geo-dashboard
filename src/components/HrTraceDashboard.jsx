@@ -11,8 +11,6 @@ import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import NavBar from './NavBar'
 import LeftNav from './LeftNav'
 import AttendanceList from './AttendanceList'
-import EmployeeList from './EmployeeList'
-import FilterEmployee from './FilterEmployee'
 import EmployeeProfile from './EmployeeProfile'
 import SubNav from './SubNav'
 import Announcements from './Announcements'
@@ -105,7 +103,6 @@ class HrTraceDashboard extends React.PureComponent {
         <Box sx={{ ...containerStyles }}>
         
           <SubNav/>
-          {/* <FilterEmployee/> */}
           <Box
             sx={ theme => ({
               padding: {

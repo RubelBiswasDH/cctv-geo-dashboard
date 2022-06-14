@@ -69,6 +69,8 @@ class EmployeeList extends React.PureComponent {
   transformedEmployeeList = () => {
 
     const currentView = this.props.currentView
+    const { currentEmployeeType } = this.props
+
     var empData = (this.props.employeeList)?.map(emp => ({
       ...emp,
       profile:JSON.parse(emp.profile)
@@ -77,7 +79,7 @@ class EmployeeList extends React.PureComponent {
     var data = []
     if(empData.length > 0){
 
-    switch (currentView) {
+    switch (currentEmployeeType) {
         case 'intern':
             data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='intern');
             break;
@@ -224,10 +226,10 @@ EmployeeList.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  attendanceList: state.attendanceList.attendanceList,
-  employeeList: state.employeeList.employeeList,
-  currentView: state.dashboard.currentView
-
+  attendanceList: state?.attendanceList?.attendanceList,
+  employeeList: state?.employeeList?.employeeList,
+  currentView: state?.dashboard?.currentView,
+  currentEmployeeType: state?.employeeList?.currentEmployeeType
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
