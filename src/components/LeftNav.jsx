@@ -12,7 +12,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
+import CloseIcon from '@mui/icons-material/Close';
+import { Typography  } from '@mui/material';
 // import reducers
 import { setIsLeftNavOpen } from '../../src/redux/reducers/hrtReducer'
 
@@ -25,10 +26,10 @@ class LeftNav extends React.PureComponent {
         const { isLeftNavOpen } = this.props
         return(
             <Drawer
-            anchor={'left'}
-            open={ isLeftNavOpen }
-            hideBackdrop={ true }
-            variant='persistent'
+                anchor={'left'}
+                open={ isLeftNavOpen }
+                hideBackdrop={ true }
+                variant='persistent'
             // onClose={toggleDrawer(anchor, false)}
           >
             <Box
@@ -37,14 +38,15 @@ class LeftNav extends React.PureComponent {
             // onClick={toggleDrawer(anchor, false)}
             >
                 <List>
-                    <ListItem key={'text'} disablePadding>
+                    <ListItem key={'text'} disablePadding  sx={{display:'flex',justifyContent:'flex-end', width:'100%'}}>
+                        <Typography sx={{ display:'flex', width:'80%',pl:1, fontSize:'1.4em', justifyContent:'center',fontWeight:600}}>HR Trace</Typography> 
                         <ListItemButton
                             onClick={this._handleNavClose}
+                            sx={{display:'flex', width:'20%'}}
                         >
                             <ListItemIcon>
-                                <InboxIcon />
+                                <CloseIcon />
                             </ListItemIcon>
-                            <ListItemText primary={'text'} />
                         </ListItemButton>
                     </ListItem>
                 </List>

@@ -98,14 +98,11 @@ class HrTraceDashboard extends React.PureComponent {
     const { isTaskLoading, toastIsOpen, toastMessage, toastSeverity, isLeftNavOpen } = this.props
     return (<>
       <LeftNav />
-      <Box  sx={{
-        width: isLeftNavOpen ? `calc(100% - ${ 250 }px)`: '100%',
-        marginLeft: isLeftNavOpen ?  '250px' : 0,
-        }}>
-        <Box sx={ containerStyles }>
+      <Box  sx={{ width: isLeftNavOpen ? `calc(100% - ${ 250 }px)`: '100%',
+                  marginLeft: isLeftNavOpen ?  '250px' : 0, }}>
+        <NavBar />
+        <Box sx={{ ...containerStyles }}>
         
-        
-          <NavBar />
           <SubNav/>
           <FilterEmployee/>
           <Box
