@@ -22,12 +22,11 @@ export function login(user) {
             })
             .catch(err => {
                 console.error(err)
-
                 // Dispatch `authReducer` Values to Redux State
                 dispatch( setIsAuthenticated(false) )
                 dispatch( setToken(null) )
                 dispatch( setUser({}) )
-                dispatch( setError(err?.response?.data?.message ?? err?.message ?? '') )
+                dispatch( setError("User Not Found"))
 
                 // Set `isValidating`
                 dispatch( setIsValidating(false) )
@@ -102,7 +101,6 @@ export function validateUser(token) {
             })
             .catch(err => {
                 console.error(err)
-
                 // Dispatch authReducer Values to Redux State
                 dispatch( setIsAuthenticated(false) )
                 dispatch( setToken(null) )
