@@ -5,16 +5,17 @@ import { connect } from 'react-redux'
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
 import { Logout, AccountCircle } from '@mui/icons-material'
+import MenuIcon from '@mui/icons-material/Menu';
 
 // import descoLogo from '../assets/desco-logo.png'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
-import { playNotificationSound } from '../utils/utils'
-import {getUserProfile} from '../redux/actions/adminActions'
+import { getUserProfile } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
+import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
+import { setIsLeftNavOpen } from "../redux/reducers/hrtReducer"
 
 class NavBar extends React.PureComponent {
   state = {
@@ -66,9 +67,14 @@ class NavBar extends React.PureComponent {
     dispatch( logout() )
   }
 
-  
+  // handle left nav open 
+  _handleLeftNavOpen = () => {
+    const { dispatch } = this.props
+    dispatch(setIsLeftNavOpen(true))
+  }
+
   render() {
-    const { user, appBarProps } = this.props
+    const { user, appBarProps, isLeftNavOpen } = this.props
     const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
@@ -78,7 +84,19 @@ class NavBar extends React.PureComponent {
           <Box sx={ appBarStyles }>
             <Grid container spacing={ 0 }>
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={ brandContainerStyles }>
-                <Box>
+               
+                <Box sx={{display:'flex'}}>
+                { !isLeftNavOpen &&
+                      <IconButton
+                        color='inherit'
+                        aria-label='open drawer'
+                        size='small'
+                        onClick={ this._handleLeftNavOpen }
+                        sx={{mr:1}}
+                      >
+                        <MenuIcon color="primary" fontSize='small' />
+                      </IconButton>
+                  }
                   <a href='/'>
                     <img
                       src={ bkoiLogo }
@@ -257,27 +275,20 @@ const autocompleteStyles = {
 NavBar.propTypes = {
   user: PropTypes.object,
   appBarProps: PropTypes.object,
-  pushNotifications: PropTypes.array,
-  searchQuery: PropTypes.string,
-  tasks: PropTypes.array,
-  autocompleteSelectedTask: PropTypes.object,
-  sndList: PropTypes.array,
+  isLeftNavOpen: PropTypes.bool,
   dispatch: PropTypes.func
 }
 
 NavBar.defaultProps = {
   user: {},
   appBarProps: {},
-  pushNotifications: [],
-  searchQuery: '',
-  tasks: [],
-  autocompleteSelectedTask: null,
-  sndList: [],
+  isLeftNavOpen: false,
   dispatch: () => null
 }
 
 const mapStateToProps = state => ({
   user: state?.auth?.user,
+  isLeftNavOpen: state?.hrt?.isLeftNavOpen,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
