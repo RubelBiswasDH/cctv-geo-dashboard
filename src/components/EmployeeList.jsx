@@ -19,12 +19,16 @@ import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
 import dayjs from 'dayjs'
 
 const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
-  { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
-  { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'email', headerName: 'Email', minWidth: 150, flex: 1, sortable: false, filter: false,filterable: false },
-  { field: 'phone', headerName: 'Phone', minWidth: 150,flex:1, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
+  // { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
+  { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'email', headerName: 'Email', minWidth: 150, flex: .75, sortable: false, filter: false,filterable: false },
+  { field: 'phone', headerName: 'Mobile Number', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },
+  { field: 'designation', headerName: 'Designation', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'department', headerName: 'Department', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+      
+  { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
+
 ]
 
 class EmployeeList extends React.PureComponent {
@@ -69,6 +73,8 @@ class EmployeeList extends React.PureComponent {
   transformedEmployeeList = () => {
 
     const currentView = this.props.currentView
+    const { currentEmployeeType } = this.props
+
     var empData = (this.props.employeeList)?.map(emp => ({
       ...emp,
       profile:JSON.parse(emp.profile)
@@ -77,7 +83,7 @@ class EmployeeList extends React.PureComponent {
     var data = []
     if(empData.length > 0){
 
-    switch (currentView) {
+    switch (currentEmployeeType) {
         case 'intern':
             data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='intern');
             break;
@@ -97,6 +103,8 @@ class EmployeeList extends React.PureComponent {
     }
     return data.map((emp,i) => ({
       ...emp,
+      designation:emp?.designation,
+      department: emp?.department,
       serial_no:i+1,
       viewProfile: () => {
         this.props.dispatch(setProfileEdit(false))
@@ -161,7 +169,7 @@ class EmployeeList extends React.PureComponent {
         >
           <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
         </StyledDialog>
-        <Snackbar
+        {/* <Snackbar
           anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
           open={ Boolean(feedback) }
           autoHideDuration={ 10000 }
@@ -199,7 +207,7 @@ class EmployeeList extends React.PureComponent {
           >
             { feedback?.message ? feedback.message : '' }
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
       </Box>
     )
   }
@@ -224,10 +232,10 @@ EmployeeList.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  attendanceList: state.attendanceList.attendanceList,
-  employeeList: state.employeeList.employeeList,
-  currentView: state.dashboard.currentView
-
+  attendanceList: state?.attendanceList?.attendanceList,
+  employeeList: state?.employeeList?.employeeList,
+  currentView: state?.dashboard?.currentView,
+  currentEmployeeType: state?.employeeList?.currentEmployeeType
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

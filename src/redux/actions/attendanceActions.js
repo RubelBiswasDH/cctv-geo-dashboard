@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import { setAttendance, setError } from '../reducers/attendanceReducer'
-
+import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
 // Get Attendance
 export function getAttendance(params) {
     const token = getAuthToken();
@@ -10,8 +10,10 @@ export function getAttendance(params) {
         axios.get(API.GET_ALL_ATTENDANCE, { headers: { Authorization: `Bearer ${ token }` }, params } )
             .then(res => {
                 const attendanceData = res.data
-                if(attendanceData) {   
-                    dispatch(setAttendance(attendanceData.attendence))
+                if(attendanceData) {  
+
+                    const attendence = attendanceWithAbsenceInfo(attendanceData.attendence)
+                    dispatch(setAttendance(attendence))
                 }
             })
             .catch(err => {

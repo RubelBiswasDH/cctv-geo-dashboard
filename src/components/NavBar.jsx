@@ -5,16 +5,17 @@ import { connect } from 'react-redux'
 // Import Components
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
 import { Logout, AccountCircle } from '@mui/icons-material'
+import MenuIcon from '@mui/icons-material/Menu';
 
 // import descoLogo from '../assets/desco-logo.png'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
-import { playNotificationSound, stopNotificationSound } from '../utils/utils'
-import {getUserProfile} from '../redux/actions/adminActions'
+import { getUserProfile } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
+import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
+import { setIsLeftNavOpen } from "../redux/reducers/hrtReducer"
 
 class NavBar extends React.PureComponent {
   state = {
@@ -29,22 +30,7 @@ class NavBar extends React.PureComponent {
     const user = JSON.parse(localStorage.getItem('user'))
     this.setState({user:user})
   }
-  componentDidUpdate = (prevProps) => {
-    const { pushNotifications } = this.props
 
-    // Check if there is a new push notification
-    if (pushNotifications.length > prevProps.pushNotifications.length) {
-
-      // Check if the notification is for an emergency task
-      if (pushNotifications[0]?.task?.is_emergency === 1) {
-        // Play emergency notification sound
-        playNotificationSound('emergency')
-      } else {
-        // Play normal notification sound
-        playNotificationSound()
-      }
-    }    
-  }
   _getUserProfile = () => {
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(setProfileEdit(false))
@@ -70,14 +56,6 @@ class NavBar extends React.PureComponent {
     this.setState({ accMenuAnchorEl: null })
   }
 
-  // Open Notificataions Menu
-  _openNotificataionsMenu = e => {
-    this.setState({ notificationsMenuAnchorEl: e.currentTarget })
-
-    // Stop notification sound
-    stopNotificationSound() 
-  }
-
   // Close Notificataions Menu
   _closeNotificataionsMenu = () => {
     this.setState({ notificationsMenuAnchorEl: null })
@@ -89,31 +67,14 @@ class NavBar extends React.PureComponent {
     dispatch( logout() )
   }
 
-  // On Notification Click
-  _onNotificationClick = notification => {
-    const { tasks } = this.props
-
-    // Open Task Details Dialog
-    const task = tasks.find(t => t.id === notification.task.id)    
+  // handle left nav open 
+  _handleLeftNavOpen = () => {
+    const { dispatch } = this.props
+    dispatch(setIsLeftNavOpen(true))
   }
 
-  // Sort Norifications By Emergency
-  _sortByEmergency = notifications => {
-    if(!notifications) {
-      return []
-    }
-
-    return [ ...notifications ].sort((n1, n2) => {
-      const n1Em = n1?.task?.is_emergency ?? 0
-      const n2Em = n2?.task?.is_emergency ?? 0
-
-      return n2Em - n1Em
-    })
-  }
-
-  
   render() {
-    const { user, appBarProps, pushNotifications, searchQuery, tasks, autocompleteSelectedTask } = this.props
+    const { user, appBarProps, isLeftNavOpen } = this.props
     const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
@@ -123,7 +84,19 @@ class NavBar extends React.PureComponent {
           <Box sx={ appBarStyles }>
             <Grid container spacing={ 0 }>
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={ brandContainerStyles }>
-                <Box>
+               
+                <Box sx={{display:'flex'}}>
+                { !isLeftNavOpen &&
+                      <IconButton
+                        color='inherit'
+                        aria-label='open drawer'
+                        size='small'
+                        onClick={ this._handleLeftNavOpen }
+                        sx={{mr:1}}
+                      >
+                        <MenuIcon color="primary" fontSize='small' />
+                      </IconButton>
+                  }
                   <a href='/'>
                     <img
                       src={ bkoiLogo }
@@ -302,27 +275,20 @@ const autocompleteStyles = {
 NavBar.propTypes = {
   user: PropTypes.object,
   appBarProps: PropTypes.object,
-  pushNotifications: PropTypes.array,
-  searchQuery: PropTypes.string,
-  tasks: PropTypes.array,
-  autocompleteSelectedTask: PropTypes.object,
-  sndList: PropTypes.array,
+  isLeftNavOpen: PropTypes.bool,
   dispatch: PropTypes.func
 }
 
 NavBar.defaultProps = {
   user: {},
   appBarProps: {},
-  pushNotifications: [],
-  searchQuery: '',
-  tasks: [],
-  autocompleteSelectedTask: null,
-  sndList: [],
+  isLeftNavOpen: false,
   dispatch: () => null
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
+  user: state?.auth?.user,
+  isLeftNavOpen: state?.hrt?.isLeftNavOpen,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

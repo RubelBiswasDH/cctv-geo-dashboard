@@ -77,11 +77,15 @@ const theme = createTheme({
       main: '#5F5F5F',
       contrastText: '#fff',
     },
+    iris: {
+      main: '#7879F1',
+      contrastText: '#fff',
+    },
     white: {
       main:'white',
       contrastText: '#fff',
     },
-    liteGreen: {
+    lightGreen: {
       main: '#9AD9B0',
       contrastText: '#000',
     },
@@ -91,6 +95,10 @@ const theme = createTheme({
     },
     orangeRed: {
       main: '#FF4500',
+      contrastText: '#000',
+    },
+    lightSalmon: {
+      main: '#FFA07A',
       contrastText: '#000',
     },
     btnGreen: {
@@ -110,7 +118,7 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     tableHeader: {
-      main: '#8CCA9E',
+      main: '#FFFFFF',
       contrastText: '#00',
     },
     text: {

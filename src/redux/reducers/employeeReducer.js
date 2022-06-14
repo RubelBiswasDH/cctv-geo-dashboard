@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     employeeList: [],
     employee: {},
+    currentEmployeeType:'',
     error: ''
 }
 
@@ -18,9 +19,12 @@ const employeeSlice = createSlice({
         },
     setError: (state, action) => {
       state.error = action.payload
+    },
+    setCurrentEmployeeType: ( state, action ) => {
+      state.currentEmployeeType = action.payload
     }
   }
 })
 
-export const { setEmployee, setEmployeeList, setError } = employeeSlice.actions
+export const { setEmployee, setEmployeeList, setCurrentEmployeeType, setError } = employeeSlice.actions
 export default employeeSlice.reducer

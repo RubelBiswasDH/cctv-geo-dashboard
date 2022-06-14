@@ -308,9 +308,9 @@ Login.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  employeeEmail: state.auth.employeeEmail,
-  password: state.auth.password,
-  authError: state.auth.error
+  employeeEmail: state?.auth?.employeeEmail,
+  password: state?.auth?.password,
+  authError: state?.auth?.error
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

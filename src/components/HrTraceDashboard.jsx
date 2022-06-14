@@ -9,9 +9,9 @@ import { ArrowRightAlt } from '@mui/icons-material'
 import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import NavBar from './NavBar'
+import LeftNav from './LeftNav'
 import AttendanceList from './AttendanceList'
-import EmployeeList from './EmployeeList'
-import FilterEmployee from './FilterEmployee'
+import EmployeeProfile from './EmployeeProfile'
 import SubNav from './SubNav'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
@@ -27,6 +27,7 @@ import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
+import { setIsLeftNavOpen } from '../redux/reducers/hrtReducer'
 
 class HrTraceDashboard extends React.PureComponent {
   state = {
@@ -41,12 +42,15 @@ class HrTraceDashboard extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    dispatch( getEmployee() )
     dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
     this.setState({ start_date, end_date })
 
     // Activate Socket
     dispatch( activateSocket_A() )
-    dispatch( getEmployee() )
+
   }
 
   componentWillUnmount() {
@@ -77,8 +81,6 @@ class HrTraceDashboard extends React.PureComponent {
   _handleOnSubmit = () => {
     const { start_date, end_date } = this.state
     const { dispatch } = this.props
-
-    // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
   // Handle Report Download
@@ -90,106 +92,114 @@ class HrTraceDashboard extends React.PureComponent {
 
   render() {
     const { start_date, end_date } = this.state
-    const { isTaskLoading, toastIsOpen, toastMessage, toastSeverity } = this.props
-    return (
-      <Box sx={ containerStyles }>
+    const { isTaskLoading, toastIsOpen, toastMessage, toastSeverity, isLeftNavOpen } = this.props
+    return (<>
+      <LeftNav />
+      <Box  sx={{ width: isLeftNavOpen ? `calc(100% - ${ 250 }px)`: '100%',
+                  marginLeft: isLeftNavOpen ?  '250px' : 0, }}>
         <NavBar />
-        <SubNav/>
-        <FilterEmployee/>
-        <Box
-          sx={ theme => ({
-            padding: {
-              xs: `${ theme.spacing(2) }`,
-              md: theme.spacing(4)
-            },
-            width: '100%'
-          })}
-        >
-          <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: 'none',boxSizing:'border-box',pl:0}}>
+        <Box sx={{ ...containerStyles }}>
+        
+          <SubNav/>
+          <Box
+            sx={ theme => ({
+              padding: {
+                xs: `${ theme.spacing(2) }`,
+                md: theme.spacing(4)
+              },
+              width: '100%'
+            })}
+          >
+            <Grid container={ true } spacing={4} rowSpacing={2}  sx={{border: 'none',boxSizing:'border-box',pl:0}}>
 
-            <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
-              <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
-              {
-                (this.props.currentView === 'attendance') &&
-                <Stack spacing={ 1 } direction='row'>
-                  <LocalizationProvider dateAdapter={ AdapterDayjs }>
-                      <DateRangePicker
-                          value={ [ start_date, end_date ] }
-                          onChange={ this._handleDateRangeChange }
-                          disableMaskedInput={ true }
-                          inputFormat={ 'DD-MMM-YYYY' }
-                          renderInput={(startProps, endProps) => (                                            
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                          <TextField {...startProps} size={ 'small' } fullWidth={ true } />
-                                      <ArrowRightAlt />
-                                      <TextField {...endProps} size={ 'small' } fullWidth={ true } />
-                                  </Box>                                            
-                              
-                          )}
-                          PopperProps={{
-                            placement: 'bottom-start',
-                          }}
-                          onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
-                      />
-                  </LocalizationProvider>
-                  <LoadingButton 
-                      loading={ isTaskLoading }
-                      variant={ 'contained' }
-                      onClick={ this._handleOnSubmit }
-                      size={ 'small' }
-                      disableTouchRipple={ true }                      
-                  >
-                      { 'Get Data' }
-                  </LoadingButton>
-                  <Button
-                    onClick={ this._handleReportDownload } 
-                    variant="contained" 
-                    endIcon={<FileDownloadOutlinedIcon />}>
-                    {"Download Report"}
-                  </Button>
-                </Stack>
-              }
+              <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
+                <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
+                {
+                  (this.props.currentView === 'df') &&
+                  <Stack spacing={ 1 } direction='row'>
+                    <LocalizationProvider dateAdapter={ AdapterDayjs }>
+                        <DateRangePicker
+                            value={ [ start_date, end_date ] }
+                            onChange={ this._handleDateRangeChange }
+                            disableMaskedInput={ true }
+                            inputFormat={ 'DD-MMM-YYYY' }
+                            renderInput={(startProps, endProps) => (                                            
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                                        <ArrowRightAlt />
+                                        <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                                    </Box>                                            
+                                
+                            )}
+                            PopperProps={{
+                              placement: 'bottom-start',
+                            }}
+                            onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+                        />
+                    </LocalizationProvider>
+                    <LoadingButton 
+                        loading={ isTaskLoading }
+                        variant={ 'contained' }
+                        onClick={ this._handleOnSubmit }
+                        size={ 'small' }
+                        disableTouchRipple={ true }                      
+                    >
+                        { 'Get Data' }
+                    </LoadingButton>
+                    <Button
+                      onClick={ this._handleReportDownload } 
+                      variant="contained" 
+                      endIcon={<FileDownloadOutlinedIcon />}>
+                      {"Download Report"}
+                    </Button>
+                  </Stack>
+                }
 
-              </Box>                                        
+                </Box>                                        
+              </Grid>
+
+              <Grid
+                item={ true }
+                xs={ 12 }
+
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                }}
+              > 
+                {
+                  (this.props.currentView === 'admin') && <AdminPanel />
+                }
+                {
+                  (this.props.currentView === 'attendance') && <AttendanceList />
+                }
+                {
+                  (this.props.currentView === 'announcements') && <Announcements />
+                }
+                 {
+                  (this.props.currentView === 'employee_profile') && <EmployeeProfile />
+                }
+                {
+                  (this.props.currentView === 'profile') && <Profile />
+                }
+                {/* {
+                  (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
+                } */}
+              </Grid>
             </Grid>
-
-            <Grid
-              item={ true }
-              xs={ 12 }
-
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-              }}
-            > 
-              {
-                (this.props.currentView === 'admin') && <AdminPanel />
-              }
-              {
-                (this.props.currentView === 'attendance') && <AttendanceList />
-              }
-              {
-                (this.props.currentView === 'announcements') && <Announcements />
-              }
-              {
-                (this.props.currentView === 'profile') && <Profile />
-              }
-              {
-                (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
-              }
-            </Grid>
-          </Grid>
+          </Box>
+          <Snackbar 
+            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+            open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
+            <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
+              {toastMessage}
+            </Alert>
+          </Snackbar>
         </Box>
-        <Snackbar 
-          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-          open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
-          <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
-            {toastMessage}
-          </Alert>
-        </Snackbar>
       </Box>
+      </>
     )
   }
 }
@@ -211,6 +221,7 @@ HrTraceDashboard.propTypes = {
   toastIsOpen: PropTypes.bool,
   toastMessage: PropTypes.string,
   toastSeverity: PropTypes.string,
+  isLeftNavOpen: PropTypes.bool,
   dispatch: PropTypes.func
 }
 
@@ -220,6 +231,7 @@ HrTraceDashboard.defaultProps = {
   toastIsOpen: false,
   toastMessage: '',
   toastSeverity: 'success',
+  isLeftNavOpen: false,
   dispatch: () => null
 }
 
@@ -228,7 +240,8 @@ const mapStateToProps = state => ({
   currentView: state?.dashboard?.currentView,
   toastIsOpen: state?.dashboard?.toastIsOpen,
   toastMessage: state?.dashboard?.toastMessage,
-  toastSeverity: state?.dashboard?.toastSeverity
+  toastSeverity: state?.dashboard?.toastSeverity,
+  isLeftNavOpen: state?.hrt?.isLeftNavOpen,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

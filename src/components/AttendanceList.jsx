@@ -1,19 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import AdapterDayjs from '@mui/lab/AdapterDayjs'
+import { ArrowRightAlt } from '@mui/icons-material'
+import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Box, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
-import { getAttendance }  from '../redux/actions/attendanceActions'
-import { setFilterOptions, updateFilterOptions } from '../redux/reducers/attendanceReducer'
+import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
+import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
+import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+
 import dayjs from 'dayjs'
 
-import {unionArrayOfObjects} from '../utils/utils'
+import { unionArrayOfObjects } from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
@@ -26,7 +32,7 @@ class AttendanceList extends React.PureComponent {
  
   state = {
     start_date:null,
-    start_date: null,
+    end_date: null,
     isTaskDetailsOpen: false,
     isTaskTimelineOpen: false,
     selectedTask: {},
@@ -44,20 +50,18 @@ class AttendanceList extends React.PureComponent {
     let date = new Date()
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const { dispatch } = this.props
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     const attendanceList = this.props.attendanceList
     const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
-      this.setState({ attendanceList })
+      this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
+      // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
     }
     this.setState({ start_date, end_date })
     this._getUniqueDates()
-
   }
 
   componentDidUpdate(prevProps) {
@@ -71,13 +75,15 @@ class AttendanceList extends React.PureComponent {
     dispatch(setFilterOptions({}))
   }
   _getUniqueDates = () => {
-      const { attendanceList } = this.props
+      const {  attendanceList, dispatch } = this.props
       let dates = []
-      attendanceList.forEach(data => {
-        dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
-      })
-      const unique = [...new Set(dates)]
-      this.setState(() => ({ uniqueDates:unique }))
+      if(attendanceList && attendanceList.length){
+        attendanceList.forEach(data => {
+          dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+        })
+        const unique = [...new Set(dates)]
+        dispatch(setUniqueDates(unique))
+      }
     }
     _getUniqueEmployee = (list) => {
       const employees = unionArrayOfObjects([], list, 'user_id')
@@ -85,8 +91,7 @@ class AttendanceList extends React.PureComponent {
 
     }
   _generateAttendanceColumns = () => {
-    const { uniqueDates } = this.state
-    
+    const { uniqueDates } = this.props
     const dyanmicColumns = uniqueDates.map(
        (date) => ( { 
          field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
@@ -104,19 +109,21 @@ class AttendanceList extends React.PureComponent {
         attList = attList.filter( a => a.is_late)
       }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='In Time'){
-        attList = attList.filter( a => !a.is_late)
+        attList = attList.filter( a => !a.is_late && !a?.is_absent)
+      }
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='Absent'){
+        attList = attList.filter( a => a?.is_absent)
       }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
         attList = attList
       }
       if(filterOptions && filterOptions?.name){
-       attList = attList.filter( a => a.name.startsWith(filterOptions.name))
+       attList = attList.filter( a => a?.name?.toLowerCase().startsWith(filterOptions?.name?.toLowerCase()))
       }
       return attList
     }
 
   mappedAttendanceInfo = () => {
-    const { announcements } = this.props;
 
     const attendanceList  = this._filteredAttendance()
     
@@ -130,6 +137,12 @@ class AttendanceList extends React.PureComponent {
       let l = 0
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
+          if(a.is_absent){
+              const date = a?.date
+              abs++
+              individualAttendance[date] = "A"
+          }
+          else{
           const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
           if (enter_time) {
             if(a.is_late){
@@ -141,9 +154,8 @@ class AttendanceList extends React.PureComponent {
               p++
             }
           }
-          else{
-            abs++
-          }
+        }
+          
         } })
 
         getIndividualAttendance(a?.user_id)
@@ -194,27 +206,90 @@ class AttendanceList extends React.PureComponent {
     // Open Task Details Dialog with Selected Task
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
   }
-
+     // Handle Date Range Change
+     _handleDateRangeChange = dateValues => {
+      const { start_date, end_date } = this.state            
+  
+      // Get start date and end date from date range picker
+      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
+      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+  
+      // Set state for start date and end date accordingly
+      this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+    }
+  
+    // Handle Get Data
+    _handleOnSubmit = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+      dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    }
+    // Handle Report Download
+    _handleReportDownload = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+      dispatch( getAttendanceReport({start_date: `${start_date}`, end_date: `${end_date}`}))
+     }
+  
   render() {
-    const { dispatch, isTaskLoading, filterOptions } = this.props
+    const { dispatch, isTaskLoading, filterOptions, isDataLoading } = this.props
     const { feedback } = this.state
-    
+    const { start_date, end_date } = this.state
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='54vh'>
-        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
-          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
-          <FormControl fullWidth sx={{p:0,m:0}} ize="small">
-            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+        <Stack spacing={ 1 } direction='row'>
+        <LocalizationProvider dateAdapter={ AdapterDayjs }>
+            <DateRangePicker
+                value={ [ start_date, end_date ] }
+                onChange={ this._handleDateRangeChange }
+                disableMaskedInput={ true }
+                inputFormat={ 'DD-MMM-YYYY' }
+                renderInput={(startProps, endProps) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                            <ArrowRightAlt />
+                            <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                )}
+                PopperProps={{
+                  placement: 'bottom-start',
+                }}
+                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+            />
+        </LocalizationProvider>
+        <LoadingButton 
+            loading={ isDataLoading }
+            variant={ 'contained' }
+            onClick={ this._handleOnSubmit }
+            size={ 'small' }
+            disableTouchRipple={ true }                      
+        >
+            { 'Get Data' }
+        </LoadingButton>
+        <Button
+          onClick={ this._handleReportDownload } 
+          variant="contained" 
+          endIcon={<FileDownloadOutlinedIcon />}>
+          {"Download Report"}
+        </Button>
+      </Stack>
+        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
+          {/* <Typography sx={{fontSize:'1em',border:'1px solid black'}}>Filter </Typography> */}
+          <FormControl fullWidth sx={{p:0,m:0}} size="small">
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value= {filterOptions?.type ?? 'All'}
                 label="Type"
                 onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+                sx = {{fontSize: '.75em'}}
               >                 
                 <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Absent"}>Absent</MenuItem>
                 <MenuItem value={"Late"}>Late</MenuItem>
                 <MenuItem value={"In Time"}>In Time</MenuItem>
               </Select>
@@ -281,13 +356,16 @@ class AttendanceList extends React.PureComponent {
 const FilterField = (props) => {
   const { dispatch, action, value, field, label} = props
   return (
-    <FormControl fullWidth>
+    <FormControl size="small" fullWidth>
       <TextField
             value={ value } 
+            size="small"
             onChange={ 
               e => dispatch(action({ [field]: e.target.value })) } 
             label={label} 
-            fullWidth> 
+            fullWidth
+            sx = {{fontSize: '.75em'}}
+            > 
       </TextField>
     </FormControl>
   )
@@ -320,7 +398,8 @@ const mapStateToProps = state => ({
   attendanceList: state?.attendanceList?.attendanceList,
   announcements: state?.announcements?.announcements,
   employeeList: state?.employeeList?.employeeList,
-  filterOptions: state?.attendanceList?.filterOptions
+  filterOptions: state?.attendanceList?.filterOptions,
+  uniqueDates: state?.attendanceList?.uniqueDates,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

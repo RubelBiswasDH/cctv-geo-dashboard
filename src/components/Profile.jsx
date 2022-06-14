@@ -205,9 +205,19 @@ GridContent.defaultProps = {
     style: {}
 }
 
+Profile.propTypes = {
+    userProfile:PropTypes.array,
+    profileEdit:PropTypes.bool
+}
+
+Profile.defaultProps = {
+    userProfile:{},
+    profileEdit:false
+}
+
 const mapStateToProps = state => ({
-    userProfile: state.admin.userProfile,
-    profileEdit: state.admin.profileEdit,
+    userProfile: state?.admin?.userProfile,
+    profileEdit: state?.admin?.profileEdit,
 
 })
 
