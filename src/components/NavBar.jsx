@@ -11,7 +11,7 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { logout } from '../redux/actions/authActions'
-import { playNotificationSound, stopNotificationSound } from '../utils/utils'
+import { playNotificationSound } from '../utils/utils'
 import {getUserProfile} from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import {setUserProfile, setProfileEdit} from "../redux/reducers/adminReducer"
@@ -29,22 +29,7 @@ class NavBar extends React.PureComponent {
     const user = JSON.parse(localStorage.getItem('user'))
     this.setState({user:user})
   }
-  componentDidUpdate = (prevProps) => {
-    const { pushNotifications } = this.props
 
-    // Check if there is a new push notification
-    if (pushNotifications.length > prevProps.pushNotifications.length) {
-
-      // Check if the notification is for an emergency task
-      if (pushNotifications[0]?.task?.is_emergency === 1) {
-        // Play emergency notification sound
-        playNotificationSound('emergency')
-      } else {
-        // Play normal notification sound
-        playNotificationSound()
-      }
-    }    
-  }
   _getUserProfile = () => {
         this.props.dispatch(setUserProfile({}))
         this.props.dispatch(setProfileEdit(false))
@@ -70,14 +55,6 @@ class NavBar extends React.PureComponent {
     this.setState({ accMenuAnchorEl: null })
   }
 
-  // Open Notificataions Menu
-  _openNotificataionsMenu = e => {
-    this.setState({ notificationsMenuAnchorEl: e.currentTarget })
-
-    // Stop notification sound
-    stopNotificationSound() 
-  }
-
   // Close Notificataions Menu
   _closeNotificataionsMenu = () => {
     this.setState({ notificationsMenuAnchorEl: null })
@@ -89,31 +66,9 @@ class NavBar extends React.PureComponent {
     dispatch( logout() )
   }
 
-  // On Notification Click
-  _onNotificationClick = notification => {
-    const { tasks } = this.props
-
-    // Open Task Details Dialog
-    const task = tasks.find(t => t.id === notification.task.id)    
-  }
-
-  // Sort Norifications By Emergency
-  _sortByEmergency = notifications => {
-    if(!notifications) {
-      return []
-    }
-
-    return [ ...notifications ].sort((n1, n2) => {
-      const n1Em = n1?.task?.is_emergency ?? 0
-      const n2Em = n2?.task?.is_emergency ?? 0
-
-      return n2Em - n1Em
-    })
-  }
-
   
   render() {
-    const { user, appBarProps, pushNotifications, searchQuery, tasks, autocompleteSelectedTask } = this.props
+    const { user, appBarProps } = this.props
     const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)

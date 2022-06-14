@@ -13,7 +13,7 @@ import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
-import {unionArrayOfObjects} from '../utils/utils'
+import { unionArrayOfObjects } from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
   { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
