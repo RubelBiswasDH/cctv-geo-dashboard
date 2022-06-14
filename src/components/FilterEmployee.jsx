@@ -7,10 +7,10 @@ const CustomButton = (props) => {
         const {sx, name, currentEmployeeType} = props
         const btnStyle = {
             textTransform:'none',
-            borderRadius: '.8em',
+            // borderRadius: '.8em',
             minWidth:'100%',
-            background:'transparent',
-            border: '1px solid black',
+            background:'iris',
+            // border: '1px solid black',
         }
 
         const activeBtn = (currentEmployeeType === name)? {background:'#ADD8E6'}:{}
@@ -20,7 +20,8 @@ const CustomButton = (props) => {
         }
 
         return (
-            <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
+            <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="iris"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'#FFFFFF', ...sx}}>{props.children}</Typography></Button>
+            // <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="gray"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'black', ...sx}}>{props.children}</Typography></Button>
         );
 }
 

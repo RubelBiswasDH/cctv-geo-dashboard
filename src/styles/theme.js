@@ -77,6 +77,10 @@ const theme = createTheme({
       main: '#5F5F5F',
       contrastText: '#fff',
     },
+    iris: {
+      main: '#7879F1',
+      contrastText: '#fff',
+    },
     white: {
       main:'white',
       contrastText: '#fff',
@@ -114,7 +118,7 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     tableHeader: {
-      main: '#8CCA9E',
+      main: '#FFFFFF',
       contrastText: '#00',
     },
     text: {

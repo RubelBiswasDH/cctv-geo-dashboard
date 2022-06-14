@@ -99,9 +99,26 @@ class StyledDataGrid extends React.PureComponent {
                                             whiteSpace: 'initial'
                                         }}
                                     >
-                                        {
-                                            cellValues.field === 'name' ?
-                                                <Typography sx={{fontSize:'1.5em',fontWeight:500}}>{cellValues.value}</Typography>
+                                        {       
+                                                cellValues.field === 'name' ?
+                                                <Button 
+                                                    onClick={cellValues.row.viewProfile}
+                                                    sx={{display:'flex',justifyContent:'flex-start'}}
+                                                    > 
+                                                    <Typography 
+                                                        sx={{
+                                                            fontFamily:'Roboto',
+                                                            fontSize:'16px',
+                                                            fontWeight:400,
+                                                            fontStyle: 'normal',
+                                                            color:'#007AFF',
+                                                            textTransform:'none',
+                                                            textDecoration: 'underline',
+                                                            }}
+                                                            >
+                                                            {cellValues.value}
+                                                    </Typography>
+                                                </Button>
                                                 : cellValues.field === 'is_late' 
                                                 ? cellValues.value === 'Yes'
                                                 ? <Chip color='warning' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}}/>
