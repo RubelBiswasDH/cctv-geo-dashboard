@@ -81,8 +81,6 @@ class HrTraceDashboard extends React.PureComponent {
   _handleOnSubmit = () => {
     const { start_date, end_date } = this.state
     const { dispatch } = this.props
-
-    // Load Tasks
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
   // Handle Report Download
@@ -117,7 +115,7 @@ class HrTraceDashboard extends React.PureComponent {
               <Grid item={ true } xs={ 12 } flexDirection={ 'row' }>
                 <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
                 {
-                  (this.props.currentView === 'attendance') &&
+                  (this.props.currentView === 'df') &&
                   <Stack spacing={ 1 } direction='row'>
                     <LocalizationProvider dateAdapter={ AdapterDayjs }>
                         <DateRangePicker

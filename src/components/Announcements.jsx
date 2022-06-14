@@ -167,11 +167,12 @@ class Announcements extends React.PureComponent {
             { 'Get Data' }
         </LoadingButton>
       </Stack>
-        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
-          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+          <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
+          {/* <Typography sx={{fontSize:'1em'}}>Filter </Typography> */}
+          <FormControl size={'small'} fullWidth>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
               <Select
+                sx = {{fontSize: '.75em'}}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value= {filterOptions?.type ?? 'ALL'}
@@ -222,6 +223,8 @@ const FilterField = (props) => {
             onChange={ 
               e => dispatch(action({ [field]: e.target.value })) } 
             label={label} 
+            size={'small'}
+            sx = {{fontSize: '.75em'}}
             fullWidth> 
       </TextField>
     </FormControl>

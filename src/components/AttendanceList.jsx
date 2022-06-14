@@ -1,9 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import AdapterDayjs from '@mui/lab/AdapterDayjs'
+import { ArrowRightAlt } from '@mui/icons-material'
+import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Box, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
@@ -11,6 +15,8 @@ import StyledDataGrid from './common/StyledDataGrid'
 import { stopNotificationSound } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
+import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+
 import dayjs from 'dayjs'
 
 import { unionArrayOfObjects } from '../utils/utils'
@@ -26,7 +32,7 @@ class AttendanceList extends React.PureComponent {
  
   state = {
     start_date:null,
-    start_date: null,
+    end_date: null,
     isTaskDetailsOpen: false,
     isTaskTimelineOpen: false,
     selectedTask: {},
@@ -200,25 +206,87 @@ class AttendanceList extends React.PureComponent {
     // Open Task Details Dialog with Selected Task
     this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
   }
-
+     // Handle Date Range Change
+     _handleDateRangeChange = dateValues => {
+      const { start_date, end_date } = this.state            
+  
+      // Get start date and end date from date range picker
+      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
+      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+  
+      // Set state for start date and end date accordingly
+      this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+    }
+  
+    // Handle Get Data
+    _handleOnSubmit = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+      dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    }
+    // Handle Report Download
+    _handleReportDownload = () => {
+      const { start_date, end_date } = this.state
+      const { dispatch } = this.props
+      dispatch( getAttendanceReport({start_date: `${start_date}`, end_date: `${end_date}`}))
+     }
+  
   render() {
-    const { dispatch, isTaskLoading, filterOptions } = this.props
+    const { dispatch, isTaskLoading, filterOptions, isDataLoading } = this.props
     const { feedback } = this.state
-    
+    const { start_date, end_date } = this.state
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='54vh'>
-        <Box sx={{display:'flex',flexDirection:'column',gap:2}}>
-          <Typography sx={{fontSize:'1em'}}>Filter </Typography>
-          <FormControl fullWidth sx={{p:0,m:0}} ize="small">
-            <InputLabel id="demo-simple-select-label">Late</InputLabel>
+        <Stack spacing={ 1 } direction='row'>
+        <LocalizationProvider dateAdapter={ AdapterDayjs }>
+            <DateRangePicker
+                value={ [ start_date, end_date ] }
+                onChange={ this._handleDateRangeChange }
+                disableMaskedInput={ true }
+                inputFormat={ 'DD-MMM-YYYY' }
+                renderInput={(startProps, endProps) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                            <ArrowRightAlt />
+                            <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                )}
+                PopperProps={{
+                  placement: 'bottom-start',
+                }}
+                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+            />
+        </LocalizationProvider>
+        <LoadingButton 
+            loading={ isDataLoading }
+            variant={ 'contained' }
+            onClick={ this._handleOnSubmit }
+            size={ 'small' }
+            disableTouchRipple={ true }                      
+        >
+            { 'Get Data' }
+        </LoadingButton>
+        <Button
+          onClick={ this._handleReportDownload } 
+          variant="contained" 
+          endIcon={<FileDownloadOutlinedIcon />}>
+          {"Download Report"}
+        </Button>
+      </Stack>
+        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
+          {/* <Typography sx={{fontSize:'1em',border:'1px solid black'}}>Filter </Typography> */}
+          <FormControl fullWidth sx={{p:0,m:0}} size="small">
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value= {filterOptions?.type ?? 'All'}
                 label="Type"
                 onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+                sx = {{fontSize: '.75em'}}
               >                 
                 <MenuItem value={"All"}>All</MenuItem>
                 <MenuItem value={"Absent"}>Absent</MenuItem>
@@ -288,13 +356,16 @@ class AttendanceList extends React.PureComponent {
 const FilterField = (props) => {
   const { dispatch, action, value, field, label} = props
   return (
-    <FormControl fullWidth>
+    <FormControl size="small" fullWidth>
       <TextField
             value={ value } 
+            size="small"
             onChange={ 
               e => dispatch(action({ [field]: e.target.value })) } 
             label={label} 
-            fullWidth> 
+            fullWidth
+            sx = {{fontSize: '.75em'}}
+            > 
       </TextField>
     </FormControl>
   )
