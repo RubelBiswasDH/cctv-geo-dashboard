@@ -77,6 +77,10 @@ export function sortByDate(data) {
   })
 }
 
+export function sortDates(array) {
+  return array.sort((a,b) => Date.parse(b) - Date.parse(a))
+}
+
 export function transformAnnouncements(announcements) {
   if(!announcements) {
     return []

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 // import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
 import { unionArrayOfObjects } from '../../utils/utils'
-import { sortByDate } from '../../utils/utils'
+import { sortByDate, sortDates } from '../../utils/utils'
 
 
 const initialState = {
@@ -32,7 +32,7 @@ const attendanceSlice = createSlice({
       state.filterOptions = {...state.filterOptions, ...action.payload}
     },
     setUniqueDates: ( state, action ) => {
-      state.uniqueDates = action.payload
+      state.uniqueDates = sortDates(action.payload)
     },
     setCurrentAttendanceTab: ( state, action ) => {
       state.currentAttendanceTab = action.payload

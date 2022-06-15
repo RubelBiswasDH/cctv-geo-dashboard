@@ -12,7 +12,7 @@ import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { stopNotificationSound } from '../utils/utils'
+import { stopNotificationSound, sortByDate } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
@@ -111,9 +111,11 @@ class Attendance extends React.PureComponent {
   }
 
     _filteredAttendance = () => {
+
       const { attendanceList } = this.props;
       const { filterOptions } = this.props
       let attList = attendanceList
+
       if(filterOptions && filterOptions?.type && filterOptions?.type==='Late'){
         attList = attList.filter( a => a.is_late)
       }
