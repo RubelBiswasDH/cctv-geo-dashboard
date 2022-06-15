@@ -133,6 +133,21 @@ export function requestResetPassword(email) {
     }
 }
 
+// reset password
+export function resetPassword(data) {
+    return dispatch => {
+        axios.post(AUTH.RESET_PASSWORD, data)
+            .then(res => {
+                dispatch(setToastMessage(res.data.message))
+                dispatch(setToastSeverity('success'))
+                dispatch(setToastIsOpen(true))
+            })
+            .catch(err => {
+                console.error(err)
+                
+            })
+    }
+}
 
 ///////////////
 // Get User Auth Token

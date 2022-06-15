@@ -11,7 +11,7 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { setError, setNewPassword, setNewPassword_2 } from '../redux/reducers/authReducer'
-import { login } from '../redux/actions/authActions'
+import { resetPassword } from '../redux/actions/authActions'
 
 class Login extends React.PureComponent {
   state = {
@@ -58,9 +58,7 @@ class Login extends React.PureComponent {
     const validatePassword = this._validateNewPassword(newPassword)    
     const validatePassword_2 = this._validateNewPassword_2(newPassword, newPassword_2)
     if( validatePassword.success && validatePassword_2.success) {
-        console.log({newPassword})
-    //   dispatch( login({ email: employeeEmail, password, device:'web' }) )
-    //   post{password, token}
+      dispatch( resetPassword({ password:newPassword, token:'token' }) )
     } else {
       this.setState({
         error: {
