@@ -5,7 +5,9 @@ import {connect} from 'react-redux'
 // Import Components
 import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem  } from '@mui/material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid'
-
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
 
 const CustomSelect = (props) => {
     const handleChange = (e) => {
@@ -133,11 +135,11 @@ class StyledDataGrid extends React.PureComponent {
                                                 :(cellValues.field === 'edit')
                                                 ?<Button onClick={cellValues.row.editAnnouncement}>Edit</Button>
                                                 :(cellValues.value === 'P')
-                                                ?<Chip color='darkGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                ?<Chip icon={<DoneRoundedIcon />} label="On Time" variant="outlined" size="small" />
                                                 :(cellValues.value === 'L')
-                                                ?<Chip color='lightGreen' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'black'}} />
+                                                ?<Chip icon={<ErrorRoundedIcon />} label="Late" variant="outlined" size="small" />
                                                 :(cellValues.value === 'A')
-                                                ?<Chip color='lightSalmon' label={cellValues.value} sx={{textAlign:'center',fontWeight:500,color:'white'}} />
+                                                ?<Chip icon={<CachedRoundedIcon />} label="On Leave" variant="outlined" size="small" />
                                                 :cellValues.value
                                         }                                        
                                     </Box>

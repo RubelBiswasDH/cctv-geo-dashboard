@@ -440,6 +440,7 @@ const TabSwitchButton = (props) => {
         /* Light/Primary/Main */
         color:'rgba(0, 0, 0, 0.38)',
         px:2,
+        borderBottom: '2px solid transparent'
     }
     const activeBtnStyle = isActive?{
         color: '#007AFF',
