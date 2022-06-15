@@ -9,6 +9,7 @@ const initialState = {
     error: '',
     filterOptions: {},
     uniqueDates: [],
+    currentAttendanceTab: 'Daily',
 }
 
 const attendanceSlice = createSlice({
@@ -32,10 +33,13 @@ const attendanceSlice = createSlice({
     },
     setUniqueDates: ( state, action ) => {
       state.uniqueDates = action.payload
+    },
+    setCurrentAttendanceTab: ( state, action ) => {
+      state.currentAttendanceTab = action.payload
     }
     
   }
 })
 
-export const { setAttendance, updateAttendance, setError, setFilterOptions, updateFilterOptions,setUniqueDates } = attendanceSlice.actions
+export const { setAttendance, updateAttendance, setError, setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } = attendanceSlice.actions
 export default attendanceSlice.reducer

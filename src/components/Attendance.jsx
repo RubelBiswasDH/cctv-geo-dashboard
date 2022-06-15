@@ -7,14 +7,14 @@ import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
+import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 
 import dayjs from 'dayjs'
@@ -48,6 +48,7 @@ class Attendance extends React.PureComponent {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props
     let date = new Date()
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
@@ -242,7 +243,7 @@ class Attendance extends React.PureComponent {
      }
   
   render() {
-    const { dispatch, isTaskLoading, filterOptions, isDataLoading } = this.props
+    const { dispatch, isTaskLoading, filterOptions, isDataLoading, currentAttendanceTab } = this.props
     const { feedback } = this.state
     const { selected_date, start_date, end_date } = this.state
     const date = selected_date
@@ -250,38 +251,87 @@ class Attendance extends React.PureComponent {
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
       <Box width='100%' height='54vh'>
-        <Box>
-            <Typography>Attendance</Typography>
+        <Box sx={{py:2}}>
+            <Typography
+                variant='h4'
+            >
+                Attendance
+            </Typography>
         </Box>
-        <Stack spacing={ 1 } direction='row'>
-        <LocalizationProvider dateAdapter={ AdapterDayjs }>
-            <DatePicker
-                value = { date }
-                onChange={ this._handleDateChange }
-                disableMaskedInput={ true }
-                inputFormat={ 'DD-MM-YYYY' }
-                renderInput={(params) => (                                            
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <TextField {...params} size={ 'small' } fullWidth={ true } />
-                    </Box>                                            
-                
-                )}
-                PopperProps={{
-                placement: 'bottom-start',
-                }}
-                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
-            />
+        <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
+            <LocalizationProvider dateAdapter={ AdapterDayjs }>
+                <DatePicker
+                    value = { date }
+                    onChange={ this._handleDateChange }
+                    disableMaskedInput={ true }
+                    inputFormat={ 'DD-MM-YYYY' }
+                    renderInput={(params) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...params} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                    )}
+                    PopperProps={{
+                    placement: 'bottom-start',
+                    }}
+                    onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+                />
 
-        </LocalizationProvider>
-        <Button
-          onClick={ this._handleReportDownload } 
-          variant="contained" 
-          endIcon={<FileDownloadOutlinedIcon />}>
-          {"Download Report"}
-        </Button>
+            </LocalizationProvider>
+            <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%'}} size="small">
+                <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value= {filterOptions?.type ?? 'All'}
+                    label="Type"
+                    onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
+                    sx = {{fontSize: '.75em'}}
+                >                 
+                    <MenuItem value={"All"}>All</MenuItem>
+                    <MenuItem value={"Absent"}>Absent</MenuItem>
+                    <MenuItem value={"Late"}>Late</MenuItem>
+                    <MenuItem value={"In Time"}>In Time</MenuItem>
+                </Select>
+            </FormControl>
+            <FilterField
+                field = {'name'}
+                label = {'Name'} 
+                fullWidth={false}
+                value = {filterOptions?.name ?? ''}
+                dispatch = {dispatch}
+                action = {updateFilterOptions}
+                sx={{width:'30%'}}
+            />
+            {/* <Button
+            onClick={ this._handleReportDownload } 
+            variant="contained" 
+            endIcon={<FileDownloadOutlinedIcon />}>
+            {"Download Report"}
+            </Button> */}
+            <Box sx={{
+                ml:'auto',
+                display: 'flex',
+                alignItems: 'center',
+                width: '30%',
+                justifyContent:'flex-end'
+                }}>
+                <TabSwitchButton 
+                    value={'Daily'} 
+                    action={setCurrentAttendanceTab} 
+                    dispatch={dispatch}
+                    isActive={ currentAttendanceTab === 'Daily' }
+                />
+                <Divider orientation={'vertical'}></Divider>
+                <TabSwitchButton 
+                    value={'Monthly'} 
+                    action={setCurrentAttendanceTab} 
+                    dispatch={dispatch} 
+                    isActive={ currentAttendanceTab === 'Monthly' }
+                />
+            </Box>
       </Stack>
-        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
-          {/* <Typography sx={{fontSize:'1em',border:'1px solid black'}}>Filter </Typography> */}
+        {/* <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
           <FormControl fullWidth sx={{p:0,m:0}} size="small">
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
               <Select
@@ -305,7 +355,7 @@ class Attendance extends React.PureComponent {
             dispatch = {dispatch}
             action = {updateFilterOptions}
           />
-        </Box>
+        </Box> */}
         <StyledDataGrid
           columns={[...columns, ...dyanmicColumns  ]}
           rows={ attendance_rows }
@@ -358,43 +408,75 @@ class Attendance extends React.PureComponent {
 }
 
 const FilterField = (props) => {
-  const { dispatch, action, value, field, label} = props
+  const { dispatch, action, value, field, label, fullWidth, sx } = props
   return (
-    <FormControl size="small" fullWidth>
+    <FormControl size="small" fullWidth={fullWidth} sx={{...sx}}>
       <TextField
             value={ value } 
             size="small"
             onChange={ 
               e => dispatch(action({ [field]: e.target.value })) } 
             label={label} 
-            fullWidth
+            fullWidth={fullWidth}
             sx = {{fontSize: '.75em'}}
             > 
       </TextField>
     </FormControl>
   )
 }
+
+const TabSwitchButton = (props) => {
+    const { value, dispatch, action, isActive } = props
+    const textStyle = {
+        fontFamily: 'Roboto',
+        fontStyle: 'normal',
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '24px',
+        /* identical to box height, or 171% */
+        textAlign: 'center',
+        letterSpacing:' 0.4px',
+        textTransform: 'uppercase',
+        /* Light/Primary/Main */
+        color:'rgba(0, 0, 0, 0.38)',
+        px:2,
+    }
+    const activeBtnStyle = isActive?{
+        color: '#007AFF',
+        borderBottom: '2px solid #007AFF'
+    }:
+    {}
+    const handleClick = () => {
+        dispatch(action(value))
+        console.log("btn clicked")
+    }
+    return (
+        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
+    )
+}
 // Prop Types
 Attendance.propTypes = {
-  user: PropTypes.object,
-  isTaskLoading: PropTypes.bool,
-  tasks: PropTypes.array,
-  selectedStatus: PropTypes.string,
-  selectedDate: PropTypes.string,
-  sndList: PropTypes.array,
-  autocompleteSelectedTask: PropTypes.object,
-  dispatch: PropTypes.func,
+    dispatch: PropTypes.func,
+    user: PropTypes.object,
+    currentAttendanceTab: PropTypes.string,
+    isTaskLoading: PropTypes.bool,
+    tasks: PropTypes.array,
+    selectedStatus: PropTypes.string,
+    selectedDate: PropTypes.string,
+    sndList: PropTypes.array,
+    autocompleteSelectedTask: PropTypes.object,
 }
 
 Attendance.defaultProps = {
+  dispatch: () => null,
   user: {},
+  currentAttendanceTab:'Daily',
   isTaskLoading: false,
   tasks: [],
   selectedStatus: '',
   selectedDate: '',
   sndList: [],
   autocompleteSelectedTask: null,
-  dispatch: () => null
 }
 
 const mapStateToProps = state => ({
@@ -404,6 +486,7 @@ const mapStateToProps = state => ({
   employeeList: state?.employeeList?.employeeList,
   filterOptions: state?.attendanceList?.filterOptions,
   uniqueDates: state?.attendanceList?.uniqueDates,
+  currentAttendanceTab: state?.attendanceList?.currentAttendanceTab,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
