@@ -7,13 +7,13 @@ const CustomButton = (props) => {
         const {sx, name, currentEmployeeType} = props
         const btnStyle = {
             textTransform:'none',
-            // borderRadius: '.8em',
             minWidth:'100%',
-            background:'iris',
-            // border: '1px solid black',
+            background:'#A5A6F6',
+            boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12)',
+            borderRadius: '4px',
         }
 
-        const activeBtn = (currentEmployeeType === name)? {background:'#ADD8E6'}:{}
+        const activeBtn = (currentEmployeeType === name)? {background:'#7879F1'}:{}
 
         const handleClick = () => {
             props.onClick()
