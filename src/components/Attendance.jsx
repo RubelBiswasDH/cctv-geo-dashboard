@@ -20,13 +20,19 @@ import { getAttendance, getAttendanceReport }  from '../redux/actions/attendance
 import dayjs from 'dayjs'
 
 import { unionArrayOfObjects } from '../utils/utils'
-const columns = [      
-  { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'present', headerName: 'Present', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'late', headerName: 'Late', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
-  { field: 'absence', headerName: 'Absence', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
- ]
+const columns = {
+    "Daily":[      
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
+      { field: 'status', headerName: 'Status', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
+      { field: 'check_in_time', headerName: 'Check In Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
+      { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
+    ],
+    "Monthly":[      
+      // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },    
+    ]
+
+  }
 
 class Attendance extends React.PureComponent {
  
@@ -127,7 +133,7 @@ class Attendance extends React.PureComponent {
     }
 
   mappedAttendanceInfo = () => {
-
+    const { currentAttendanceTab } = this.props
     const attendanceList  = this._filteredAttendance()
     
     const employeeList = this._getUniqueEmployee(attendanceList)
@@ -138,6 +144,17 @@ class Attendance extends React.PureComponent {
       let p = 0
       let abs = 0
       let l = 0
+      const getStatus = (a) => {
+        if(a.is_absent){
+          return 'A'
+        }
+        else if(a.is_late){
+          return 'L'
+        }
+        else{
+          return 'P'
+        }
+      }
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
           if(a.is_absent){
@@ -161,16 +178,26 @@ class Attendance extends React.PureComponent {
           
         } })
 
-        getIndividualAttendance(a?.user_id)
-          return ({
+      getIndividualAttendance(a?.user_id)
+        if(currentAttendanceTab === 'Daily'){
+          return  ({
             "id": a?.id,
             "serial_no":i+1,
             "name": a?.name,
-            ...individualAttendance,
-            'late':l,
-            'present':p,
-            'absence':abs,
+            "check_in_time": a?.enter_time?dayjs(a?.enter_time).format('hh:mm A'):'',
+            "check_out_time" : a?.exit_time?dayjs(a?.exit_time).format('hh:mm A'):'',
+            "status": getStatus(a),
           })
+        }
+      return ({
+        "id": a?.id,
+        "serial_no":i+1,
+        "name": a?.name,
+        ...individualAttendance,
+        'late':l,
+        'present':p,
+        'absence':abs,
+      })
 
     })
     return attendanceInfo
@@ -211,14 +238,17 @@ class Attendance extends React.PureComponent {
   }
      // Handle Date Range Change
      _handleDateRangeChange = dateValues => {
+      const { dispatch } = this.props
       const { start_date, end_date } = this.state            
   
       // Get start date and end date from date range picker
-      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD')
-      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD')
+      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD') || start_date
+      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD') || end_date
   
       // Set state for start date and end date accordingly
       this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
+      dispatch( getAttendance({start_date: `${startDate}`, end_date: `${endDate}`}) )
+
     }
   
     // Handle Get Data
@@ -260,6 +290,7 @@ class Attendance extends React.PureComponent {
         </Box>
         <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
             <LocalizationProvider dateAdapter={ AdapterDayjs }>
+              { currentAttendanceTab === 'Daily' && (
                 <DatePicker
                     value = { date }
                     onChange={ this._handleDateChange }
@@ -276,6 +307,29 @@ class Attendance extends React.PureComponent {
                     }}
                     onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
                 />
+              )
+                  }
+              { currentAttendanceTab === 'Monthly' && (
+                <DateRangePicker
+                value={ [ start_date, end_date ] }
+                onChange={ this._handleDateRangeChange }
+                disableMaskedInput={ true }
+                inputFormat={ 'DD-MMM-YYYY' }
+                renderInput={(startProps, endProps) => (                                            
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField {...startProps} size={ 'small' } fullWidth={ true } />
+                            <ArrowRightAlt />
+                            <TextField {...endProps} size={ 'small' } fullWidth={ true } />
+                        </Box>                                            
+                    
+                )}
+                PopperProps={{
+                  placement: 'bottom-start',
+                }}
+                onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+            />
+              )
+                  }
 
             </LocalizationProvider>
             <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%'}} size="small">
@@ -357,7 +411,7 @@ class Attendance extends React.PureComponent {
           />
         </Box> */}
         <StyledDataGrid
-          columns={[...columns, ...dyanmicColumns  ]}
+          columns={currentAttendanceTab==='Daily'?[ ...columns['Daily'] ]:[...columns["Monthly"], ...dyanmicColumns  ]}
           rows={ attendance_rows }
           disableColumnFilter={true}
           loading={ isTaskLoading }
@@ -449,7 +503,6 @@ const TabSwitchButton = (props) => {
     {}
     const handleClick = () => {
         dispatch(action(value))
-        console.log("btn clicked")
     }
     return (
         <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
