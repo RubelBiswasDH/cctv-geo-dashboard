@@ -5,7 +5,9 @@ export const BASE_URL = 'http://hr.bmapsbd.com'
 export const AUTH = {
   REGISTER_API: `${BASE_URL}/api/register`,
   LOGIN_API: `${BASE_URL}/api/login`,
-  GET_USER_API: `${BASE_URL}/api/auth/user`
+  GET_USER_API: `${BASE_URL}/api/auth/user`,
+  REQUEST_RESET_PASSWORD: `${BASE_URL}/api/request-reset-password`,
+  RESET_PASSWORD: `${BASE_URL}/api/reset-password`,
 }
 
 // API Endpoints

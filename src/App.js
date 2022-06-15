@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 // Import Components
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress, Snackbar, Alert } from '@mui/material'
 import HrTraceDashboard from './components/HrTraceDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -15,6 +15,9 @@ import './App.css'
 
 // Import Actions & Methods
 import { validateUser } from './redux/actions/authActions'
+import RequestResetPassword from './components/RequestResetPassword'
+import ResetPassword from './components/ResetPassword'
+import { setToastIsOpen } from '../src/redux/reducers/hrtReducer'
 
 class App extends React.PureComponent {
   componentDidMount() {
@@ -27,9 +30,12 @@ class App extends React.PureComponent {
     }
    
   }
-
+  _handleToastClose = () => {
+    const { dispatch } = this.props
+    dispatch( setToastIsOpen(false) )
+  }
   render() {
-    const { isAuthenticated, isValidating } = this.props
+    const { isAuthenticated, isValidating, toastIsOpen, toastMessage, toastSeverity } = this.props
 
     return (
       <Box sx={ containerStyles }>
@@ -59,7 +65,26 @@ class App extends React.PureComponent {
                     <Register />
                 }
               />
-
+            <Route
+                exact={ true }
+                path='/request-reset-password'
+                element={
+                  isAuthenticated ?
+                    <Navigate to='/' />
+                    :
+                    <RequestResetPassword />
+                }
+              />
+               <Route
+                exact={ true }
+                path='/reset-password'
+                element={
+                  isAuthenticated ?
+                    <Navigate to='/' />
+                    :
+                    <ResetPassword />
+                }
+              />
               <Route
                 exact={ true }
                 path='/'
@@ -75,6 +100,13 @@ class App extends React.PureComponent {
             </Routes>
           </BrowserRouter>
         }
+          <Snackbar 
+            anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+            open={toastIsOpen} autoHideDuration={6000} onClose={this._handleToastClose}>
+            <Alert onClose={this._handleToastClose} severity={ toastSeverity } sx={{ width: '100%' }}>
+              {toastMessage}
+            </Alert>
+          </Snackbar>
       </Box>
     )
   }
@@ -104,7 +136,10 @@ App.defaultProps = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  isValidating: state.auth.isValidating
+  isValidating: state.auth.isValidating,
+  toastIsOpen: state?.hrt?.toastIsOpen,
+  toastSeverity: state?.hrt?.toastSeverity,
+  toastMessage: state?.hrt?.toastMessage
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

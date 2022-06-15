@@ -24,8 +24,8 @@ const columns = [
   { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'email', headerName: 'Email', minWidth: 150, flex: .75, sortable: false, filter: false,filterable: false },
   { field: 'phone', headerName: 'Mobile Number', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },
-  { field: 'designation', headerName: 'Designation', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
-  { field: 'department', headerName: 'Department', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },      
+  { field: 'designation', headerName: 'Designation', minWidth: 150,flex:.75, sortable: false, filter: false, filterable: false },      
+  { field: 'department', headerName: 'Department', minWidth: 150,flex:.75, sortable: false, filter: false, filterable: false },      
       
   { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
 

@@ -4,6 +4,9 @@ const initialState = {
   isAuthenticated: false,
   isValidating: false,
   employeeEmail: '',
+  passwordResetEmail: '',
+  newPassword:'',
+  newPassword_2: '',
   password: '',
   token: null,
   user: {},
@@ -34,9 +37,18 @@ const authSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload
-    }
+    },
+    setPasswordResetEmail: (state, action) => {
+      state.passwordResetEmail = action.payload
+    },
+    setNewPassword: (state, action) => {
+      state.newPassword = action.payload
+    },
+    setNewPassword_2: (state, action) => {
+      state.newPassword_2 = action.payload
+    },
   }
 })
 
-export const { setIsAuthenticated, setIsValidating, setEmployeeEmail, setPassword, setToken, setUser, setError } = authSlice.actions
+export const { setIsAuthenticated, setIsValidating, setEmployeeEmail, setPassword, setToken, setUser, setError, setPasswordResetEmail, setNewPassword, setNewPassword_2  } = authSlice.actions
 export default authSlice.reducer

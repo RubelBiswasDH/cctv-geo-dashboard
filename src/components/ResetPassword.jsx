@@ -10,14 +10,14 @@ import loginCover from '../assets/login-cover.jpg'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
-import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
-import { login } from '../redux/actions/authActions'
+import { setError, setNewPassword, setNewPassword_2 } from '../redux/reducers/authReducer'
+import { resetPassword } from '../redux/actions/authActions'
 
 class Login extends React.PureComponent {
   state = {
     error: {
-      employeeEmail: '',
-      password: ''
+        newPassword: '',
+        newPassword_2: ''
     }
   }
 
@@ -26,13 +26,13 @@ class Login extends React.PureComponent {
     const { dispatch, authError } = this.props
     const { error } = this.state
 
-    if(e.target.name === 'employeeEmail') {
-      // If Employee Id
-      dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
+    if(e.target.name === 'password') {
+           // If Password
+      dispatch( setNewPassword(e.target.value?.trim() ?? '') )
+              // If Password 2
+    } else if(e.target.name === 'password_2') {
 
-    } else if(e.target.name === 'password') {
-      // If Password
-      dispatch( setPassword(e.target.value?.trim() ?? '') )
+      dispatch( setNewPassword_2(e.target.value?.trim() ?? '') )
 
     } else {
       this.setState({ [ e.target.name ]: e.target.value })
@@ -52,44 +52,26 @@ class Login extends React.PureComponent {
   // On Submit
   _onSubmit = e => {
     e.preventDefault()
-    const { dispatch, employeeEmail, password } = this.props
+    const { dispatch, newPassword, newPassword_2 } = this.props
 
     // Validate Employee Id & Password
-    const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
-    const validatePassword = this._validatePassword(password)
-    if(validateEmployeeEmail.success && validatePassword.success) {
-      // Login
-      dispatch( login({ email: employeeEmail, password, device:'web' }) )
-
+    const validatePassword = this._validateNewPassword(newPassword)    
+    const validatePassword_2 = this._validateNewPassword_2(newPassword, newPassword_2)
+    if( validatePassword.success && validatePassword_2.success) {
+      dispatch( resetPassword({ password:newPassword, token:'token' }) )
     } else {
       this.setState({
         error: {
-          employeeEmail: validateEmployeeEmail.message,
-          password: validatePassword.message
+          newPassword: validatePassword.message,
+          newPassword_2: validatePassword_2.message
         }
       })
     }
   }
 
-  // Validate employeeEmail
-  _validateEmployeeEmail = employeeEmail => {
-    employeeEmail = employeeEmail.trim()
-    const verdict = { success: false, message: '' }
-
-    if(employeeEmail) {
-      verdict.success = true
-      verdict.message = ''
-
-    } else {
-      verdict.success = false
-      verdict.message = 'Required field.'
-    }
-
-    return verdict
-  }
 
   // Validate Password
-  _validatePassword = password => {
+  _validateNewPassword = password => {
     const verdict = { success: false, message: '' }
 
     if (password) {
@@ -110,8 +92,36 @@ class Login extends React.PureComponent {
     return verdict
   }
 
+ // Validate Password2
+ _validateNewPassword_2 = (password,password_2) => {
+    const verdict = { success: false, message: '' }
+
+    if (password_2) {
+      if (password_2.length < 6) {
+        verdict.success = false
+        verdict.message = 'Password must be atleast 6 digit!'
+
+      }
+      else if(password_2 !== password){
+        verdict.success = false
+        verdict.message = 'Password did not match!'
+      }
+       else {
+        verdict.success = true
+        verdict.message = ''
+      }
+
+    } else {
+      verdict.success = false
+      verdict.message = 'Required field.'
+    }
+
+    return verdict
+  }
+
+    
   render() {
-    const { employeeEmail, password, authError } = this.props
+    const { newPassword, newPassword_2, authError } = this.props
     const { error } = this.state
 
     return (
@@ -164,34 +174,13 @@ class Login extends React.PureComponent {
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'Hr Trace Log In' }
+              { 'Reset Password' }
             </Typography>
           </Box>
 
           <Box sx={{ width: '100%', mt: '1rem' }}>
             <form onSubmit={ this._onSubmit }>
               <Stack spacing={ 2 }>
-                <Box>
-                  <Typography variant='h6'>{ 'Email' }</Typography>
-
-                  <TextField
-                    variant='outlined'
-                    margin='none'
-                    size='small'
-                    fullWidth={ true }
-                    name='employeeEmail'
-                    type='text'
-                    value={ employeeEmail }
-                    placeholder=''
-                    onChange={ this._onChange }
-                    error={
-                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
-                    }
-                    helperText={
-                      authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
-                    }
-                  />
-                </Box>
 
                 <Box>
                   <Typography variant='h6'>{ 'Password' }</Typography>
@@ -203,15 +192,36 @@ class Login extends React.PureComponent {
                     fullWidth={ true }
                     name='password'
                     type='password'
-                    value={ password }
+                    value={ newPassword }
                     placeholder=''
                     onChange={ this._onChange }
                     error={
-                      ( authError && authError.includes('password') ) || error.password ? true : false
-                    }
-                    helperText={
-                      authError && authError.includes('password') ? authError : error.password ? error.password : null
-                    }
+                        ( authError && !authError.includes('password') ) || error.newPassword ? true : false
+                      }
+                      helperText={
+                        authError && !authError.includes('password') ? authError : error.newPassword ? error.newPassword : null
+                      }
+                  />
+                </Box>
+                <Box >
+                  <Typography variant='h6'>{ 'Retype Password' }</Typography>
+                  
+                  <TextField
+                    variant='outlined'
+                    margin='none'
+                    size='small'
+                    fullWidth={ true }
+                    name='password_2'
+                    type='password'
+                    value={ newPassword_2 }
+                    placeholder=''
+                    onChange={ this._onChange }
+                    error={
+                        ( authError && !authError.includes('password') ) || error.newPassword_2 ? true : false
+                      }
+                      helperText={
+                        authError && !authError.includes('password') ? authError : error.newPassword_2 ? error.newPassword_2 : null
+                      }
                   />
                 </Box>
 
@@ -221,34 +231,20 @@ class Login extends React.PureComponent {
                   variant='contained'
                   sx={{mt:'2rem'}}
                 >
-                  { 'Log In' }
+                  { 'Submit' }
                 </Button>
               </Stack>
             </form>
            {/*Register Button*/}
            <Button
-                onClick={()=> {window.location.href = '/register'}}
+                onClick={()=> {window.location.href = '/login'}}
                 fullWidth={ true }
                 variant='contained'
                 sx={{mt:'1rem'}}
                 color={'btnOrange'}
               >
-                { 'Register' }
+                { 'Login' }
             </Button>  
-             {/* Request Password Field */}
-             <Box
-              sx={{
-                mt: '2rem',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-                <a href='/request-reset-password' style={{textDecoration: 'none'}}>
-                    <span>Forget Password ! Reset Here...</span>
-                  </a>            
-            </Box>
             {/* Copyright Section */}
             <Box
               sx={{
@@ -309,21 +305,24 @@ const attributionLinkStyles = {
 // Prop Types
 Login.propTypes = {
   employeeEmail: PropTypes.string,
-  password: PropTypes.string,
+  newPassword: PropTypes.string,
+  newPassword_2: PropTypes.string,
   authError: PropTypes.string,
   dispatch: PropTypes.func
 }
 
 Login.defaultProps = {
   employeeEmail: '',
-  password: '',
+  newPassword: '',
+  newPassword_2: '',
   authError: '',
   dispatch: () => null
 }
 
 const mapStateToProps = state => ({
   employeeEmail: state?.auth?.employeeEmail,
-  password: state?.auth?.password,
+  newPassword: state?.auth?.newPassword,
+  newPassword_2: state?.auth?.newPassword_2,
   authError: state?.auth?.error
 })
 

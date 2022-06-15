@@ -10,14 +10,13 @@ import loginCover from '../assets/login-cover.jpg'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
-import { setEmployeeEmail, setPassword, setError } from '../redux/reducers/authReducer'
-import { login } from '../redux/actions/authActions'
+import { setPasswordResetEmail, setError } from '../redux/reducers/authReducer'
+import { requestResetPassword } from '../redux/actions/authActions'
 
 class Login extends React.PureComponent {
   state = {
     error: {
-      employeeEmail: '',
-      password: ''
+        passwordResetEmail: '',
     }
   }
 
@@ -25,16 +24,11 @@ class Login extends React.PureComponent {
   _onChange = e => {
     const { dispatch, authError } = this.props
     const { error } = this.state
-
-    if(e.target.name === 'employeeEmail') {
+    if(e.target.name === 'passwordResetEmail') {
       // If Employee Id
-      dispatch( setEmployeeEmail(e.target.value?.trim() ?? '') )
+      dispatch( setPasswordResetEmail(e.target.value?.trim() ?? '') )
 
-    } else if(e.target.name === 'password') {
-      // If Password
-      dispatch( setPassword(e.target.value?.trim() ?? '') )
-
-    } else {
+    }else {
       this.setState({ [ e.target.name ]: e.target.value })
     }
 
@@ -52,31 +46,28 @@ class Login extends React.PureComponent {
   // On Submit
   _onSubmit = e => {
     e.preventDefault()
-    const { dispatch, employeeEmail, password } = this.props
+    const { dispatch, passwordResetEmail } = this.props
 
     // Validate Employee Id & Password
-    const validateEmployeeEmail = this._validateEmployeeEmail(employeeEmail)
-    const validatePassword = this._validatePassword(password)
-    if(validateEmployeeEmail.success && validatePassword.success) {
-      // Login
-      dispatch( login({ email: employeeEmail, password, device:'web' }) )
+    const validatePasswordResetEmail= this._validatePasswordResetEmail(passwordResetEmail)
+    if(validatePasswordResetEmail.success) {
+      dispatch( requestResetPassword({ email: passwordResetEmail }) )
 
     } else {
       this.setState({
         error: {
-          employeeEmail: validateEmployeeEmail.message,
-          password: validatePassword.message
+          passwordResetEmail: validatePasswordResetEmail.message,
         }
       })
     }
   }
 
   // Validate employeeEmail
-  _validateEmployeeEmail = employeeEmail => {
-    employeeEmail = employeeEmail.trim()
+  _validatePasswordResetEmail = passwordResetEmail => {
+    passwordResetEmail = passwordResetEmail.trim()
     const verdict = { success: false, message: '' }
 
-    if(employeeEmail) {
+    if(passwordResetEmail) {
       verdict.success = true
       verdict.message = ''
 
@@ -88,30 +79,8 @@ class Login extends React.PureComponent {
     return verdict
   }
 
-  // Validate Password
-  _validatePassword = password => {
-    const verdict = { success: false, message: '' }
-
-    if (password) {
-      if (password.length < 6) {
-        verdict.success = false
-        verdict.message = 'Password must be atleast 6 digit!'
-
-      } else {
-        verdict.success = true
-        verdict.message = ''
-      }
-
-    } else {
-      verdict.success = false
-      verdict.message = 'Required field.'
-    }
-
-    return verdict
-  }
-
   render() {
-    const { employeeEmail, password, authError } = this.props
+    const { passwordResetEmail, authError } = this.props
     const { error } = this.state
 
     return (
@@ -164,53 +133,32 @@ class Login extends React.PureComponent {
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'Hr Trace Log In' }
+              { 'Reset Password' }
             </Typography>
           </Box>
 
           <Box sx={{ width: '100%', mt: '1rem' }}>
+            <Typography>A password reset link will be sent to you email</Typography>
             <form onSubmit={ this._onSubmit }>
               <Stack spacing={ 2 }>
                 <Box>
-                  <Typography variant='h6'>{ 'Email' }</Typography>
+                  <Typography variant='h6'>{ 'Enter Email' }</Typography>
 
                   <TextField
                     variant='outlined'
                     margin='none'
                     size='small'
                     fullWidth={ true }
-                    name='employeeEmail'
+                    name='passwordResetEmail'
                     type='text'
-                    value={ employeeEmail }
+                    value={ passwordResetEmail }
                     placeholder=''
                     onChange={ this._onChange }
                     error={
-                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
+                      ( authError && !authError.includes('password') ) || error.passwordResetEmail ? true : false
                     }
                     helperText={
-                      authError && !authError.includes('password') ? authError : error.employeeEmail ? error.employeeEmail : null
-                    }
-                  />
-                </Box>
-
-                <Box>
-                  <Typography variant='h6'>{ 'Password' }</Typography>
-                  
-                  <TextField
-                    variant='outlined'
-                    margin='none'
-                    size='small'
-                    fullWidth={ true }
-                    name='password'
-                    type='password'
-                    value={ password }
-                    placeholder=''
-                    onChange={ this._onChange }
-                    error={
-                      ( authError && authError.includes('password') ) || error.password ? true : false
-                    }
-                    helperText={
-                      authError && authError.includes('password') ? authError : error.password ? error.password : null
+                      authError && !authError.includes('password') ? authError : error.passwordResetEmail ? error.passwordResetEmail : null
                     }
                   />
                 </Box>
@@ -221,11 +169,20 @@ class Login extends React.PureComponent {
                   variant='contained'
                   sx={{mt:'2rem'}}
                 >
-                  { 'Log In' }
+                  { 'Submit' }
                 </Button>
               </Stack>
             </form>
            {/*Register Button*/}
+           <Button
+                onClick={()=> {window.location.href = '/login'}}
+                fullWidth={ true }
+                variant='contained'
+                sx={{mt:'1rem'}}
+                color={'btnOrange'}
+              >
+                { 'Login' }
+            </Button>  
            <Button
                 onClick={()=> {window.location.href = '/register'}}
                 fullWidth={ true }
@@ -235,20 +192,6 @@ class Login extends React.PureComponent {
               >
                 { 'Register' }
             </Button>  
-             {/* Request Password Field */}
-             <Box
-              sx={{
-                mt: '2rem',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-                <a href='/request-reset-password' style={{textDecoration: 'none'}}>
-                    <span>Forget Password ! Reset Here...</span>
-                  </a>            
-            </Box>
             {/* Copyright Section */}
             <Box
               sx={{
@@ -308,21 +251,21 @@ const attributionLinkStyles = {
 
 // Prop Types
 Login.propTypes = {
-  employeeEmail: PropTypes.string,
-  password: PropTypes.string,
-  authError: PropTypes.string,
-  dispatch: PropTypes.func
+    passwordResetEmail: PropTypes.string,
+    password: PropTypes.string,
+    authError: PropTypes.string,
+    dispatch: PropTypes.func
 }
 
 Login.defaultProps = {
-  employeeEmail: '',
-  password: '',
-  authError: '',
-  dispatch: () => null
+    passwordResetEmail: '',
+    password: '',
+    authError: '',
+    dispatch: () => null
 }
 
 const mapStateToProps = state => ({
-  employeeEmail: state?.auth?.employeeEmail,
+    passwordResetEmail: state?.auth?.passwordResetEmail,
   password: state?.auth?.password,
   authError: state?.auth?.error
 })
