@@ -11,7 +11,7 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 
 // Import Actions & Methods
 import { setPasswordResetEmail, setError } from '../redux/reducers/authReducer'
-import { login } from '../redux/actions/authActions'
+import { requestResetPassword } from '../redux/actions/authActions'
 
 class Login extends React.PureComponent {
   state = {
@@ -51,9 +51,7 @@ class Login extends React.PureComponent {
     // Validate Employee Id & Password
     const validatePasswordResetEmail= this._validatePasswordResetEmail(passwordResetEmail)
     if(validatePasswordResetEmail.success) {
-      // Login
-      console.log({passwordResetEmail})
-    //   dispatch( login({ email: validatePasswordResetEmail, device:'web' }) )
+      dispatch( requestResetPassword({ email: passwordResetEmail }) )
 
     } else {
       this.setState({
@@ -72,28 +70,6 @@ class Login extends React.PureComponent {
     if(passwordResetEmail) {
       verdict.success = true
       verdict.message = ''
-
-    } else {
-      verdict.success = false
-      verdict.message = 'Required field.'
-    }
-
-    return verdict
-  }
-
-  // Validate Password
-  _validatePassword = password => {
-    const verdict = { success: false, message: '' }
-
-    if (password) {
-      if (password.length < 6) {
-        verdict.success = false
-        verdict.message = 'Password must be atleast 6 digit!'
-
-      } else {
-        verdict.success = true
-        verdict.message = ''
-      }
 
     } else {
       verdict.success = false

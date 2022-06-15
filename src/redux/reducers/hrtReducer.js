@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    isLeftNavOpen: false
+    isLeftNavOpen: false,
+    toastIsOpen: false,
+    toastMessage: '',
+    toastSeverity: 'success'
 }
 
 const hrtSlice = createSlice({
@@ -10,9 +13,18 @@ const hrtSlice = createSlice({
   reducers: {
     setIsLeftNavOpen: (state, action) => {
       state.isLeftNavOpen = action.payload
+    },
+    setToastIsOpen: (state, action) => {
+      state.toastIsOpen = action.payload
+    },
+    setToastMessage: (state, action) => {
+      state.toastMessage = action.payload
+    },
+    setToastSeverity: (state, action) => {
+      state.toastSeverity = action.payload
     }
   }
 })
 
-export const { setIsLeftNavOpen } = hrtSlice.actions
+export const { setIsLeftNavOpen, setToastIsOpen, setToastMessage, setToastSeverity } = hrtSlice.actions
 export default hrtSlice.reducer

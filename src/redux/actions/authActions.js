@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { AUTH } from '../../App.config'
 import { setEmployeeEmail, setPassword, setError, setIsAuthenticated, setIsValidating, setToken, setUser } from '../reducers/authReducer'
+import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/hrtReducer';
 
 // Login Action
 export function login(user) {
@@ -115,6 +116,23 @@ export function validateUser(token) {
             })
     }
 }
+
+// request reset password
+export function requestResetPassword(email) {
+    return dispatch => {
+        axios.post(AUTH.REQUEST_RESET_PASSWORD, email)
+            .then(res => {
+                dispatch(setToastMessage(res.data.message))
+                dispatch(setToastSeverity('success'))
+                dispatch(setToastIsOpen(true))
+            })
+            .catch(err => {
+                console.error(err)
+                
+            })
+    }
+}
+
 
 ///////////////
 // Get User Auth Token
