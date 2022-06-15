@@ -15,6 +15,8 @@ import './App.css'
 
 // Import Actions & Methods
 import { validateUser } from './redux/actions/authActions'
+import RequestResetPassword from './components/RequestResetPassword'
+import ResetPassword from './components/ResetPassword'
 
 class App extends React.PureComponent {
   componentDidMount() {
@@ -59,7 +61,26 @@ class App extends React.PureComponent {
                     <Register />
                 }
               />
-
+            <Route
+                exact={ true }
+                path='/request-reset-password'
+                element={
+                  isAuthenticated ?
+                    <Navigate to='/' />
+                    :
+                    <RequestResetPassword />
+                }
+              />
+               <Route
+                exact={ true }
+                path='/reset-password'
+                element={
+                  isAuthenticated ?
+                    <Navigate to='/' />
+                    :
+                    <ResetPassword />
+                }
+              />
               <Route
                 exact={ true }
                 path='/'
