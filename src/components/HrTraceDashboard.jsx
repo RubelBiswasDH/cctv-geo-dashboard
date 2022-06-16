@@ -16,6 +16,7 @@ import SubNav from './SubNav'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
 import Profile from './Profile'
+import AddUser from './AddUser'
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import Button from '@mui/material/Button';
@@ -183,6 +184,9 @@ class HrTraceDashboard extends React.PureComponent {
                 }
                 {
                   (this.props.currentView === 'profile') && <Profile />
+                }
+                {
+                  (this.props.currentView === 'add_user') && <AddUser/>
                 }
                 {/* {
                   (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />

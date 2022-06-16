@@ -35,9 +35,13 @@ const navOptions = [
         'label':"Employee Profile",
         'value': "employee_profile"
     },
-{
+    {
         'label':"Company Profile",
         'value': "company_profile"
+    },
+    {
+        'label':"Add User",
+        'value': "add_user"
     },
 ]
 
