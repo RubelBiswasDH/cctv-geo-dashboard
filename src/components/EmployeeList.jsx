@@ -26,8 +26,9 @@ const columns = [
   { field: 'phone', headerName: 'Mobile Number', minWidth: 150,flex:.75, sortable: false, filter: false, type: 'dateTime', filterable: false },
   { field: 'designation', headerName: 'Designation', minWidth: 150,flex:.75, sortable: false, filter: false, filterable: false },      
   { field: 'department', headerName: 'Department', minWidth: 150,flex:.75, sortable: false, filter: false, filterable: false },      
-      
-  { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
+  { field: 'update_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
+    
+  // { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
 
 ]
 
@@ -35,6 +36,7 @@ class EmployeeList extends React.PureComponent {
   state = {
     start_date:null,
     isDeleteDialogOpen: false,
+    isUpdateDialogOpen: false,
     selectedUserId: '',
     selectedTask: {},
     selectedTimeline: [
@@ -112,8 +114,8 @@ class EmployeeList extends React.PureComponent {
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
       },
-      deleteUser: () => {
-        this._handleDeleteDialogOpen(emp.id)
+      update_user: () => {
+        this._handleUpdateDialogOpen(emp.id)
       },
     }))
   }
@@ -126,6 +128,16 @@ class EmployeeList extends React.PureComponent {
   _handleDeleteDialogOpen = (id) => {
     this.setState({selectedUserId:id})
     this.setState({isDeleteDialogOpen:true})
+  }
+
+  _handleUpdateDialogClose = () => {
+    this.setState({ selectedUserId:'' })
+    this.setState({ isUpdateDialogOpen:false })
+  }
+
+  _handleUpdateDialogOpen = (id) => {
+    this.setState({ selectedUserId:id })
+    this.setState({ isUpdateDialogOpen:true })
   }
 
   _handleDeleteUser = () => {
@@ -163,6 +175,18 @@ class EmployeeList extends React.PureComponent {
           footer={
             <>
               <Button onClick={ this._handleDeleteDialogClose }><Typography>Cancel</Typography></Button>
+              <Button onClick={ this._handleDeleteUser }><Typography sx={{color:'red'}}>Yes</Typography></Button>
+            </>
+          }
+        >
+          <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
+        </StyledDialog>
+        <StyledDialog 
+          isDialogOpen={ this.state.isUpdateDialogOpen }
+          handleDialogOnClose = { this._handleUpdateDialogClose }
+          footer={
+            <>
+              <Button onClick={ this._handleUpdateDialogClose }><Typography>Cancel</Typography></Button>
               <Button onClick={ this._handleDeleteUser }><Typography sx={{color:'red'}}>Yes</Typography></Button>
             </>
           }

@@ -90,7 +90,6 @@ class FilterEmpolyee extends React.PureComponent{
                         <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('intern')} name={'intern'} currentEmployeeType ={currentEmployeeType} >Intern: {countEmployee("job_status","intern")}</CustomButton>
                     </Grid>
                 
- 
             </Grid>
         </Box>
         );
