@@ -9,6 +9,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
 import { Grid, Paper, InputBase, Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
 import { Close } from '@mui/icons-material'
+import CustomStepper from './Stepper'
 import StyledDataGrid from './common/StyledDataGrid'
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
@@ -24,7 +25,7 @@ import dayjs from 'dayjs'
 class AddUser extends React.PureComponent {
  
   state = {
-
+    add_details:false
   }
 
   componentDidMount() {
@@ -53,10 +54,15 @@ class AddUser extends React.PureComponent {
         dispatch(setToastIsOpen(true))
         dispatch(setToastSeverity('warning'))
     }
-}  
+    } 
+
+    _handleAddDetails = () => {
+        this.setState(state => ({add_details:!state.add_details}))
+    }
   render() {
     const { dispatch, newUser } = this.props
-    const { _handleSaveUser } = this
+    const { _handleSaveUser, _handleAddDetails } = this
+    const { add_details } = this.state
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2,pb:5}}>
@@ -66,46 +72,52 @@ class AddUser extends React.PureComponent {
                 Add New User
             </Typography>
         </Box>
-        <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
-            <UserField  dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
-            <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
-            <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
-            <FilterField 
-                filterOptions={[
-                    'Frontend Engineer',
-                    'Backend Engineer',
-                    'Sr. Frontend Engineer'
-                ]}  
-                dispatch={dispatch} 
-                field={'profile'} 
-                subField={'position'}  
-                title={"Position : "} 
-                value={newUser?.profile?.position} 
-                fieldStyle={{ width:'25%' }}
-            />
-             <FilterField 
-                filterOptions={[
-                    'Management',
-                    'Admin',
-                    'Product Team',
-                    'Business Team',
-                    'Tech Team',
-                    'Operations Team',
-                    
-                ]}  
-                dispatch={dispatch} 
-                field={'profile'} 
-                subField={'department'}  
-                title={"Department : "} 
-                value={newUser?.profile?.department} 
-                fieldStyle={{ width:'25%' }}
-            />
-        </Box>
-        <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
-            <Button variant='contained' color='warning'><Typography>Add Details</Typography></Button>
-            <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
-        </Box>
+        { !add_details && <>
+            <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
+                <UserField  dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
+                <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
+                <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
+                <FilterField 
+                    filterOptions={[
+                        'Frontend Engineer',
+                        'Backend Engineer',
+                        'Sr. Frontend Engineer'
+                    ]}  
+                    dispatch={dispatch} 
+                    field={'profile'} 
+                    subField={'position'}  
+                    title={"Position : "} 
+                    value={newUser?.profile?.position} 
+                    fieldStyle={{ width:'25%' }}
+                />
+                <FilterField 
+                    filterOptions={[
+                        'Management',
+                        'Admin',
+                        'Product Team',
+                        'Business Team',
+                        'Tech Team',
+                        'Operations Team',
+                        
+                    ]}  
+                    dispatch={dispatch} 
+                    field={'profile'} 
+                    subField={'department'}  
+                    title={"Department : "} 
+                    value={newUser?.profile?.department} 
+                    fieldStyle={{ width:'25%' }}
+                />
+            </Box>
+            <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
+                <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Add Details</Typography></Button>
+                <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
+            </Box>
+        </>}
+        { add_details && <>
+            <CustomStepper/>
+        </>}
       </Box>
+     
     )
   }
 }
