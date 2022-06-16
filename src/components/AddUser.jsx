@@ -47,7 +47,16 @@ class AddUser extends React.PureComponent {
    _handleSaveUser = e => {
     const { dispatch, newUser } = this.props
     if (newUser.name && newUser.phone && newUser.email) {
-        dispatch(createUser(newUser))
+        if(newUser.profile){
+            const user = {
+                ...newUser,
+                profile: JSON.stringify(newUser.profile)
+            }
+            dispatch(createUser(user))
+        }
+        else{
+            dispatch(createUser(newUser))
+        }
     }
     else {
         dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
