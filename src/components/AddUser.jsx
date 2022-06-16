@@ -10,7 +10,8 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Grid, Paper, InputBase, Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
-
+import { createUser } from '../redux/actions/adminActions'
+import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
 import { stopNotificationSound, sortByDate } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
@@ -42,10 +43,20 @@ class AddUser extends React.PureComponent {
     dispatch(setFilterOptions({}))
   }
 
-  
+   _handleSaveUser = e => {
+    const { dispatch, newUser } = this.props
+    if (newUser.name && newUser.phone && newUser.email) {
+        dispatch(createUser(newUser))
+    }
+    else {
+        dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
+        dispatch(setToastIsOpen(true))
+        dispatch(setToastSeverity('warning'))
+    }
+}  
   render() {
     const { dispatch, newUser } = this.props
-
+    const { _handleSaveUser } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2,pb:5}}>
@@ -56,7 +67,7 @@ class AddUser extends React.PureComponent {
             </Typography>
         </Box>
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
-            <UserField  dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
             <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
             <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
             <FilterField 
@@ -86,9 +97,13 @@ class AddUser extends React.PureComponent {
                 field={'profile'} 
                 subField={'department'}  
                 title={"Department : "} 
-                value={newUser?.profile?.position} 
+                value={newUser?.profile?.department} 
                 fieldStyle={{ width:'25%' }}
             />
+        </Box>
+        <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
+            <Button variant='contained' color='warning'><Typography>Add Details</Typography></Button>
+            <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
         </Box>
       </Box>
     )
@@ -168,12 +183,12 @@ const textStyle = {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value= { filterOptions?filterOptions[0]:'None'}
+                    value= { value ?? filterOptions[0] }
                     label=""
                     onChange={handleChange}
                     sx = {{fontSize: '.75em'}}
                 >    
-                    {filterOptions.map(d => (<MenuItem value={d}>{d}</MenuItem>))}            
+                    {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
                 </Select>
             </FormControl>
     </Grid>
