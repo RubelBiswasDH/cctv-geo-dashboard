@@ -48,11 +48,11 @@ class AddUser extends React.PureComponent {
     const { dispatch, newUser } = this.props
     if (newUser.name && newUser.phone && newUser.email) {
         if(newUser.profile){
-            const user = {
+            const detailUser = {
                 ...newUser,
                 profile: JSON.stringify(newUser.profile)
             }
-            dispatch(createUser(user))
+            dispatch(createUser(detailUser))
         }
         else{
             dispatch(createUser(newUser))

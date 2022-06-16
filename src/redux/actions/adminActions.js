@@ -153,7 +153,12 @@ export function createUser(user) {
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
-                    dispatch(setNewUser({}))
+                    dispatch(setNewUser({
+                        user_level:'GENERAL',
+                        profile:{
+                    
+                        }
+                      }))
 
                 }
             })
