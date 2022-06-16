@@ -113,18 +113,26 @@ class AddUser extends React.PureComponent {
                 <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
             </Box>
         </>}
-        { add_details && <Box 
+        { add_details && 
+            <Box>
+                {/* <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Continue with Minimal Information</Typography></Button> */}
+            <Box 
                 sx={{
                     display:'flex',
+                    flexDirection:'column',
                     p:5, 
                     boxShadow: '0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12)',
-                    bordeRadius: '4px'
+                    bordeRadius: '4px',
+                    gap:2
                     }}>
             <CustomStepper 
                 steps = {['Personal Info', 'Official Info', 'Bank Account', 'Contact']} 
                 contents = {formSteps(dispatch, newUser)}
-            />
-        </Box>}
+                handleSubmit = {_handleSaveUser}
+                />
+            </Box>
+        </Box>
+        }
       </Box>
      
     )

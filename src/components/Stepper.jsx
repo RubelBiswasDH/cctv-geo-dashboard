@@ -22,7 +22,10 @@ class CustomStepper extends React.PureComponent {
         const { skipped } = this.state
         return skipped.has(step);
       };
-    
+      handleCancle = () => {
+        this.setState( prev => ({activeStep: 0}))
+
+      };
       handleNext = () => {
         const { activeStep, skipped } = this.state
         let newSkipped = skipped;
@@ -69,9 +72,9 @@ class CustomStepper extends React.PureComponent {
         this.setState( prev => ({activeStep: 0}))
       };
       render(){
-        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleReset } = this
+        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleReset, handleCancle } = this
         const { activeStep, skipped } = this.state
-        const { steps, contents } = this.props
+        const { handleSubmit, steps, contents } = this.props
         return (<Box sx={{ width: '100%' }}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => { 
@@ -94,12 +97,17 @@ class CustomStepper extends React.PureComponent {
         </Stepper>
         {activeStep === steps.length ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleReset}>Reset</Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', pt: 4} }>
+                <Typography sx={{fontSize:'20px'}}>Click the Submit button to create user or cancle to go back</Typography>
+                {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2 }}>
+                    <Button variant='contained' color='warning' onClick={handleCancle}>Cancle</Button>
+                    <Button variant='contained' color='success' onClick={ handleSubmit }>Sumbit</Button>
+                </Box> */}
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2,pr:10 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+                <Button variant='contained' color='warning' onClick={ handleCancle }>Cancle</Button>
+                <Button variant='contained' color='success' onClick={ handleSubmit }>Sumbit</Button>
             </Box>
           </React.Fragment>
         ) : (
@@ -111,8 +119,9 @@ class CustomStepper extends React.PureComponent {
             </Box>
             
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,p:5 }}>
-              <Button
-                color="inherit"
+            <Button 
+                variant='contained' 
+                color='warning'
                 disabled={activeStep === 0}
                 onClick={handleBack}
                 sx={{ mr: 1 }}
@@ -121,13 +130,13 @@ class CustomStepper extends React.PureComponent {
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
               {isStepOptional(activeStep) && (
-                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+               <Button variant='contained' color='primary' onClick={handleSkip} sx={{ mr: 1 }}>
                   Skip
                 </Button>
               )}
   
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            <Button variant='contained' color='success'  onClick={handleNext}>
+                {activeStep === steps.length - 1 ? 'Finish': 'Next'}
               </Button>
             </Box>
           </React.Fragment>
