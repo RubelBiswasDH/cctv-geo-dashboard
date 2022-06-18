@@ -25,10 +25,7 @@ class StyledDripdown extends React.PureComponent {
     }
 
     render() {
-        // const {placeholder, ariaLabel, style, field, value, onChange, inputStyle, dispatch, ...rest} = this.props;
-        // const { title, value, field, subField, dispatch, style, fieldStyle, titleStyle } = this.props
         const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx } = this.props
-
         const { handleChange } = this;
     
             return (
@@ -39,7 +36,6 @@ class StyledDripdown extends React.PureComponent {
                     </Box>
                 }
                 <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-                        {/* <InputLabel id="demo-simple-select-label">''</InputLabel> */}
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"

@@ -1,9 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import { Grid, Box, Typography, Paper, InputBase } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 
 class StyledTextField extends React.PureComponent {
 
@@ -26,8 +23,7 @@ class StyledTextField extends React.PureComponent {
     }
 
     render() {
-        // const {placeholder, ariaLabel, style, field, value, onChange, inputStyle, dispatch, ...rest} = this.props;
-        const { title, value, field, subField, dispatch, style, fieldStyle, titleStyle } = this.props
+        const { title, value, field, subField, style, fieldStyle, titleStyle } = this.props
 
         const { handleChange } = this;
     

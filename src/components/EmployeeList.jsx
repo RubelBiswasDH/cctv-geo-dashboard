@@ -140,7 +140,19 @@ class EmployeeList extends React.PureComponent {
   }
 
   _handleUpdateDialogOpen = (id) => {
+    const { dispatch, employeeList } = this.props
     this.setState({ selectedUserId:id })
+    const emp = employeeList.find(emp => emp.id === id)
+    dispatch(updateNewUser({
+      name:emp?.name || '',
+      phone: emp?.phone || '',
+      email: emp?.email || '',
+      profile: {
+        position: emp?.profile?.position || '',
+        department: emp?.profile?.department || '',
+      }
+    }))
+  
     this.setState({ isUpdateDialogOpen:true })
   }
 
