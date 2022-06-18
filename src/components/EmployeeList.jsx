@@ -109,8 +109,8 @@ class EmployeeList extends React.PureComponent {
     }
     return data.map((emp,i) => ({
       ...emp,
-      designation:emp?.designation,
-      department: emp?.department,
+      designation:emp?.profile?.designation,
+      department: emp?.profile?.department,
       serial_no:i+1,
       viewProfile: () => {
         this.props.dispatch(setProfileEdit(false))
