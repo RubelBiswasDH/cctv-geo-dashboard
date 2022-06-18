@@ -16,7 +16,7 @@ class StyledInputField extends React.PureComponent {
         this.props.dispatch(this.props.onChange(e.target.value))
     }
     render() {
-        const {placeholder, ariaLabel, style, value, onChange, inputStyle, dispatch, ...rest} = this.props;
+        const {placeholder, ariaLabel, style, field, value, onChange, inputStyle, dispatch, ...rest} = this.props;
         const {handleChange} = this;
         return (
             <Paper

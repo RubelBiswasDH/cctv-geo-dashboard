@@ -301,12 +301,16 @@ const TabSwitchButton = (props) => {
 AddUser.propTypes = {
     dispatch: PropTypes.func,
     user: PropTypes.object,
+    newUser: PropTypes.object,
 
 }
 
 AddUser.defaultProps = {
   dispatch: () => null,
   user: {},
+  newUser: {
+    profile:{}
+  },
 }
 
 const mapStateToProps = state => ({

@@ -9,14 +9,17 @@ import { Close } from '@mui/icons-material'
 import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
+import StyledTextField from './common/StyledTextField'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
 import { getUserProfile, deleteUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
+import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
 
 import dayjs from 'dayjs'
+
 
 const columns = [      
   // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
@@ -114,7 +117,7 @@ class EmployeeList extends React.PureComponent {
         this.props.dispatch(getUserProfile(emp.id))
         this.props.dispatch(setCurrentView('profile'))
       },
-      update_user: () => {
+      updateUser: () => {
         this._handleUpdateDialogOpen(emp.id)
       },
     }))
@@ -146,9 +149,11 @@ class EmployeeList extends React.PureComponent {
     this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
-
+  _handleUpdateeUser = () => {
+    const { selectedUserId } = this.state
+  }
   render() {
-    const { isTaskLoading } = this.props
+    const { isTaskLoading, newUser } = this.props
     const { feedback } = this.state
     
     return (
@@ -185,13 +190,23 @@ class EmployeeList extends React.PureComponent {
           isDialogOpen={ this.state.isUpdateDialogOpen }
           handleDialogOnClose = { this._handleUpdateDialogClose }
           footer={
-            <>
-              <Button onClick={ this._handleUpdateDialogClose }><Typography>Cancel</Typography></Button>
-              <Button onClick={ this._handleDeleteUser }><Typography sx={{color:'red'}}>Yes</Typography></Button>
-            </>
+            <Box sx={{
+                  display:'flex',
+                  justifyContent:'space-between', 
+                  width:'100%', 
+                  px:5,
+                  py:2,
+                }}>
+              <Button variant='contained' color={'error'} onClick={ this._handleDeleteDialogOpen }><Typography>DELETE</Typography></Button>
+              <Button variant='contained' color={'success'} onClick={ this._handleUpdateeUser }><Typography>UPDATE</Typography></Button>
+            </Box>
           }
         >
-          <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
+          <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:3}}>
+              <StyledTextField action={ updateNewUser } field={'name'} title={"Name : "} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
+              <StyledTextField action={ updateNewUser } field={'phone'} title={"Mobile : "} value={newUser?.phone} fieldStyle={{ width:'50%' }}/>
+              <StyledTextField action={ updateNewUser } field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'50%' }}/>
+          </Box>
         </StyledDialog>
         {/* <Snackbar
           anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
@@ -239,19 +254,21 @@ class EmployeeList extends React.PureComponent {
 
 // Prop Types
 EmployeeList.propTypes = {
+  dispatch: PropTypes.func,
   user: PropTypes.object,
   attendanceList: PropTypes.array,
   employeeList: PropTypes.array,
   currentView: PropTypes.string,
-  dispatch: PropTypes.func,
+  newUser: PropTypes.object,
 }
 
 EmployeeList.defaultProps = {
+  dispatch: () => null,
   user: {},
   attendanceList: [],
   employeeList: [],
   currentView: '',
-  dispatch: () => null
+  newUser: PropTypes.object,
 }
 
 const mapStateToProps = state => ({
@@ -259,7 +276,8 @@ const mapStateToProps = state => ({
   attendanceList: state?.attendanceList?.attendanceList,
   employeeList: state?.employeeList?.employeeList,
   currentView: state?.dashboard?.currentView,
-  currentEmployeeType: state?.employeeList?.currentEmployeeType
+  currentEmployeeType: state?.employeeList?.currentEmployeeType,
+  newUser: state?.admin?.newUser,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

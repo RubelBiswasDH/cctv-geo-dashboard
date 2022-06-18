@@ -263,7 +263,6 @@ class Attendance extends React.PureComponent {
         const { dispatch } = this.props
         const { selected_date } = this.state
         const selectedDate = date?.$d && dayjs(new Date(date?.$d)).format('YYYY-MM-DD') || selected_date
-        console.log({selectedDate})
         this.setState({ date, selected_date: selectedDate ?? selected_date })
         dispatch( getAttendance({start_date: `${selectedDate}`, end_date: `${selectedDate}`}) )
     }
