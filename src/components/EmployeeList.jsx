@@ -10,6 +10,7 @@ import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
 import StyledTextField from './common/StyledTextField'
+import StyledDropdown from './common/StyledDropdown'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
@@ -206,6 +207,36 @@ class EmployeeList extends React.PureComponent {
               <StyledTextField action={ updateNewUser } field={'name'} title={"Name : "} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
               <StyledTextField action={ updateNewUser } field={'phone'} title={"Mobile : "} value={newUser?.phone} fieldStyle={{ width:'50%' }}/>
               <StyledTextField action={ updateNewUser } field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'50%' }}/>
+              <Box sx={{display:'flex', flexDirection:'row',  width:'100%' }}>
+                <StyledDropdown 
+                      filterOptions={[
+                          'Frontend Engineer',
+                          'Backend Engineer',
+                          'Sr. Frontend Engineer'
+                      ]}
+                      action={ updateNewUserProfile }  
+                      field={'profile'} 
+                      subField={'position'}  
+                      value={newUser?.profile?.position} 
+                      fieldStyle={{ width:'90%' }}
+                  />
+                  <StyledDropdown 
+                      filterOptions={[
+                        'Management',
+                        'Admin',
+                        'Product Team',
+                        'Business Team',
+                        'Tech Team',
+                        'Operations Team',
+                        
+                      ]}  
+                      action={ updateNewUserProfile }  
+                      field={'profile'} 
+                      subField={'department'} 
+                      value={newUser?.profile?.department} 
+                      fieldStyle={{ width:'90%' }}
+                  />
+              </Box>
           </Box>
         </StyledDialog>
         {/* <Snackbar
