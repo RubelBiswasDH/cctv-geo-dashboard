@@ -75,7 +75,7 @@ class CustomStepper extends React.PureComponent {
         const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleReset, handleCancle } = this
         const { activeStep, skipped } = this.state
         const { handleSubmit, steps, contents } = this.props
-        return (<Box sx={{ width: '100%' }}>
+        return (<Box sx={{ width: '100%'}}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => { 
             const stepProps = {};
@@ -113,7 +113,7 @@ class CustomStepper extends React.PureComponent {
         ) : (
           <React.Fragment>
             {/* steppers content */}
-            <Box sx={{display:"flex",pt:5, p:5}}>
+            <Box sx={{display:"flex",pt:5, p:5, minHeight: '100%',gap:1}}>
                 {contents[activeStep]}
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
             </Box>

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { API } from '../../App.config'
-import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays} from '../reducers/adminReducer';
+import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays, updateNewUser} from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
+
 import { getEmployee }  from '../actions/employeeActions'
 import { getAttendance } from './attendanceActions';
 import dayjs from 'dayjs'
@@ -230,9 +231,18 @@ export function deleteUser(id,data) {
             .then(res => {
                 if (res.status === 200) {
                     dispatch(getEmployee())
+                    dispatch(updateNewUser({
+                        name:'',
+                        phone: '',
+                        email:  '',
+                        profile: {
+                          
+                        }
+                      }))
                     dispatch(setToastMessage("User Successfully Deleted"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
+
                 }
             })
             .catch(err => {
