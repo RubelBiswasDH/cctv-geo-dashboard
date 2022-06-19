@@ -155,8 +155,9 @@ class EmployeeList extends React.PureComponent {
     const { dispatch, selectedUserId, newUser } = this.props
     const userData = {
       ...newUser,
-      profile: JSON.stringify(newUser)
+      profile: JSON.stringify(newUser?.profile)
     }
+    // console.log(userData)
     dispatch(updateUser(selectedUserId, userData))
 
   }
