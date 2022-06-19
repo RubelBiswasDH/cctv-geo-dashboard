@@ -14,7 +14,7 @@ import StyledDropdown from './common/StyledDropdown'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
-import { getUserProfile, deleteUser } from '../redux/actions/adminActions'
+import { getUserProfile, deleteUser, updateUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
 import { updateNewUser, updateNewUserProfile, setSelectedUserId, setUserDeleteReason } from '../redux/reducers/adminReducer'
@@ -125,17 +125,7 @@ class EmployeeList extends React.PureComponent {
     }))
   }
 
-  _handleDeleteDialogClose = () => {
-    // this.setState({selectedUserId:''})
-    this.setState({isDeleteDialogOpen:false})
-  }
 
-  _handleDeleteDialogOpen = (id) => {
-    const { dispatch } = this.props
-    // dispatch( setSelectedUserId(id))
-    // this.setState({selectedUserId:id})
-    this.setState({isDeleteDialogOpen:true})
-  }
 
   _handleUpdateDialogClose = () => {
     const { dispatch } = this.props
@@ -161,6 +151,23 @@ class EmployeeList extends React.PureComponent {
   
     this.setState({ isUpdateDialogOpen:true })
   }
+  _handleUpdateeUser = () => {
+    const { dispatch, selectedUserId, newUser } = this.props
+    const userData = {
+      ...newUser,
+      profile: JSON.stringify(newUser)
+    }
+    dispatch(updateUser(selectedUserId, userData))
+
+  }
+
+
+  _handleDeleteDialogOpen = (id) => {
+    const { dispatch } = this.props
+    // dispatch( setSelectedUserId(id))
+    // this.setState({selectedUserId:id})
+    this.setState({isDeleteDialogOpen:true})
+  }
   _handleDeleteUserReason = (e) => {
     const { dispatch, selectedUserId, userDeleteReason } = this.props
     // this.setState({ deleteUserReason : e.target.value})
@@ -181,8 +188,9 @@ class EmployeeList extends React.PureComponent {
     // this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
-  _handleUpdateeUser = () => {
-    const { selectedUserId } = this.state
+  _handleDeleteDialogClose = () => {
+    // this.setState({selectedUserId:''})
+    this.setState({isDeleteDialogOpen:false})
   }
   render() {
     const { isTaskLoading, newUser } = this.props
