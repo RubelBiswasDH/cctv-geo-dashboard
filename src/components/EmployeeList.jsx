@@ -17,7 +17,7 @@ import { stopNotificationSound } from '../utils/utils'
 import { getUserProfile, deleteUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
-import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
+import { updateNewUser, updateNewUserProfile, setSelectedUserId, setUserDeleteReason } from '../redux/reducers/adminReducer'
 
 import dayjs from 'dayjs'
 
@@ -42,6 +42,7 @@ class EmployeeList extends React.PureComponent {
     isDeleteDialogOpen: false,
     isUpdateDialogOpen: false,
     selectedUserId: '',
+    deleteUserReason: '',
     selectedTask: {},
     selectedTimeline: [
   ],
@@ -125,41 +126,59 @@ class EmployeeList extends React.PureComponent {
   }
 
   _handleDeleteDialogClose = () => {
-    this.setState({selectedUserId:''})
+    // this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
 
   _handleDeleteDialogOpen = (id) => {
-    this.setState({selectedUserId:id})
+    const { dispatch } = this.props
+    // dispatch( setSelectedUserId(id))
+    // this.setState({selectedUserId:id})
     this.setState({isDeleteDialogOpen:true})
   }
 
   _handleUpdateDialogClose = () => {
-    this.setState({ selectedUserId:'' })
+    const { dispatch } = this.props
+    // this.setState({ selectedUserId:'' })
+    dispatch( setSelectedUserId(''))
     this.setState({ isUpdateDialogOpen:false })
   }
 
   _handleUpdateDialogOpen = (id) => {
     const { dispatch, employeeList } = this.props
-    this.setState({ selectedUserId:id })
+    dispatch( setSelectedUserId(id))
+    // this.setState({ selectedUserId:id })
     const emp = employeeList.find(emp => emp.id === id)
     dispatch(updateNewUser({
       name:emp?.name || '',
       phone: emp?.phone || '',
       email: emp?.email || '',
       profile: {
-        position: emp?.profile?.position || '',
-        department: emp?.profile?.department || '',
+      position: emp?.profile?.position || '',
+      department: emp?.profile?.department || '',
       }
     }))
   
     this.setState({ isUpdateDialogOpen:true })
   }
+  _handleDeleteUserReason = (e) => {
+    const { dispatch, selectedUserId, userDeleteReason } = this.props
+    // this.setState({ deleteUserReason : e.target.value})
+    dispatch(setUserDeleteReason(e.target.value))
+    console.log({selectedUserId, userDeleteReason})
 
+  }
   _handleDeleteUser = () => {
-    const { selectedUserId } = this.state
-    this.props.dispatch(deleteUser(selectedUserId))
-    this.setState({selectedUserId:''})
+    const { dispatch, selectedUserId, userDeleteReason } = this.props
+    dispatch(
+      deleteUser(
+        selectedUserId,
+        {
+          deleted_reason: userDeleteReason
+        }
+        ))
+    dispatch(setSelectedUserId(''))
+    // this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
   _handleUpdateeUser = () => {
@@ -198,7 +217,7 @@ class EmployeeList extends React.PureComponent {
             </>
           }
         > 
-          <TextField fullWidth sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</TextField>
+          <TextField onChange={ this._handleDeleteUserReason } fullWidth sx={{fontSize:'1em'}}></TextField>
         </StyledDialog>
         <StyledDialog 
           isDialogOpen={ this.state.isUpdateDialogOpen }
@@ -322,6 +341,8 @@ const mapStateToProps = state => ({
   currentView: state?.dashboard?.currentView,
   currentEmployeeType: state?.employeeList?.currentEmployeeType,
   newUser: state?.admin?.newUser,
+  selectedUserId: state?.admin?.selectedUserId,
+  userDeleteReason: state?.admin?.userDeleteReason,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

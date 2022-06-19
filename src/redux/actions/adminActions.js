@@ -222,10 +222,12 @@ export function getAuthToken() {
 }
 
 // Delete User Action
-export function deleteUser(id) {
+export function deleteUser(id,data) {
+    console.log({id, data})
+
     return dispatch => {
         const token = getAuthToken()
-        axios.post(API.DELETE_USER + id, { headers: { Authorization: `Bearer ${token}` } })
+        axios.post(API.DELETE_USER + id, data, { headers: { Authorization: `Bearer ${token}` } })
             .then(res => {
                 if (res.status === 200) {
                     dispatch(getEmployee())
@@ -239,3 +241,23 @@ export function deleteUser(id) {
             })
     }
 }
+
+// setUserProfile Action
+export function updateUser(id,data) {
+    return dispatch => {
+        const token = getAuthToken()
+        axios.post(API.UPDATE_USER+id, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                if(res.status===200){
+                    dispatch( getEmployee() )
+                    dispatch( setToastMessage("User Successfully Updated") )
+                    dispatch( setToastSeverity('success') )
+                    dispatch( setToastIsOpen(true) )
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}
+
