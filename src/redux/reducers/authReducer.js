@@ -9,6 +9,7 @@ const initialState = {
   newPassword_2: '',
   password: '',
   token: null,
+  passwordResetToken: null,
   user: {},
   error: ''
 }
@@ -47,8 +48,11 @@ const authSlice = createSlice({
     setNewPassword_2: (state, action) => {
       state.newPassword_2 = action.payload
     },
+    setPasswordResetToken: (state, action ) => {
+      state.passwordResetToken = action.payload
+    }
   }
 })
 
-export const { setIsAuthenticated, setIsValidating, setEmployeeEmail, setPassword, setToken, setUser, setError, setPasswordResetEmail, setNewPassword, setNewPassword_2  } = authSlice.actions
+export const { setIsAuthenticated, setIsValidating, setEmployeeEmail, setPassword, setToken, setUser, setError, setPasswordResetEmail, setNewPassword, setNewPassword_2, setPasswordResetToken  } = authSlice.actions
 export default authSlice.reducer

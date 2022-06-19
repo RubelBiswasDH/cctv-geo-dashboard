@@ -13,18 +13,23 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 // Import Actions & Methods
 import { setError, setNewPassword, setNewPassword_2 } from '../redux/reducers/authReducer'
 import { resetPassword } from '../redux/actions/authActions'
+import { getTokenFromUrl } from '../utils/utils'
+import { setPasswordResetToken } from '../redux/reducers/authReducer'
 
 class ResetPassword extends React.PureComponent {
-  state = {
-    error: {
-        newPassword: '',
-        newPassword_2: ''
+   state = {
+      error: {
+          newPassword: '',
+          newPassword_2: ''
+      }
     }
-  }
+  
   componentDidMount(){
+    const { dispatch } = this.props
     // const { token } = this.props.match.params;
-      const { match, location, history } = this.props;
-      console.log(match)
+    const baseUrl = (window.location).href; // You can also use document.URL
+    const token = getTokenFromUrl(baseUrl) 
+    dispatch(setPasswordResetToken(token))
     // console.log({token})
 
   }
@@ -59,13 +64,13 @@ class ResetPassword extends React.PureComponent {
   // On Submit
   _onSubmit = e => {
     e.preventDefault()
-    const { dispatch, newPassword, newPassword_2 } = this.props
+    const { dispatch, newPassword, newPassword_2, passwordResetToken } = this.props
 
     // Validate Employee Id & Password
     const validatePassword = this._validateNewPassword(newPassword)    
     const validatePassword_2 = this._validateNewPassword_2(newPassword, newPassword_2)
     if( validatePassword.success && validatePassword_2.success) {
-      dispatch( resetPassword({ password:newPassword, token:'WlGhG0ku5CSAI0wTz51E' }) )
+      dispatch( resetPassword({ password:newPassword, token:passwordResetToken }) )
     } else {
       this.setState({
         error: {
@@ -315,6 +320,7 @@ ResetPassword.propTypes = {
   newPassword: PropTypes.string,
   newPassword_2: PropTypes.string,
   authError: PropTypes.string,
+  passwordResetToken: PropTypes.string,
   dispatch: PropTypes.func
 }
 
@@ -322,6 +328,7 @@ ResetPassword.defaultProps = {
   employeeEmail: '',
   newPassword: '',
   newPassword_2: '',
+  passwordResetToken: null,
   authError: '',
   dispatch: () => null
 }
@@ -330,10 +337,11 @@ const mapStateToProps = state => ({
   employeeEmail: state?.auth?.employeeEmail,
   newPassword: state?.auth?.newPassword,
   newPassword_2: state?.auth?.newPassword_2,
+  passwordResetToken: state?.auth?.passwordResetToken,
   authError: state?.auth?.error
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ResetPassword))
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword)
 // export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ResetPassword))

@@ -161,3 +161,10 @@ export const withRouter = props => WrappedComponent => moreProps => {
     <WrappedComponent { ...props } { ...searchParams } {...moreProps } />
   )
  }
+
+ const getTokenFromUrl = (url) => {
+      const  token = url.substring(url.lastIndexOf('=') + 1);
+      return token
+ }
+
+ export { getTokenFromUrl }

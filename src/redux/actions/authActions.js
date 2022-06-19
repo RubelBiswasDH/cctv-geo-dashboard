@@ -27,7 +27,7 @@ export function login(user) {
                 dispatch( setIsAuthenticated(false) )
                 dispatch( setToken(null) )
                 dispatch( setUser({}) )
-                dispatch( setError("User Not Found"))
+                dispatch( setError("Wrong Email or Password"))
 
                 // Set `isValidating`
                 dispatch( setIsValidating(false) )
