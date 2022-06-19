@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-
+// import { withRouter } from "react-router-dom";
+import { withRouter } from '../utils/utils'
 // Import Components
 import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack } from '@mui/material'
 
@@ -13,14 +14,20 @@ import bkoiLogo from '../assets/barikoi-logo.png'
 import { setError, setNewPassword, setNewPassword_2 } from '../redux/reducers/authReducer'
 import { resetPassword } from '../redux/actions/authActions'
 
-class Login extends React.PureComponent {
+class ResetPassword extends React.PureComponent {
   state = {
     error: {
         newPassword: '',
         newPassword_2: ''
     }
   }
+  componentDidMount(){
+    // const { token } = this.props.match.params;
+      const { match, location, history } = this.props;
+      console.log(match)
+    // console.log({token})
 
+  }
   // On Change
   _onChange = e => {
     const { dispatch, authError } = this.props
@@ -58,7 +65,7 @@ class Login extends React.PureComponent {
     const validatePassword = this._validateNewPassword(newPassword)    
     const validatePassword_2 = this._validateNewPassword_2(newPassword, newPassword_2)
     if( validatePassword.success && validatePassword_2.success) {
-      dispatch( resetPassword({ password:newPassword, token:'token' }) )
+      dispatch( resetPassword({ password:newPassword, token:'WlGhG0ku5CSAI0wTz51E' }) )
     } else {
       this.setState({
         error: {
@@ -303,7 +310,7 @@ const attributionLinkStyles = {
 }
 
 // Prop Types
-Login.propTypes = {
+ResetPassword.propTypes = {
   employeeEmail: PropTypes.string,
   newPassword: PropTypes.string,
   newPassword_2: PropTypes.string,
@@ -311,7 +318,7 @@ Login.propTypes = {
   dispatch: PropTypes.func
 }
 
-Login.defaultProps = {
+ResetPassword.defaultProps = {
   employeeEmail: '',
   newPassword: '',
   newPassword_2: '',
@@ -328,4 +335,5 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({ dispatch })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ResetPassword))
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ResetPassword))

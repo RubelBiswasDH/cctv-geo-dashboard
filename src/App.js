@@ -77,7 +77,7 @@ class App extends React.PureComponent {
               />
                <Route
                 exact={ true }
-                path='/reset-password'
+                path='/reset-password/?:token'
                 element={
                   isAuthenticated ?
                     <Navigate to='/' />

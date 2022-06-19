@@ -164,7 +164,7 @@ class Login extends React.PureComponent {
               variant={ 'h5' }
               sx={{ fontSize: '28px' }}
             >
-              { 'Hr Trace Log In' }
+              { 'HR Trace Log In' }
             </Typography>
           </Box>
 

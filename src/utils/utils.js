@@ -4,6 +4,7 @@ import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import { useSearchParams } from 'react-router-dom'
 import { API } from '../App.config'
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
@@ -146,3 +147,17 @@ export function getAuthToken() {
   }
   return null
 }
+
+// const withRouter = ({ children }) => {
+//   const searchParams = useSearchParams()
+//   return (
+//     { children }
+//   )
+// }
+
+export const withRouter = props => WrappedComponent => moreProps => {
+  const searchParams = useSearchParams()
+  return (
+    <WrappedComponent { ...props } { ...searchParams } {...moreProps } />
+  )
+ }
