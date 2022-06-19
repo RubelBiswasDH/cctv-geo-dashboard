@@ -223,7 +223,6 @@ export function getAuthToken() {
 
 // Delete User Action
 export function deleteUser(id,data) {
-    console.log({id, data})
 
     return dispatch => {
         const token = getAuthToken()

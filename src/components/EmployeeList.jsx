@@ -139,13 +139,14 @@ class EmployeeList extends React.PureComponent {
     dispatch( setSelectedUserId(id))
     // this.setState({ selectedUserId:id })
     const emp = employeeList.find(emp => emp.id === id)
+    const empProfile = JSON.parse(emp.profile)
     dispatch(updateNewUser({
       name:emp?.name || '',
       phone: emp?.phone || '',
       email: emp?.email || '',
       profile: {
-      position: emp?.profile?.position || '',
-      department: emp?.profile?.department || '',
+        designation: empProfile?.designation || '',
+        department: empProfile?.department || '',
       }
     }))
   
@@ -157,7 +158,6 @@ class EmployeeList extends React.PureComponent {
       ...newUser,
       profile: JSON.stringify(newUser?.profile)
     }
-    // console.log(userData)
     dispatch(updateUser(selectedUserId, userData))
 
   }
@@ -165,15 +165,11 @@ class EmployeeList extends React.PureComponent {
 
   _handleDeleteDialogOpen = (id) => {
     const { dispatch } = this.props
-    // dispatch( setSelectedUserId(id))
-    // this.setState({selectedUserId:id})
     this.setState({isDeleteDialogOpen:true})
   }
   _handleDeleteUserReason = (e) => {
     const { dispatch, selectedUserId, userDeleteReason } = this.props
-    // this.setState({ deleteUserReason : e.target.value})
-    dispatch(setUserDeleteReason(e.target.value))
-    console.log({selectedUserId, userDeleteReason})
+    dispatch( setUserDeleteReason(e.target.value))
 
   }
   _handleDeleteUser = () => {
@@ -186,11 +182,9 @@ class EmployeeList extends React.PureComponent {
         }
         ))
     dispatch(setSelectedUserId(''))
-    // this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
   _handleDeleteDialogClose = () => {
-    // this.setState({selectedUserId:''})
     this.setState({isDeleteDialogOpen:false})
   }
   render() {
@@ -253,12 +247,15 @@ class EmployeeList extends React.PureComponent {
                       filterOptions={[
                           'Frontend Engineer',
                           'Backend Engineer',
-                          'Sr. Frontend Engineer'
+                          'Sr. Frontend Engineer',
+                          'Software Engineering Manager',
+                          'Executive - HR & Admin',
+                          'Software Engineer - Android',
                       ]}
                       action={ updateNewUserProfile }  
                       field={'profile'} 
-                      subField={'position'}  
-                      value={newUser?.profile?.position} 
+                      subField={'designation'}  
+                      value={newUser?.profile?.designation} 
                       fieldStyle={{ width:'90%' }}
                   />
                   <StyledDropdown 

@@ -94,9 +94,9 @@ class AddUser extends React.PureComponent {
                     ]}  
                     dispatch={dispatch} 
                     field={'profile'} 
-                    subField={'position'}  
-                    title={"Position : "} 
-                    value={newUser?.profile?.position} 
+                    subField={'designation'}  
+                    title={"Designation : "} 
+                    value={newUser?.profile?.designation} 
                     fieldStyle={{ width:'25%' }}
                 />
                 <FilterField 
