@@ -29,10 +29,10 @@ pipeline {
                     continueOnError: false, failOnError: true,
                     publishers: [
                         sshPublisherDesc(
-                            configName: "hr_trace_staging",
+                            configName: "azurestaging",
                             verbose: true,
                             transfers: [
-                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+                                sshTransfer(cleanRemote: true, sourceFiles: "build/**", remoteDirectory: "/home/barikoi/hr_trace_dashboard"),
                                 sshTransfer(execCommand: "cd /home/barikoi/hr_trace_dashboard; mv build/* ./; rm -r build; ls -l")
                             ]
                         )
@@ -51,10 +51,10 @@ pipeline {
                     continueOnError: false, failOnError: true,
                     publishers: [
                         sshPublisherDesc(
-                            configName: "hrtrace_production",
+                            configName: "huawei_frontend",
                             verbose: true,
                             transfers: [
-                                sshTransfer(cleanRemote: true, sourceFiles: "build/**",),
+                                sshTransfer(cleanRemote: true, sourceFiles: "build/**", remoteDirectory: "/var/www/html/hr-trace-dashboard"),
                                 sshTransfer(execCommand: "cd /var/www/html/hr-trace-dashboard; mv build/* ./; rm -r build; ls -l")
                             ]
                         )
