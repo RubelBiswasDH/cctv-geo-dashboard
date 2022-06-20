@@ -93,6 +93,10 @@ const theme = createTheme({
       main: '#025920',
       contrastText: '#FFF',
     },
+    btnSave: {
+      main: '#2E7D32',
+      ontrastText: '#FFF',
+    },
     orangeRed: {
       main: '#FF4500',
       contrastText: '#000',

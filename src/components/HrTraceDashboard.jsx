@@ -12,6 +12,7 @@ import NavBar from './NavBar'
 import LeftNav from './LeftNav'
 import AttendanceList from './Attendance'
 import EmployeeProfile from './EmployeeProfile'
+import CompanyProfile from './CompanyProfile'
 import SubNav from './SubNav'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
@@ -23,6 +24,7 @@ import Button from '@mui/material/Button';
 
 // Import Actions & Methods
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+import { getCompanySettingsAction } from '../redux/actions/adminActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
@@ -44,8 +46,9 @@ class HrTraceDashboard extends React.PureComponent {
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch( getEmployee() )
-    dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
+    dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    // dispatch( getCompanySettingsAction() )
 
     this.setState({ start_date, end_date })
 
@@ -185,6 +188,10 @@ class HrTraceDashboard extends React.PureComponent {
                 {
                   (this.props.currentView === 'profile') && <Profile />
                 }
+                {
+                  (this.props.currentView === 'company_profile') && <CompanyProfile />
+                }
+                
                 {
                   (this.props.currentView === 'add_user') && <AddUser/>
                 }

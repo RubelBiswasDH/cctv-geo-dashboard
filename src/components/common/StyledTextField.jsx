@@ -23,14 +23,14 @@ class StyledTextField extends React.PureComponent {
     }
 
     render() {
-        const { title, value, field, subField, style, fieldStyle, titleStyle } = this.props
+        const { title, value, field, subField, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle } = this.props
 
         const { handleChange } = this;
     
             return (
-                <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
-                    <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+                <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
+                    <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
+                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle}}>{title}</Typography>
                     </Box>
                     <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>
                         <Paper
