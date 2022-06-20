@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import { ArrowRightAlt } from '@mui/icons-material'
-import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
+import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
@@ -32,7 +32,8 @@ import AddressAutoComplete from './common/AddressAutoComplete'
 class CompanyProfile extends React.PureComponent {
  
   state = {
-
+    last_check_in_time: "11:32 PM",
+    selected_time: null,
   }
 
   componentDidMount() {
@@ -55,33 +56,22 @@ class CompanyProfile extends React.PureComponent {
   }
 
  
-     // Handle Date Range Change
-     _handleDateRangeChange = dateValues => {
-      const { dispatch } = this.props
-      const { start_date, end_date } = this.state            
-  
-      // Get start date and end date from date range picker
-      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD') || start_date
-      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD') || end_date
-  
-      // Set state for start date and end date accordingly
-      this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
-      dispatch( getAttendance({start_date: `${startDate}`, end_date: `${endDate}`}) )
-
-    }
-  
     // Handle Get Data
     _handleOnSubmit = () => {
       const { start_date, end_date } = this.state
       const { dispatch } = this.props
       dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     }
-    _handleDateChange = date => {
+
+    _handleTimeChange = time => {
         const { dispatch } = this.props
-        const { selected_date } = this.state
-        const selectedDate = date?.$d && dayjs(new Date(date?.$d)).format('YYYY-MM-DD') || selected_date
-        this.setState({ date, selected_date: selectedDate ?? selected_date })
-        dispatch( getAttendance({start_date: `${selectedDate}`, end_date: `${selectedDate}`}) )
+        const { last_check_in_time, selected_time } = this.state
+        const pickedTime = time?.$d && dayjs(new Date(time?.$d)).format('h:mm A') || last_check_in_time
+        // console.log({pickedTime})
+        this.setState({ last_check_in_time: pickedTime ?? pickedTime })
+        this.setState({ time: time ?? selected_time })
+
+        // dispatch( getAttendance({start_date: `${selectedDate}`, end_date: `${selectedDate}`}) )
     }
 
     _updateExactAddress = (updatedAddress) => {
@@ -113,7 +103,7 @@ class CompanyProfile extends React.PureComponent {
 
   render() {
     const { dispatch, isTaskLoading, filterOptions, isDataLoading, currentAttendanceTab, companyAddressData, companySettings } = this.props
-    const { feedback } = this.state
+    const { feedback, last_check_in_time, selected_time } = this.state
     const { _updateExactAddress, _handleSaveCompanyAddress } = this
     return (
       <Box width='100%' height='54vh'>
@@ -131,6 +121,27 @@ class CompanyProfile extends React.PureComponent {
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%' }} >
                     <Typography sx={{ ...textStyle,width:'40%' }}>Company Address : </Typography>
                     <AddressAutoComplete/>
+                </Box>
+                <Box sx={{ display:'flex',flexDirection:'row',width:'100%' }}>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Last Check In Time : </Typography>
+                    <LocalizationProvider dateAdapter={ AdapterDayjs }>
+                        <TimePicker
+                            // value = { "4:59 PM" }
+                            onChange={ this._handleTimeChange }
+                            disableMaskedInput={ true }
+                            // inputFormat={ 'HH:mm' }
+                            renderInput={(params) => (                                            
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <TextField {...params} size={ 'small' } fullWidth={ true } />
+                                </Box>                                            
+                            
+                            )}
+                            PopperProps={{
+                            placement: 'bottom-start',
+                            }}
+                            onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
+                        />
+                    </LocalizationProvider>
                 </Box>
             </Box>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:2}}>
