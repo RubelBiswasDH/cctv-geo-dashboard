@@ -101,6 +101,10 @@ const theme = createTheme({
       main: '#007AFF',
       ontrastText: '#FFF',
     },
+    btnSecondaryAdd: {
+      main: '#9C27B0',
+      ontrastText: '#FFF',
+    },
     btnCheck:{
       main: '#4CAF50',
       ontrastText: '#FFF',

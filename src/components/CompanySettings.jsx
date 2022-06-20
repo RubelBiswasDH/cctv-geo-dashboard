@@ -104,7 +104,7 @@ class CompanySettings extends React.PureComponent {
                         <Typography  sx={{fontSize:'1.2em'}}>Tech Team</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box sx={{gap:1}}>
+                        <Box sx={{gap:0}}>
                             <Typography sx={{fontSize:'1em'}}>Frontend Engineer</Typography>
                             <Typography sx={{fontSize:'1em'}}>Backend Engineer</Typography>
 
@@ -139,8 +139,8 @@ class CompanySettings extends React.PureComponent {
                 </Accordion>
             </Box>
         </Box>
-        <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-end',width:'100%',pr:30}}>
-            <Button variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '5%' }}>Save</Button>
+        <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>
+            <Button variant="contained" color={"btnSecondaryAdd"} sx={{ width: '10%' }}><Typography sx={{color:"white"}}>Add User</Typography></Button>
         </Box>
         <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
 
