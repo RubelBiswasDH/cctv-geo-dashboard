@@ -29,9 +29,10 @@ class StyledTextField extends React.PureComponent {
     
             return (
                 <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
-                    <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
+                    { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
                         <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle}}>{title}</Typography>
                     </Box>
+                     }
                     <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>
                         <Paper
                             xs={12}

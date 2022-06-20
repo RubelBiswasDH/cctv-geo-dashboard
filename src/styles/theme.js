@@ -97,6 +97,18 @@ const theme = createTheme({
       main: '#2E7D32',
       ontrastText: '#FFF',
     },
+    btnBlueAdd: {
+      main: '#007AFF',
+      ontrastText: '#FFF',
+    },
+    btnCheck:{
+      main: '#4CAF50',
+      ontrastText: '#FFF',
+    },
+    btnCancel:{
+      main: '#FF5A79',
+      ontrastText: '#FFF',
+    },
     orangeRed: {
       main: '#FF4500',
       contrastText: '#000',

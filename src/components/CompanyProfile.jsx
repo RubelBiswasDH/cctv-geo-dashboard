@@ -122,7 +122,7 @@ class CompanyProfile extends React.PureComponent {
                     <Typography sx={{ ...textStyle,width:'40%' }}>Company Address : </Typography>
                     <AddressAutoComplete/>
                 </Box>
-                <Box sx={{ display:'flex',flexDirection:'row',width:'100%' }}>
+                <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
                     <Typography sx={{ ...textStyle,width:'40%' }}>Last Check In Time : </Typography>
                     <LocalizationProvider dateAdapter={ AdapterDayjs }>
                         <TimePicker

@@ -18,6 +18,7 @@ import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
 import Profile from './Profile'
 import AddUser from './AddUser'
+import CompanySettings from './CompanySettings'
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import Button from '@mui/material/Button';
@@ -31,6 +32,7 @@ import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setIsLeftNavOpen } from '../redux/reducers/hrtReducer'
+
 
 class HrTraceDashboard extends React.PureComponent {
   state = {
@@ -190,6 +192,10 @@ class HrTraceDashboard extends React.PureComponent {
                 }
                 {
                   (this.props.currentView === 'company_profile') && <CompanyProfile />
+                }
+
+                {
+                  (this.props.currentView === 'company_settings') && <CompanySettings/>
                 }
                 
                 {
