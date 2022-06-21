@@ -95,19 +95,19 @@ const theme = createTheme({
     },
     btnSave: {
       main: '#2E7D32',
-      ontrastText: '#FFF',
+      contrastText: '#FFF',
     },
     btnBlueAdd: {
       main: '#007AFF',
-      ontrastText: '#FFF',
+      contrastText: '#FFF',
     },
     btnSecondaryAdd: {
       main: '#9C27B0',
-      ontrastText: '#FFF',
+      contrastText: '#FFF',
     },
     btnCheck:{
       main: '#4CAF50',
-      ontrastText: '#FFF',
+      contrastText: '#FFF',
     },
     btnCancel:{
       main: '#FF5A79',

@@ -214,11 +214,8 @@ class CompanySettings extends React.PureComponent {
             </Box>
         </Box>
         <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>
-            <Button variant="contained" color={"btnSecondaryAdd"} sx={{ width: '10%' }}><Typography sx={{color:"white"}}>Add User</Typography></Button>
+            <Button variant="contained" color={"btnSecondaryAdd"} sx={{ width: '20%' }}>Add User</Button>
         </Box>
-        <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
-
-        </Stack>
       </Box>
     )
   }
