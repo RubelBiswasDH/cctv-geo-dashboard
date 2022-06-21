@@ -38,7 +38,7 @@ class CompanyProfile extends React.PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(getCompanySettingsAction())
+    // dispatch(getCompanySettingsAction())
     let date = new Date()
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')

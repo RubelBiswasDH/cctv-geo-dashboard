@@ -50,7 +50,7 @@ class HrTraceDashboard extends React.PureComponent {
     dispatch( getEmployee() )
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
-    // dispatch( getCompanySettingsAction() )
+    dispatch( getCompanySettingsAction() )
 
     this.setState({ start_date, end_date })
 

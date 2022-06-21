@@ -46,7 +46,7 @@ class AddUser extends React.PureComponent {
 
    _handleSaveUser = e => {
     const { dispatch, newUser } = this.props
-    if (newUser.name && newUser.phone && newUser.email) {
+    if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.departments && newUser?.profile?.departments) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
                 ...newUser,
@@ -59,7 +59,7 @@ class AddUser extends React.PureComponent {
         }
     }
     else {
-        dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
+        dispatch(setToastMessage('All fields are mandatory'))
         dispatch(setToastIsOpen(true))
         dispatch(setToastSeverity('warning'))
     }
@@ -69,7 +69,7 @@ class AddUser extends React.PureComponent {
         this.setState(state => ({add_details:!state.add_details}))
     }
   render() {
-    const { dispatch, newUser } = this.props
+    const { dispatch, newUser, companySettings } = this.props
     const { _handleSaveUser, _handleAddDetails } = this
     const { add_details } = this.state
     return (
@@ -87,35 +87,29 @@ class AddUser extends React.PureComponent {
                 <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
                 <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
                 <FilterField 
-                    filterOptions={[
-                        'Frontend Engineer',
-                        'Backend Engineer',
-                        'Sr. Frontend Engineer'
-                    ]}  
-                    dispatch={dispatch} 
-                    field={'profile'} 
-                    subField={'designation'}  
-                    title={"Designation : "} 
-                    value={newUser?.profile?.designation} 
-                    fieldStyle={{ width:'25%' }}
-                />
-                <FilterField 
-                    filterOptions={[
-                        'Management',
-                        'Admin',
-                        'Product Team',
-                        'Business Team',
-                        'Tech Team',
-                        'Operations Team',
-                        
-                    ]}  
+                    filterOptions={Object.keys(companySettings?.departments ) || []}  
                     dispatch={dispatch} 
                     field={'profile'} 
                     subField={'department'}  
                     title={"Department : "} 
-                    value={newUser?.profile?.department} 
+                    value={newUser?.profile?.department || ''} 
                     fieldStyle={{ width:'25%' }}
                 />
+                <FilterField 
+                    filterOptions={companySettings?.departments[newUser?.profile?.department]?.designations || []}  
+                    dispatch={dispatch} 
+                    field={'profile'} 
+                    subField={'designation'}  
+                    title={"Designation : "} 
+                    value={newUser?.profile?.designation || ''} 
+                    fieldStyle={{ width:'25%' }}
+                />
+                {/*
+                    department filters
+                    || Object.keys(companySettings?.departments)[0] 
+                    designations filters
+                    || companySettings?.departments[newUser?.profile?.department]?.designations[0] 
+                    || companySettings?.departments[Object.keys(companySettings?.departments)[0]]?.designations[0] */}
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
                 <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Add Details</Typography></Button>
@@ -316,6 +310,7 @@ AddUser.defaultProps = {
 const mapStateToProps = state => ({
   user: state?.auth?.user,
   newUser: state?.admin?.newUser,
+  companySettings: state?.admin?.companySettings
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
