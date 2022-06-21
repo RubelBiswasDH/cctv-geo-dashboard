@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography, TextField } from '@mui/material'
+import { Box, Grid, Typography, TextField, Divider, Button, FormControl, Select, MenuItem } from '@mui/material'
 import StyledAppBar from './common/StyledAppBar'
 import StyledButton from './common/StyledBotton'
 import image from '../assets/profile-image.jpg'
 
 import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
+import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
+import StyledTextField from './common/StyledTextField'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -69,7 +71,7 @@ const ProfileRow = (props) => {
 
 class Profile extends React.PureComponent {
     render() {
-        const {userProfile, profileEdit, dispatch} = this.props
+        const { userProfile, profileEdit, dispatch, currentProfileTab, profile, newUser} = this.props
         return (
             <Box sx={
                 theme => ({
@@ -87,102 +89,190 @@ class Profile extends React.PureComponent {
                 }
                 )}
             >
-                <Grid container spacing={0} sx={{ mt: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <StyledAppBar title={`Name: ${(userProfile?.name)?userProfile?.name:""}`} bgColor={'#FF6961'} style={{ borderRadius: '4px' }} />
-                </Grid>
-                <Grid container spacing={0} sx={{ display: 'flex',flexDirection:'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
-                    {/* Left */}
-                    <Grid xs={4} item container sx={{display:'flex',p:0,pl:3,pt:3,flexDirection:'column',alignItems:'center',justifyContent:'flex-start',border:''}}>
-                        <Grid item xs={12} sx={{mt: 2, p: 0,gap:1.5,border:'' }}>
+                <Box sx={{display:'flex', width:'100%', p:0, m:0 }}>
+                    <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center', background: '#D9D9D9',width:'25%'}}>
+                        <Box>
                             <img
                                 src={ image }
                                 alt='profile'
                                 width='100%'
                                 height='100%'
                             />    
-                        </Grid>
-                        <Grid item xs={12} sx={{p:2}}><Typography sx={{fontFamily:'Roboto',fontStyle: 'normal', fontWeight:500,fontSize:'19px', color:'#000000'}}>{userProfile.name}</Typography></Grid>
-                    </Grid>
-                    {/* Right */}
-                    <Grid xs={8} sx={{p:3,border:'none' }} item container>
-                        {/* Grid 1 */}
-                        <GridContent  style={{}}>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Name"} value={userProfile.name} field={"name"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Employee ID"} value={userProfile.employee_id} field={"employee_id"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Contact No"} value={userProfile.personal_contact_no} field={"personal_contact_no"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"House Address"} value={userProfile.house_address} field={"house_address"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Birth Date"} value={userProfile.birth_date} field={"birth_date"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Gender"} value={userProfile.gender} field={"gender"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Marritial Status"} value={userProfile.marritial_status} field={"marritial_status"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"NID"} value={userProfile.nid} field={"nid"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"TIN"} value={userProfile.tin} field={"tin"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Educational Qualification"} value={userProfile.educational_qualification} field={"educational_qualification"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Personal Email"} value={userProfile.personal_email} field={"personal_email"} />
-
-
-
-                         </GridContent>
-
-                        {/* Grid 2*/}
-                        <GridContent >
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Offical Email"} value={userProfile.official_email} field={"official_email"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Office Phone No"} value={userProfile.office_phone_no} field={"office_phone_no"} />
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.designation} field={"designation"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Job Status"}  value={userProfile.job_status} field={"job_status"}/> 
-
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Reporting Person"}  value={userProfile.reporting_person} field={"reporting_person"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Joining date"} value={userProfile.joining_date} field={"joining_date"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"End of Probation"}  value={userProfile.end_of_robation} field={"end_of_robation"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Last Performance Review"}  value={userProfile.last_performance_review} field={"last_performance_review"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Next Performance Review"}  value={userProfile.next_performance_review} field={"next_performance_review"}/> 
-                        </GridContent>
-
-                        {/* Grid 3*/}
-                        <GridContent title={"Last Work Place"} >
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Company Name"} value={userProfile.previous_company} field={"previous_company"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Designation"} value={userProfile.previous_designation} field={"previous_designation"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Responsibilities"} value={userProfile.previous_responsibilities} field={"previous_responsibilities"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.previous_salary} field={"previous_salary"}/> 
-                        </GridContent>
-                        {/* Grid 4*/}
-                        <GridContent title={"Emergency"}>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Blood group"} value={userProfile.blood_group} field={"blood_group"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Contact Person"} value={userProfile.contact_person} field={"contact_person"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Contact No"} value={userProfile.emergency_contact_no} field={"emergency_contact_no"}/>
-                        </GridContent>
-
-                        {/* Grid 5*/}
-
-                        <GridContent title={"Benefits"}>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Salary"} value={userProfile.salary} field={"salary"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Bank Name"} value={userProfile.casual_leave} field={"casual_leave"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Sick Leave"}  value={userProfile.sick_leave} field={"sick_leave"}/> 
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Festival Bonus"} value={userProfile.festival_bonus} field={"festival_bonus"}/>
-                        </GridContent>
-                        <GridContent title={"Bank Account Details"}>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Account Title"} value={userProfile.account_title} field={"account_title"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Account No"} value={userProfile.account_no} field={"account_no"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Bank Name"} value={userProfile.bank_name} field={"bank_name"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Branch Name"} value={userProfile.branch_name} field={"branch_name"}/>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"Routing No"} value={userProfile.routing_no} field={"routing_no"}/>
-                        </GridContent>
-
-                        {/* Grid 6*/}
-                        <GridContent title={"Cv/Resume"}>
-                            <ProfileRow dispatch={dispatch} profileEdit={profileEdit}  title={"CV URL"} value={userProfile.cv_url} field={"cv_url"}/>
-                        </GridContent>
-                        <GridContent style={{flexDirection:'row'}} >
-                            <Grid item xs={6}><StyledButton style={{width:'100%', bg:'orange'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</StyledButton></Grid>
-                            <Grid item xs={6}><StyledButton style={{width:'100%'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</StyledButton></Grid>
-                        </GridContent>
-                    </Grid>
-                </Grid>
+                        </Box>
+                        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                            <Button><Typography>User Profile</Typography></Button>
+                            <Button><Typography>Attendance Overview</Typography></Button>
+                        </Box>
+                    </Box>
+                    <Box sx={{display:'flex',flexDirection:'column',width:'75%'}}>
+                        <Box sx={{
+                            ml:'auto',
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: '100%',
+                            justifyContent:'flex-start'
+                            }}>
+                            <TabSwitchButton 
+                                value={'PROFILE'} 
+                                action={setCurrentProfileTab} 
+                                dispatch={dispatch}
+                                isActive={ currentProfileTab === 'PROFILE' }
+                            />
+                            <Divider orientation={'vertical'}></Divider>
+                            <TabSwitchButton 
+                                value={'BANK DETAILS'} 
+                                action={setCurrentProfileTab} 
+                                dispatch={dispatch} 
+                                isActive={ currentProfileTab === 'BANK DETAILS' }
+                            />
+                            <Divider orientation={'vertical'}></Divider>
+                            <TabSwitchButton 
+                                value={'EMERGENCY'} 
+                                action={setCurrentProfileTab} 
+                                dispatch={dispatch} 
+                                isActive={ currentProfileTab === 'EMERGENCY' }
+                            />
+                        </Box>
+                        <Box sx={{
+                            ml:'auto',
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: '100%',
+                            justifyContent:'flex-start'
+                            }}>  
+                            <Box sx={{width:'100%', justifyContent:'space-between',m:3,gap:1}}>
+                            { (currentProfileTab === "PROFILE") && <>
+                                <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>General Information</Typography>
+                                <StyledTextField action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Mobile"} field={"mobile"} value={userProfile?.mobile || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{width:'70%'}}/>
+                                <Box sx={{display:'flex',p:1,pl:0,gap:1}}>
+                                 
+                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"16%"}}>Position</Typography>
+                                    <FilterField 
+                                        filterOptions={[
+                                            'Frontend Engineer',
+                                            'Backend Engineer',
+                                            'Sr. Frontend Engineer'
+                                        ]}  
+                                        dispatch={dispatch} 
+                                        field={'profile'} 
+                                        subField={'designation'}  
+                                        value={userProfile?.designation} 
+                                        fieldStyle={{ width:'50%' }}
+                                    />
+                                    <FilterField 
+                                        filterOptions={[
+                                            'Management',
+                                            'Admin',
+                                            'Product Team',
+                                            'Business Team',
+                                            'Tech Team',
+                                            'Operations Team',
+                                            
+                                        ]}  
+                                        dispatch={dispatch} 
+                                        field={'profile'} 
+                                        subField={'department'}  
+                                        value={userProfile?.department} 
+                                        fieldStyle={{ width:'50%' }}
+                                    />
+                                 
+                                </Box>
+                                <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Personal Information</Typography>
+                                <StyledTextField action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Birth Day"} field={"birth_day"} value={userProfile?.birth_day || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Blood Group"} field={"blood_group"} value={userProfile?.blood_group || ''} fieldStyle={{width:'70%'}}/>
+                                </>}
+                            </Box>  
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
         );
     }
 }
 
+const FilterField = (props) => {
+    const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx } = props
+    const handleChange = e => {
+      e.preventDefault()
+      if (field === 'profile') {
+          dispatch(updateUserProfile({
+              [subField]: e.target.value
+          }))
+      }
+      else {
+          dispatch(updateUserProfile({ [field]: e.target.value }))
+      }
+  
+  }
+  const textStyle = {
+      fontFamily: 'Roboto',
+      fontSize: '18px',
+  }
+    return (
+      <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
+          <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
+              <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+          </Box>
+          <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
+                  {/* <InputLabel id="demo-simple-select-label">''</InputLabel> */}
+                  <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value= { value ?? filterOptions[0] }
+                      label=""
+                      onChange={handleChange}
+                      sx = {{fontSize: '.75em'}}
+                  >    
+                      {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
+                  </Select>
+              </FormControl>
+      </Grid>
+    )
+  }
+
+const TabSwitchButton = (props) => {
+    const { value, dispatch, action, isActive } = props
+    const textStyle = {
+        fontFamily: 'Roboto',
+        fontStyle: 'normal',
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '24px',
+        /* identical to box height, or 171% */
+        textAlign: 'center',
+        letterSpacing:' 0.4px',
+        textTransform: 'uppercase',
+        /* Light/Primary/Main */
+        color:'rgba(0, 0, 0, 0.38)',
+        px:2,
+        borderBottom: '2px solid transparent'
+    }
+    const activeBtnStyle = isActive?{
+        color: '#007AFF',
+        borderBottom: '2px solid #007AFF'
+    }:
+    {}
+    const handleClick = () => {
+        dispatch(action(value))
+    }
+    return (
+        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
+    )
+}
+const textStyle = {
+
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '166%',
+    letterSpacing:' 0.4px',
+    color: 'rgba(0, 0, 0, 0.87)',
+}
 // Prop Types
 ProfileRow.propTypes = {
     title: PropTypes.string,
@@ -218,7 +308,9 @@ Profile.defaultProps = {
 const mapStateToProps = state => ({
     userProfile: state?.admin?.userProfile,
     profileEdit: state?.admin?.profileEdit,
-
+    currentProfileTab: state?.employeeList?.currentProfileTab,
+    profile: state?.employeeList?.profile,
+    userProfile: state?.admin?.userProfile,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

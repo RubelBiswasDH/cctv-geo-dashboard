@@ -7,7 +7,9 @@ const initialState = {
     isDeleteDialogOpen: false,
     isUpdateDialogOpen: false,
     selectedUserId: '',
-    error: ''
+    currentProfileTab:'',
+    error: '',
+    profile: {},
 }
 
 const employeeSlice = createSlice({
@@ -35,8 +37,17 @@ const employeeSlice = createSlice({
     setSelectedUserId: ( state, action ) => {
       state.isUpdateDialogOpen = action.payload
     },
+    setCurrentProfileTab: ( state, action ) => {
+      state.currentProfileTab = action.payload
+    },
+    setEmployeeProfile: ( state, action) => {
+      state.profile = action.payload
+    },
+    updateEmployeeProfile: ( state, action) => {
+      state.profile = { ...state.profile, ...action.payload}
+    },
   }
 })
 
-export const { setEmployee, setEmployeeList, setCurrentEmployeeType, setError, isUpdateDialogOpen, isDeleteDialogOpen, selectedUserId  } = employeeSlice.actions
+export const { setEmployee, setEmployeeList, setCurrentEmployeeType, setError, isUpdateDialogOpen, isDeleteDialogOpen, selectedUserId, setCurrentProfileTab, setEmployeeProfile, updateEmployeeProfile } = employeeSlice.actions
 export default employeeSlice.reducer

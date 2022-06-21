@@ -106,7 +106,7 @@ class HrTraceDashboard extends React.PureComponent {
         <NavBar />
         <Box sx={{ ...containerStyles }}>
         
-          <SubNav/>
+          {/* <SubNav/> */}
           <Box
             sx={ theme => ({
               padding: {

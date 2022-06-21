@@ -39,7 +39,7 @@ class AddressAutoComplete extends React.PureComponent{
         const { companyNameOptions, sx } = this.props
         return(
             <Autocomplete
-                sx={{ ...sx}}
+                sx={{ width: '100%', ...sx}}
                 onChange={ _handleAutoCompChange }
                 onInputChange={ _handleAutoCompInputChange}
                 disablePortal
@@ -59,7 +59,6 @@ class AddressAutoComplete extends React.PureComponent{
                         <Grid item xs={12}><Typography sx={{ fontSize: '1em' }}>{option.Address.split(',')[0]}</Typography></Grid>
                         <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
                     </Grid>)}
-                sx={{ width: '100%' }}
                 renderInput={(params) =>
                     <TextField
                         {...params}
