@@ -120,6 +120,13 @@ class Profile extends React.PureComponent {
                             />
                             <Divider orientation={'vertical'}></Divider>
                             <TabSwitchButton 
+                                value={'OFFICE DETAILS'} 
+                                action={setCurrentProfileTab} 
+                                dispatch={dispatch} 
+                                isActive={ currentProfileTab === 'OFFICE DETAILS' }
+                            />
+                            <Divider orientation={'vertical'}></Divider>
+                            <TabSwitchButton 
                                 value={'BANK DETAILS'} 
                                 action={setCurrentProfileTab} 
                                 dispatch={dispatch} 
@@ -184,6 +191,18 @@ class Profile extends React.PureComponent {
                                 <StyledTextField action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField action={ updateUserProfile } title={"Birth Day"} field={"birth_day"} value={userProfile?.birth_day || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField action={ updateUserProfile } title={"Blood Group"} field={"blood_group"} value={userProfile?.blood_group || ''} fieldStyle={{width:'70%'}}/>
+                                </>}
+                                { (currentProfileTab === "OFFICE DETAILS") && <>
+                                <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Office Information</Typography>
+                                <StyledTextField action={ updateUserProfile } title={"Office Email :"} field={"office_email"} value={userProfile?.office_email || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Office Mobile :"} field={"office_mobile"} value={userProfile?.office_mobile || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Job Confirmed : "} field={"job_confirmed"} value={userProfile?.job_confirmed || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Joining Date : "} field={"joining_date"} value={userProfile?.joining_date || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Repoting Person :"} field={"repoting_person"} value={userProfile?.repoting_person || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField action={ updateUserProfile } title={"Basic Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{width:'70%'}}/>
+                                <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Previous Office Information</Typography>
+                                <StyledTextField action={ updateUserProfile } title={"Last Working Place :"} field={"last_working_place"} value={userProfile?.last_working_place || ''} fieldStyle={{width:'70%'}}/>
+                                
                                 </>}
                             </Box>  
                         </Box>
