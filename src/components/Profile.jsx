@@ -71,7 +71,7 @@ const ProfileRow = (props) => {
 
 class Profile extends React.PureComponent {
     render() {
-        const { userProfile, profileEdit, dispatch, currentProfileTab, profile, newUser} = this.props
+        const { userProfile, profileEdit, dispatch, currentProfileTab, profile, newUser, companySettings} = this.props
         return (
             <Box sx={
                 theme => ({
@@ -156,32 +156,21 @@ class Profile extends React.PureComponent {
                                 <Box sx={{display:'flex',p:1,pl:0,gap:1}}>
                                  
                                     <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"16%"}}>Position</Typography>
+
                                     <FilterField 
-                                        filterOptions={[
-                                            'Frontend Engineer',
-                                            'Backend Engineer',
-                                            'Sr. Frontend Engineer'
-                                        ]}  
-                                        dispatch={dispatch} 
-                                        field={'profile'} 
-                                        subField={'designation'}  
-                                        value={userProfile?.designation} 
-                                        fieldStyle={{ width:'50%' }}
-                                    />
-                                    <FilterField 
-                                        filterOptions={[
-                                            'Management',
-                                            'Admin',
-                                            'Product Team',
-                                            'Business Team',
-                                            'Tech Team',
-                                            'Operations Team',
-                                            
-                                        ]}  
+                                        filterOptions={Object.keys(companySettings?.departments ) || []}  
                                         dispatch={dispatch} 
                                         field={'profile'} 
                                         subField={'department'}  
                                         value={userProfile?.department} 
+                                        fieldStyle={{ width:'50%' }}
+                                    />
+                                    <FilterField 
+                                        filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
+                                        dispatch={dispatch} 
+                                        field={'profile'} 
+                                        subField={'designation'}  
+                                        value={userProfile?.designation || ''} 
                                         fieldStyle={{ width:'50%' }}
                                     />
                                  
@@ -330,6 +319,7 @@ const mapStateToProps = state => ({
     currentProfileTab: state?.employeeList?.currentProfileTab,
     profile: state?.employeeList?.profile,
     userProfile: state?.admin?.userProfile,
+    companySettings: state?.admin?.companySettings,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

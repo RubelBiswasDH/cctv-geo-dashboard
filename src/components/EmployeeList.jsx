@@ -188,7 +188,7 @@ class EmployeeList extends React.PureComponent {
     this.setState({isDeleteDialogOpen:false})
   }
   render() {
-    const { isTaskLoading, newUser } = this.props
+    const { isTaskLoading, newUser, companySettings } = this.props
     const { feedback } = this.state
     
     return (
@@ -243,35 +243,20 @@ class EmployeeList extends React.PureComponent {
               <StyledTextField action={ updateNewUser } field={'phone'} title={"Mobile : "} value={newUser?.phone} fieldStyle={{ width:'50%' }}/>
               <StyledTextField action={ updateNewUser } field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'50%' }}/>
               <Box sx={{display:'flex', flexDirection:'row',  width:'100%' }}>
-                <StyledDropdown 
-                      filterOptions={[
-                          'Frontend Engineer',
-                          'Backend Engineer',
-                          'Sr. Frontend Engineer',
-                          'Software Engineering Manager',
-                          'Executive - HR & Admin',
-                          'Software Engineer - Android',
-                      ]}
-                      action={ updateNewUserProfile }  
-                      field={'profile'} 
-                      subField={'designation'}  
-                      value={newUser?.profile?.designation} 
-                      fieldStyle={{ width:'90%' }}
-                  />
                   <StyledDropdown 
-                      filterOptions={[
-                        'Management',
-                        'Admin',
-                        'Product Team',
-                        'Business Team',
-                        'Tech Team',
-                        'Operations Team',
-                        
-                      ]}  
+                      filterOptions={Object.keys(companySettings?.departments ) || []} 
                       action={ updateNewUserProfile }  
                       field={'profile'} 
                       subField={'department'} 
                       value={newUser?.profile?.department} 
+                      fieldStyle={{ width:'90%' }}
+                  />
+                  <StyledDropdown 
+                      filterOptions={ companySettings?.departments[newUser?.profile?.department]?.designations || [] }
+                      action={ updateNewUserProfile }  
+                      field={'profile'} 
+                      subField={'designation'}  
+                      value={ newUser?.profile?.designation }
                       fieldStyle={{ width:'90%' }}
                   />
               </Box>
@@ -344,6 +329,7 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   attendanceList: state?.attendanceList?.attendanceList,
   employeeList: state?.employeeList?.employeeList,
+  companySettings: state?.admin?.companySettings,
   currentView: state?.dashboard?.currentView,
   currentEmployeeType: state?.employeeList?.currentEmployeeType,
   newUser: state?.admin?.newUser,
