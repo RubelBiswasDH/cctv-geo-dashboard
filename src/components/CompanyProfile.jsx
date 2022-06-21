@@ -91,8 +91,7 @@ class CompanyProfile extends React.PureComponent {
             const new_settings = {
                 companyAddressData: companySettings.companyAddressData
             }
-            console.log({ ...companySettings, ...new_settings })
-            // dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
         }
         else {
             dispatch(setToastMessage('Something went wrong, try again..'))
@@ -117,12 +116,17 @@ class CompanyProfile extends React.PureComponent {
         <FilterEmployee/>
         <Box sx={{ display:'flex', p:5, gap:5 }}>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:1,justifyContent:'center',alignItems:'center' }} >
-                <StyledTextField action={ updateCompanySettings } field={'company_name'} title={"Company Name : "} value={companySettings?.company_name} fieldStyle={{ width:'100%' }} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
-                <Box sx={{ display:'flex',flexDirection:'row',width:'100%' }} >
-                    <Typography sx={{ ...textStyle,width:'40%' }}>Company Address : </Typography>
-                    <AddressAutoComplete/>
+                <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'100%' }} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                <Box sx={{ display:'flex',flexDirection:'row',width:'100%',mb:1.5 }} >
+                    <Typography sx={{ ...textStyle,width:'30%' }}>Company Address : </Typography>
+                    <Box sx={{width: '70%'}}>
+                      <AddressAutoComplete />
+                    </Box>
+                    
                 </Box>
-                <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
+                <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Last Check In Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+
+                {/* <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
                     <Typography sx={{ ...textStyle,width:'40%' }}>Last Check In Time : </Typography>
                     <LocalizationProvider dateAdapter={ AdapterDayjs }>
                         <TimePicker
@@ -142,7 +146,7 @@ class CompanyProfile extends React.PureComponent {
                             onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
                         />
                     </LocalizationProvider>
-                </Box>
+                </Box> */}
             </Box>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:2}}>
                 <MapGL
@@ -151,12 +155,14 @@ class CompanyProfile extends React.PureComponent {
                     }
                     getUpdatedAddress={ _updateExactAddress }
                 />
+
             </Box>
+
             
                 
         </Box>
-        <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-end',width:'100%',pr:30}}>
-            <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '5%' }}>Save</Button>
+        <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'center',width:'100%'}}>
+            <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
         </Box>
         <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
 

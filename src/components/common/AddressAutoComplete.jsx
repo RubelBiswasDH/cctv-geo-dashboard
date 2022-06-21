@@ -36,9 +36,10 @@ class AddressAutoComplete extends React.PureComponent{
 
     render(){ 
         const { _handleAutoCompInputChange, _handleAutoCompChange } = this
-        const { companyNameOptions } = this.props
+        const { companyNameOptions, sx } = this.props
         return(
             <Autocomplete
+                sx={{ ...sx}}
                 onChange={ _handleAutoCompChange }
                 onInputChange={ _handleAutoCompInputChange}
                 disablePortal

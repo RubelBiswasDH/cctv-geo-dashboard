@@ -26,7 +26,7 @@ class StyledTextField extends React.PureComponent {
     }
 
     render() {
-        const { title, value, field, subField, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle } = this.props
+        const { title, value, field, subField, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle } = this.props
 
         const { handleChange } = this;
     
@@ -47,6 +47,7 @@ class StyledTextField extends React.PureComponent {
                                 sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
                                 inputProps={{ 'aria-label': { title }, color: '#000000' }}
                                 value={value || ''}
+                                placeholder={ placeholder || ''}
                                 onChange={ handleChange }
                             />
                         </Paper>
