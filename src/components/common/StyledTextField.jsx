@@ -10,15 +10,18 @@ class StyledTextField extends React.PureComponent {
     }
 
     handleChange = (e) => {
-        const { dispatch, action, subField, field } = this.props
+        const { dispatch, action, subField, field, value } = this.props
         e.preventDefault()
         if (subField && subField?.length) {
             dispatch(action({
                 [ subField ]: e.target.value
             }))
         }
-        else {
+        else if(field && field?.length) {
             dispatch(action({ [field]: e.target.value }))
+        }
+        else{
+            dispatch(action(e.target.value))
         }
     }
 

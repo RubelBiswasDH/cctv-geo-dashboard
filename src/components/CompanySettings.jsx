@@ -18,17 +18,19 @@ import StyledTextField from '../components/common/StyledTextField'
 import { stopNotificationSound, sortByDate } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
-import { updateCompanyAddressData, updateCompanySettings } from '../redux/reducers/adminReducer'
+import { updateCompanyAddressData, updateCompanySettings, updateCompanyDepartments } from '../redux/reducers/adminReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
+import { setCurrentDepartment, updateSettings, setDepartments, updateDepartments, setCurrentDesignation } from "../redux/reducers/companySettingsReducer"
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import dayjs from 'dayjs'
+
 
 
 class CompanySettings extends React.PureComponent {
@@ -57,11 +59,75 @@ class CompanySettings extends React.PureComponent {
       dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     }
 
+    // handle add department
 
+    _handleAddDepartment = () => {
+        const { dispatch, companySettings, currentDepartment } = this.props
+        // dispatch( updateDepartments({
+        //     [currentDepartment]:{name:currentDepartment}
+        // }) )
+        dispatch( setCurrentDepartment (''))
+        dispatch( setCompanySettingsAction({
+            ...companySettings,
+            'departments':{
+                ...companySettings.departments,
+                [currentDepartment]:{name:currentDepartment}
+            },
+        }) )
+        dispatch(updateCompanyDepartments({
+            ...companySettings.departments,
+            [currentDepartment]:{name:currentDepartment}
+        }))
+    }
+    _handleClearDepartmentField = () => {
+        const { dispatch } = this.props
+        dispatch( setCurrentDepartment (''))
+    }
+    _handleAddDesignation = (department) => {
+        console.log(department)
+        const { dispatch, companySettings, currentDepartment, currentDesignation, settings} = this.props
+        // const prevDesignations = settings?.departments[department]?.designations || []
+        const prevDesignations = companySettings?.departments[department]?.designations || []
+
+        // dispatch( updateDepartments({
+        //     [department]:{ 
+        //         name: department,
+        //         designations:[ ...prevDesignations, currentDesignation]
+        //     }
+        // }) )
+        dispatch(updateCompanyDepartments({
+            ...companySettings.departments,
+            [department]:{ 
+                name: department,
+                designations:[ ...prevDesignations, currentDesignation]
+            }
+        }))
+        dispatch( setCurrentDesignation (''))
+        dispatch( setCompanySettingsAction({
+            ...companySettings,
+            'departments':{
+                ...companySettings.departments,
+                [department]:{ 
+                    name: department,
+                    designations:[ ...prevDesignations, currentDesignation]
+                }
+            },
+            
+        }) )
+    }
+
+
+    _handleClearDesignationField = () => {
+        const { dispatch } = this.props
+        dispatch(setCurrentDesignation (''))
+    }
   render() {
-    const { dispatch, companySettings } = this.props
+    const { dispatch, companySettings, currentDepartment, currentDesignation, settings } = this.props
+    // console.log({settings})
+    const departments = companySettings?.departments
+    // Object.keys(departments).map( d => {console.log(departments[d])})
     const { last_check_in_time, selected_time } = this.state
-    const {  } = this
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -86,38 +152,46 @@ class CompanySettings extends React.PureComponent {
                 <Button variant="contained" color={"btnBlueAdd"}>Add New Department</Button>
             </Box>
             <Box sx={{ display: 'flex',width:'100%',justifyContent:'space-between',alignItems:'flex-start'}}>
-                <Paper sx={{ height:60, width:'100%', display:'flex' }} elevation={2}>
-                    <StyledTextField  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none', borderColor: 'transparent', boxShadow:0}}/>
-                    <Button><CheckCircleIcon color="btnCheck" /></Button>
-                    <Button><CancelOutlinedIcon color="btnCancel"/></Button>
+                <Paper sx={{ height:60, width:'100%', display:'flex',  pl:2}} elevation={2}>
+                    <StyledTextField action={ setCurrentDepartment } value={ currentDepartment }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0,}}/>
+                    <Button onClick={ _handleAddDepartment }><CheckCircleIcon color="btnCheck" /></Button>
+                    <Button onClick={ _handleClearDepartmentField }><CancelOutlinedIcon color="btnCancel"/></Button>
 
                 </Paper>
                 
             </Box> 
-            <Box sx={{ display: 'flex',flexDirection:'column',width:'100%',justifyContent:'space-between',alignItems:'flex-start' }}>
-                <Accordion sx={{width:'100%'}}>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                        <Typography  sx={{fontSize:'1.2em'}}>Tech Team</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{gap:0}}>
-                            <Typography sx={{fontSize:'1em'}}>Frontend Engineer</Typography>
-                            <Typography sx={{fontSize:'1em'}}>Backend Engineer</Typography>
-
-                        </Box>
-                        <Typography>Add Designation</Typography>
-                        <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                            <StyledTextField  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
-                            <Button><CheckCircleIcon color="btnCheck" /></Button>
-                            <Button><CancelOutlinedIcon color="btnCancel"/></Button>
-                        </Paper>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion sx={{width:'100%'}}>
+            <Box sx={{ display: 'flex',flexDirection:'column',width:'100%',justifyContent:'space-between',alignItems:'flex-start', boxShadow:0 }}>
+                { (companySettings && companySettings?.departments && Object.keys(companySettings?.departments).length) && Object.keys(companySettings?.departments).map( d => 
+                    <Accordion key={d} sx={{width:'100%'}}>
+                        <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        >
+                            <Typography key={d}  sx={{fontSize:'1.2em'}}>{ d }</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box sx={{gap:0}}>
+                                { (companySettings?.departments && Object.keys(companySettings?.departments).length 
+                                    && companySettings?.departments[d].designations 
+                                    && companySettings?.departments[d].designations.length ) 
+                                    && companySettings?.departments[d].designations.map(d => <Typography key={d} sx={{fontSize:'1em'}}>{ d }</Typography>)
+                                    
+                                }
+                            </Box>
+                            <Typography>Add Designation</Typography>
+                            <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
+                                <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
+                                <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
+                                <Button onClick={ _handleClearDesignationField }><CancelOutlinedIcon color="btnCancel"/></Button>
+                            </Paper>
+                        </AccordionDetails>
+                    </Accordion>
+                )
+                    
+                }
+                
+                {/* <Accordion sx={{width:'100%'}}>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel2a-content"
@@ -136,7 +210,7 @@ class CompanySettings extends React.PureComponent {
                             <Button><CancelOutlinedIcon color="btnCancel"/></Button>
                         </Paper>
                     </AccordionDetails>
-                </Accordion>
+                </Accordion> */}
             </Box>
         </Box>
         <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>
@@ -222,7 +296,9 @@ const mapStateToProps = state => ({
   currentAttendanceTab: state?.attendanceList?.currentAttendanceTab,
   companyAddressData: state?.admin?.companyAddressData,
   companySettings: state?.admin?.companySettings,
-
+  currentDepartment: state?.companySettings?.currentDepartment,
+  currentDesignation: state?.companySettings?.currentDesignation,
+  settings: state?.companySettings?.settings,
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
