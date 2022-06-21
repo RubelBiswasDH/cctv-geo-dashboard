@@ -114,7 +114,7 @@ class CompanyProfile extends React.PureComponent {
             </Typography>
         </Box>
         <FilterEmployee/>
-        <Box sx={{ display:'flex', p:5, gap:5 }}>
+        <Box sx={{ display:'flex', p:1, gap:5 }}>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:1,justifyContent:'center',alignItems:'center' }} >
                 <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'100%' }} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%',mb:1.5 }} >
@@ -124,8 +124,10 @@ class CompanyProfile extends React.PureComponent {
                     </Box>
                     
                 </Box>
-                <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Last Check In Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
-
+                <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                <Box sx={{ display:'flex', alignItems:'center', justifyContent:'flex-end',width:'100%' }}>
+                  <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
+                </Box> 
                 {/* <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
                     <Typography sx={{ ...textStyle,width:'40%' }}>Last Check In Time : </Typography>
                     <LocalizationProvider dateAdapter={ AdapterDayjs }>
@@ -157,56 +159,9 @@ class CompanyProfile extends React.PureComponent {
                 />
 
             </Box>
-
-            
-                
+  
         </Box>
-        <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'center',width:'100%'}}>
-            <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
-        </Box>
-        <Stack sx={{mb:3}} spacing={ 1 } direction='row'>
 
-        </Stack>
-        
-        <Snackbar
-          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-          open={ Boolean(feedback) }
-          autoHideDuration={ 10000 }
-        >
-          <Alert
-            severity={ feedback?.status === 200 ? 'success' : 'error' }
-            onClose={ this._onFeedbackClose }
-            sx={{ width: '100%' }}
-            action={
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center'
-                }}
-              >
-                <Button
-                  color='inherit'
-                  size='small'
-                  onClick={ () => this._onSnackbarViewTask(feedback?.task) }
-                >
-                  { 'View Task' }
-                </Button>
-
-                <IconButton
-                  onClick={ this._onFeedbackClose }
-                  size='small'
-                  sx={{ padding: 0 }}
-                >
-                  <Close fontSize='small' />
-                </IconButton>
-              </Box>
-            }
-          >
-            { feedback?.message ? feedback.message : '' }
-          </Alert>
-        </Snackbar>
       </Box>
     )
   }
@@ -222,53 +177,6 @@ const textStyle = {
     color: 'rgba(0, 0, 0, 0.87)',
 }
 
-const FilterField = (props) => {
-  const { dispatch, action, value, field, label, fullWidth, sx } = props
-  return (
-    <FormControl size="small" fullWidth={fullWidth} sx={{...sx}}>
-      <TextField
-            value={ value } 
-            size="small"
-            onChange={ 
-              e => dispatch(action({ [field]: e.target.value })) } 
-            label={label} 
-            fullWidth={fullWidth}
-            sx = {{fontSize: '.75em'}}
-            > 
-      </TextField>
-    </FormControl>
-  )
-}
-
-const TabSwitchButton = (props) => {
-    const { value, dispatch, action, isActive } = props
-    const textStyle = {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '14px',
-        lineHeight: '24px',
-        /* identical to box height, or 171% */
-        textAlign: 'center',
-        letterSpacing:' 0.4px',
-        textTransform: 'uppercase',
-        /* Light/Primary/Main */
-        color:'rgba(0, 0, 0, 0.38)',
-        px:2,
-        borderBottom: '2px solid transparent'
-    }
-    const activeBtnStyle = isActive?{
-        color: '#007AFF',
-        borderBottom: '2px solid #007AFF'
-    }:
-    {}
-    const handleClick = () => {
-        dispatch(action(value))
-    }
-    return (
-        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
-    )
-}
 // Prop Types
 CompanyProfile.propTypes = {
     dispatch: PropTypes.func,
