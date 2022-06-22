@@ -107,12 +107,25 @@ class CompanySettings extends React.PureComponent {
         const { dispatch } = this.props
         dispatch(setCurrentDesignation (''))
     }
+
+    _handleDeleteDesignation = (dept, dsg) => {
+        const { dispatch, companySettings } = this.props
+        // const tempSettings = { ...companySettings }
+        var index = companySettings?.departments[dept]?.designations.indexOf(dsg);
+        if (index !== -1) {
+            delete companySettings?.departments[dept]?.designations[index]
+            // tempSettings?.departments[dept]?.designations.splice(index, 1);
+            }
+        // delete tempSettings?.departments[dept]?.designations[dsg]
+        // console.log({companySettings, tempSettings})
+        // console.log({dept, dsg})
+    }
   render() {
     const { dispatch, companySettings, currentDepartment, currentDesignation, settings } = this.props
     const departments = companySettings?.departments
     // Object.keys(departments).map( d => {console.log(departments[d])})
     const { last_check_in_time, selected_time } = this.state
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField } = this
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -166,8 +179,13 @@ class CompanySettings extends React.PureComponent {
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
                                     && companySettings?.departments[d].designations 
                                     && companySettings?.departments[d].designations.length ) 
-                                    && companySettings?.departments[d].designations.map(d => <Typography key={d} sx={{fontSize:'1em'}}>{ d }</Typography>)
-                                    
+                                    && companySettings?.departments[d].designations
+                                    .map(dsg => 
+                                        <Box sx={{display:'flex',alignItems:'center', justifyContent:'space-between', width:'100%'}}>
+                                            <Typography key={dsg} sx={{fontSize:'1em'}}>{ dsg }</Typography>
+                                            <Button onClick={ () =>  _handleDeleteDesignation(d,dsg) }><CancelOutlinedIcon color="btnCancel"/></Button>
+                                        </Box>)
+                                        
                                 }
                             </Box>
                         </AccordionDetails>
@@ -194,36 +212,6 @@ const textStyle = {
     lineHeight: '160%',
     letterSpacing: '0.15px',
     
-}
-
-const TabSwitchButton = (props) => {
-    const { value, dispatch, action, isActive } = props
-    const textStyle = {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '14px',
-        lineHeight: '24px',
-        /* identical to box height, or 171% */
-        textAlign: 'center',
-        letterSpacing:' 0.4px',
-        textTransform: 'uppercase',
-        /* Light/Primary/Main */
-        color:'rgba(0, 0, 0, 0.38)',
-        px:2,
-        borderBottom: '2px solid transparent'
-    }
-    const activeBtnStyle = isActive?{
-        color: '#007AFF',
-        borderBottom: '2px solid #007AFF'
-    }:
-    {}
-    const handleClick = () => {
-        dispatch(action(value))
-    }
-    return (
-        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
-    )
 }
 
 // Prop Types
