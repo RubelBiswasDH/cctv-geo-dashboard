@@ -82,19 +82,19 @@ class LeftNav extends React.PureComponent {
             // onClose={toggleDrawer(anchor, false)}
           >
             <Box
-            sx={{ width: 250 }}
+            sx={{ width: 250}}
             role="presentation"
             // onClick={toggleDrawer(anchor, false)}
             >
-                <List>
-                    <ListItem key={'text'} disablePadding  sx={{display:'flex',justifyContent:'flex-end', width:'100%'}}>
-                        <Typography sx={{ display:'flex', width:'80%',pl:1, fontSize:'1.4em', justifyContent:'center',fontWeight:600}}>HR Trace</Typography> 
+                <List sx={{width:'100%'}}>
+                    <ListItem key={'text'} disablePadding  sx={{display:'flex',justifyContent:'flex-end', maxWidth:'100%',p:0,m:0}}>
+                        <Typography sx={{ display:'flex', width:'70%',pl:0, fontSize:'1.4em', justifyContent:'center',fontWeight:600}}>HR Trace</Typography> 
                         <ListItemButton
                             onClick={this._handleNavClose}
-                            sx={{display:'flex', width:'20%'}}
+                            sx={{display:'flex', width:'10%',p:0}}
                         >
-                            <ListItemIcon>
-                                <CloseIcon />
+                            <ListItemIcon sx={{width:'100%'}}>
+                                <CloseIcon  sx={{width:'100%'}}/>
                             </ListItemIcon>
                         </ListItemButton>
                     </ListItem>
