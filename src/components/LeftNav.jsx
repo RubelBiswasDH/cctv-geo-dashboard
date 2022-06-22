@@ -12,9 +12,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import CloseIcon from '@mui/icons-material/Close';
-import { Typography  } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import CloseIcon from '@mui/icons-material/Close';
+import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Typography  } from '@mui/material';
 
 // import reducers
 import { setIsLeftNavOpen } from '../../src/redux/reducers/hrtReducer'
@@ -25,27 +31,33 @@ import { setView } from '../utils/utils'
 const navOptions = [
     {
         'label':"Company Profile",
-        'value': "company_profile"
+        'value': "company_profile",
+        'icon' : <EmojiTransportationIcon/>,
     },
     {
         'label': "Attendance",
-        'value': "attendance"
+        'value': "attendance",
+        'icon' : <FactCheckIcon/>,
     },
     {
         'label': "Announcements",
-        'value': "announcements"
+        'value': "announcements",
+        'icon' : <AddAlertIcon/>,
     },
     {
         'label':"Employee Profile",
-        'value': "employee_profile"
+        'value': "employee_profile",
+        'icon' : <PersonIcon/>,
     },
     {
         'label':"Add User",
-        'value': "add_user"
+        'value': "add_user",
+        'icon' : <PersonAddIcon/>,
     } ,
     {
         'label': "Company Settings",
-        'value' : "company_settings"
+        'value' : "company_settings",
+        'icon' : <SettingsIcon/>,
     }
 ]
 
@@ -98,7 +110,7 @@ class LeftNav extends React.PureComponent {
                             }}
                         >
                         <ListItemIcon>
-                            <StarIcon/>
+                            {option?.icon || <StarIcon />}
                         </ListItemIcon>
                         <ListItemText primary={option?.label} />
                         </ListItemButton>
