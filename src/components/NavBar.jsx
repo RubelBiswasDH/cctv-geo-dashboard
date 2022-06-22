@@ -94,7 +94,7 @@ class NavBar extends React.PureComponent {
                         onClick={ this._handleLeftNavOpen }
                         sx={{mr:1}}
                       >
-                        <MenuIcon color="white" fontSize='small' />
+                        <MenuIcon color={"primary"} fontSize='small' />
                       </IconButton>
                   }
                   <a href='/'>
@@ -140,7 +140,7 @@ class NavBar extends React.PureComponent {
                       aria-expanded={ accMenuOpen ? 'true' : undefined }
                       onClick={ this._openAccountMenu }
                     >
-                      <MoreVertIcon color={'white'}/>
+                      <MoreVertIcon ccolor={"primary"}/>
                       {/* <Avatar
                         { ...this._stringAvatar(user.name) }
                       /> */}

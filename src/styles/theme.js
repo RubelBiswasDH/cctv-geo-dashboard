@@ -5,7 +5,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          background: '#5D5FEF'
+          background: '#FFFFFF'
         }
       }
     },
