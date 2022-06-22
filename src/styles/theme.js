@@ -111,10 +111,14 @@ const theme = createTheme({
     },
     btnCancel:{
       main: '#FF5A79',
-      ontrastText: '#FFF',
+      contrastText: '#FFF',
     },
     orangeRed: {
       main: '#FF4500',
+      contrastText: '#000',
+    },
+    btnCustomWaring: {
+      main: '#FFA726',
       contrastText: '#000',
     },
     lightSalmon: {
