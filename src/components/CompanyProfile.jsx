@@ -28,6 +28,7 @@ import { unionArrayOfObjects } from '../utils/utils'
 import FilterEmployee from './FilterEmployee'
 import StyledTextField from '../components/common/StyledTextField'
 import AddressAutoComplete from './common/AddressAutoComplete'
+import TimeKeeper from 'react-timekeeper';
 
 class CompanyProfile extends React.PureComponent {
  
@@ -124,7 +125,17 @@ class CompanyProfile extends React.PureComponent {
                     </Box>
                     
                 </Box>
-                <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                {/* <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/> */}
+                <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Let Time : </Typography>
+                    <TimeKeeper
+                      time={companySettings?.late_time}
+                      onChange={ (newTime) => {
+                        dispatch(updateCompanySettings({late_time:newTime.formatted24}))
+                      }}
+                      hour24Mode
+                    />
+                </Box> 
                 <Box sx={{ display:'flex', alignItems:'center', justifyContent:'flex-end',width:'100%' }}>
                   <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
                 </Box> 
