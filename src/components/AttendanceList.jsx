@@ -54,7 +54,8 @@ class AttendanceList extends React.PureComponent {
     const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
-      this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
+      this.setState({ attendanceList: attendanceList })
+      // this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
       // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){

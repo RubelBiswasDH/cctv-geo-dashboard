@@ -117,7 +117,7 @@ export function getCurrentView() {
   if(currentView) {
       return currentView
   }
-  return 'attendance'
+  return 'company_profile'
 }
 
 export function setView(currentView) {

@@ -1,30 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import AdapterDayjs from '@mui/lab/AdapterDayjs'
-import { ArrowRightAlt } from '@mui/icons-material'
-import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
-
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
-import { Close } from '@mui/icons-material'
-import StyledDataGrid from './common/StyledDataGrid'
+import { Box, Button, Typography } from '@mui/material'
 import MapGL from '../components/common/MapGL'
 
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
+import { stopNotificationSound } from '../utils/utils'
 import { updateCompanyAddressData, updateCompanySettings } from '../redux/reducers/adminReducer'
-import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
-import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+import { getAttendance }  from '../redux/actions/attendanceActions'
+import { setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
 
 import dayjs from 'dayjs'
 
-import { unionArrayOfObjects } from '../utils/utils'
 import FilterEmployee from './FilterEmployee'
 import StyledTextField from '../components/common/StyledTextField'
 import AddressAutoComplete from './common/AddressAutoComplete'

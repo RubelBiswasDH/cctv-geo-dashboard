@@ -8,19 +8,12 @@ import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
 import { Grid, Paper, InputBase, Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
-import { Close } from '@mui/icons-material'
 import CustomStepper from './Stepper'
-import StyledDataGrid from './common/StyledDataGrid'
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
-import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+import { setFilterOptions } from '../redux/reducers/attendanceReducer'
 import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
-
-import dayjs from 'dayjs'
 
 class AddUser extends React.PureComponent {
  
@@ -33,12 +26,6 @@ class AddUser extends React.PureComponent {
 
   }
 
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-      if (this.props.attendanceList !== prevProps.attendanceList) {
-        this._getUniqueDates()
-      }
-    }
   componentWillUnmount(){
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))

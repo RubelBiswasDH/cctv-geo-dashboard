@@ -6,24 +6,16 @@ import { ArrowRightAlt } from '@mui/icons-material'
 import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-
 // Import Components
-import { Box, Stack, Paper, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
-import { Close } from '@mui/icons-material'
-import StyledDataGrid from './common/StyledDataGrid'
-import MapGL from '../components/common/MapGL'
+import { Box, Paper, Button, Typography } from '@mui/material'
 import StyledTextField from '../components/common/StyledTextField'
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
-import { updateCompanyAddressData, updateCompanySettings, updateCompanyDepartments } from '../redux/reducers/adminReducer'
-import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
-import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
-import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
-import { setCurrentDepartment, updateSettings, setDepartments, updateDepartments, setCurrentDesignation } from "../redux/reducers/companySettingsReducer"
+import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
+import { getAttendance }  from '../redux/actions/attendanceActions'
+import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+
+import { setCurrentDepartment, setCurrentDesignation } from "../redux/reducers/companySettingsReducer"
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -89,12 +81,6 @@ class CompanySettings extends React.PureComponent {
         // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
-        // dispatch( updateDepartments({
-        //     [department]:{ 
-        //         name: department,
-        //         designations:[ ...prevDesignations, currentDesignation]
-        //     }
-        // }) )
         dispatch(updateCompanyDepartments({
             ...companySettings.departments,
             [department]:{ 
@@ -123,7 +109,6 @@ class CompanySettings extends React.PureComponent {
     }
   render() {
     const { dispatch, companySettings, currentDepartment, currentDesignation, settings } = this.props
-    // console.log({settings})
     const departments = companySettings?.departments
     // Object.keys(departments).map( d => {console.log(departments[d])})
     const { last_check_in_time, selected_time } = this.state
@@ -191,26 +176,6 @@ class CompanySettings extends React.PureComponent {
                     
                 }
                 
-                {/* <Accordion sx={{width:'100%'}}>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                    >
-                         <Typography  sx={{fontSize:'1.2em'}}>Product Team</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box sx={{gap:1,pt:0}}>
-                                <Typography sx={{fontSize:'1em'}}>Product Manager</Typography>
-                        </Box>
-                        <Typography>Add Designation</Typography>
-                        <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                            <StyledTextField  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
-                            <Button><CheckCircleIcon color="btnCheck" /></Button>
-                            <Button><CancelOutlinedIcon color="btnCancel"/></Button>
-                        </Paper>
-                    </AccordionDetails>
-                </Accordion> */}
             </Box>
         </Box>
         <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>

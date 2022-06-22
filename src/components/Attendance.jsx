@@ -16,7 +16,7 @@ import { stopNotificationSound, sortByDate } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
-
+import { setAttendance } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
 import { unionArrayOfObjects } from '../utils/utils'
@@ -56,27 +56,37 @@ class Attendance extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     let date = new Date()
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+    const start_date = dayjs(new Date()).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
     const attendanceList = this.props.attendanceList
     const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
-      this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
+      this.setState({ attendanceList: attendanceList })
+      // this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
       // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
     }
     this.setState({ start_date, end_date, selected_date })
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
     this._getUniqueDates()
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
+    const { selected_date } = this.state
       if (this.props.attendanceList !== prevProps.attendanceList) {
         this._getUniqueDates()
+      }
+      if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Monthly'){
+        this.props.dispatch(setAttendance([]))
+      }
+      if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Daily'){
+        this.props.dispatch( getAttendance({start_date: `${selected_date}`, end_date: `${selected_date}`}) )
       }
     }
   componentWillUnmount(){
@@ -88,7 +98,7 @@ class Attendance extends React.PureComponent {
       let dates = []
       if(attendanceList && attendanceList.length){
         attendanceList.forEach(data => {
-          dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+          dates.push(dayjs(data.created_at).format("DD/MM/YYYY"))
         })
         const unique = [...new Set(dates)]
         dispatch(setUniqueDates(unique))
@@ -160,7 +170,7 @@ class Attendance extends React.PureComponent {
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
           if(a.is_absent){
-              const date = a?.date
+              const date = dayjs(a?.created_at).format("DD/MM/YYYY")
               abs++
               individualAttendance[date] = "A"
           }
