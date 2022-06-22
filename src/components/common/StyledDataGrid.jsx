@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 // Import Components
-import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem  } from '@mui/material'
+import { Box, Chip, LinearProgress,Typography, Button, Grid, FormControl, Select, MenuItem, Tooltip } from '@mui/material'
 import { DataGrid, GridOverlay, GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid'
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
@@ -138,9 +138,9 @@ class StyledDataGrid extends React.PureComponent {
                                                 :(cellValues.field === 'edit')
                                                 ?<Button onClick={cellValues.row.editAnnouncement}>Edit</Button>
                                                 :(cellValues.value === 'P')
-                                                ?<Chip icon={<DoneRoundedIcon />} label="On Time" variant="outlined" size="small" />
+                                                ?<Tooltip title={'Checked In: '+cellValues?.row?.check_in_time}><Chip icon={<DoneRoundedIcon />} label="On Time" variant="outlined" size="small" /></Tooltip>
                                                 :(cellValues.value === 'L')
-                                                ?<Chip icon={<ErrorRoundedIcon />} label="Late" variant="outlined" size="small" />
+                                                ?<Tooltip title={'Checked In: '+cellValues?.row?.check_in_time}><Chip icon={<ErrorRoundedIcon />} label="Late" variant="outlined" size="small" /></Tooltip>
                                                 :(cellValues.value === 'A')
                                                 ?<Chip icon={<CachedRoundedIcon />} label="On Leave" variant="outlined" size="small" />
                                                 :cellValues.value

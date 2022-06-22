@@ -208,6 +208,7 @@ class Attendance extends React.PureComponent {
         "serial_no":i+1,
         "name": a?.name,
         ...individualAttendance,
+        "check_in_time": a?.enter_time?dayjs(a?.enter_time).format('hh:mm A'):'',
         'late':l,
         'present':p,
         'absence':abs,
