@@ -24,6 +24,10 @@ import { setView } from '../utils/utils'
 
 const navOptions = [
     {
+        'label':"Company Profile",
+        'value': "company_profile"
+    },
+    {
         'label': "Attendance",
         'value': "attendance"
     },
@@ -36,17 +40,12 @@ const navOptions = [
         'value': "employee_profile"
     },
     {
-        'label':"Company Profile",
-        'value': "company_profile"
-    },
-    ,
+        'label':"Add User",
+        'value': "add_user"
+    } ,
     {
         'label': "Company Settings",
         'value' : "company_settings"
-    },
-    {
-        'label':"Add User",
-        'value': "add_user"
     }
 ]
 

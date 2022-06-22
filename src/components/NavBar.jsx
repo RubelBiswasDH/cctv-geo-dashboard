@@ -107,13 +107,13 @@ class NavBar extends React.PureComponent {
                   </a>
                 </Box>
 
-                <Typography
+                {/* <Typography
                   variant='h5'
                   color='text.secondary'
                   sx={ brandTextStyles }
                 >
                   { 'HR Trace Dashboard' }
-                </Typography>
+                </Typography> */}
               </Grid>
                   
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
