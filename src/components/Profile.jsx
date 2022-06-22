@@ -10,6 +10,7 @@ import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
 import StyledTextField from './common/StyledTextField'
+import { width } from '@mui/system'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -164,9 +165,9 @@ class Profile extends React.PureComponent {
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"mobile"} value={userProfile?.mobile || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{width:'70%'}}/>
-                                <Box sx={{display:'flex',p:1,pl:0,gap:1}}>
+                                <Box sx={{display:'flex',p:1,pl:0,gap:1, width:'87%'}} >
                                  
-                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"16%"}}>Position</Typography>
+                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"45%"}}>Position</Typography>
 
                                     <FilterField 
                                         filterOptions={Object.keys(companySettings?.departments ) || []}  
@@ -174,8 +175,9 @@ class Profile extends React.PureComponent {
                                         field={'profile'} 
                                         subField={'department'}  
                                         value={userProfile?.department} 
-                                        fieldStyle={{ width:'50%' }}
                                         disabled={disabled}
+                                        fieldStyle={{ width:'100%' }}
+                                        containerStyle={{ width: '40%'}}
                                     />
                                     <FilterField 
                                         filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
@@ -183,8 +185,9 @@ class Profile extends React.PureComponent {
                                         field={'profile'} 
                                         subField={'designation'}  
                                         value={userProfile?.designation || ''} 
-                                        fieldStyle={{ width:'50%' }}
                                         disabled={disabled}
+                                        fieldStyle={{ width:'100%' }}
+                                        containerStyle={{ width: '40%'}}
                                     />
                                  
                                     </Box>
@@ -237,7 +240,7 @@ class Profile extends React.PureComponent {
 }
 
 const FilterField = (props) => {
-    const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx, disabled } = props
+    const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx, disabled, containerStyle } = props
     const handleChange = e => {
       e.preventDefault()
       if (field === 'profile') {
@@ -257,10 +260,14 @@ const FilterField = (props) => {
 
 
     return (
-      <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
-          <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-              <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
-          </Box>
+      <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
+          { title 
+            && 
+                <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
+                    <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+                </Box>
+          }
+
           <FormControl disabled={disabled} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
                   {/* <InputLabel id="demo-simple-select-label">''</InputLabel> */}
                   <Select
