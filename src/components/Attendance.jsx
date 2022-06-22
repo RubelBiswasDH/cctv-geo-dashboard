@@ -22,14 +22,14 @@ import dayjs from 'dayjs'
 import { unionArrayOfObjects } from '../utils/utils'
 const columns = {
     "Daily":[      
-      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-      { field: 'status', headerName: 'Status', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },
+      { field: 'status', headerName: 'Status', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
       { field: 'check_in_time', headerName: 'Check In Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
       { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
     ],
     "Monthly":[      
       // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
-      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },    
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },    
     ]
 
   }
