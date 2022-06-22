@@ -39,10 +39,15 @@ const navOptions = [
         'label':"Company Profile",
         'value': "company_profile"
     },
+    ,
+    {
+        'label': "Company Settings",
+        'value' : "company_settings"
+    },
     {
         'label':"Add User",
         'value': "add_user"
-    },
+    }
 ]
 
 class LeftNav extends React.PureComponent {

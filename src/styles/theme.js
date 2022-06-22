@@ -93,6 +93,26 @@ const theme = createTheme({
       main: '#025920',
       contrastText: '#FFF',
     },
+    btnSave: {
+      main: '#2E7D32',
+      contrastText: '#FFF',
+    },
+    btnBlueAdd: {
+      main: '#007AFF',
+      contrastText: '#FFF',
+    },
+    btnSecondaryAdd: {
+      main: '#9C27B0',
+      contrastText: '#FFF',
+    },
+    btnCheck:{
+      main: '#4CAF50',
+      contrastText: '#FFF',
+    },
+    btnCancel:{
+      main: '#FF5A79',
+      ontrastText: '#FFF',
+    },
     orangeRed: {
       main: '#FF4500',
       contrastText: '#000',

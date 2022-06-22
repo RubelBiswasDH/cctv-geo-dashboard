@@ -12,23 +12,26 @@ import NavBar from './NavBar'
 import LeftNav from './LeftNav'
 import AttendanceList from './Attendance'
 import EmployeeProfile from './EmployeeProfile'
-import SubNav from './SubNav'
+import CompanyProfile from './CompanyProfile'
 import Announcements from './Announcements'
 import AdminPanel from './AdminPanel'
 import Profile from './Profile'
 import AddUser from './AddUser'
+import CompanySettings from './CompanySettings'
 
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import Button from '@mui/material/Button';
 
 // Import Actions & Methods
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+import { getCompanySettingsAction } from '../redux/actions/adminActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 import { setIsLeftNavOpen } from '../redux/reducers/hrtReducer'
+
 
 class HrTraceDashboard extends React.PureComponent {
   state = {
@@ -44,8 +47,9 @@ class HrTraceDashboard extends React.PureComponent {
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch( getEmployee() )
-    dispatch(getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
+    dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    dispatch( getCompanySettingsAction() )
 
     this.setState({ start_date, end_date })
 
@@ -101,7 +105,7 @@ class HrTraceDashboard extends React.PureComponent {
         <NavBar />
         <Box sx={{ ...containerStyles }}>
         
-          <SubNav/>
+          {/* <SubNav/> */}
           <Box
             sx={ theme => ({
               padding: {
@@ -185,6 +189,14 @@ class HrTraceDashboard extends React.PureComponent {
                 {
                   (this.props.currentView === 'profile') && <Profile />
                 }
+                {
+                  (this.props.currentView === 'company_profile') && <CompanyProfile />
+                }
+
+                {
+                  (this.props.currentView === 'company_settings') && <CompanySettings/>
+                }
+                
                 {
                   (this.props.currentView === 'add_user') && <AddUser/>
                 }

@@ -4,7 +4,7 @@ const initialState = {
     isLeftNavOpen: false,
     toastIsOpen: false,
     toastMessage: '',
-    toastSeverity: 'success'
+    toastSeverity: 'success',
 }
 
 const hrtSlice = createSlice({

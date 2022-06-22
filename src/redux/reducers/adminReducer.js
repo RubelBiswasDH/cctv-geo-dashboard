@@ -23,7 +23,8 @@ const initialState = {
   workingDays: '',
   monthYear: '',
   companySettings: {
-    companyAddressData:{}
+    companyAddressData:{},
+    departments:{}
   },
   newUser: {
     user_level:'GENERAL',
@@ -99,6 +100,9 @@ const adminSlice = createSlice({
     updateCompanySettings: (state, action) => {
       state.companySettings = {...state.companySettings, ...action.payload}
     },
+    updateCompanyDepartments: (state, action) => {
+      state.companySettings.departments = {...state.companySettings.departments, ...action.payload}
+    },
     setNewUser: (state, action) => {
 
         state.newUser = action.payload
@@ -112,6 +116,9 @@ const adminSlice = createSlice({
     setCompanyAddressData: (state, action) => {
       state.companyAddressData = action.payload
     },
+    updateCompanyAddressData: (state, action) => {
+      state.companyAddressData =  { ...state.companyAddressData, ...action.payload }
+    },
     setSelectedUserId: (state, action) => {
       state.selectedUserId = action.payload
     },
@@ -121,5 +128,5 @@ const adminSlice = createSlice({
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason } = adminSlice.actions
+export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments } = adminSlice.actions
 export default adminSlice.reducer

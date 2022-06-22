@@ -14,6 +14,13 @@ class EmployeeProfile extends React.PureComponent {
     const { isUpdateDialogOpen, isDeleteDialogOpen } = this.props
     return (
       <Box sx={{display:'flex', flexDirection:'column',width:'100%'}}>
+        <Box sx={{py:2}}>
+            <Typography
+                variant='h4'
+            >
+              Employee List
+            </Typography>
+        </Box>
         <FilterEmployee/>
         <EmployeeList/>
         <StyledDialog 
@@ -26,20 +33,8 @@ class EmployeeProfile extends React.PureComponent {
             </>
           }
         >
-          <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
+          <Typography sx={{fontSize:'1em'}}></Typography>
         </StyledDialog>
-        {/* <StyledDialog 
-          isDialogOpen={ isDeleteDialogOpen }
-          handleDialogOnClose = { this._handleDeleteDialogClose }
-          footer={
-            <>
-              <Button onClick={ this._handleDeleteDialogClose }><Typography>Cancel</Typography></Button>
-              <Button onClick={ this._handleDeleteUser }><Typography sx={{color:'red'}}>Yes</Typography></Button>
-            </>
-          }
-        >
-          <Typography sx={{fontSize:'1em'}}>Are you sure you want to delete this user?</Typography>
-        </StyledDialog> */}
       </Box>
     )
   }

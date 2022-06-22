@@ -7,6 +7,7 @@ import dashboardReducer from "../redux/reducers/dashboardReducer"
 import adminReducer from './reducers/adminReducer'
 import employeeReducer from './reducers/employeeReducer'
 import hrtReducer from './reducers/hrtReducer'
+import companySettingsReducer from './reducers/companySettingsReducer'
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     admin:adminReducer,
     employeeList: employeeReducer,
     hrt: hrtReducer,
+    companySettings: companySettingsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
