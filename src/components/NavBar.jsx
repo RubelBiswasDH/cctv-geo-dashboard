@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
 import { Logout, AccountCircle } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 // import descoLogo from '../assets/desco-logo.png'
 import bkoiLogo from '../assets/barikoi-logo.png'
 
@@ -81,9 +81,9 @@ class NavBar extends React.PureComponent {
     return (
       <React.Fragment>
         <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>
-          <Box sx={ appBarStyles }>
+          <Box sx={{ ...appBarStyles }}>
             <Grid container spacing={ 0 }>
-              <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={ brandContainerStyles }>
+              <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={{ ...brandContainerStyles,width:'100%' }}>
                
                 <Box sx={{display:'flex'}}>
                 { !isLeftNavOpen &&
@@ -94,7 +94,7 @@ class NavBar extends React.PureComponent {
                         onClick={ this._handleLeftNavOpen }
                         sx={{mr:1}}
                       >
-                        <MenuIcon color="primary" fontSize='small' />
+                        <MenuIcon color="white" fontSize='small' />
                       </IconButton>
                   }
                   <a href='/'>
@@ -115,7 +115,7 @@ class NavBar extends React.PureComponent {
                   { 'HR Trace Dashboard' }
                 </Typography>
               </Grid>
-
+                  
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
                 <Toolbar variant='dense' sx={ {...toolbarStyles , justifyContent:'flex-end'} }>
 
@@ -140,9 +140,10 @@ class NavBar extends React.PureComponent {
                       aria-expanded={ accMenuOpen ? 'true' : undefined }
                       onClick={ this._openAccountMenu }
                     >
-                      <Avatar
+                      <MoreVertIcon color={'white'}/>
+                      {/* <Avatar
                         { ...this._stringAvatar(user.name) }
-                      />
+                      /> */}
                     </IconButton>
                   </Tooltip>
                 </Toolbar>
