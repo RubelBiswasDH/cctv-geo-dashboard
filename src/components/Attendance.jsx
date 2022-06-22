@@ -84,6 +84,7 @@ class Attendance extends React.PureComponent {
       }
       if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Monthly'){
         this.props.dispatch(setAttendance([]))
+        this.props.dispatch(setUniqueDates([]))
       }
       if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Daily'){
         this.props.dispatch( getAttendance({start_date: `${selected_date}`, end_date: `${selected_date}`}) )
@@ -92,6 +93,7 @@ class Attendance extends React.PureComponent {
   componentWillUnmount(){
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))
+    dispatch(setCurrentAttendanceTab('Daily'))
   }
   _getUniqueDates = () => {
       const {  attendanceList, dispatch } = this.props
