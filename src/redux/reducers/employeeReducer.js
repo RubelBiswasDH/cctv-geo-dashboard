@@ -7,7 +7,7 @@ const initialState = {
     isDeleteDialogOpen: false,
     isUpdateDialogOpen: false,
     selectedUserId: '',
-    currentProfileTab:'',
+    currentProfileTab:'PROFILE',
     error: '',
     profile: {},
 }
