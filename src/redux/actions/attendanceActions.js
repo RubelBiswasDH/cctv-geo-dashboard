@@ -12,7 +12,7 @@ export function getAttendance(params) {
                 const attendanceData = res.data
                 if(attendanceData) {  
 
-                    const attendence = attendanceWithAbsenceInfo(attendanceData.attendence)
+                    const attendence = attendanceData.attendence
                     dispatch(setAttendance(attendence))
                 }
             })

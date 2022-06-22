@@ -1,33 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import AdapterDayjs from '@mui/lab/AdapterDayjs'
-import { ArrowRightAlt } from '@mui/icons-material'
-import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
-
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
-import { Close } from '@mui/icons-material'
-import StyledDataGrid from './common/StyledDataGrid'
+import { Box, Button, Typography } from '@mui/material'
 import MapGL from '../components/common/MapGL'
 
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
+import { stopNotificationSound } from '../utils/utils'
 import { updateCompanyAddressData, updateCompanySettings } from '../redux/reducers/adminReducer'
-import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
-import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
+import { getAttendance }  from '../redux/actions/attendanceActions'
+import { setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
 
 import dayjs from 'dayjs'
 
-import { unionArrayOfObjects } from '../utils/utils'
 import FilterEmployee from './FilterEmployee'
 import StyledTextField from '../components/common/StyledTextField'
 import AddressAutoComplete from './common/AddressAutoComplete'
+import TimeKeeper from 'react-timekeeper';
 
 class CompanyProfile extends React.PureComponent {
  
@@ -124,7 +115,17 @@ class CompanyProfile extends React.PureComponent {
                     </Box>
                     
                 </Box>
-                <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                {/* <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/> */}
+                <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Let Time : </Typography>
+                    <TimeKeeper
+                      time={companySettings?.late_time}
+                      onChange={ (newTime) => {
+                        dispatch(updateCompanySettings({late_time:newTime.formatted24}))
+                      }}
+                      hour24Mode
+                    />
+                </Box> 
                 <Box sx={{ display:'flex', alignItems:'center', justifyContent:'flex-end',width:'100%' }}>
                   <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
                 </Box> 

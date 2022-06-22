@@ -16,20 +16,20 @@ import { stopNotificationSound, sortByDate } from '../utils/utils'
 import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
-
+import { setAttendance } from '../redux/reducers/attendanceReducer'
 import dayjs from 'dayjs'
 
 import { unionArrayOfObjects } from '../utils/utils'
 const columns = {
     "Daily":[      
-      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
-      { field: 'status', headerName: 'Status', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },
+      { field: 'status', headerName: 'Status', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
       { field: 'check_in_time', headerName: 'Check In Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
       { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
     ],
     "Monthly":[      
       // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
-      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },    
+      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },    
     ]
 
   }
@@ -56,39 +56,51 @@ class Attendance extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     let date = new Date()
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
+    const start_date = dayjs(new Date()).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
     const attendanceList = this.props.attendanceList
     const employeeList = this.props.employeeList
 
     if(attendanceList && attendanceList.length){
-      this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
+      this.setState({ attendanceList: attendanceList })
+      // this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
       // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
     }
     this.setState({ start_date, end_date, selected_date })
+    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+
     this._getUniqueDates()
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
+    const { selected_date } = this.state
       if (this.props.attendanceList !== prevProps.attendanceList) {
         this._getUniqueDates()
+      }
+      if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Monthly'){
+        this.props.dispatch(setAttendance([]))
+        this.props.dispatch(setUniqueDates([]))
+      }
+      if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Daily'){
+        this.props.dispatch( getAttendance({start_date: `${selected_date}`, end_date: `${selected_date}`}) )
       }
     }
   componentWillUnmount(){
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))
+    dispatch(setCurrentAttendanceTab('Daily'))
   }
   _getUniqueDates = () => {
       const {  attendanceList, dispatch } = this.props
       let dates = []
       if(attendanceList && attendanceList.length){
         attendanceList.forEach(data => {
-          dates.push(dayjs(data.enter_time).format("DD/MM/YYYY"))
+          dates.push(dayjs(data.created_at).format("DD/MM/YYYY"))
         })
         const unique = [...new Set(dates)]
         dispatch(setUniqueDates(unique))
@@ -160,7 +172,7 @@ class Attendance extends React.PureComponent {
       const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
         if (a.user_id === id) {
           if(a.is_absent){
-              const date = a?.date
+              const date = dayjs(a?.created_at).format("DD/MM/YYYY")
               abs++
               individualAttendance[date] = "A"
           }

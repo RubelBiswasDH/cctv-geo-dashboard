@@ -8,19 +8,12 @@ import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
 import { Grid, Paper, InputBase, Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
-import { Close } from '@mui/icons-material'
 import CustomStepper from './Stepper'
-import StyledDataGrid from './common/StyledDataGrid'
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
-import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
-import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
+import { setFilterOptions } from '../redux/reducers/attendanceReducer'
 import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
-
-import dayjs from 'dayjs'
 
 class AddUser extends React.PureComponent {
  
@@ -33,12 +26,6 @@ class AddUser extends React.PureComponent {
 
   }
 
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-      if (this.props.attendanceList !== prevProps.attendanceList) {
-        this._getUniqueDates()
-      }
-    }
   componentWillUnmount(){
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))
@@ -46,7 +33,7 @@ class AddUser extends React.PureComponent {
 
    _handleSaveUser = e => {
     const { dispatch, newUser } = this.props
-    if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.departments && newUser?.profile?.departments) {
+    if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
                 ...newUser,
@@ -154,7 +141,6 @@ const formSteps = (dispatch, newUser) => {
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_phone_no'}  title={"Office Phone No"} value={newUser?.profile?.office_phone_no} fieldStyle={{ width:'50%' }}/> 
-            <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'joining_data'}  title={"Joining Date"} value={newUser?.profile?.joining_data} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Basic Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:'50%' }}/>
@@ -262,35 +248,6 @@ const textStyle = {
   )
 }
 
-const TabSwitchButton = (props) => {
-    const { value, dispatch, action, isActive } = props
-    const textStyle = {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '14px',
-        lineHeight: '24px',
-        /* identical to box height, or 171% */
-        textAlign: 'center',
-        letterSpacing:' 0.4px',
-        textTransform: 'uppercase',
-        /* Light/Primary/Main */
-        color:'rgba(0, 0, 0, 0.38)',
-        px:2,
-        borderBottom: '2px solid transparent'
-    }
-    const activeBtnStyle = isActive?{
-        color: '#007AFF',
-        borderBottom: '2px solid #007AFF'
-    }:
-    {}
-    const handleClick = () => {
-        dispatch(action(value))
-    }
-    return (
-        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
-    )
-}
 // Prop Types
 AddUser.propTypes = {
     dispatch: PropTypes.func,

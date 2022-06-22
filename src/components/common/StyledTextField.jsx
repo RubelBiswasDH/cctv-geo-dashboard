@@ -26,7 +26,7 @@ class StyledTextField extends React.PureComponent {
     }
 
     render() {
-        const { title, value, field, subField, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle } = this.props
+        const { title, value, field, subField, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
 
         const { handleChange } = this;
     
@@ -49,6 +49,7 @@ class StyledTextField extends React.PureComponent {
                                 value={value || ''}
                                 placeholder={ placeholder || ''}
                                 onChange={ handleChange }
+                                disabled={disabled}
                             />
                         </Paper>
                     </Box>

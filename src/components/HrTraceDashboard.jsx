@@ -48,7 +48,7 @@ class HrTraceDashboard extends React.PureComponent {
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch( getEmployee() )
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
-    dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
+    // dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     dispatch( getCompanySettingsAction() )
 
     this.setState({ start_date, end_date })
