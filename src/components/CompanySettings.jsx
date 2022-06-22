@@ -156,6 +156,12 @@ class CompanySettings extends React.PureComponent {
                             <Typography key={d}  sx={{fontSize:'1.2em'}}>{ d }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
+                            <Typography>Add Designation</Typography>
+                            <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
+                                <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
+                                <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
+                                <Button onClick={ _handleClearDesignationField }><CancelOutlinedIcon color="btnCancel"/></Button>
+                            </Paper>
                             <Box sx={{gap:0}}>
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
                                     && companySettings?.departments[d].designations 
@@ -164,12 +170,6 @@ class CompanySettings extends React.PureComponent {
                                     
                                 }
                             </Box>
-                            <Typography>Add Designation</Typography>
-                            <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                                <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
-                                <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
-                                <Button onClick={ _handleClearDesignationField }><CancelOutlinedIcon color="btnCancel"/></Button>
-                            </Paper>
                         </AccordionDetails>
                     </Accordion>
                 )
