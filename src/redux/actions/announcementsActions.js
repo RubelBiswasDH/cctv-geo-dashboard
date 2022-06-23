@@ -5,7 +5,7 @@ import { API } from '../../App.config'
 import dayjs from 'dayjs'
 
 import { transformAnnouncements } from '../../utils/utils';
-
+import { setToastMessage, setToastIsOpen, setToastSeverity } from "../reducers/dashboardReducer"
 
 //submit announcement edit
 
@@ -23,11 +23,16 @@ export function updateAnnouncement(id, data) {
           dispatch(setCurrentAnnouncement(''))
           dispatch(setEditAnnouncementDialogIsOpen(false))
           dispatch(setCurrentAnnouncementId(''))
+          dispatch(setToastMessage("Announcements updated successfully !"))
+          dispatch(setToastIsOpen(true))
+          dispatch(setToastSeverity('success'))
         }
       })
       .catch(err => {
         console.log("error on announcement: ", err)
-
+        dispatch(setToastMessage("You are authorized to edit your own announcements only !"))
+        dispatch(setToastIsOpen(true))
+        dispatch(setToastSeverity('warning'))
       })
   }
 }
