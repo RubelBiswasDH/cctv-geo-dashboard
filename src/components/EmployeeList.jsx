@@ -17,22 +17,18 @@ import { getUserProfile, deleteUser, updateUser } from '../redux/actions/adminAc
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
 import { updateNewUser, updateNewUserProfile, setSelectedUserId, setUserDeleteReason } from '../redux/reducers/adminReducer'
+import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
 import dayjs from 'dayjs'
 
 
 const columns = [      
-  // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.3, sortable: false, filter: false, filterable: false },
-  // { field: 'view_profile', headerName: 'Profile', minWidth: 100, sortable: false,flex: .6, filter: false, filterable: false  },
   { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: true, filter: true, filterable: true },
   { field: 'email', headerName: 'Email', minWidth: 150, flex: .75, sortable: true, filter: true,filterable: false },
   { field: 'phone', headerName: 'Mobile Number', minWidth: 150,flex:.75, sortable: true, filter: false, type: 'dateTime', filterable: false },
   { field: 'designation', headerName: 'Designation', minWidth: 150,flex:.75, sortable: true, filter: false, filterable: false },      
   { field: 'department', headerName: 'Department', minWidth: 150,flex:.75, sortable: true, filter: false, filterable: false },      
   { field: 'update_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
-    
-  // { field: 'delete_user', headerName: 'Action', minWidth: 100, sortable: false,flex: .5, filter: false, filterable: false  },
-
 ]
 
 class EmployeeList extends React.PureComponent {
@@ -127,7 +123,6 @@ class EmployeeList extends React.PureComponent {
 
   _handleUpdateDialogClose = () => {
     const { dispatch } = this.props
-    // this.setState({ selectedUserId:'' })
     dispatch( setSelectedUserId(''))
     this.setState({ isUpdateDialogOpen:false })
   }
@@ -135,7 +130,6 @@ class EmployeeList extends React.PureComponent {
   _handleUpdateDialogOpen = (id) => {
     const { dispatch, employeeList } = this.props
     dispatch( setSelectedUserId(id))
-    // this.setState({ selectedUserId:id })
     const emp = employeeList.find(emp => emp.id === id)
     const empProfile = JSON.parse(emp.profile)
     dispatch(updateNewUser({
@@ -169,17 +163,29 @@ class EmployeeList extends React.PureComponent {
     dispatch( setUserDeleteReason(e.target.value))
 
   }
+
   _handleDeleteUser = () => {
     const { dispatch, selectedUserId, userDeleteReason } = this.props
-    dispatch(
-      deleteUser(
-        selectedUserId,
-        {
-          deleted_reason: userDeleteReason
-        }
-        ))
-    dispatch(setSelectedUserId(''))
-    this.setState({isDeleteDialogOpen:false})
+    if(userDeleteReason && userDeleteReason.length){
+      dispatch(
+        deleteUser(
+          selectedUserId,
+          {
+            deleted_reason: userDeleteReason
+          }
+          ))
+          this._handleDeleteDialogClose()
+          this._handleUpdateDialogClose()
+          dispatch(setSelectedUserId(''))
+          dispatch( setUserDeleteReason(''))
+    }
+    else {
+      dispatch(setToastMessage("Deleting reason is required !")) 
+      dispatch(setToastIsOpen(true)) 
+      dispatch(setToastSeverity("warning"))
+    }
+
+
   }
   _handleDeleteDialogClose = () => {
     this.setState({isDeleteDialogOpen:false})
@@ -258,45 +264,6 @@ class EmployeeList extends React.PureComponent {
               </Box>
           </Box>
         </StyledDialog>
-        {/* <Snackbar
-          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-          open={ Boolean(feedback) }
-          autoHideDuration={ 10000 }
-        >
-          <Alert
-            severity={ feedback?.status === 200 ? 'success' : 'error' }
-            onClose={ this._onFeedbackClose }
-            sx={{ width: '100%' }}
-            action={
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center'
-                }}
-              >
-                <Button
-                  color='inherit'
-                  size='small'
-                  onClick={ () => this._onSnackbarViewTask(feedback?.task) }
-                >
-                  { 'View Task' }
-                </Button>
-
-                <IconButton
-                  onClick={ this._onFeedbackClose }
-                  size='small'
-                  sx={{ padding: 0 }}
-                >
-                  <Close fontSize='small' />
-                </IconButton>
-              </Box>
-            }
-          >
-            { feedback?.message ? feedback.message : '' }
-          </Alert>
-        </Snackbar> */}
       </Box>
     )
   }

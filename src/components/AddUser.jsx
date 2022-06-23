@@ -84,12 +84,6 @@ class AddUser extends React.PureComponent {
                     value={newUser?.profile?.designation || ''} 
                     fieldStyle={{ width:'25%' }}
                 />
-                {/*
-                    department filters
-                    || Object.keys(companySettings?.departments)[0] 
-                    designations filters
-                    || companySettings?.departments[newUser?.profile?.department]?.designations[0] 
-                    || companySettings?.departments[Object.keys(companySettings?.departments)[0]]?.designations[0] */}
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
                 <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Add Details</Typography></Button>

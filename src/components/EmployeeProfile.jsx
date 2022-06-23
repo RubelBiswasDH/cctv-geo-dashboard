@@ -7,9 +7,13 @@ import StyledDialog from './common/StyledDialog'
 import { Box, Button, Typography } from '@mui/material'
 import EmployeeList from './EmployeeList'
 import FilterEmployee from './FilterEmployee'
+import { setNewUser } from '../redux/reducers/adminReducer'
 
 class EmployeeProfile extends React.PureComponent {
- 
+  componentWillUnmount() {
+    const { dispatch } = this.props
+    dispatch(setNewUser({}))
+  }
   render() {
     const { isUpdateDialogOpen } = this.props
     return (

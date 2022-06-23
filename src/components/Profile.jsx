@@ -157,36 +157,34 @@ class Profile extends React.PureComponent {
                             <Box sx={{ ...tabContent }}>
                                 <Box sx={{display:'flex', width:"87%"}}>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>General Information</Typography>
-                                    <Button color={'btnCustomWaring'} variant={'contained'} size={'small'} style={{width:'auto',marginLeft:'auto'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Request Edit Access</Button>
+                                    <Button color={'btnCustomWaring'} variant={'contained'} size={'small'} style={{width:'auto',marginLeft:'auto', height:'40px'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Request Edit Access</Button>
                                 </Box>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"mobile"} value={userProfile?.mobile || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{width:'70%'}}/>
-                                <Box sx={{display:'flex',p:1,pl:0,gap:1, width:'87%'}} >
+                                <Box sx={{display:'flex',width:'100%'}} >
                                  
-                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"45%"}}>Position</Typography>
-
-                                    <FilterField 
-                                        filterOptions={Object.keys(companySettings?.departments ) || []}  
-                                        dispatch={dispatch} 
-                                        field={'profile'} 
-                                        subField={'department'}  
-                                        value={userProfile?.department || ''} 
-                                        disabled={disabled}
-                                        fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%', ml:.75}}
-                                    />
-                                    <FilterField 
-                                        filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
-                                        dispatch={dispatch} 
-                                        field={'profile'} 
-                                        subField={'designation'}  
-                                        value={userProfile?.designation || ''} 
-                                        disabled={disabled}
-                                        fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%', ml:.75}}
-                                    />
-                                 
+                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"15%"}}>Position</Typography>
+                                    <Box sx={{display:'flex', width:'72%',pl:'1.25%', justifyContent:'space-between'}}>
+                                        <StyledDropdown 
+                                            filterOptions={Object.keys(companySettings?.departments ) || []}
+                                            field={'profile'} 
+                                            subField={'department'}  
+                                            value={userProfile?.department || ''} 
+                                            disabled={disabled} 
+                                            action={ updateUserProfile }
+                                            fieldStyle={{ width:'90%' }}
+                                        />
+                                        <StyledDropdown 
+                                            filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
+                                            field={'profile'} 
+                                            subField={'designation'}   
+                                            value={userProfile?.designation || ''} 
+                                            disabled={disabled} 
+                                            action={ updateUserProfile }
+                                            fieldStyle={{ width:'90%' }}
+                                        />
+                                    </Box>
                                     </Box>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Personal Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
@@ -235,63 +233,18 @@ class Profile extends React.PureComponent {
                                 </Box>}
                             </Box>  
                         </Box>
+                        { (!disabled) &&
+                        <Box sx={{display:'flex', width:"87%", height:'40px', pr:'2.25%', pt:0, ml:0, gap:1 , justifyContent:'flex-end'}}>
+                            <Button veriant={'success'} style={{width:'20%',border:'1px solid green'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</Button>
+                        </Box>
+                        }
                     </Box>
                 </Box>
-                { (!disabled) &&
-                <Box sx={{display:'flex', width:'80%', height:'10%', p:2, m:0, gap:1 , justifyContent:'flex-end'}}>
-                   <Button veriant={'success'} style={{width:'20%',border:'1px solid green'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</Button>
-                </Box>
-                }
             </Box>
         );
     }
 }
 
-const FilterField = (props) => {
-    const { dispatch, value, field, subField, filterOptions, title, fieldStyle, disabled, containerStyle } = props
-    const handleChange = e => {
-      e.preventDefault()
-      if (field === 'profile') {
-          dispatch(updateUserProfile({
-              [subField]: e.target.value
-          }))
-      }
-      else {
-          dispatch(updateUserProfile({ [field]: e.target.value }))
-      }
-  
-  }
-  const textStyle = {
-      fontFamily: 'Roboto',
-      fontSize: '18px',
-  }
-
-
-    return (
-      <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
-          { title 
-            && 
-                <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-                    <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
-                </Box>
-          }
-
-          <FormControl disabled={disabled} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-                  {/* <InputLabel id="demo-simple-select-label">''</InputLabel> */}
-                  <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value= { value ?? filterOptions[0] }
-                      label=""
-                      onChange={handleChange}
-                      sx = {{fontSize: '.75em'}}
-                  >    
-                      {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
-                  </Select>
-              </FormControl>
-      </Grid>
-    )
-  }
 
 const TabSwitchButton = (props) => {
     const { value, dispatch, action, isActive } = props

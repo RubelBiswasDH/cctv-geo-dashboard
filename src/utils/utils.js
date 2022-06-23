@@ -148,13 +148,6 @@ export function getAuthToken() {
   return null
 }
 
-// const withRouter = ({ children }) => {
-//   const searchParams = useSearchParams()
-//   return (
-//     { children }
-//   )
-// }
-
 export const withRouter = props => WrappedComponent => moreProps => {
   const searchParams = useSearchParams()
   return (
@@ -167,4 +160,12 @@ export const withRouter = props => WrappedComponent => moreProps => {
       return token
  }
 
- export { getTokenFromUrl }
+ const removeByKey = (myObj, deleteKey) => {
+  return Object.keys(myObj)
+    .filter(key => key !== deleteKey)
+    .reduce((result, current) => {
+      result[current] = myObj[current];
+      return result;
+  }, {});
+}
+ export { getTokenFromUrl, removeByKey }

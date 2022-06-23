@@ -17,6 +17,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { removeByKey } from '../utils/utils'
 
 class CompanySettings extends React.PureComponent {
  
@@ -64,7 +65,6 @@ class CompanySettings extends React.PureComponent {
         dispatch( setCurrentDepartment (''))
     }
     _handleAddDesignation = (department) => {
-        console.log(department)
         const { dispatch, companySettings, currentDesignation } = this.props
         // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
@@ -97,15 +97,39 @@ class CompanySettings extends React.PureComponent {
     }
 
     _handleDeleteDesignation = (dept, dsg) => {
-        const { companySettings } = this.props
-        var index = companySettings?.departments[dept]?.designations.indexOf(dsg);
+        const { dispatch, companySettings } = this.props
+        let settings = { ...companySettings}
+        var index = settings?.departments[dept]?.designations.indexOf(dsg);
         if (index !== -1) {
-            delete companySettings?.departments[dept]?.designations[index]
+            var designations = settings?.departments[dept]?.designations
+            designations = [ ...designations.slice(0, index),  ...designations.slice(index+1, designations.length)]
+            settings = { 
+                ...settings,
+                "departments":{
+                    ...settings?.departments,
+                    [dept]:{
+                        "name":dept,
+                        designations:designations
+                    }
+                }
             }
+            dispatch( setCompanySettingsAction( {...settings}))
+        }
     }
+
+    _handleDeleteDepartment = (dept) => {
+        const { dispatch, companySettings } = this.props
+        var departments = removeByKey(companySettings?.departments, dept)
+        let settings = { 
+            ...companySettings,
+            departments: departments
+            }
+        dispatch( setCompanySettingsAction( {...settings}))
+    }
+
   render() {
     const { companySettings, currentDepartment, currentDesignation } = this.props
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation } = this
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -142,14 +166,17 @@ class CompanySettings extends React.PureComponent {
                 { (companySettings && companySettings?.departments && Object.keys(companySettings?.departments).length) && Object.keys(companySettings?.departments).map( d => 
                     <Accordion key={d} sx={{width:'100%'}}>
                         <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        >
-                            <Typography key={d}  sx={{fontSize:'1.2em'}}>{ d }</Typography>
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            >
+                            <Button variant="outlined" color='error' size={'small'} onClick={ () => {  _handleDeleteDepartment(d) } }>Delete</Button>
+                            <Typography key={d}  sx={{ display:'flex',alignItems:'center', fontSize:'1.2em', ml: 5}}>{ d }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>Add Designation</Typography>
+                            <Box sx={{ display:'flex' }}>
+                                <Typography>Add Designation</Typography>
+                            </Box>
                             <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
                                 <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
                                 <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
@@ -159,12 +186,13 @@ class CompanySettings extends React.PureComponent {
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
                                     && companySettings?.departments[d].designations 
                                     && companySettings?.departments[d].designations.length ) 
-                                    && companySettings?.departments[d].designations
+                                    ? companySettings?.departments[d].designations
                                     .map(dsg => 
-                                        <Box sx={{display:'flex',alignItems:'center', justifyContent:'space-between', width:'100%'}}>
+                                        <Box key={dsg} sx={{display:'flex',alignItems:'center', justifyContent:'space-between', width:'100%'}}>
                                             <Typography key={dsg} sx={{fontSize:'1em'}}>{ dsg }</Typography>
                                             <Button onClick={ () =>  _handleDeleteDesignation(d,dsg) }><CancelOutlinedIcon color="btnCancel"/></Button>
                                         </Box>)
+                                        :''
                                         
                                 }
                             </Box>
