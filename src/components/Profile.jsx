@@ -8,6 +8,7 @@ import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
 import StyledTextField from './common/StyledTextField'
+import StyledDropdown from './common/StyledDropdown'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -191,6 +192,15 @@ class Profile extends React.PureComponent {
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Birth Day"} field={"birth_day"} value={userProfile?.birth_day || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledDropdown 
+                                        filterOptions={['Male', 'Female', 'Other']}
+                                        field={'profile'} 
+                                        subField={'gender'}  
+                                        title={"Gender"} 
+                                        value={userProfile?.gender || ''}
+                                        action={ updateUserProfile }
+                                        fieldStyle={{ width:'50%' }}
+                                    />
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Blood Group"} field={"blood_group"} value={userProfile?.blood_group || ''} fieldStyle={{width:'70%'}}/>
                                 </Box>}
                                 { (currentProfileTab === "OFFICE DETAILS") && 
