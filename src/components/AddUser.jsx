@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 // Import Components
 import { Grid, Paper, InputBase, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
 import CustomStepper from './Stepper'
+import StyledDropdown from './common/StyledDropdown'
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
@@ -129,6 +130,15 @@ const formSteps = (dispatch, newUser) => {
             <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'birth_date'}  title={"Birth Date"} value={newUser?.profile?.birth_date} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group} fieldStyle={{ width:'50%' }}/>
+            <StyledDropdown 
+                filterOptions={['Male', 'Female', 'Other']}
+                field={'profile'} 
+                subField={'gender'}  
+                title={"Gender"} 
+                value={newUser?.profile?.gender || ''}
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:'50%' }}
+            />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'50%' }}/>
@@ -224,7 +234,6 @@ const textStyle = {
             <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
         </Box>
         <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-                {/* <InputLabel id="demo-simple-select-label">''</InputLabel> */}
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
