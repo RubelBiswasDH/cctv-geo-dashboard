@@ -171,10 +171,10 @@ class Profile extends React.PureComponent {
                                         dispatch={dispatch} 
                                         field={'profile'} 
                                         subField={'department'}  
-                                        value={userProfile?.department} 
+                                        value={userProfile?.department || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%'}}
+                                        containerStyle={{ width: '40%', ml:.75}}
                                     />
                                     <FilterField 
                                         filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
@@ -184,7 +184,7 @@ class Profile extends React.PureComponent {
                                         value={userProfile?.designation || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%'}}
+                                        containerStyle={{ width: '40%', ml:.75}}
                                     />
                                  
                                     </Box>
@@ -199,7 +199,9 @@ class Profile extends React.PureComponent {
                                         title={"Gender"} 
                                         value={userProfile?.gender || ''}
                                         action={ updateUserProfile }
-                                        fieldStyle={{ width:'50%' }}
+                                        fieldStyle={{ width:'70%', ml:1.85 }}
+                                        titleContainerStyle={{ width: '15%' }}
+                                        disabled={disabled}
                                     />
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Blood Group"} field={"blood_group"} value={userProfile?.blood_group || ''} fieldStyle={{width:'70%'}}/>
                                 </Box>}

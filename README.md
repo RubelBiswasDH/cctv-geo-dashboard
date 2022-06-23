@@ -1,2 +1,2 @@
-# desco-dms-dashboard
-Dashboard App for DESCO DMS Operations.
+# hr-trace-dashboard
+Dashboard for HR Trace App.
