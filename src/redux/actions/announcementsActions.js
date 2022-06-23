@@ -1,4 +1,4 @@
-import { getAuthToken } from './authActions'
+import { getAuthToken } from '../../utils/utils'
 import { setAnnouncements, setCurrentAnnouncement, setCurrentAnnouncementId, setEditAnnouncementDialogIsOpen, setError } from "../reducers/announcementReducer"
 import axios from 'axios'
 import { API } from '../../App.config'

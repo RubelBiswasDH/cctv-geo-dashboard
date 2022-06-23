@@ -2,7 +2,6 @@ import axios from 'axios'
 import { AUTH } from '../../App.config'
 import { setEmployeeEmail, setPassword, setError, setIsAuthenticated, setIsValidating, setToken, setUser } from '../reducers/authReducer'
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/hrtReducer';
-
 // Login Action
 export function login(user) {
     return dispatch => {
@@ -147,15 +146,4 @@ export function resetPassword(data) {
                 
             })
     }
-}
-
-///////////////
-// Get User Auth Token
-export function getAuthToken() {
-    const token = localStorage.getItem('token')
-    if(token) {
-        return token
-    }
-
-    return null
 }

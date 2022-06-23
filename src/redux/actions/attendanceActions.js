@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import { setAttendance, setError } from '../reducers/attendanceReducer'
-import { attendanceWithAbsenceInfo } from '../../utils/attendanceUtils'
+import { getAuthToken } from '../../utils/utils'
 // Get Attendance
 export function getAttendance(params) {
     const token = getAuthToken();
@@ -31,13 +31,4 @@ export function getAttendanceReport(params) {
     const newWindow = window.open(exportURL, '_blank', 'noopener,noreferrer')
 
     if (newWindow) newWindow.opener = null
-}
-
-// Get User Auth Token
-export function getAuthToken() {
-    const token = localStorage.getItem('token')
-    if(token) {
-        return token
-    }
-    return null
 }

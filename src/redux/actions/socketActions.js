@@ -1,5 +1,5 @@
 
-import { getAuthToken } from './authActions'
+import { getAuthToken } from '../../utils/utils'
 import { SOCKET,SOCKET_A } from '../../App.config'
 import {  updateAnnouncements } from "../reducers/announcementReducer"
 import { updateAttendance } from '../reducers/attendanceReducer'
