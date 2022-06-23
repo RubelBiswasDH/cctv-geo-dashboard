@@ -44,3 +44,12 @@ div {
 .MuiDataGrid-columnHeaderTitleContainer {
   padding: 0 !important;
 }
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.d-flex{
+  display: flex;
+}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Stack, Button , FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, Stack, Button , FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material'
 import { ArrowRightAlt } from '@mui/icons-material'
 import { DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import StyledDataGrid from './common/StyledDataGrid'
@@ -33,7 +33,6 @@ class Announcements extends React.PureComponent {
     }
 
   componentDidMount() {
-    const { dispatch } = this.props
 
     let date = new Date()
       
@@ -91,6 +90,9 @@ class Announcements extends React.PureComponent {
     const { announcements } = this.props;
     const { filterOptions } = this.props
     let list = announcements
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
+      return list
+    }
     if(filterOptions && filterOptions?.type && filterOptions?.type==='LEAVE'){
       list = list.filter( a => a.type==='LEAVE')
     }
@@ -99,9 +101,6 @@ class Announcements extends React.PureComponent {
     }
     if(filterOptions && filterOptions?.type && filterOptions?.type==='GENERAL'){
       list = list.filter( a => a.type==='GENERAL')
-    }
-    if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
-      list = list
     }
     if(filterOptions && filterOptions?.name){
      list = list.filter( a => a.name.toLowerCase().startsWith(filterOptions.name.toLowerCase()))
@@ -207,7 +206,7 @@ class Announcements extends React.PureComponent {
           </>
           }
         >
-           <StyledInputField multiline={true} minRows={4} maxRows={6} onChange={setCurrentAnnouncement} value={this.props.currentAnnouncement} placeholder={"Edit Announcement"} ariaLabel={""} inputStyle={{m:0,p:1,px:2}} style={{borderRadius:2,height:'10vh', boxSizing:'border-box',height:'auto'}}/>
+           <StyledInputField multiline={true} minRows={4} maxRows={6} onChange={setCurrentAnnouncement} value={this.props.currentAnnouncement} placeholder={"Edit Announcement"} ariaLabel={""} inputStyle={{m:0,p:1,px:2}} style={{borderRadius:2, boxSizing:'border-box',height:'auto'}}/>
         </StyledDialog>
       </Box>
     )

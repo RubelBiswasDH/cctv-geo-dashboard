@@ -5,19 +5,17 @@ import { Box, Grid, Typography, Paper, InputBase, Button, TextField, Autocomplet
 import StyledAppBar from './common/StyledAppBar'
 import StyledInputField from './common/StyledInputField'
 import StyledButton from './common/StyledBotton'
-import StyledSelect from './common/StyledSelect'
 import MapGL from '../components/common/MapGL'
 import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../redux/reducers/registerReducer'
-import downloadDemoCSV from '../assets/demo_users.xlsx'
-import { setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setLateTime, setWorkingDays, setMonthYear, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setCompanySettings } from '../redux/reducers/adminReducer'
+import { setFileInput, setAnnouncementMessage, setLateTime, setWorkingDays, setMonthYear, updateNewUser, updateNewUserProfile, setCompanyAddressData, setCompanySettings } from '../redux/reducers/adminReducer'
 import { createUser, createBulkUser, createNotice, getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 import dayjs from 'dayjs'
 
 const UserField = (props) => {
-    const { title, value, field, subField, dispatch, style, fieldStyle, titleStyle } = props
+    const { title, value, field, subField, dispatch, style, fieldStyle } = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize: '18px',
@@ -79,67 +77,6 @@ const CustomButton = (props) => {
 }
 
 
-const FileInput = (props) => {
-    const { style, onChange } = props
-    return (
-        <Paper
-            sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#5F5F5F', color: 'white', px: '10px', ...style }}
-        >
-            <InputBase
-                sx={{ ml: 0, mt: .5, flex: 1, background: 'transparent', color: 'white', opacity: 1 }}
-                placeholder={"placeholder"}
-                inputProps={{ hidden: true, 'aria-label': "ariaLabel", style: { color: 'transparent', visibility: '', backgroundColor: 'transparent' }, 'type': 'file', multiple: true }}
-                onChange={onChange}
-
-            />
-        </Paper>
-    );
-}
-const InputButton = (props) => {
-    const { style, onChange } = props
-    const fileInput = React.useRef();
-    var title = (fileInput?.current && fileInput.current.files.length > 0) ? fileInput.current?.files[0]?.name : "Upload CSV File"
-    return (
-        <Paper
-            sx={{ p: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: '#887A7A', color: 'white', borderRadius: 2, ...style }}
-        >
-            <Button
-                variant="text"
-                color="primary"
-                fullWidth
-                sx={{ textTransform: 'none', borderRadius: 2, m: 0 }}
-                onClick={() => fileInput.current.click()}
-            >
-                <Typography
-                    noWrap
-
-                    sx={{
-                        pt: .5,
-                        pl: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        flex: 1,
-                        color: '#fff',
-                        opacity: 1,
-                        borderRadius: 2,
-                        overflow: 'ellipsis'
-                    }}>
-                    {title}
-                </Typography>
-            </Button>
-            <input
-                ref={fileInput}
-                type="file"
-                style={{ display: 'none' }}
-                onChange={onChange}
-            />
-        </Paper>
-    );
-}
-
 const GridContent = (props) => {
     const { style, titleStyle } = props
     return (
@@ -169,18 +106,7 @@ class AdminPanel extends React.PureComponent {
     componentDidMount() {
         this.props.dispatch(getCompanySettingsAction())
     }
-    handleSaveUser = e => {
-        const {dispatch, newUser} = this.props
-        if(newUser.name && newUser.phone&& newUser.email){
-            dispatch(createUser(newUser))
-        }
-        else{ 
-            dispatch(setToastMessage('Name,Phone and Email are mandatory fields'))
-            dispatch(setToastIsOpen(true))
-            dispatch(setToastSeverity('warning'))
 
-        }
-    }
     updateExactAddress = (updatedAddress) => {
         const { data } = this.state
         const { dispatch } = this.props
@@ -220,7 +146,7 @@ class AdminPanel extends React.PureComponent {
     }
 
     handleFileInput = e => {
-        const { dispatch, fileInput } = this.props
+        const { dispatch } = this.props
         e.preventDefault()
         const file = e.target.files[0]
         dispatch(setFileInput(file))
@@ -257,6 +183,7 @@ class AdminPanel extends React.PureComponent {
             dispatch(setToastSeverity('warning'))
         }
     }
+
     handleSetLateTime = (e) => {
         e.preventDefault()
         const { dispatch, lateTime, companySettings } = this.props
@@ -335,8 +262,8 @@ class AdminPanel extends React.PureComponent {
     }
 
     render() {
-        const { handleCreateUser, handleFileInput, handleFileUpload, handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange, handleSaveCompanyAddress } = this
-        const { dispatch, newUserName, newUserEmail, newUserMobile, newUserRole, newUserRoleOptions, announcementMessage, lateTime, workingDays, monthYear, companySettings, companyNameOptions, newUser } = this.props
+        const { handleNotice, handleSetLateTime, handleSetWorkingDays, handleSaveUser, handleAutoCompInputChange, handleAutoCompChange, handleSaveCompanyAddress } = this
+        const { dispatch, announcementMessage, lateTime, workingDays, monthYear, companySettings, companyNameOptions, newUser } = this.props
         const { currentTab } = this.state
         return (
             <Box sx={

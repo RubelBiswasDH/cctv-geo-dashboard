@@ -60,7 +60,7 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const { currentView, currentEmployeeType } = this.props
+        const { currentEmployeeType } = this.props
         const { countEmployee, handleEmployeeTypeChange } = this
         return (
         <Box sx={theme => ({

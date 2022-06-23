@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Grid, Box, Typography, FormControl, Select, MenuItem } from '@mui/material';
 
 
-class StyledDripdown extends React.PureComponent {
+class StyledDropdown extends React.PureComponent {
 
     constructor(props){
         super(props)
@@ -25,17 +25,17 @@ class StyledDripdown extends React.PureComponent {
     }
 
     render() {
-        const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx } = this.props
+        const { dispatch, action, value, field, subField, filterOptions, title, titleContainerStyle, fieldStyle, fullWidth, sx, disabled } = this.props
         const { handleChange } = this;
     
             return (
-                <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
+                <Grid xs={12} item sx={{display:'flex',gap:0, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
                 { title && 
-                    <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
+                    <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle }}>
                         <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
                     </Box>
                 }
-                <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
+                <FormControl disabled={disabled} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -59,4 +59,4 @@ const textStyle = {
 }
 
   const mapDispatchToProps = dispatch => ({ dispatch })
-  export default connect(mapDispatchToProps)(StyledDripdown)
+  export default connect(mapDispatchToProps)(StyledDropdown)

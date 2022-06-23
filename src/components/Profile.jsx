@@ -2,15 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Box, Grid, Typography, TextField, Divider, Button, FormControl, Select, MenuItem } from '@mui/material'
-import StyledAppBar from './common/StyledAppBar'
-import StyledButton from './common/StyledBotton'
 import image from '../assets/profile-image.jpg'
 
 import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
 import StyledTextField from './common/StyledTextField'
-import { width } from '@mui/system'
+import StyledDropdown from './common/StyledDropdown'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -76,7 +74,7 @@ class Profile extends React.PureComponent {
         dispatch(setCurrentProfileTab('PROFILE'))
     }
     render() {
-        const { userProfile, profileEdit, dispatch, currentProfileTab, profile, newUser, companySettings} = this.props
+        const { userProfile, profileEdit, dispatch, currentProfileTab, companySettings} = this.props
         const disabled = !profileEdit
         return (
             <Box sx={
@@ -87,7 +85,6 @@ class Profile extends React.PureComponent {
                     },
                     width: '100%',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '4px',
@@ -174,10 +171,10 @@ class Profile extends React.PureComponent {
                                         dispatch={dispatch} 
                                         field={'profile'} 
                                         subField={'department'}  
-                                        value={userProfile?.department} 
+                                        value={userProfile?.department || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%'}}
+                                        containerStyle={{ width: '40%', ml:.75}}
                                     />
                                     <FilterField 
                                         filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
@@ -187,7 +184,7 @@ class Profile extends React.PureComponent {
                                         value={userProfile?.designation || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%'}}
+                                        containerStyle={{ width: '40%', ml:.75}}
                                     />
                                  
                                     </Box>
@@ -195,6 +192,17 @@ class Profile extends React.PureComponent {
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Birth Day"} field={"birth_day"} value={userProfile?.birth_day || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledDropdown 
+                                        filterOptions={['Male', 'Female', 'Other']}
+                                        field={'profile'} 
+                                        subField={'gender'}  
+                                        title={"Gender"} 
+                                        value={userProfile?.gender || ''}
+                                        action={ updateUserProfile }
+                                        fieldStyle={{ width:'70%', ml:1.85 }}
+                                        titleContainerStyle={{ width: '15%' }}
+                                        disabled={disabled}
+                                    />
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Blood Group"} field={"blood_group"} value={userProfile?.blood_group || ''} fieldStyle={{width:'70%'}}/>
                                 </Box>}
                                 { (currentProfileTab === "OFFICE DETAILS") && 
@@ -240,7 +248,7 @@ class Profile extends React.PureComponent {
 }
 
 const FilterField = (props) => {
-    const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx, disabled, containerStyle } = props
+    const { dispatch, value, field, subField, filterOptions, title, fieldStyle, disabled, containerStyle } = props
     const handleChange = e => {
       e.preventDefault()
       if (field === 'profile') {
@@ -362,7 +370,6 @@ Profile.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-    userProfile: state?.admin?.userProfile,
     profileEdit: state?.admin?.profileEdit,
     currentProfileTab: state?.employeeList?.currentProfileTab,
     profile: state?.employeeList?.profile,

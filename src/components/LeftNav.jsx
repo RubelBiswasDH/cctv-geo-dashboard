@@ -3,15 +3,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import StarIcon from '@mui/icons-material/Star';
 import CloseIcon from '@mui/icons-material/Close';
 import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
@@ -79,12 +76,10 @@ class LeftNav extends React.PureComponent {
                 open={ isLeftNavOpen }
                 hideBackdrop={ true }
                 variant='persistent'
-            // onClose={toggleDrawer(anchor, false)}
           >
             <Box
             sx={{ width: 250}}
             role="presentation"
-            // onClick={toggleDrawer(anchor, false)}
             >
                 <List sx={{width:'100%'}}>
                     <ListItem key={'text'} disablePadding  sx={{display:'flex',justifyContent:'flex-end', maxWidth:'100%',p:0,m:0}}>

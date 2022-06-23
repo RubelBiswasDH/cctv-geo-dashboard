@@ -1,9 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import AdapterDayjs from '@mui/lab/AdapterDayjs'
-import { ArrowRightAlt } from '@mui/icons-material'
-import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 // Import Components
@@ -21,10 +18,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import dayjs from 'dayjs'
-
-
-
 class CompanySettings extends React.PureComponent {
  
   state = {
@@ -35,12 +28,7 @@ class CompanySettings extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(getCompanySettingsAction())
-    let date = new Date()
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
-    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const attendanceList = this.props.attendanceList
-    const employeeList = this.props.employeeList
+
   }
 
  
@@ -77,7 +65,7 @@ class CompanySettings extends React.PureComponent {
     }
     _handleAddDesignation = (department) => {
         console.log(department)
-        const { dispatch, companySettings, currentDepartment, currentDesignation, settings} = this.props
+        const { dispatch, companySettings, currentDesignation } = this.props
         // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
@@ -107,12 +95,17 @@ class CompanySettings extends React.PureComponent {
         const { dispatch } = this.props
         dispatch(setCurrentDesignation (''))
     }
+
+    _handleDeleteDesignation = (dept, dsg) => {
+        const { companySettings } = this.props
+        var index = companySettings?.departments[dept]?.designations.indexOf(dsg);
+        if (index !== -1) {
+            delete companySettings?.departments[dept]?.designations[index]
+            }
+    }
   render() {
-    const { dispatch, companySettings, currentDepartment, currentDesignation, settings } = this.props
-    const departments = companySettings?.departments
-    // Object.keys(departments).map( d => {console.log(departments[d])})
-    const { last_check_in_time, selected_time } = this.state
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField } = this
+    const { companySettings, currentDepartment, currentDesignation } = this.props
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -166,8 +159,13 @@ class CompanySettings extends React.PureComponent {
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
                                     && companySettings?.departments[d].designations 
                                     && companySettings?.departments[d].designations.length ) 
-                                    && companySettings?.departments[d].designations.map(d => <Typography key={d} sx={{fontSize:'1em'}}>{ d }</Typography>)
-                                    
+                                    && companySettings?.departments[d].designations
+                                    .map(dsg => 
+                                        <Box sx={{display:'flex',alignItems:'center', justifyContent:'space-between', width:'100%'}}>
+                                            <Typography key={dsg} sx={{fontSize:'1em'}}>{ dsg }</Typography>
+                                            <Button onClick={ () =>  _handleDeleteDesignation(d,dsg) }><CancelOutlinedIcon color="btnCancel"/></Button>
+                                        </Box>)
+                                        
                                 }
                             </Box>
                         </AccordionDetails>
@@ -194,36 +192,6 @@ const textStyle = {
     lineHeight: '160%',
     letterSpacing: '0.15px',
     
-}
-
-const TabSwitchButton = (props) => {
-    const { value, dispatch, action, isActive } = props
-    const textStyle = {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '14px',
-        lineHeight: '24px',
-        /* identical to box height, or 171% */
-        textAlign: 'center',
-        letterSpacing:' 0.4px',
-        textTransform: 'uppercase',
-        /* Light/Primary/Main */
-        color:'rgba(0, 0, 0, 0.38)',
-        px:2,
-        borderBottom: '2px solid transparent'
-    }
-    const activeBtnStyle = isActive?{
-        color: '#007AFF',
-        borderBottom: '2px solid #007AFF'
-    }:
-    {}
-    const handleClick = () => {
-        dispatch(action(value))
-    }
-    return (
-        <Button onClick={handleClick} variant="text"><Typography sx={{ ...textStyle, ...activeBtnStyle }}>{value}</Typography></Button>
-    )
 }
 
 // Prop Types

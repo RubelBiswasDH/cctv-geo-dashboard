@@ -13,7 +13,6 @@ import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
 import { stopNotificationSound } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 

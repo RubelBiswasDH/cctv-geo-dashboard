@@ -30,8 +30,6 @@ import { getEmployee }  from '../redux/actions/employeeActions'
 import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
 
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
-import { setIsLeftNavOpen } from '../redux/reducers/hrtReducer'
-
 
 class HrTraceDashboard extends React.PureComponent {
   state = {

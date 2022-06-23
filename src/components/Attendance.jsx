@@ -3,17 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import { ArrowRightAlt } from '@mui/icons-material'
-import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
+import { DatePicker, DateRangePicker, LocalizationProvider } from '@mui/lab'
 
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
 import { Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { stopNotificationSound, sortByDate } from '../utils/utils'
-import { attendanceWithAbsenceInfo } from '../utils/attendanceUtils'
+import { stopNotificationSound } from '../utils/utils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { setAttendance } from '../redux/reducers/attendanceReducer'
@@ -55,7 +53,6 @@ class Attendance extends React.PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props
-    let date = new Date()
     const start_date = dayjs(new Date()).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
@@ -127,7 +124,9 @@ class Attendance extends React.PureComponent {
       const { attendanceList } = this.props;
       const { filterOptions } = this.props
       let attList = attendanceList
-
+      if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
+        return attList
+      }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='Late'){
         attList = attList.filter( a => a.is_late)
       }
@@ -136,9 +135,6 @@ class Attendance extends React.PureComponent {
       }
       if(filterOptions && filterOptions?.type && filterOptions?.type==='Absent'){
         attList = attList.filter( a => a?.is_absent)
-      }
-      if(filterOptions && filterOptions?.type && filterOptions?.type==='All'){
-        attList = attList
       }
       if(filterOptions && filterOptions?.name){
        attList = attList.filter( a => a?.name?.toLowerCase().startsWith(filterOptions?.name?.toLowerCase()))
@@ -238,7 +234,6 @@ class Attendance extends React.PureComponent {
 
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
-    const { dispatch } = this.props
 
     // Stop Notification Sound
     stopNotificationSound()
@@ -256,8 +251,8 @@ class Attendance extends React.PureComponent {
       const { start_date, end_date } = this.state            
   
       // Get start date and end date from date range picker
-      const startDate = dateValues[0]?.$d && dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD') || start_date
-      const endDate = dateValues[1]?.$d && dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD') || end_date
+      const startDate = dateValues[0]?.$d && (dayjs(new Date(dateValues[0]?.$d)).format('YYYY-MM-DD') || start_date)
+      const endDate = dateValues[1]?.$d && (dayjs(new Date(dateValues[1]?.$d)).format('YYYY-MM-DD') || end_date)
   
       // Set state for start date and end date accordingly
       this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
@@ -274,7 +269,7 @@ class Attendance extends React.PureComponent {
     _handleDateChange = date => {
         const { dispatch } = this.props
         const { selected_date } = this.state
-        const selectedDate = date?.$d && dayjs(new Date(date?.$d)).format('YYYY-MM-DD') || selected_date
+        const selectedDate = date?.$d && (dayjs(new Date(date?.$d)).format('YYYY-MM-DD') || selected_date)
         this.setState({ date, selected_date: selectedDate ?? selected_date })
         dispatch( getAttendance({start_date: `${selectedDate}`, end_date: `${selectedDate}`}) )
     }
@@ -286,7 +281,7 @@ class Attendance extends React.PureComponent {
      }
   
   render() {
-    const { dispatch, isTaskLoading, filterOptions, isDataLoading, currentAttendanceTab } = this.props
+    const { dispatch, isTaskLoading, filterOptions, currentAttendanceTab } = this.props
     const { feedback } = this.state
     const { selected_date, start_date, end_date } = this.state
     const date = selected_date
