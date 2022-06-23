@@ -246,7 +246,11 @@ class EmployeeList extends React.PureComponent {
               <StyledTextField action={ updateNewUser } field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'50%' }}/>
               <Box sx={{display:'flex', flexDirection:'row',  width:'100%' }}>
                   <StyledDropdown 
-                      filterOptions={Object.keys(companySettings?.departments ) || []} 
+                      filterOptions={
+                        (companySettings 
+                          && Object.keys(companySettings).length 
+                          && companySettings?.departments)
+                          && Object.keys(companySettings?.departments ) || []} 
                       action={ updateNewUserProfile }  
                       field={'profile'} 
                       subField={'department'} 
@@ -254,7 +258,11 @@ class EmployeeList extends React.PureComponent {
                       fieldStyle={{ width:'90%' }}
                   />
                   <StyledDropdown 
-                      filterOptions={ companySettings?.departments[newUser?.profile?.department]?.designations || [] }
+                      filterOptions={(
+                        companySettings 
+                        && Object.keys(companySettings).length 
+                        && companySettings?.departments)  
+                        && companySettings?.departments[newUser?.profile?.department]?.designations || [] }
                       action={ updateNewUserProfile }  
                       field={'profile'} 
                       subField={'designation'}  
