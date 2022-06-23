@@ -148,13 +148,6 @@ export function getAuthToken() {
   return null
 }
 
-// const withRouter = ({ children }) => {
-//   const searchParams = useSearchParams()
-//   return (
-//     { children }
-//   )
-// }
-
 export const withRouter = props => WrappedComponent => moreProps => {
   const searchParams = useSearchParams()
   return (
