@@ -36,7 +36,7 @@ class AddressAutoComplete extends React.PureComponent{
 
     render(){ 
         const { _handleAutoCompInputChange, _handleAutoCompChange } = this
-        const { companyNameOptions, sx } = this.props
+        const { companyNameOptions, companySettings, sx } = this.props
         return(
             <Autocomplete
                 sx={{ width: '100%', ...sx}}
@@ -61,6 +61,7 @@ class AddressAutoComplete extends React.PureComponent{
                     </Grid>)}
                 renderInput={(params) =>
                     <TextField
+   
                         {...params}
                         variant='outlined'
                         margin='none'
@@ -68,7 +69,7 @@ class AddressAutoComplete extends React.PureComponent{
                         fullWidth={true}
                         name='companyAddress'
                         type='text'
-                        placeholder=''
+                        placeholder={ companySettings.companyAddressData.exact_address || '' }
 
                     />
             }
