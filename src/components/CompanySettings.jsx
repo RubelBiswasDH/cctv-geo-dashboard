@@ -64,7 +64,6 @@ class CompanySettings extends React.PureComponent {
         dispatch( setCurrentDepartment (''))
     }
     _handleAddDesignation = (department) => {
-        console.log(department)
         const { dispatch, companySettings, currentDesignation } = this.props
         // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
@@ -97,11 +96,24 @@ class CompanySettings extends React.PureComponent {
     }
 
     _handleDeleteDesignation = (dept, dsg) => {
-        const { companySettings } = this.props
-        var index = companySettings?.departments[dept]?.designations.indexOf(dsg);
+        const { dispatch, companySettings } = this.props
+        let settings = { ...companySettings}
+        var index = settings?.departments[dept]?.designations.indexOf(dsg);
         if (index !== -1) {
-            delete companySettings?.departments[dept]?.designations[index]
+            var designations = settings?.departments[dept]?.designations
+            designations = [ ...designations.slice(0, index),  ...designations.slice(index+1, designations.length)]
+            settings = { 
+                ...settings,
+                "departments":{
+                    ...settings?.departments,
+                    [dept]:{
+                        "name":dept,
+                        designations:designations
+                    }
+                }
             }
+            dispatch( setCompanySettingsAction( {...settings}))
+        }
     }
   render() {
     const { companySettings, currentDepartment, currentDesignation } = this.props
@@ -159,12 +171,13 @@ class CompanySettings extends React.PureComponent {
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
                                     && companySettings?.departments[d].designations 
                                     && companySettings?.departments[d].designations.length ) 
-                                    && companySettings?.departments[d].designations
+                                    ? companySettings?.departments[d].designations
                                     .map(dsg => 
                                         <Box sx={{display:'flex',alignItems:'center', justifyContent:'space-between', width:'100%'}}>
                                             <Typography key={dsg} sx={{fontSize:'1em'}}>{ dsg }</Typography>
                                             <Button onClick={ () =>  _handleDeleteDesignation(d,dsg) }><CancelOutlinedIcon color="btnCancel"/></Button>
                                         </Box>)
+                                        :''
                                         
                                 }
                             </Box>
