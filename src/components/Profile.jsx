@@ -162,11 +162,11 @@ class Profile extends React.PureComponent {
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"mobile"} value={userProfile?.mobile || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{width:'70%'}}/>
-                                <Box sx={{display:'flex',p:1,pl:0,gap:1, width:'87%'}} >
+                                <Box sx={{display:'flex',width:'100%'}} >
                                  
-                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"45%"}}>Position</Typography>
+                                    <Typography sx={{fontFamily: 'Roboto',fontSize: '18px', fontWeight: 600, width:"15%"}}>Position</Typography>
 
-                                    <FilterField 
+                                    {/* <FilterField 
                                         filterOptions={Object.keys(companySettings?.departments ) || []}  
                                         dispatch={dispatch} 
                                         field={'profile'} 
@@ -174,9 +174,10 @@ class Profile extends React.PureComponent {
                                         value={userProfile?.department || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%', ml:.75}}
-                                    />
-                                    <FilterField 
+                                        containerStyle={{ width: '40%', ml:"2.75%"}}
+                                    /> */}
+
+                                    {/* <FilterField 
                                         filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
                                         dispatch={dispatch} 
                                         field={'profile'} 
@@ -184,9 +185,28 @@ class Profile extends React.PureComponent {
                                         value={userProfile?.designation || ''} 
                                         disabled={disabled}
                                         fieldStyle={{ width:'100%' }}
-                                        containerStyle={{ width: '40%', ml:.75}}
-                                    />
-                                 
+                                        containerStyle={{ width: '40%', ml:"2.75%"}}
+                                    /> */}
+                                    <Box sx={{display:'flex', width:'72%',pl:'1.25%', justifyContent:'space-between'}}>
+                                        <StyledDropdown 
+                                            filterOptions={Object.keys(companySettings?.departments ) || []}
+                                            field={'profile'} 
+                                            subField={'department'}  
+                                            value={userProfile?.department || ''} 
+                                            disabled={disabled} 
+                                            action={ updateUserProfile }
+                                            fieldStyle={{ width:'90%' }}
+                                        />
+                                        <StyledDropdown 
+                                            filterOptions={companySettings?.departments[userProfile?.department]?.designations || []}  
+                                            field={'profile'} 
+                                            subField={'designation'}   
+                                            value={userProfile?.designation || ''} 
+                                            disabled={disabled} 
+                                            action={ updateUserProfile }
+                                            fieldStyle={{ width:'90%' }}
+                                        />
+                                    </Box>
                                     </Box>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Personal Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
@@ -235,13 +255,13 @@ class Profile extends React.PureComponent {
                                 </Box>}
                             </Box>  
                         </Box>
+                        { (!disabled) &&
+                        <Box sx={{display:'flex', width:"87%", height:'20%', pr:'2.25%', pt:0, ml:0, gap:1 , justifyContent:'flex-end'}}>
+                            <Button veriant={'success'} style={{width:'20%',border:'1px solid green'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</Button>
+                        </Box>
+                        }
                     </Box>
                 </Box>
-                { (!disabled) &&
-                <Box sx={{display:'flex', width:'80%', height:'10%', p:2, m:0, gap:1 , justifyContent:'flex-end'}}>
-                   <Button veriant={'success'} style={{width:'20%',border:'1px solid green'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</Button>
-                </Box>
-                }
             </Box>
         );
     }
