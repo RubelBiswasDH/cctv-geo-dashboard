@@ -1,13 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import AdapterDayjs from '@mui/lab/AdapterDayjs'
-import { ArrowRightAlt } from '@mui/icons-material'
-import { DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // Import Components
-import { Grid, Paper, InputBase, Box, Stack, Snackbar, Alert, Button, IconButton, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Divider } from '@mui/material'
+import { Grid, Paper, InputBase, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
 import CustomStepper from './Stepper'
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
@@ -21,10 +17,6 @@ class AddUser extends React.PureComponent {
     add_details:false
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props
-
-  }
 
   componentWillUnmount(){
     const { dispatch } = this.props
@@ -186,7 +178,7 @@ const UserField = (props) => {
     return (
         <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
             <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-                <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+                <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle, ...titleStyle }}>{title}</Typography>
             </Box>
             <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
                 <Paper
@@ -209,7 +201,7 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-  const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx } = props
+  const { dispatch, value, field, subField, filterOptions, title, fieldStyle } = props
   const handleChange = e => {
     e.preventDefault()
     if (field === 'profile') {

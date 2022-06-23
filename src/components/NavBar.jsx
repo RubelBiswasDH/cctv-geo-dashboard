@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, AppBar, Toolbar, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Badge, Typography, TextField, Autocomplete, Grid, Chip } from '@mui/material'
+import { Box, AppBar, Toolbar, Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Grid, Chip } from '@mui/material'
 import { Logout, AccountCircle } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -75,7 +75,7 @@ class NavBar extends React.PureComponent {
 
   render() {
     const { user, appBarProps, isLeftNavOpen } = this.props
-    const { accMenuAnchorEl, notificationsMenuAnchorEl, isTaskDetailsOpen, selectedTask } = this.state
+    const { accMenuAnchorEl, notificationsMenuAnchorEl } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
     const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
     return (
@@ -106,14 +106,6 @@ class NavBar extends React.PureComponent {
                     />
                   </a>
                 </Box>
-
-                {/* <Typography
-                  variant='h5'
-                  color='text.secondary'
-                  sx={ brandTextStyles }
-                >
-                  { 'HR Trace Dashboard' }
-                </Typography> */}
               </Grid>
                   
               <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
@@ -141,9 +133,6 @@ class NavBar extends React.PureComponent {
                       onClick={ this._openAccountMenu }
                     >
                       <MoreVertIcon ccolor={"primary"}/>
-                      {/* <Avatar
-                        { ...this._stringAvatar(user.name) }
-                      /> */}
                     </IconButton>
                   </Tooltip>
                 </Toolbar>
@@ -251,25 +240,8 @@ const brandContainerStyles = {
   mt: { xs: '4px', md: 0 }
 }
 
-const brandTextStyles = {
-  fontSize: { xs: '18px', sm: '20px', md: '24px'}
-}
-
 const toolbarStyles = {
   width: '100%', p: { xs: 0 }
-}
-
-const autocompleteStyles = {
-  ml: 'auto',
-  marginRight: '8px',
-  width: '100%',
-  maxWidth: {
-    md: '50%',
-    xs: '100%'
-  },
-  '& .MuiAutocomplete-popupIndicator': {
-    transform: 'none'
-  }
 }
 
 // Prop Types

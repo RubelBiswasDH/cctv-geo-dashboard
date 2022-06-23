@@ -11,7 +11,7 @@ import FilterEmployee from './FilterEmployee'
 class EmployeeProfile extends React.PureComponent {
  
   render() {
-    const { isUpdateDialogOpen, isDeleteDialogOpen } = this.props
+    const { isUpdateDialogOpen } = this.props
     return (
       <Box sx={{display:'flex', flexDirection:'column',width:'100%'}}>
         <Box sx={{py:2}}>

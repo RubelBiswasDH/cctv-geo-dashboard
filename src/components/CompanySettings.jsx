@@ -1,9 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import AdapterDayjs from '@mui/lab/AdapterDayjs'
-import { ArrowRightAlt } from '@mui/icons-material'
-import { ClockPicker, TimePicker, DesktopTimePicker, DatePicker, DateRangePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 // Import Components
@@ -21,10 +18,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import dayjs from 'dayjs'
-
-
-
 class CompanySettings extends React.PureComponent {
  
   state = {
@@ -35,12 +28,7 @@ class CompanySettings extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(getCompanySettingsAction())
-    let date = new Date()
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
-    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const attendanceList = this.props.attendanceList
-    const employeeList = this.props.employeeList
+
   }
 
  
@@ -77,7 +65,7 @@ class CompanySettings extends React.PureComponent {
     }
     _handleAddDesignation = (department) => {
         console.log(department)
-        const { dispatch, companySettings, currentDepartment, currentDesignation, settings} = this.props
+        const { dispatch, companySettings, currentDesignation } = this.props
         // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
@@ -109,22 +97,14 @@ class CompanySettings extends React.PureComponent {
     }
 
     _handleDeleteDesignation = (dept, dsg) => {
-        const { dispatch, companySettings } = this.props
-        // const tempSettings = { ...companySettings }
+        const { companySettings } = this.props
         var index = companySettings?.departments[dept]?.designations.indexOf(dsg);
         if (index !== -1) {
             delete companySettings?.departments[dept]?.designations[index]
-            // tempSettings?.departments[dept]?.designations.splice(index, 1);
             }
-        // delete tempSettings?.departments[dept]?.designations[dsg]
-        // console.log({companySettings, tempSettings})
-        // console.log({dept, dsg})
     }
   render() {
-    const { dispatch, companySettings, currentDepartment, currentDesignation, settings } = this.props
-    const departments = companySettings?.departments
-    // Object.keys(departments).map( d => {console.log(departments[d])})
-    const { last_check_in_time, selected_time } = this.state
+    const { companySettings, currentDepartment, currentDesignation } = this.props
     const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation } = this
     return (
       <Box width='100%' height='54vh'>

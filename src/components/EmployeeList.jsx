@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Snackbar, Alert, Button, IconButton, Typography, TextField } from '@mui/material'
+import { Box, Tooltip, Button, Typography, TextField } from '@mui/material'
 import { GridActionsCellItem } from '@mui/x-data-grid'
-import { Close } from '@mui/icons-material'
 import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
 import StyledDialog from './common/StyledDialog'
@@ -79,7 +78,6 @@ class EmployeeList extends React.PureComponent {
 
   transformedEmployeeList = () => {
 
-    const currentView = this.props.currentView
     const { currentEmployeeType } = this.props
 
     var empData = (this.props.employeeList)?.map(emp => ({
@@ -164,11 +162,10 @@ class EmployeeList extends React.PureComponent {
 
 
   _handleDeleteDialogOpen = (id) => {
-    const { dispatch } = this.props
     this.setState({isDeleteDialogOpen:true})
   }
   _handleDeleteUserReason = (e) => {
-    const { dispatch, selectedUserId, userDeleteReason } = this.props
+    const { dispatch } = this.props
     dispatch( setUserDeleteReason(e.target.value))
 
   }
@@ -189,7 +186,6 @@ class EmployeeList extends React.PureComponent {
   }
   render() {
     const { isTaskLoading, newUser, companySettings } = this.props
-    const { feedback } = this.state
     
     return (
       <Box width='100%' height='73vh'>

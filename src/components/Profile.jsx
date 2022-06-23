@@ -2,15 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Box, Grid, Typography, TextField, Divider, Button, FormControl, Select, MenuItem } from '@mui/material'
-import StyledAppBar from './common/StyledAppBar'
-import StyledButton from './common/StyledBotton'
 import image from '../assets/profile-image.jpg'
 
 import {setUserProfileAction} from '../redux/actions/adminActions'
 import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReducer'
 import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
 import StyledTextField from './common/StyledTextField'
-import { width } from '@mui/system'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -76,7 +73,7 @@ class Profile extends React.PureComponent {
         dispatch(setCurrentProfileTab('PROFILE'))
     }
     render() {
-        const { userProfile, profileEdit, dispatch, currentProfileTab, profile, newUser, companySettings} = this.props
+        const { userProfile, profileEdit, dispatch, currentProfileTab, companySettings} = this.props
         const disabled = !profileEdit
         return (
             <Box sx={
@@ -87,7 +84,6 @@ class Profile extends React.PureComponent {
                     },
                     width: '100%',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '4px',
@@ -240,7 +236,7 @@ class Profile extends React.PureComponent {
 }
 
 const FilterField = (props) => {
-    const { dispatch, action, value, field, subField, filterOptions, title, fieldStyle, fullWidth, sx, disabled, containerStyle } = props
+    const { dispatch, value, field, subField, filterOptions, title, fieldStyle, disabled, containerStyle } = props
     const handleChange = e => {
       e.preventDefault()
       if (field === 'profile') {
@@ -362,7 +358,6 @@ Profile.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-    userProfile: state?.admin?.userProfile,
     profileEdit: state?.admin?.profileEdit,
     currentProfileTab: state?.employeeList?.currentProfileTab,
     profile: state?.employeeList?.profile,

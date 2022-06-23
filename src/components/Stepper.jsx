@@ -61,30 +61,17 @@ class CustomStepper extends React.PureComponent {
             return newSkipped;
           })
 
-        // setSkipped((prevSkipped) => {
-        //   const newSkipped = new Set(prevSkipped.values());
-        //   newSkipped.add(activeStep);
-        //   return newSkipped;
-        // });
       };
     
-       handleReset = () => {
-        this.setState( prev => ({activeStep: 0}))
-      };
       render(){
-        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleReset, handleCancle } = this
-        const { activeStep, skipped } = this.state
+        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleCancle } = this
+        const { activeStep } = this.state
         const { handleSubmit, steps, contents } = this.props
         return (<Box sx={{ width: '100%'}}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => { 
             const stepProps = {};
             const labelProps = {};
-          //   if (isStepOptional(index)) {
-          //     labelProps.optional = (
-          //       <Typography variant="caption">Optional</Typography>
-          //     );
-          //   }
             if (isStepSkipped(index)) {
               stepProps.completed = false;
             }
@@ -99,10 +86,6 @@ class CustomStepper extends React.PureComponent {
           <React.Fragment>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', pt: 4} }>
                 <Typography sx={{fontSize:'20px'}}>Click the Submit button to create user or cancle to go back</Typography>
-                {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2 }}>
-                    <Button variant='contained' color='warning' onClick={handleCancle}>Cancle</Button>
-                    <Button variant='contained' color='success' onClick={ handleSubmit }>Sumbit</Button>
-                </Box> */}
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2,pr:10 }}>
             <Box sx={{ flex: '1 1 auto' }} />
@@ -115,7 +98,6 @@ class CustomStepper extends React.PureComponent {
             {/* steppers content */}
             <Box sx={{display:"flex",pt:5, p:5, minHeight: '100%',gap:1}}>
                 {contents[activeStep]}
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
             </Box>
             
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2,p:5 }}>

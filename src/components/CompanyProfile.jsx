@@ -27,16 +27,6 @@ class CompanyProfile extends React.PureComponent {
     selected_time: null,
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props
-    // dispatch(getCompanySettingsAction())
-    let date = new Date()
-    const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
-    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const selected_date = dayjs(new Date()).format('YYYY-MM-DD')
-    const attendanceList = this.props.attendanceList
-    const employeeList = this.props.employeeList
-  }
 
   // On Feedback Close
   _onFeedbackClose = () => {
@@ -55,9 +45,8 @@ class CompanyProfile extends React.PureComponent {
     }
 
     _handleTimeChange = time => {
-        const { dispatch } = this.props
         const { last_check_in_time, selected_time } = this.state
-        const pickedTime = time?.$d && dayjs(new Date(time?.$d)).format('h:mm A') || last_check_in_time
+        const pickedTime = time?.$d && (dayjs(new Date(time?.$d)).format('h:mm A') || last_check_in_time)
         // console.log({pickedTime})
         this.setState({ last_check_in_time: pickedTime ?? pickedTime })
         this.setState({ time: time ?? selected_time })
@@ -92,8 +81,7 @@ class CompanyProfile extends React.PureComponent {
     }
 
   render() {
-    const { dispatch, isTaskLoading, filterOptions, isDataLoading, currentAttendanceTab, companyAddressData, companySettings } = this.props
-    const { feedback, last_check_in_time, selected_time } = this.state
+    const { dispatch, companySettings } = this.props
     const { _updateExactAddress, _handleSaveCompanyAddress } = this
     return (
       <Box width='100%' height='54vh'>
@@ -129,27 +117,6 @@ class CompanyProfile extends React.PureComponent {
                 <Box sx={{ display:'flex', alignItems:'center', justifyContent:'flex-end',width:'100%' }}>
                   <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
                 </Box> 
-                {/* <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
-                    <Typography sx={{ ...textStyle,width:'40%' }}>Last Check In Time : </Typography>
-                    <LocalizationProvider dateAdapter={ AdapterDayjs }>
-                        <TimePicker
-                            // value = { "4:59 PM" }
-                            onChange={ this._handleTimeChange }
-                            disableMaskedInput={ true }
-                            // inputFormat={ 'HH:mm' }
-                            renderInput={(params) => (                                            
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <TextField {...params} size={ 'small' } fullWidth={ true } />
-                                </Box>                                            
-                            
-                            )}
-                            PopperProps={{
-                            placement: 'bottom-start',
-                            }}
-                            onClose={ () => setTimeout(() => { document.activeElement.blur() }, 0) }
-                        />
-                    </LocalizationProvider>
-                </Box> */}
             </Box>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:2}}>
                 <MapGL
