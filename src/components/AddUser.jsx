@@ -67,7 +67,11 @@ class AddUser extends React.PureComponent {
                 <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
                 <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
                 <FilterField 
-                    filterOptions={Object.keys(companySettings?.departments ) || []}  
+                    filterOptions={
+                        (companySettings 
+                        && Object.keys(companySettings).length 
+                        && companySettings?.departments) 
+                        && Object.keys(companySettings?.departments ) || []}  
                     dispatch={dispatch} 
                     field={'profile'} 
                     subField={'department'}  
@@ -76,7 +80,10 @@ class AddUser extends React.PureComponent {
                     fieldStyle={{ width:'25%' }}
                 />
                 <FilterField 
-                    filterOptions={companySettings?.departments[newUser?.profile?.department]?.designations || []}  
+                    filterOptions={(companySettings 
+                        && Object.keys(companySettings).length 
+                        && companySettings?.departments)  
+                        && companySettings?.departments[newUser?.profile?.department]?.designations || []}  
                     dispatch={dispatch} 
                     field={'profile'} 
                     subField={'designation'}  
