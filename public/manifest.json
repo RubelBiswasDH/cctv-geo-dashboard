@@ -1,6 +1,6 @@
 {
-  "short_name": "DESCO DMS Dashboard",
-  "name": "DESCO DMS Dashboard",
+  "short_name": "HR Trace Dashboard",
+  "name": "HR Trace Dashboard",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
