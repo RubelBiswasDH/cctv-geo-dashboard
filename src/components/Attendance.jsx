@@ -11,7 +11,6 @@ import { Close } from '@mui/icons-material'
 import StyledDataGrid from './common/StyledDataGrid'
 
 // Import Actions & Methods
-import { stopNotificationSound } from '../utils/utils'
 import { setFilterOptions, updateFilterOptions, setUniqueDates, setCurrentAttendanceTab } from '../redux/reducers/attendanceReducer'
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { setAttendance } from '../redux/reducers/attendanceReducer'
@@ -227,17 +226,10 @@ class Attendance extends React.PureComponent {
   // On Feedback Close
   _onFeedbackClose = () => {
     this.setState({ feedback: null })
-
-    // Stop Notification Sound
-    stopNotificationSound()
   }
 
   // On Snackbar View Task Click
   _onSnackbarViewTask = task => {
-
-    // Stop Notification Sound
-    stopNotificationSound()
-
 
     // Close Feedback
     this._onFeedbackClose()  

@@ -1,47 +1,27 @@
-import regularNotificationAudioClip from '../assets/notification_tone.mp3'
-import emergencyNotificationAudioClip from '../assets/emergency_alarm.mp3'
-
 import dayjs from 'dayjs'
 import axios from 'axios'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { useSearchParams } from 'react-router-dom'
 import { API } from '../App.config'
+
 // Union Array Of Objects By Key
 export function unionArrayOfObjects(array1, array2, key) {
-  const array = [ ...array1 ]
-  array2.forEach(o => {
-    const index = array.findIndex(a => a[ key ] === o[ key ])
-    if(index >= 0) {
-      array[ index ] = o
 
-    } else {
-      array.push(o)
-    }
-  })
+  if( array1 && array2 && key && key.length){
+    const array = [ ...array1 ]
+    array2.forEach(o => {
+      const index = array.findIndex(a => a[ key ] === o[ key ])
+      if(index >= 0) {
+        array[ index ] = o
   
-  return array
-}
-
-const audio = new Audio(regularNotificationAudioClip)
-const audioEmergency = new Audio(emergencyNotificationAudioClip)
-
-
-// Play general notification sound
-export function playNotificationSound(key) {
-  audio.muted = false
-  audioEmergency.muted = false
-
-  if(key === 'emergency') {
-    audioEmergency.play()
-  } else {
-    audio.play()
+      } else {
+        array.push(o)
+      }
+    })
+    
+    return array
   }
-}
 
-// Stop general notification sound
-export function stopNotificationSound() {
-  audio.pause()
-  audioEmergency.pause()
 }
 
 // Convert Seconds to Years, Months, Days, Hours, Minutes, Seconds
@@ -65,8 +45,8 @@ export function convertSecondsToTime(seconds) {
 
 export function sortByDate(data) {
   return data.sort((a, b) => {
-    var timeA = new Date(a.created_at) // ignore upper and lowercase
-    var timeB = new Date(b.created_at) // ignore upper and lowercase
+    const timeA = new Date(a.created_at) // ignore upper and lowercase
+    const timeB = new Date(b.created_at) // ignore upper and lowercase
 
     if (timeA > timeB) {
       return -1;
@@ -89,8 +69,8 @@ export function transformAnnouncements(announcements) {
 
   const transformedAnnouncements = announcements.map(t => ({
     ...t,
-    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
-    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
+    created_at: dayjs(t?.created_at).format('YYYY-MM-DD HH:mm:ss'),
+    updated_at: dayjs(t?.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
   const transformedAnnouncementsSortByDate = sortByDate(transformedAnnouncements)  
   return transformedAnnouncementsSortByDate
@@ -103,10 +83,10 @@ export function transformAttendance(attendance) {
 
   const transformedAttendance = attendance.map(t => ({
     ...t,
-    enter_time: dayjs(t.enter_time).format('YYYY-MM-DD HH:mm:ss'),
-    exit_time: (t.exit_time)?dayjs(t.exit_time).format('YYYY-MM-DD HH:mm:ss'):'-',
-    created_at: dayjs(t.created_at).format('YYYY-MM-DD HH:mm:ss'),
-    updated_at: dayjs(t.updated_at).format('YYYY-MM-DD HH:mm:ss')
+    enter_time: dayjs(t?.enter_time).format('YYYY-MM-DD HH:mm:ss'),
+    exit_time: (t?.exit_time)?dayjs(t.exit_time).format('YYYY-MM-DD HH:mm:ss'):'-',
+    created_at: dayjs(t?.created_at).format('YYYY-MM-DD HH:mm:ss'),
+    updated_at: dayjs(t?.updated_at).format('YYYY-MM-DD HH:mm:ss')
   }))
   const transformedAttendanceSortByDate = sortByDate(transformedAttendance)  
   return transformedAttendanceSortByDate
@@ -168,4 +148,5 @@ export const withRouter = props => WrappedComponent => moreProps => {
       return result;
   }, {});
 }
+
  export { getTokenFromUrl, removeByKey }

@@ -3,19 +3,19 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 
   activityStatus: 'active',
-  activityStatusOptions:['active','non_active'],
+  activityStatusOptions: ['active', 'non_active'],
   department: 'hr_and_admin',
-  departmentOptions: ["hr_and_admin","product_management", "tech_team", 'operations'],
+  departmentOptions: ["hr_and_admin", "product_management", "tech_team", 'operations'],
   contractType: 'intern',
-  contractTypeOptions:['intern','permanent'],
+  contractTypeOptions: ['intern', 'permanent'],
   designation: 'designation',
   designationOptions: ['designation'],
   newUserName: '',
-  newUserEmail:'',
-  newUserMobile:'',
-  newUserRole:'GENERAL',
-  newUserRoleOptions:['GENERAL', 'ADMIN', 'HR'],
-  fileInput:null,
+  newUserEmail: '',
+  newUserMobile: '',
+  newUserRole: 'GENERAL',
+  newUserRoleOptions: ['GENERAL', 'ADMIN', 'HR'],
+  fileInput: null,
   announcementMessage: '',
   userProfile: {},
   profileEdit: false,
@@ -23,34 +23,32 @@ const initialState = {
   workingDays: '',
   monthYear: '',
   companySettings: {
-    companyAddressData:{},
-    departments:{}
+    companyAddressData: {},
+    departments: {}
   },
   newUser: {
-    user_level:'GENERAL',
-    profile:{
+    user_level: 'GENERAL',
+    profile: {
 
     }
   },
-  companyAddressData:{
+  companyAddressData: {
 
   },
-  setSelectedUserId:'',
+  setSelectedUserId: '',
   userDeleteReason: ''
-  }
+}
 
 const adminSlice = createSlice({
   name: 'admin',
-  initialState:initialState,
+  initialState: initialState,
   reducers: {
-
     setActivityStatus: (state, action) => {
       state.activityStatus = action.payload
     },
     setDepartment: (state, action) => {
       state.department = action.payload
     },
-
     setContractType: (state, action) => {
       state.contractType = action.payload
     },
@@ -77,14 +75,14 @@ const adminSlice = createSlice({
       state.announcementMessage = action.payload
     },
     setUserProfile: (state, action) => {
-        state.userProfile = action.payload
-      },
+      state.userProfile = action.payload
+    },
     updateUserProfile: (state, action) => {
-        state.userProfile = {...state.userProfile, ...action.payload}
-      },
+      state.userProfile = { ...state.userProfile, ...action.payload }
+    },
     setProfileEdit: (state, action) => {
-        state.profileEdit = action.payload
-      },
+      state.profileEdit = action.payload
+    },
     setLateTime: (state, action) => {
       state.lateTime = action.payload
     },
@@ -98,26 +96,25 @@ const adminSlice = createSlice({
       state.companySettings = action.payload
     },
     updateCompanySettings: (state, action) => {
-      state.companySettings = {...state.companySettings, ...action.payload}
+      state.companySettings = { ...state.companySettings, ...action.payload }
     },
     updateCompanyDepartments: (state, action) => {
-      state.companySettings.departments = {...state.companySettings.departments, ...action.payload}
+      state.companySettings.departments = { ...state.companySettings.departments, ...action.payload }
     },
     setNewUser: (state, action) => {
-
-        state.newUser = action.payload
-      },
+      state.newUser = action.payload
+    },
     updateNewUser: (state, action) => {
-        state.newUser = {...state.newUser, ...action.payload}
-      },
+      state.newUser = { ...state.newUser, ...action.payload }
+    },
     updateNewUserProfile: (state, action) => {
-        state.newUser.profile = {...state.newUser.profile, ...action.payload}
-      },
+      state.newUser.profile = { ...state.newUser.profile, ...action.payload }
+    },
     setCompanyAddressData: (state, action) => {
       state.companyAddressData = action.payload
     },
     updateCompanyAddressData: (state, action) => {
-      state.companyAddressData =  { ...state.companyAddressData, ...action.payload }
+      state.companyAddressData = { ...state.companyAddressData, ...action.payload }
     },
     setSelectedUserId: (state, action) => {
       state.selectedUserId = action.payload
@@ -128,5 +125,5 @@ const adminSlice = createSlice({
   }
 })
 
-export const { setActivityStatus,setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput,setAnnouncementMessage,setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments } = adminSlice.actions
+export const { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments } = adminSlice.actions
 export default adminSlice.reducer

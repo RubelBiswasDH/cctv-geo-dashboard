@@ -24,11 +24,9 @@ class ResetPassword extends React.PureComponent {
   
   componentDidMount(){
     const { dispatch } = this.props
-    // const { token } = this.props.match.params;
     const baseUrl = (window.location).href; // You can also use document.URL
     const token = getTokenFromUrl(baseUrl) 
     dispatch(setPasswordResetToken(token))
-    // console.log({token})
 
   }
   // On Change
@@ -342,4 +340,3 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({ dispatch })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword)
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ResetPassword))

@@ -50,7 +50,7 @@ export function activateSocket_A() {
           dispatch( updateAttendance(transformedAttendance))
           })
         .bind("pusher:subscription_error", (error) => {
-          var { status } = error;
+          const { status } = error;
           console.log("error on pusher: ",status)
           if (status === 408 || status === 503) {
             // Retry?

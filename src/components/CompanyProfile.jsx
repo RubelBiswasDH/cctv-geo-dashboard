@@ -6,7 +6,6 @@ import { Box, Button, Typography } from '@mui/material'
 import MapGL from '../components/common/MapGL'
 
 // Import Actions & Methods
-import { stopNotificationSound } from '../utils/utils'
 import { updateCompanyAddressData, updateCompanySettings } from '../redux/reducers/adminReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { setCompanySettingsAction } from '../redux/actions/adminActions'
@@ -26,16 +25,6 @@ class CompanyProfile extends React.PureComponent {
     last_check_in_time: "11:32 PM",
     selected_time: null,
   }
-
-
-  // On Feedback Close
-  _onFeedbackClose = () => {
-    this.setState({ feedback: null })
-
-    // Stop Notification Sound
-    stopNotificationSound()
-  }
-
  
     // Handle Get Data
     _handleOnSubmit = () => {
@@ -47,11 +36,8 @@ class CompanyProfile extends React.PureComponent {
     _handleTimeChange = time => {
         const { last_check_in_time, selected_time } = this.state
         const pickedTime = time?.$d && (dayjs(new Date(time?.$d)).format('h:mm A') || last_check_in_time)
-        // console.log({pickedTime})
         this.setState({ last_check_in_time: pickedTime ?? pickedTime })
         this.setState({ time: time ?? selected_time })
-
-        // dispatch( getAttendance({start_date: `${selectedDate}`, end_date: `${selectedDate}`}) )
     }
 
     _updateExactAddress = (updatedAddress) => {
@@ -103,7 +89,6 @@ class CompanyProfile extends React.PureComponent {
                     </Box>
                     
                 </Box>
-                {/* <StyledTextField action={ updateCompanySettings } field={'late_time'} title={"Set Let Time : "} value={companySettings?.late_time} fieldStyle={{ width:'100%' }} placeholder={'Ex: 10:15'} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/> */}
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
                     <Typography sx={{ ...textStyle,width:'40%' }}>Set Let Time : </Typography>
                     <TimeKeeper

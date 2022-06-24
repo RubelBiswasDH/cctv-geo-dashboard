@@ -12,7 +12,6 @@ import StyledTextField from './common/StyledTextField'
 import StyledDropdown from './common/StyledDropdown'
 
 // Import Actions & Methods
-import { stopNotificationSound } from '../utils/utils'
 import { getUserProfile, deleteUser, updateUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
@@ -51,25 +50,6 @@ class EmployeeList extends React.PureComponent {
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 0))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     this.setState({ start_date, end_date })
-  }
-
-  // On Feedback Close
-  _onFeedbackClose = () => {
-    this.setState({ feedback: null })
-  } 
-
-  // On Snackbar View Task Click
-  _onSnackbarViewTask = task => {
-    // Stop Notification Sound
-    stopNotificationSound()
-
-
-    // Close Feedback
-    this._onFeedbackClose()
- 
-
-    // Open Task Details Dialog with Selected Task
-    this.setState({ isTaskDetailsOpen: true, selectedTask: task })  
   }
 
   transformedEmployeeList = () => {
