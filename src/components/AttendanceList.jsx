@@ -277,7 +277,6 @@ class AttendanceList extends React.PureComponent {
         </Button>
       </Stack>
         <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
-          {/* <Typography sx={{fontSize:'1em',border:'1px solid black'}}>Filter </Typography> */}
           <FormControl fullWidth sx={{p:0,m:0}} size="small">
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
               <Select

@@ -40,8 +40,6 @@ class Announcements extends React.PureComponent {
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     this.setState({ start_date, end_date })
 
-    // Load announcements
-    // dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}) )
   }
   componentWillUnmount(){
     const { dispatch } = this.props
@@ -108,7 +106,6 @@ class Announcements extends React.PureComponent {
     return list
   }
   mappedAnnouncements = () => {
-    // const {announcements} = this.props;
     const announcements = this._filteredAnnouncements()
     const announcementInfo = announcements.map((a,i) => {
 
@@ -166,7 +163,6 @@ class Announcements extends React.PureComponent {
         </LoadingButton>
       </Stack>
           <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
-          {/* <Typography sx={{fontSize:'1em'}}>Filter </Typography> */}
           <FormControl size={'small'} fullWidth>
             <InputLabel id="demo-simple-select-label">Type</InputLabel>
               <Select

@@ -44,9 +44,6 @@ class CompanySettings extends React.PureComponent {
 
     _handleAddDepartment = () => {
         const { dispatch, companySettings, currentDepartment } = this.props
-        // dispatch( updateDepartments({
-        //     [currentDepartment]:{name:currentDepartment}
-        // }) )
         dispatch( setCurrentDepartment (''))
         dispatch( setCompanySettingsAction({
             ...companySettings,
@@ -66,7 +63,6 @@ class CompanySettings extends React.PureComponent {
     }
     _handleAddDesignation = (department) => {
         const { dispatch, companySettings, currentDesignation } = this.props
-        // const prevDesignations = settings?.departments[department]?.designations || []
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
         dispatch(updateCompanyDepartments({

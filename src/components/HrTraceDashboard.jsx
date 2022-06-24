@@ -46,7 +46,6 @@ class HrTraceDashboard extends React.PureComponent {
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
     dispatch( getEmployee() )
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
-    // dispatch( getAttendance({start_date: `${start_date}`, end_date: `${end_date}`}) )
     dispatch( getCompanySettingsAction() )
 
     this.setState({ start_date, end_date })
@@ -62,8 +61,7 @@ class HrTraceDashboard extends React.PureComponent {
     // Deactivate Socket
     dispatch( deactivateSocket() )
   }
-  //handleToastClose
-
+    //handleToastClose
   _handleToastClose = () => {
     const { dispatch } = this.props
     dispatch( setToastIsOpen(false) )
@@ -102,8 +100,6 @@ class HrTraceDashboard extends React.PureComponent {
                   marginLeft: isLeftNavOpen ?  '250px' : 0, }}>
         <NavBar />
         <Box sx={{ ...containerStyles }}>
-        
-          {/* <SubNav/> */}
           <Box
             sx={ theme => ({
               padding: {
@@ -198,9 +194,6 @@ class HrTraceDashboard extends React.PureComponent {
                 {
                   (this.props.currentView === 'add_user') && <AddUser/>
                 }
-                {/* {
-                  (this.props.currentView !== 'attendance' && this.props.currentView !== 'announcements' && this.props.currentView !== 'admin' && this.props.currentView !== 'profile') && <EmployeeList />
-                } */}
               </Grid>
             </Grid>
           </Box>

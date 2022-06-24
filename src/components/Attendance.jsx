@@ -468,11 +468,9 @@ const TabSwitchButton = (props) => {
         fontWeight: 500,
         fontSize: '14px',
         lineHeight: '24px',
-        /* identical to box height, or 171% */
         textAlign: 'center',
         letterSpacing:' 0.4px',
         textTransform: 'uppercase',
-        /* Light/Primary/Main */
         color:'rgba(0, 0, 0, 0.38)',
         px:2,
         borderBottom: '2px solid transparent'
