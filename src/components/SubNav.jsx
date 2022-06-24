@@ -67,7 +67,7 @@ class SubNav extends React.PureComponent{
       this.props.dispatch(setCurrentView(view))
       setView(view)
     }
-      // handleAutoCompInputChange
+    // handleAutoCompInputChange
     handleAutoCompInputChange = e => {
       const name = e.target.value
       if (name && name?.length > 0) {
@@ -76,7 +76,7 @@ class SubNav extends React.PureComponent{
       }
     }
 
-  // handleAutoCompChange
+    // handleAutoCompChange
     handleAutoCompChange = (e,value) => {
       if(value && value?.id){
         this.props.dispatch(setUserProfile({}))

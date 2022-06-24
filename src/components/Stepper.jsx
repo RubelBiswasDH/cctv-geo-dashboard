@@ -34,7 +34,6 @@ class CustomStepper extends React.PureComponent {
           newSkipped.delete(activeStep);
         }
     
-        // setActiveStep((prevActiveStep) => prevActiveStep + 1);
         this.setState( prev => ({activeStep: prev.activeStep + 1}))
         this.setState( prev => ({skipped: newSkipped}))
 
@@ -42,7 +41,6 @@ class CustomStepper extends React.PureComponent {
     
       handleBack = () => {
         this.setState( prev => ({activeStep: prev.activeStep - 1}))
-        // setActiveStep((prevActiveStep) => prevActiveStep - 1);
       };
     
       handleSkip = () => {
@@ -53,7 +51,6 @@ class CustomStepper extends React.PureComponent {
           throw new Error("You can't skip a step that isn't optional.");
         }
     
-        // setActiveStep((prevActiveStep) => prevActiveStep + 1);
         this.setState( prev => ({activeStep: prev.activeStep + 1}))
         this.setState( prev => {
             const newSkipped = new Set(prev.skipped.values());
