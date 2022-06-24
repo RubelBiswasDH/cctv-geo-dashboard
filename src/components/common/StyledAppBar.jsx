@@ -12,7 +12,6 @@ class StyledAppBar extends React.PureComponent {
                 sx={theme => ({
 
                     padding: theme.spacing(1),
-                    // background: theme.palette.gray[200],
                     background: bgColor,
                     boxShadow: theme.shadows[2],
                     display: 'flex',
@@ -23,14 +22,6 @@ class StyledAppBar extends React.PureComponent {
                   
                 })}
             >
-                {/* <Tooltip title='Collapse'>
-                    <IconButton
-                        onClick={this._closeTaskThread}
-                        sx={{ padding: 0 }}
-                    >
-                        <ChevronRight />
-                    </IconButton>
-                </Tooltip> */}
 
                 <Typography
                     variant='h6'

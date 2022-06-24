@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack, Autocomplete, Snackbar, Alert } from '@mui/material'
+import { Container, Hidden, Box, Paper, Typography, TextField, Button, Stack, Snackbar, Alert } from '@mui/material'
 
 // Import Assets
 import loginCover from '../../assets/login-cover.jpg'
@@ -12,18 +12,6 @@ import { register,getCompanyList } from '../../redux/actions/registerActions'
 import bkoiLogo from '../../assets/barikoi-logo.png'
 import { setToastIsOpen } from '../../redux/reducers/dashboardReducer'
 
-
-function CustomInput() {
-  return (
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={['option 1','option 2']}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
-    />
-  );
-}
 
 class Register extends React.PureComponent {
   state = {
@@ -207,7 +195,7 @@ switch (e.target.name) {
       }
          // Validate companyAddress
          _validateCompanyAddress = companyAddress => {
-          companyAddress = companyAddress
+
           const verdict = { success: false, message: '' }
       
           if(companyAddress) {
@@ -271,7 +259,7 @@ switch (e.target.name) {
   }
 
   render() {
-    const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, companyNameOptions, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
+    const {employeeName, employeeEmail, employeePhone, companyName, companyAddress, password, password_2, authError, toastIsOpen, toastSeverity, toastMessage } = this.props
     const { error } = this.state
 
     return (
@@ -445,54 +433,7 @@ switch (e.target.name) {
                     }
                   />
                 </Box>
-                {/*Autocomplete Company Address*/}
-                {/* <Box sx={{...boxStyle}}>
-                  <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address ' }</Typography>
-                  <Autocomplete
-                  onChange={handleAutoCompChange}
-                  onInputChange={handleAutoCompInputChange}
-
-                  disablePortal
-                  id="companySearch"
-                  options={companyNameOptions || []}
-                  getOptionLabel={(option) => {
-                    // e.g value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                      return option;
-                    }
-                    if (option.inputValue) {
-                      return option.inputValue;
-                    }
-                    return option.Address
-                  }}
-                  renderOption={(props, option) => (
-                    <Grid container {...props} key={option.id} >
-                        <Grid item xs={12}><Typography sx={{fontSize:'1em'}}>{option.Address.split(',')[0]}</Typography></Grid>
-                        <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
-                    </Grid>)}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => 
-                  <TextField
-                  {...params}
-                    variant='outlined'
-                    margin='none'
-                    size='small'
-                    fullWidth={ true }
-                    name='companyAddress'
-                    type='text'
-                    // value={ companyName }
-                    placeholder=''
-                    // onChange={ this._onChange }
-                    error={
-                      ( authError && !authError.includes('password') ) || error.employeeEmail ? true : false
-                    }
-                    helperText={
-                      authError && !authError.includes('password') ? authError : error.employeePhone ? error.employeePhone : null
-                    }
-                  />
-                }
-                />
-                </Box>  */}
+               
                 {/* Company Address */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
@@ -623,7 +564,6 @@ const attributionLinkStyles = {
 const boxStyle = {
     display: 'flex',
     flexDirection: 'column',
-    // border:'1px solid red',
     boxSizing: 'border-box',
     width: '46%',
     p: "2%",

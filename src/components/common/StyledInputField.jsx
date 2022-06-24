@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 
 class StyledInputField extends React.PureComponent {
     constructor(props){

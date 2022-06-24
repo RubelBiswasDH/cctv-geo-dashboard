@@ -10,7 +10,7 @@ class StyledTextField extends React.PureComponent {
     }
 
     handleChange = (e) => {
-        const { dispatch, action, subField, field, value } = this.props
+        const { dispatch, action, subField, field } = this.props
         e.preventDefault()
         if (subField && subField?.length) {
             dispatch(action({
@@ -26,14 +26,14 @@ class StyledTextField extends React.PureComponent {
     }
 
     render() {
-        const { title, value, field, subField, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
+        const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
 
         const { handleChange } = this;
     
             return (
                 <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
                     { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
-                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle}}>{title}</Typography>
+                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle, ...titleStyle}}>{title}</Typography>
                     </Box>
                      }
                     <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>

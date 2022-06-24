@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../../redux/reducers/registerReducer'
 import { setCompanySettings, setCompanyAddressData } from '../../redux/reducers/adminReducer'
 import { getCompanyList } from '../../redux/actions/registerActions'
-import { Box, Grid, Typography, TextField, Autocomplete } from '@mui/material'
+import { Grid, Typography, TextField, Autocomplete } from '@mui/material'
 
 
 class AddressAutoComplete extends React.PureComponent{

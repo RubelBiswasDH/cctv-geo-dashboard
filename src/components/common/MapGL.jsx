@@ -7,7 +7,7 @@ import { Map, NavigationControl, Popup, Marker } from 'bkoi-gl'
 import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
 import { bbox } from '@turf/turf'
 import { MAP } from '../../App.config'
-import { setCompanyAddressData, setCompanySettings } from '../../redux/reducers/adminReducer'
+import { setCompanySettings } from '../../redux/reducers/adminReducer'
 // Import Styles
 import 'mapbox-gl-style-switcher/styles.css'
 
@@ -33,7 +33,7 @@ class MapGL extends React.PureComponent {
     const { map } = this.state
 
     // If map changes in state
-    if(prevState.map !== map) {
+    if(prevState.map !== map  && map) {
       // Render Markers
       this._renderMarkers(markerData)
     }
@@ -203,6 +203,7 @@ class MapGL extends React.PureComponent {
 
           // Update Address
           getUpdatedAddress(updatedAddress)
+          return 
         }
       })
       .catch(err => {

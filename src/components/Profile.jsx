@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography, TextField, Divider, Button, FormControl, Select, MenuItem } from '@mui/material'
+import { Box, Grid, Typography, TextField, Divider, Button } from '@mui/material'
 import image from '../assets/profile-image.jpg'
 
 import {setUserProfileAction} from '../redux/actions/adminActions'
