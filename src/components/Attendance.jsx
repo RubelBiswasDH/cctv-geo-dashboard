@@ -25,7 +25,6 @@ const columns = {
       { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
     ],
     "Monthly":[      
-      // { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
       { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },    
     ]
 
@@ -60,8 +59,6 @@ class Attendance extends React.PureComponent {
 
     if(attendanceList && attendanceList.length){
       this.setState({ attendanceList: attendanceList })
-      // this.setState({ attendanceList: attendanceWithAbsenceInfo(attendanceList) })
-      // attendanceWithAbsenceInfo(attendanceList)
     }
     if(employeeList && employeeList.length){
       this._getUniqueEmployee(employeeList)
@@ -75,12 +72,16 @@ class Attendance extends React.PureComponent {
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     const { selected_date } = this.state
+    const start_date = dayjs(new Date()).format('YYYY-MM-DD')
+    const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+
       if (this.props.attendanceList !== prevProps.attendanceList) {
         this._getUniqueDates()
       }
       if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Monthly'){
         this.props.dispatch(setAttendance([]))
         this.props.dispatch(setUniqueDates([]))
+        this.setState({ start_date, end_date })
       }
       if (this.props.currentAttendanceTab !== prevProps.currentAttendanceTab && this.props.currentAttendanceTab === 'Daily'){
         this.props.dispatch( getAttendance({start_date: `${selected_date}`, end_date: `${selected_date}`}) )
@@ -89,6 +90,7 @@ class Attendance extends React.PureComponent {
   componentWillUnmount(){
     const { dispatch } = this.props
     dispatch(setFilterOptions({}))
+    dispatch(setAttendance([]))
     dispatch(setCurrentAttendanceTab('Daily'))
   }
   _getUniqueDates = () => {
@@ -147,81 +149,89 @@ class Attendance extends React.PureComponent {
     
     const employeeList = this._getUniqueEmployee(attendanceList)
 
-    const attendanceInfo = employeeList.map((a,i) => {
-      
-      let individualAttendance = {}
-      let p = 0
-      let abs = 0
-      let l = 0
-      const getStatus = (a) => {
-        if(a.is_absent){
-          return 'A'
-        }
-        else if(a.is_late){
-          return 'L'
-        }
-        else{
-          return 'P'
-        }
-      }
-      const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
-        if (a.user_id === id) {
+    let attendanceInfo = []
+    const getAttendanceInfo =  () =>
+      employeeList.forEach((a,i) => {
+        
+        let individualAttendance = {}
+        let p = 0
+        let abs = 0
+        let l = 0
+        const getStatus = (a) => {
           if(a.is_absent){
-              const date = dayjs(a?.created_at).format("DD/MM/YYYY")
-              abs++
-              individualAttendance[date] = "A"
+            return 'A'
+          }
+          else if(a.is_late){
+            return 'L'
           }
           else{
-          const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
-          if (enter_time) {
-            if(a.is_late){
-              individualAttendance[enter_time] = "L"
-              l++
-            }
-            else{
-              individualAttendance[enter_time] = "P"
-              p++
-            }
+            return 'P'
           }
         }
-          
-        } })
+        const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
+          if (a.user_id === id) {
+            if(a.is_absent){
+                const date = dayjs(a?.created_at).format("DD/MM/YYYY")
+                abs++
+                individualAttendance[date] = "A"
+            }
+            else{
+            const enter_time = dayjs(a?.enter_time).format("DD/MM/YYYY")
+            if (enter_time) {
+              if(a.is_late){
+                individualAttendance[enter_time] = "L"
+                const time = dayjs(a?.enter_time).format('hh:mm A')
+                const key = enter_time+'_enter_time'
+                individualAttendance[key] = time
+                l++
+              }
+              else{
+                individualAttendance[enter_time] = "P"
+                const time = dayjs(a?.enter_time).format('hh:mm A')
+                const key = enter_time+'_enter_time'
+                individualAttendance[key] = time
+                p++
+              }
+            }
+          }
+            
+          } })
 
-      getIndividualAttendance(a?.user_id)
+        getIndividualAttendance(a?.user_id)
+
         if(currentAttendanceTab === 'Daily'){
-          return  ({
-            "id": a?.id,
-            "serial_no":i+1,
-            "name": a?.name,
-            "check_in_time": a?.enter_time?dayjs(a?.enter_time).format('hh:mm A'):'',
-            "check_out_time" : a?.exit_time?dayjs(a?.exit_time).format('hh:mm A'):'',
-            "status": getStatus(a),
-          })
+          attendanceInfo = [ 
+            ...attendanceInfo,
+            {
+              "id": a?.id,
+              "serial_no":i+1,
+              "name": a?.name,
+              "check_in_time": a?.enter_time?dayjs(a?.enter_time).format('hh:mm A'):'',
+              "check_out_time" : a?.exit_time?dayjs(a?.exit_time).format('hh:mm A'):'',
+              "status": getStatus(a),
+            }
+          ]
         }
-      return ({
-        "id": a?.id,
-        "serial_no":i+1,
-        "name": a?.name,
-        ...individualAttendance,
-        'late':l,
-        'present':p,
-        'absence':abs,
-      })
+        else{
+        attendanceInfo = [
+          ...attendanceInfo,
+          {
+          "id": a?.id,
+          "serial_no":i+1,
+          "name": a?.name,
+          ...individualAttendance,
+          'late':l,
+          'present':p,
+          'absence':abs,
+        }]
+      }
 
-    })
+      })
+    getAttendanceInfo()
     return attendanceInfo
     
   }
 
-  // Close Task Timeline Dialog
-  _closeTaskTimeline = (e, reason) => {
-    if (reason && reason === 'backdropClick') {
-      return
-
-    } else {
-      this.setState({ isTaskTimelineOpen: false })
-    }
-  }
 
   // On Feedback Close
   _onFeedbackClose = () => {
@@ -357,12 +367,7 @@ class Attendance extends React.PureComponent {
                 action = {updateFilterOptions}
                 sx={{width:'30%'}}
             />
-            {/* <Button
-            onClick={ this._handleReportDownload } 
-            variant="contained" 
-            endIcon={<FileDownloadOutlinedIcon />}>
-            {"Download Report"}
-            </Button> */}
+
             <Box sx={{
                 ml:'auto',
                 display: 'flex',
@@ -385,31 +390,7 @@ class Attendance extends React.PureComponent {
                 />
             </Box>
       </Stack>
-        {/* <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
-          <FormControl fullWidth sx={{p:0,m:0}} size="small">
-            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value= {filterOptions?.type ?? 'All'}
-                label="Type"
-                onChange={(e) => dispatch(updateFilterOptions({type:e.target.value}))}
-                sx = {{fontSize: '.75em'}}
-              >                 
-                <MenuItem value={"All"}>All</MenuItem>
-                <MenuItem value={"Absent"}>Absent</MenuItem>
-                <MenuItem value={"Late"}>Late</MenuItem>
-                <MenuItem value={"In Time"}>In Time</MenuItem>
-              </Select>
-          </FormControl>
-          <FilterField
-            field = {'name'}
-            label = {'Name'} 
-            value = {filterOptions?.name ?? ''}
-            dispatch = {dispatch}
-            action = {updateFilterOptions}
-          />
-        </Box> */}
+
         <StyledDataGrid
           columns={currentAttendanceTab==='Daily'?[ ...columns['Daily'] ]:[...columns["Monthly"], ...dyanmicColumns  ]}
           rows={ attendance_rows }
