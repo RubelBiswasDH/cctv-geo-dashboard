@@ -49,15 +49,15 @@ class AddressAutoComplete extends React.PureComponent{
                     if (typeof option === 'string') {
                         return option;
                     }
-                    if (option.inputValue) {
+                    if (option && option?.inputValue) {
                         return option.inputValue;
                     }
                     return option.Address
                 }}
                 renderOption={(props, option) => (
                     <Grid container {...props} key={option.id} >
-                        <Grid item xs={12}><Typography sx={{ fontSize: '1em' }}>{option.Address.split(',')[0]}</Typography></Grid>
-                        <Grid item xs={12}><Typography>{option.Address}</Typography></Grid>
+                        <Grid item xs={12}><Typography sx={{ fontSize: '1em' }}>{option?.Address?.split(',')[0]}</Typography></Grid>
+                        <Grid item xs={12}><Typography>{option?.Address}</Typography></Grid>
                     </Grid>)}
                 renderInput={(params) =>
                     <TextField
@@ -69,7 +69,7 @@ class AddressAutoComplete extends React.PureComponent{
                         fullWidth={true}
                         name='companyAddress'
                         type='text'
-                        placeholder={ companySettings.companyAddressData.exact_address || '' }
+                        placeholder={ companySettings?.companyAddressData?.exact_address || '' }
 
                     />
             }
