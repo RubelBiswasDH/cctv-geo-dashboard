@@ -17,7 +17,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { removeByKey } from '../utils/utils'
+import { removeByKey, renameKeys } from '../utils/utils'
 
 class CompanySettings extends React.PureComponent {
  
@@ -123,9 +123,16 @@ class CompanySettings extends React.PureComponent {
         dispatch( setCompanySettingsAction( {...settings}))
     }
 
+    _handleEditDepartment = () => {
+        console.log('edited :')
+    }
+    _handleEditDepartmentBtnClick = () => {
+        console.log('edit :')
+    }
+
   render() {
     const { companySettings, currentDepartment, currentDesignation } = this.props
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment } = this
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -167,6 +174,7 @@ class CompanySettings extends React.PureComponent {
                             id="panel1a-header"
                             >
                             <Button variant="outlined" color='error' size={'small'} onClick={ () => {  _handleDeleteDepartment(d) } }>Delete</Button>
+                            <Button variant="outlined" color='warning' size={'small'} onClick={ () => {  _handleEditDepartmentBtnClick(d) } } sx={{ml: 2}}>Edit</Button>
                             <Typography key={d}  sx={{ display:'flex',alignItems:'center', fontSize:'1.2em', ml: 5}}>{ d }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -206,6 +214,10 @@ class CompanySettings extends React.PureComponent {
       </Box>
     )
   }
+}
+
+const Department = (props) => {
+    const { name } = props 
 }
 
 const textStyle = {
