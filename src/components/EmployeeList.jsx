@@ -173,7 +173,7 @@ class EmployeeList extends React.PureComponent {
   }
   render() {
     const { isTaskLoading, newUser, companySettings } = this.props
-    
+    console.log({newUser})
     return (
       <Box width='100%' height='73vh'>
         <StyledDataGrid
@@ -237,9 +237,8 @@ class EmployeeList extends React.PureComponent {
                           value:0
                         }
                       ]} 
-                      action={ updateNewUserProfile }  
-                      field={'profile'} 
-                      subField={'department'} 
+                      action={ updateNewUser }  
+                      field={'is_allowed'} 
                       value={newUser?.is_allowed || 0} 
                       fieldStyle={{ width:'20%' }}
                       titleContainerStyle={{width: "30%"}}
