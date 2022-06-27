@@ -12,17 +12,6 @@ export const AUTH = {
 
 // API Endpoints
 export const API = {
-  GET_ALL_TASKS: `${BASE_URL}/api/v1/get-all-task`,
-  GET_ALL_SND: `${BASE_URL}/api/v1/snd`,
-  GET_TASK_TIMELINE: `${BASE_URL}/api/v1/get-task-update-by-task/`,
-  UPDATE_TASK: `${BASE_URL}/api/v1/update-task/`,
-  GET_ALL_TASK_UPDATES: `${BASE_URL}/api/v1/get-all-task-update`,
-  GET_QUERY_CATEGORIES: `${BASE_URL}/api/v1/get-query-categories`,
-  GET_ANALYTICS: `${BASE_URL}/api/v1/get-statistics-dms`,
-  SEND_TASK_CLICK_COUNT: `${BASE_URL}/api/v1/dms-open-task/`,
-  REVERSEGEO: `https://barikoi.xyz/v1/api/search/reverse/Mjg5MTpGMDNaTU1HTjZU/geocode`,
-  DELETE_TASK: `${BASE_URL}/api/v1/delete-task/`,
-  
   GET_ALL_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
   GET_ANNOUNCEMENT: `${BASE_URL}/api/get-announcement/`,
   UPDATE_ANNOUNCEMENT: `${BASE_URL}/api/update-announcement/`,
@@ -43,6 +32,7 @@ export const API = {
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
   AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
   GET_ATTENDANCE_STATISTICS: `${BASE_URL}/api/get-attendance-statistics`,
+  CHANGE_USER_ACCESS: `${BASE_URL}/api/change-user-action`,
 
 }
 

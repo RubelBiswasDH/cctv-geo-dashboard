@@ -136,7 +136,6 @@ class MapGL extends React.PureComponent {
     if(options.fitBounds) {
       this._fitBounds(markerData)
     }
-
     this.setState({ renderedMarkers })
   }
 

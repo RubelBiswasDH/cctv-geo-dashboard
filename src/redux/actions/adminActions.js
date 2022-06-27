@@ -5,6 +5,7 @@ import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/d
 
 import { getEmployee }  from '../actions/employeeActions'
 import { getAttendance } from './attendanceActions';
+import { getAuthToken } from '../../utils/utils'
 import dayjs from 'dayjs'
 // setUserProfile Action
 export function setInvalidLateAttendanceAction(data) {
@@ -213,15 +214,6 @@ export function createNotice(notice) {
     }
 }
 
-export function getAuthToken() {
-    const token = localStorage.getItem('token')
-    if(token) {
-        return token
-    }
-
-    return null
-}
-
 // Delete User Action
 export function deleteUser(id,data) {
 
@@ -270,3 +262,19 @@ export function updateUser(id,data) {
     }
 }
 
+function changeUserAccess (data) {
+    return dispatch => {
+        const token = getAuthToken()
+        axios.post(API.CHANGE_USER_ACCESS, data, { headers: { Authorization: `Bearer ${ token }` } })
+            .then(res => {
+                if(res.status===200){
+                    dispatch( setToastMessage("User Access Successfully Updated") )
+                    dispatch( setToastSeverity('success') )
+                    dispatch( setToastIsOpen(true) )
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+}

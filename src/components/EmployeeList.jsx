@@ -116,6 +116,7 @@ class EmployeeList extends React.PureComponent {
       name:emp?.name || '',
       phone: emp?.phone || '',
       email: emp?.email || '',
+      is_allowed: emp?.is_allowed || 0,
       profile: {
         designation: empProfile?.designation || '',
         department: empProfile?.department || '',
@@ -224,6 +225,25 @@ class EmployeeList extends React.PureComponent {
               <StyledTextField action={ updateNewUser } field={'name'} title={"Name : "} value={newUser?.name} fieldStyle={{ width:'50%' }}/>
               <StyledTextField action={ updateNewUser } field={'phone'} title={"Mobile : "} value={newUser?.phone} fieldStyle={{ width:'50%' }}/>
               <StyledTextField action={ updateNewUser } field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'50%' }}/>
+              <StyledDropdown 
+                      title={"Dashboard Access: "}
+                      filterOptions={[
+                        {
+                          name:"Yes",
+                          value:1
+                        },
+                        {
+                          name:"No",
+                          value:0
+                        }
+                      ]} 
+                      action={ updateNewUserProfile }  
+                      field={'profile'} 
+                      subField={'department'} 
+                      value={newUser?.is_allowed || 0} 
+                      fieldStyle={{ width:'20%' }}
+                      titleContainerStyle={{width: "30%"}}
+                  />
               <Box sx={{display:'flex', flexDirection:'row',  width:'100%' }}>
                   <StyledDropdown 
                       filterOptions={((

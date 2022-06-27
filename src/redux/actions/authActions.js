@@ -69,10 +69,11 @@ export function validateUser(token) {
                         id:userData.id,
                         username:userData.name,
                         user_type: userData.user_level,
+                        is_allowed: userData.is_allowed
                     }
                     // Authenticate only for user_type = DISPATCHER & SUPERVISOR
-                    if(user.user_type !== 'HR' && user.user_type !== 'ADMIN') {
-                        throw new Error('User not authorized')
+                    if( ! user.is_allowed) {
+                        throw new Error("You don't have permission to access Dashboad")
                     }
 
                     // Save `token` & `user` to localStorage

@@ -44,7 +44,11 @@ class StyledDropdown extends React.PureComponent {
                             onChange={handleChange}
                             sx = {{fontSize: '.75em'}}
                         >    
-                            {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
+                            {filterOptions.map(d => (<MenuItem 
+                                key={(typeof(d)==="string")?d:d.name} 
+                                value={(typeof(d)==="string")?d:d.value}>
+                                    {(typeof(d)==="string")?d:d.name}
+                                </MenuItem>))}            
                         </Select>
                     </FormControl>
             </Grid>
