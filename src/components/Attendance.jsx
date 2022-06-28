@@ -25,7 +25,10 @@ const columns = {
       { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
     ],
     "Monthly":[      
-      { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: true, filter: true, filterable: true },    
+      { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: true, filter: true, filterable: true },
+      { field: 'present', headerName: 'Present', minWidth: 100,flex:1, sortable: true, filter: true, filterable: true },  
+      { field: 'late', headerName: 'Late', minWidth: 100,flex:1, sortable: true, filter: true, filterable: true },
+      { field: 'absent', headerName: 'Absent', minWidth: 100,flex:1, sortable: true, filter: true, filterable: true },        
     ]
 
   }
@@ -222,7 +225,7 @@ class Attendance extends React.PureComponent {
           ...individualAttendance,
           'late':l,
           'present':p,
-          'absence':abs,
+          'absent':abs,
         }]
       }
 
@@ -258,7 +261,10 @@ class Attendance extends React.PureComponent {
   
       // Set state for start date and end date accordingly
       this.setState({ dateValues, start_date: startDate ?? start_date, end_date: endDate ?? end_date })
-      dispatch( getAttendance({start_date: `${startDate}`, end_date: `${endDate}`}) )
+
+      if( startDate && endDate){
+        dispatch( getAttendance({start_date: `${startDate}`, end_date: `${endDate}`}) )
+      }
 
     }
   
