@@ -25,7 +25,7 @@ const columns = {
       { field: 'check_out_time', headerName: 'Check Out Time', minWidth: 50,flex:1, sortable: true, filter: true, filterable: true },
     ],
     "Monthly":[      
-      { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: true, filter: true, filterable: true },    
+      { field: 'name', headerName: 'Name', minWidth: 200,flex:1, sortable: true, filter: true, filterable: true },    
     ]
 
   }
@@ -113,7 +113,7 @@ class Attendance extends React.PureComponent {
     const { uniqueDates } = this.props
     const dyanmicColumns = uniqueDates.map(
        (date) => ( { 
-         field: date, headerName: date, minWidth: 75, flex: .75, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
+         field: date, headerName: date, minWidth: 100, flex: 1, sortable: false, filter: false,filterable: false,valueGetter: ({ value }) => value || "",
 
         }
     ))
