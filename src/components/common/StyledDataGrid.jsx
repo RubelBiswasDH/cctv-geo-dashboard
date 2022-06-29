@@ -83,6 +83,7 @@ class StyledDataGrid extends React.PureComponent {
         const { rows, columns, disableColumnFilter, renderActions, rowHeight, ...restProps } = this.props       
         return (
             <DataGrid
+                disableSelectionOnClick
                 rows={ rows }
                 getRowClassName={rowValues =>
                     `${ rowValues.row?.is_emergency ? 'row-emergency' : '' }`
