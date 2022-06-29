@@ -3,7 +3,7 @@ import {getCurrentView} from '../../utils/utils'
 
 const currentView = getCurrentView()
 const initialState = {
-    currentView: currentView,
+    currentView: currentView ?? 'attendance',
     toastIsOpen: false,
     toastMessage: '',
     toastSeverity: 'success'

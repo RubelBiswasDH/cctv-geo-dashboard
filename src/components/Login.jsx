@@ -246,7 +246,7 @@ class Login extends React.PureComponent {
               }}
             >
                 <a href='/request-reset-password' style={{textDecoration: 'none'}}>
-                    <span>Forget Password ! Reset Here...</span>
+                    <span style={{fontSize:'.7em'}}>Forget Password ! Reset Here...</span>
                   </a>            
             </Box>
             {/* Copyright Section */}
