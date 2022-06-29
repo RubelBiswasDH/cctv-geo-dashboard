@@ -27,9 +27,10 @@ import { getAttendance, getAttendanceReport }  from '../redux/actions/attendance
 import { getCompanySettingsAction } from '../redux/actions/adminActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
 import { getEmployee }  from '../redux/actions/employeeActions'
-import { setToastIsOpen } from '../redux/reducers/dashboardReducer'
-
+import { setToastIsOpen, setCurrentView } from '../redux/reducers/dashboardReducer'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
+
+import { getCurrentView } from '../utils/utils'
 
 class HrTraceDashboard extends React.PureComponent {
   state = {
@@ -44,6 +45,8 @@ class HrTraceDashboard extends React.PureComponent {
       
     const start_date = dayjs(new Date(date.setDate(date.getDate() - 6))).format('YYYY-MM-DD')
     const end_date = dayjs(new Date()).format('YYYY-MM-DD')
+    const currentView = getCurrentView()
+    dispatch(setCurrentView(currentView))
     dispatch( getEmployee() )
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     dispatch( getCompanySettingsAction() )
