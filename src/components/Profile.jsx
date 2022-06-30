@@ -227,7 +227,7 @@ class Profile extends React.PureComponent {
                                 { (currentProfileTab === "EMERGENCY") && <Box sx={{ ...tabContent }}>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Emergency Contact</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Contact Person :"} field={"contact_person"} value={userProfile?.contact_person || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile Number"} field={"emergency_mobile_number"} value={userProfile?.mobile_number || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile Number"} field={"emergency_mobile_number"} value={userProfile?.emergency_mobile_number || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Relationship"} field={"relationship"} value={userProfile?.relationship || ''} fieldStyle={{width:'70%'}}/>
                                     
                                 </Box>}
