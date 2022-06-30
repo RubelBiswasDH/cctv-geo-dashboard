@@ -210,7 +210,7 @@ class Profile extends React.PureComponent {
                                     {/* <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Job Confirmed : "} field={"job_confirmed"} value={userProfile?.job_confirmed || ''} fieldStyle={{width:'70%'}}/> */}
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Joining Date : "} field={"joining_date"} value={userProfile?.joining_date || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Reporting Person :"} field={"reporting_person"} value={userProfile?.reporting_person || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Basic Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Gross Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{width:'70%'}}/>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Previous Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Last Working Place :"} field={"last_working_place"} value={userProfile?.last_working_place || ''} fieldStyle={{width:'70%'}}/>
                                     
