@@ -160,7 +160,7 @@ class Profile extends React.PureComponent {
                                     <Button color={'btnCustomWaring'} variant={'contained'} size={'small'} style={{width:'auto',marginLeft:'auto', height:'40px'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Request Edit Access</Button>
                                 </Box>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{width:'70%'}}/>
-                                <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"mobile"} value={userProfile?.mobile || ''} fieldStyle={{width:'70%'}}/>
+                                <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"phone"} value={userProfile?.phone || ''} fieldStyle={{width:'70%'}}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{width:'70%'}}/>
                                 <Box sx={{display:'flex',width:'100%'}} >
                                  
