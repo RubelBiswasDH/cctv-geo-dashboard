@@ -95,7 +95,7 @@ class Profile extends React.PureComponent {
                 )}
             >
                 <Box sx={{display:'flex', width:'100%', height:'90%', p:0, m:0 }}>
-                    <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',justifyContent:'center', background: '#D9D9D9',width:'25%', height:'100%', pl:3}}>
+                    <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center', background: '#D9D9D9',width:'25%', height:'100%'}}>
                         <Box>
                             <img
                                 src={ image }
@@ -104,9 +104,8 @@ class Profile extends React.PureComponent {
                                 height='100%'
                             />    
                         </Box>
-                        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',width:'100%',pt:2}}>
-                            <Box sx={{width:'100%', background: "#A5A6F6"}}><Button><Typography sx={{textTransform:'none',color:'#000'}}>User Profile</Typography></Button></Box>
-                            <Box sx={{width:'100%'}}><Button><Typography sx={{textTransform:'none',color:'#000'}}>Attendance Overview</Typography></Button></Box>
+                        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',width:'100%',pt:2, pl:2}}>
+                            <Box sx={{width:'100%', background: "#A5A6F6"}}><Button><Typography sx={{textTransform:'none',color:'#000',fontSize:'1.5em', fontWeight:600}}>User Profile</Typography></Button></Box>
                         </Box>
                     </Box>
                     <Box sx={{display:'flex',flexDirection:'column',width:'75%', height:'100%'}}>

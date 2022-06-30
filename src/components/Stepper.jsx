@@ -87,7 +87,7 @@ class CustomStepper extends React.PureComponent {
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2,pr:10 }}>
             <Box sx={{ flex: '1 1 auto' }} />
                 <Button variant='contained' color='warning' onClick={ handleCancel}>Cancel</Button>
-                <Button variant='contained' color='success' onClick={ handleSubmit }>Sumbit</Button>
+                <Button variant='contained' color='success' onClick={ handleSubmit }>Submit</Button>
             </Box>
           </React.Fragment>
         ) : (
