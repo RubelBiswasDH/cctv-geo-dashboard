@@ -12,7 +12,7 @@ import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 
-import { setCurrentDepartment, setCurrentDesignations, updateCurrentDesignations } from "../redux/reducers/companySettingsReducer"
+import { setCurrentDepartment, updateCurrentDesignations } from "../redux/reducers/companySettingsReducer"
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
