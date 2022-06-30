@@ -173,7 +173,6 @@ class EmployeeList extends React.PureComponent {
   }
   render() {
     const { isTaskLoading, newUser, companySettings } = this.props
-    console.log({newUser})
     return (
       <Box width='100%' height='73vh'>
         <StyledDataGrid
