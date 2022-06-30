@@ -90,7 +90,7 @@ class CompanyProfile extends React.PureComponent {
                     
                 </Box>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
-                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Let Time : </Typography>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Late Time : </Typography>
                     <TimeKeeper
                       time={companySettings?.late_time}
                       onChange={ (newTime) => {

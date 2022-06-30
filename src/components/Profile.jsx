@@ -208,9 +208,9 @@ class Profile extends React.PureComponent {
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Email :"} field={"office_email"} value={userProfile?.office_email || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Mobile :"} field={"office_mobile"} value={userProfile?.office_mobile || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Job Confirmed : "} field={"job_confirmed"} value={userProfile?.job_confirmed || ''} fieldStyle={{width:'70%'}}/>
+                                    {/* <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Job Confirmed : "} field={"job_confirmed"} value={userProfile?.job_confirmed || ''} fieldStyle={{width:'70%'}}/> */}
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Joining Date : "} field={"joining_date"} value={userProfile?.joining_date || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Repoting Person :"} field={"repoting_person"} value={userProfile?.repoting_person || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Reporting Person :"} field={"reporting_person"} value={userProfile?.reporting_person || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Basic Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{width:'70%'}}/>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Previous Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Last Working Place :"} field={"last_working_place"} value={userProfile?.last_working_place || ''} fieldStyle={{width:'70%'}}/>
@@ -222,12 +222,12 @@ class Profile extends React.PureComponent {
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Account Number :"} field={"account_number"} value={userProfile?.account_number || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Bank Name :"} field={"bank_name"} value={userProfile?.bank_name || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Branch Name :"} field={"branch_name"} value={userProfile?.branch_name || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Rounting Number :"} field={"rounting_number"} value={userProfile?.rounting_number || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Routing Number :"} field={"routing_number"} value={userProfile?.routing_number || ''} fieldStyle={{width:'70%'}}/>
                                 </Box>}
                                 { (currentProfileTab === "EMERGENCY") && <Box sx={{ ...tabContent }}>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Emergency Contact</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Contact Person :"} field={"contact_person"} value={userProfile?.contact_person || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile Number"} field={"mobile_number"} value={userProfile?.mobile_number || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile Number"} field={"emergency_mobile_number"} value={userProfile?.mobile_number || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Relationship"} field={"relationship"} value={userProfile?.relationship || ''} fieldStyle={{width:'70%'}}/>
                                     
                                 </Box>}
