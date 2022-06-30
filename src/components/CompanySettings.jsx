@@ -12,7 +12,7 @@ import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 
-import { setCurrentDepartment, setCurrentDesignation } from "../redux/reducers/companySettingsReducer"
+import { setCurrentDepartment, setCurrentDesignations, updateCurrentDesignations } from "../redux/reducers/companySettingsReducer"
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -62,24 +62,24 @@ class CompanySettings extends React.PureComponent {
         dispatch( setCurrentDepartment (''))
     }
     _handleAddDesignation = (department) => {
-        const { dispatch, companySettings, currentDesignation } = this.props
+        const { dispatch, companySettings, currentDesignations } = this.props
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
         dispatch(updateCompanyDepartments({
             ...companySettings.departments,
             [department]:{ 
                 name: department,
-                designations:[ ...prevDesignations, currentDesignation]
+                designations:[ ...prevDesignations, currentDesignations[department]]
             }
         }))
-        dispatch( setCurrentDesignation (''))
+        dispatch( updateCurrentDesignations ({[department]:''}))
         dispatch( setCompanySettingsAction({
             ...companySettings,
             'departments':{
                 ...companySettings.departments,
                 [department]:{ 
                     name: department,
-                    designations:[ ...prevDesignations, currentDesignation]
+                    designations:[ ...prevDesignations, currentDesignations[department]]
                 }
             },
             
@@ -87,9 +87,9 @@ class CompanySettings extends React.PureComponent {
     }
 
 
-    _handleClearDesignationField = () => {
+    _handleClearDesignationField = (department) => {
         const { dispatch } = this.props
-        dispatch(setCurrentDesignation (''))
+        dispatch(updateCurrentDesignations ({[department]: '' }))
     }
 
     _handleDeleteDesignation = (dept, dsg) => {
@@ -131,7 +131,7 @@ class CompanySettings extends React.PureComponent {
     }
 
   render() {
-    const { companySettings, currentDepartment, currentDesignation } = this.props
+    const { companySettings, currentDepartment, currentDesignations } = this.props
     const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment } = this
     return (
       <Box width='100%' height='54vh'>
@@ -182,9 +182,9 @@ class CompanySettings extends React.PureComponent {
                                 <Typography>Add Designation</Typography>
                             </Box>
                             <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                                <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
+                                <StyledTextField action={ updateCurrentDesignations } subField={d} value={ currentDesignations[d] ?? '' }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
                                 <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
-                                <Button onClick={ _handleClearDesignationField }><CancelOutlinedIcon color="btnCancel"/></Button>
+                                <Button onClick={ () => { _handleClearDesignationField(d) } }><CancelOutlinedIcon color="btnCancel"/></Button>
                             </Paper>
                             <Box sx={{gap:0}}>
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
@@ -263,7 +263,7 @@ const mapStateToProps = state => ({
   companyAddressData: state?.admin?.companyAddressData,
   companySettings: state?.admin?.companySettings,
   currentDepartment: state?.companySettings?.currentDepartment,
-  currentDesignation: state?.companySettings?.currentDesignation,
+  currentDesignations: state?.companySettings?.currentDesignations,
   settings: state?.companySettings?.settings,
 })
 
