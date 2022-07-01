@@ -99,6 +99,9 @@ class CompanyProfile extends React.PureComponent {
                       hour24Mode
                     />
                 </Box> 
+                <Box  sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
+                  <Typography>*Any employee reach after this time will considered as <span style={{color:'red'}}>'Late'</span> </Typography>
+                </Box>
                 <Box sx={{ display:'flex', alignItems:'center', justifyContent:'flex-end',width:'100%' }}>
                   <Button onClick={ _handleSaveCompanyAddress } variant="contained" color={"btnSave"} style={{ borderRadius: 2, pt: .5, width: '15%' }}>Save</Button>
                 </Box> 
