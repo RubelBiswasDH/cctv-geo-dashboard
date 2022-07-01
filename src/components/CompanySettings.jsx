@@ -163,7 +163,7 @@ class CompanySettings extends React.PureComponent {
             </Box>
             <Box sx={{ display: 'flex',width:'100%',justifyContent:'space-between',alignItems:'flex-start'}}>
                 <Paper sx={{ height:60, width:'100%', display:'flex',  pl:2}} elevation={2}>
-                    <StyledTextField action={ setCurrentDepartment } value={ currentDepartment }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0,}}/>
+                    <StyledTextField action={ setCurrentDepartment } onEnterKeyDown={() => { _handleAddDepartment() }} value={ currentDepartment }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0,}}/>
                     <Button onClick={ _handleAddDepartment }><CheckCircleIcon color="btnCheck" /></Button>
                     <Button onClick={ _handleClearDepartmentField }><CancelOutlinedIcon color="btnCancel"/></Button>
 
@@ -187,7 +187,7 @@ class CompanySettings extends React.PureComponent {
                                 <Typography>Add Designation</Typography>
                             </Box>
                             <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                                <StyledTextField action={ updateCurrentDesignations } subField={d} value={ currentDesignations[d] ?? '' }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
+                                <StyledTextField action={ updateCurrentDesignations } onEnterKeyDown={() => { _handleAddDesignation(d) }} subField={d} value={ currentDesignations[d] ?? '' }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
                                 <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
                                 <Button onClick={ () => { _handleClearDesignationField(d) } }><CancelOutlinedIcon color="btnCancel"/></Button>
                             </Paper>
