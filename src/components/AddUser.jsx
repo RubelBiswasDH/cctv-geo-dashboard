@@ -154,7 +154,15 @@ const formSteps = (dispatch, newUser) => {
             <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'birth_day'}  title={"Birth Date"} value={newUser?.profile?.birth_day} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group} fieldStyle={{ width:'50%' }}/>
+            <StyledDropdown 
+                filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
+                field={'profile'} 
+                subField={'blood_group'}  
+                title={"Blood Group"} 
+                value={newUser?.profile?.blood_group || ''}
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:'50%' }}
+            />
             <StyledDropdown 
                 filterOptions={['Male', 'Female', 'Other']}
                 field={'profile'} 
