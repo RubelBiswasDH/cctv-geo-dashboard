@@ -78,7 +78,7 @@ class CompanyProfile extends React.PureComponent {
                 Company Profile
             </Typography>
         </Box>
-        <FilterEmployee  disabled={true}/>
+        <FilterEmployee disabled={true}/>
         <Box sx={{ display:'flex', p:1, gap:5 }}>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:1,justifyContent:'center',alignItems:'center' }} >
                 <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'100%' }} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
@@ -90,7 +90,7 @@ class CompanyProfile extends React.PureComponent {
                     
                 </Box>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
-                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Let Time : </Typography>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Late Time : </Typography>
                     <TimeKeeper
                       time={companySettings?.late_time}
                       onChange={ (newTime) => {

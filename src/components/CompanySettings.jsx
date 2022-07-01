@@ -9,6 +9,7 @@ import StyledTextField from '../components/common/StyledTextField'
 // Import Actions & Methods
 
 import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 
@@ -130,9 +131,13 @@ class CompanySettings extends React.PureComponent {
         console.log('edit :')
     }
 
+    _handleAddUserBtnClick =() => {
+        const { dispatch } = this.props
+        dispatch(setCurrentView('add_user'))
+    }
   render() {
     const { companySettings, currentDepartment, currentDesignations } = this.props
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment } = this
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment, _handleAddUserBtnClick } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -209,7 +214,7 @@ class CompanySettings extends React.PureComponent {
             </Box>
         </Box>
         <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>
-            <Button variant="contained" color={"btnSecondaryAdd"} sx={{ width: '20%' }}>Add User</Button>
+            <Button onClick={ _handleAddUserBtnClick }  variant="contained" color={"btnSecondaryAdd"} sx={{ width: '20%' }}>Add User</Button>
         </Box>
       </Box>
     )

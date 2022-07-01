@@ -14,16 +14,19 @@ const CustomButton = (props) => {
               },
             boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12)',
             borderRadius: '4px',
+            "&:disabled": {
+                backgroundColor: '#7879F1'
+              }
         }
 
-        const activeBtn = (currentEmployeeType === name)? {background:'#7879F1'}:{}
+        const activeBtn = (currentEmployeeType === name )? {background:'#7879F1'}:{}
 
         const handleClick = () => {
             props.onClick()
         }
 
         return (
-            <Button  disabled={disabled} onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="iris"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'#FFFFFF', ...sx}}>{props.children}</Typography></Button>
+            <Button disabled={disabled} onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="iris"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'#FFFFFF', ...sx}}>{props.children}</Typography></Button>
         );
 }
 
@@ -62,7 +65,7 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const { currentEmployeeType,  disabled } = this.props
+        const { currentEmployeeType, disabled } = this.props
         const { handleCountEmployee, handleEmployeeTypeChange } = this
         return (
         <Box sx={theme => ({

@@ -63,9 +63,9 @@ class AddUser extends React.PureComponent {
         </Box>
         { !add_details && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
-                <UserField  dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
-                <UserField  dispatch={dispatch} field={'email'}  title={"E: Mail : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
-                <UserField  dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
+                <UserField required={true} dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
+                <UserField required={true} dispatch={dispatch} field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
+                <UserField required={true} dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
                 <FilterField 
                     filterOptions={
                         ((companySettings 
@@ -74,7 +74,8 @@ class AddUser extends React.PureComponent {
                         && Object.keys(companySettings?.departments )) || []}  
                     dispatch={dispatch} 
                     field={'profile'} 
-                    subField={'department'}  
+                    subField={'department'} 
+                    required={true} 
                     title={"Department : "} 
                     value={newUser?.profile?.department || ''} 
                     fieldStyle={{ width:'25%' }}
@@ -87,7 +88,8 @@ class AddUser extends React.PureComponent {
                         && companySettings?.departments[newUser?.profile?.department]?.designations) || []}  
                     dispatch={dispatch} 
                     field={'profile'} 
-                    subField={'designation'}  
+                    subField={'designation'}
+                    required={true}  
                     title={"Designation : "} 
                     value={newUser?.profile?.designation || ''} 
                     fieldStyle={{ width:'25%' }}
@@ -111,7 +113,7 @@ class AddUser extends React.PureComponent {
                     gap:2
                     }}>
             <CustomStepper 
-                steps = {['Personal Info', 'Official Info', 'Bank Account', 'Contact']} 
+                steps = {['Personal Info', 'Official Info', 'Bank Account', 'Emergency Contact']} 
                 contents = {formSteps(dispatch, newUser)}
                 handleSubmit = {_handleSaveUser}
                 />
@@ -130,7 +132,7 @@ const formSteps = (dispatch, newUser) => {
             <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'birth_date'}  title={"Birth Date"} value={newUser?.profile?.birth_date} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'birth_day'}  title={"Birth Date"} value={newUser?.profile?.birth_day} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'blood_group'}  title={"Blood Group"} value={newUser?.profile?.blood_group} fieldStyle={{ width:'50%' }}/>
             <StyledDropdown 
                 filterOptions={['Male', 'Female', 'Other']}
@@ -144,23 +146,24 @@ const formSteps = (dispatch, newUser) => {
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_phone_no'}  title={"Office Phone No"} value={newUser?.profile?.office_phone_no} fieldStyle={{ width:'50%' }}/> 
-            <UserField  dispatch={dispatch} field={'profile'} subField={'joining_data'}  title={"Joining Date"} value={newUser?.profile?.joining_data} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:'50%' }}/> 
+            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'job_confirmed'}  title={"Job Confirmed"} value={newUser?.profile?.job_confirmed} fieldStyle={{ width:'50%' }}/> */}
+            <UserField  dispatch={dispatch} field={'profile'} subField={'joining_date'}  title={"Joining Date"} value={newUser?.profile?.joining_date} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Basic Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:'50%' }}/>
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_no'}  title={"Account No"} value={newUser?.profile?.account_no} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_no'}  title={"Routing No"} value={newUser?.profile?.routing_no} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:'50%' }}/>
 
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person_no'}  title={"Mobile Number"} value={newUser?.profile?.contact_person_no} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship_with_contact_perso'}  title={"Relationship"} value={newUser?.profile?.relationship_with_contact_perso} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:'50%' }}/>
         </Box>
      
@@ -170,7 +173,7 @@ const formSteps = (dispatch, newUser) => {
 // field to add user information
 
 const UserField = (props) => {
-    const { title, value, field, subField, dispatch, style, fieldStyle, titleStyle } = props
+    const { title, value, field, subField, dispatch, style, fieldStyle, required, titleStyle } = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize: '18px',
@@ -204,6 +207,7 @@ const UserField = (props) => {
                         inputProps={{ 'aria-label': { title }, color: '#000000' }}
                         value={value || ''}
                         onChange={ handleChange }
+                        required={required}
                     />
                 </Paper>
             </Box>
@@ -213,7 +217,7 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-  const { dispatch, value, field, subField, filterOptions, title, fieldStyle } = props
+  const { dispatch, value, field, subField, filterOptions, required, title, fieldStyle } = props
   const handleChange = e => {
     e.preventDefault()
     if (field === 'profile') {
@@ -235,8 +239,9 @@ const textStyle = {
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
             <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
         </Box>
-        <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
+        <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
                 <Select
+                    required={required}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value= { value ?? filterOptions[0] }
