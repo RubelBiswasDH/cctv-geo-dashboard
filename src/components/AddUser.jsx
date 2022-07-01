@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Grid, Paper, InputBase, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
+import { Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
 import { createUser } from '../redux/actions/adminActions'
@@ -194,7 +194,7 @@ const formSteps = (dispatch, newUser) => {
 // field to add user information
 
 const UserField = (props) => {
-    const { title, value, field, subField, dispatch, style, fieldStyle, required, titleStyle } = props
+    const { title, label, value, field, subField, dispatch, style, fieldStyle, required, titleStyle } = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize: '18px',
@@ -217,20 +217,21 @@ const UserField = (props) => {
                 <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle, ...titleStyle }}>{title}</Typography>
             </Box>
             <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
-                <Paper
+                <FormControl
+                    required={required}
                     xs={12}
-                    sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000',width:'100%', border: '1px solid rgba(0, 0, 0, 0.23)',
+                    sx={{display:'flex',flexDirection:'column', p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white', color: '#000000',width:'100%', border: '.5px solid rgba(0, 0, 0, 0.23)',
                     borderRadius: '4px', ...style }}
                 >   
-                    
+                    <InputLabel sx={{display:'flex',width:'100%',top:-8,transform: 'translate(14px, 0px) scale(1)'}} required={required}>{label}</InputLabel>
                     <InputBase
-                        sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
-                        inputProps={{ 'aria-label': { title }, color: '#000000' }}
+                        sx={{ m: 0, p:0, ml:3, flex: 1, color: '#000000', opacity: 1, width:'100%', }}
+                        inputProps={{padding:0, 'aria-label': { title }, color: '#000000' }}
                         value={value || ''}
                         onChange={ handleChange }
                         required={required}
                     />
-                </Paper>
+                </FormControl>
             </Box>
         </Grid>
     )
@@ -238,7 +239,7 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-  const { dispatch, value, field, subField, filterOptions, required, title, fieldStyle } = props
+  const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle } = props
   const handleChange = e => {
     e.preventDefault()
     if (field === 'profile') {
@@ -261,18 +262,19 @@ const textStyle = {
             <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
         </Box>
         <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-                <Select
-                    required={required}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value= { value ?? filterOptions[0] }
-                    label=""
-                    onChange={handleChange}
-                    sx = {{fontSize: '.75em'}}
-                >    
-                    {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
-                </Select>
-            </FormControl>
+            <InputLabel sx={{display:'flex',width:'100%',top:-8,transform: 'translate(14px, 0px) scale(1)'}} required={required}>{label}</InputLabel>
+            <Select
+                required={required}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value= { value ?? filterOptions[0] }
+                label=""
+                onChange={handleChange}
+                sx = {{fontSize: '.75em'}}
+            >    
+                {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
+            </Select>
+        </FormControl>
     </Grid>
   )
 }
