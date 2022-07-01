@@ -6,9 +6,14 @@ import { connect } from 'react-redux'
 import { Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
+import AddressAutoComplete from './common/AddressAutoComplete_2'
+
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
+
+import { getCompanyList } from '../redux/actions/registerActions'
+
 import { setFilterOptions } from '../redux/reducers/attendanceReducer'
 import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
 
@@ -60,9 +65,23 @@ class AddUser extends React.PureComponent {
     _handleSkipDetails = () => {
         this.setState(state => ({add_details:!state.add_details}))  
     }
+
+    _handleAutoCompInputChange = e => {
+        const { dispatch } = this.props
+        dispatch(getCompanyList(e.target.value))
+    }
+
+    // handleAutoCompChange
+    _handleAutoCompChange = (e, value) => {
+        const { dispatch } = this.props
+        dispatch(updateNewUserProfile({
+            'house_address': value?.Address ?? ''
+        }))
+    }
+
   render() {
-    const { dispatch, newUser, companySettings } = this.props
-    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails } = this
+    const { dispatch, newUser, companySettings, companyNameOptions } = this.props
+    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange } = this
     const { add_details } = this.state
     return (
       <Box width='100%' height='54vh'>
@@ -78,7 +97,7 @@ class AddUser extends React.PureComponent {
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
                 <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
                     <Typography 
-                    sx={{fontWeight:600}}
+                        sx={{ fontWeight:600 }}
                         variant='h5'
                     >
                         Basic Informations
@@ -135,7 +154,7 @@ class AddUser extends React.PureComponent {
                     }}>
             <CustomStepper 
                 steps = {['Personal Info', 'Official Info', 'Bank Account', 'Emergency Contact']} 
-                contents = {formSteps(dispatch, newUser)}
+                contents = {formSteps(dispatch, newUser, companyNameOptions, _handleAutoCompInputChange, _handleAutoCompChange)}
                 handleSubmit = {_handleSaveUser}
                 />
             </Box>
@@ -147,12 +166,21 @@ class AddUser extends React.PureComponent {
   }
 }
 
-const formSteps = (dispatch, newUser) => {
+const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInputChange, _handleAutoCompChange) => {
     return ([
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1 }}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/>
+            <AddressAutoComplete
+                _handleAutoCompInputChange = { _handleAutoCompInputChange }
+                _handleAutoCompChange = { _handleAutoCompChange }
+                filterOptions = { addressFilterOptions }
+                value={ newUser?.profile?.house_address } 
+                title={"House Address"} 
+                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                fieldStyle={{ width:'50%' }}
+            />
+            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/> */}
             <UserField  dispatch={dispatch} field={'profile'} subField={'birth_day'}  title={"Birth Date"} value={newUser?.profile?.birth_day} fieldStyle={{ width:'50%' }}/>
             <StyledDropdown 
                 filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
@@ -231,7 +259,7 @@ const UserField = (props) => {
                     sx={{display:'flex',flexDirection:'column', p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white', color: '#000000',width:'100%', border: '.5px solid rgba(0, 0, 0, 0.23)',
                     borderRadius: '4px', ...style }}
                 >   
-                    <InputLabel sx={{display:'flex',width:'100%',top:-8,transform: 'translate(14px, 0px) scale(1)'}} required={required}>{label}</InputLabel>
+                    <InputLabel sx={{display:'flex',width:'100%',transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>
                     <InputBase
                         sx={{ m: 0, p:0, ml:3, flex: 1, color: '#000000', opacity: 1, width:'100%', }}
                         inputProps={{padding:0, 'aria-label': { title }, color: '#000000' }}
@@ -270,7 +298,7 @@ const textStyle = {
             <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
         </Box>
         <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-            <InputLabel sx={{display:'flex',width:'100%',top:-8,transform: 'translate(14px, 0px) scale(1)'}} required={required}>{label}</InputLabel>
+            <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>
             <Select
                 required={required}
                 labelId="demo-simple-select-label"
@@ -306,7 +334,8 @@ AddUser.defaultProps = {
 const mapStateToProps = state => ({
   user: state?.auth?.user,
   newUser: state?.admin?.newUser,
-  companySettings: state?.admin?.companySettings
+  companySettings: state?.admin?.companySettings,
+  companyNameOptions: state?.register?.companyNameOptions ?? []
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
