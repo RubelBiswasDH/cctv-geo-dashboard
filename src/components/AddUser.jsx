@@ -48,18 +48,23 @@ class AddUser extends React.PureComponent {
     _handleAddDetails = () => {
         this.setState(state => ({add_details:!state.add_details}))
     }
+
+    _handleSkipDetails = () => {
+        this.setState(state => ({add_details:!state.add_details}))  
+    }
   render() {
     const { dispatch, newUser, companySettings } = this.props
-    const { _handleSaveUser, _handleAddDetails } = this
+    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails } = this
     const { add_details } = this.state
     return (
       <Box width='100%' height='54vh'>
-        <Box sx={{py:2,pb:5}}>
+        <Box sx={{display:'flex',py:2,pb:5, justifyContent:'space-between'}}>
             <Typography
                 variant='h4'
             >
                 Add New User
             </Typography>
+            { add_details && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Skip Details</Typography></Button>}
         </Box>
         { !add_details && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
