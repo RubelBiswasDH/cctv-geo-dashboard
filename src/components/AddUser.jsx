@@ -46,7 +46,15 @@ class AddUser extends React.PureComponent {
     } 
 
     _handleAddDetails = () => {
-        this.setState(state => ({add_details:!state.add_details}))
+        const { dispatch, newUser } = this.props
+        if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
+            this.setState(state => ({add_details:!state.add_details}))
+        }
+        else{
+            dispatch(setToastMessage('Please fill all Basic Informations fields before move to adding details !'))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
     }
 
     _handleSkipDetails = () => {
@@ -64,10 +72,18 @@ class AddUser extends React.PureComponent {
             >
                 Add New User
             </Typography>
-            { add_details && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Skip Details</Typography></Button>}
+            { add_details && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
         </Box>
         { !add_details && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
+                <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
+                    <Typography 
+                    sx={{fontWeight:600}}
+                        variant='h5'
+                    >
+                        Basic Informations
+                    </Typography>
+                </Grid>
                 <UserField required={true} dispatch={dispatch} field={'name'}  title={"Name : "} value={newUser?.name} fieldStyle={{ width:'40%' }}/>
                 <UserField required={true} dispatch={dispatch} field={'email'}  title={"Email : "} value={newUser?.email} fieldStyle={{ width:'40%' }}/>
                 <UserField required={true} dispatch={dispatch} field={'phone'}  title={"Phone : "} value={newUser?.phone} fieldStyle={{ width:'40%' }}/>
