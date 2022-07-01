@@ -114,8 +114,13 @@ class CustomStepper extends React.PureComponent {
                 </Button>
               )}
   
-            <Button variant='contained' color='success'  onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish': 'Next'}
+              <Button 
+                variant='contained' 
+                color='success'  
+                onClick={
+                  activeStep === steps.length - 1 ? handleSubmit : handleNext}
+              >
+                {activeStep === steps.length - 1 ? 'Submit': 'Next'}
               </Button>
             </Box>
           </React.Fragment>
