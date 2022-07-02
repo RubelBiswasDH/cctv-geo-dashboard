@@ -155,8 +155,8 @@ class Profile extends React.PureComponent {
                             <Box sx={{width:'100%', justifyContent:'space-between',m:3,gap:1}}>
                             { (currentProfileTab === "PROFILE") && 
                             <Box sx={{ ...tabContent }}>
-                                <Box sx={{display:'flex', width:"85%",mr:'2.25'}}>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>General Information</Typography>
+                                <Box sx={{display:'flex', width:{xs:'85%', lg:'95%'}}}>
+                                    <Typography sx={{...textStyle,width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>General Information</Typography>
                                     <Button color={'btnCustomWaring'} variant={'contained'} size={'small'} style={{width:'auto',marginLeft:'auto', height:'40px'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</Button>
                                 </Box>
                                 <StyledTextField 
@@ -200,7 +200,7 @@ class Profile extends React.PureComponent {
                                         />
                                     </Box>
                                     </Box>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Personal Information</Typography>
+                                    <Typography sx={{...textStyle,width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>Personal Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
@@ -243,7 +243,7 @@ class Profile extends React.PureComponent {
                                 </Box>}
                                 { (currentProfileTab === "OFFICE DETAILS") && 
                                 <Box sx={{ ...tabContent }}>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Office Information</Typography>
+                                    <Typography sx={{...textStyle,width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Email :"} field={"office_email"} value={userProfile?.office_email || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Mobile :"} field={"office_mobile"} value={userProfile?.office_mobile || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
@@ -264,13 +264,13 @@ class Profile extends React.PureComponent {
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Gross Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Previous Office Information</Typography>
+                                    <Typography sx={{...textStyle,width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>Previous Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Last Working Place :"} field={"last_working_place"} value={userProfile?.last_working_place || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     
                                 </Box>}
                                 { (currentProfileTab === "BANK DETAILS") && <Box sx={{ ...tabContent }}>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Bank accoiunt Information</Typography>
+                                    <Typography sx={{...textStyle, width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>Bank accoiunt Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Account Title :"} field={"account_title"} value={userProfile?.account_title || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Account Number :"} field={"account_number"} value={userProfile?.account_number || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
@@ -283,7 +283,7 @@ class Profile extends React.PureComponent {
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                 </Box>}
                                 { (currentProfileTab === "EMERGENCY") && <Box sx={{ ...tabContent }}>
-                                    <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Emergency Contact</Typography>
+                                    <Typography sx={{...textStyle, width:{xs:'35%', lg:'20%'}, boxShadow:1,mb:2}}>Emergency Contact</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Contact Person :"} field={"contact_person"} value={userProfile?.contact_person || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile Number"} field={"emergency_mobile_number"} value={userProfile?.emergency_mobile_number || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
@@ -295,7 +295,7 @@ class Profile extends React.PureComponent {
                             </Box>  
                         </Box>
                         { (!disabled) &&
-                        <Box sx={{display:'flex', width:'85%', height:'40px', pr:'2.25%', pt:0, ml:0, gap:1 , justifyContent:'flex-end'}}>
+                        <Box sx={{ display:'flex', width:{xs:'85%', lg:'95%'}, height:'40px',px:2, pt:0, ml:0 , justifyContent:'flex-end'}}>
                             <Button veriant={'success'} style={{width:'20%',border:'1px solid green'}} onClick={() => dispatch(setUserProfileAction(userProfile.user_id,userProfile))}>Save</Button>
                         </Box>
                         }

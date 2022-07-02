@@ -129,7 +129,7 @@ class Announcements extends React.PureComponent {
        
     let announcement_rows = this.mappedAnnouncements()
     return (
-      <Box width='100%' height='54vh'>
+      <Box width='100%' height='75vh'>
         <Stack spacing={ 1 } direction='row'>
         <LocalizationProvider dateAdapter={ AdapterDayjs }>
             <DateRangePicker
