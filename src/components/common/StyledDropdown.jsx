@@ -35,7 +35,7 @@ class StyledDropdown extends React.PureComponent {
                         <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle}}>{title}</Typography>
                     </Box>
                 }
-                <FormControl disabled={disabled} fullWidth={fullWidth} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
+                <FormControl disabled={disabled} fullWidth={fullWidth} sx={{p:0,m:0,width:'100%', ...fieldStyle}} size="small">
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"

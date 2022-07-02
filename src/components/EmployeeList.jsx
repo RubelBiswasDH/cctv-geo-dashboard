@@ -243,6 +243,7 @@ class EmployeeList extends React.PureComponent {
                       titleContainerStyle={{width: "30%"}}
                   />
               <Box sx={{display:'flex', flexDirection:'row',  width:'100%' }}>
+                  <Typography sx={{display:'flex',alignItems:'center',justifyContent:'center', fontWeight:600, fontSize:{xs:'20px',pr:2}}}>Position</Typography>
                   <StyledDropdown 
                       filterOptions={((
                           companySettings 
@@ -253,7 +254,7 @@ class EmployeeList extends React.PureComponent {
                       field={'profile'} 
                       subField={'department'} 
                       value={newUser?.profile?.department} 
-                      fieldStyle={{ width:'90%' }}
+                      sx={{ width:'30%', ml: 2 }}
                   />
                   <StyledDropdown 
                       filterOptions={((
@@ -265,7 +266,7 @@ class EmployeeList extends React.PureComponent {
                       field={'profile'} 
                       subField={'designation'}  
                       value={ newUser?.profile?.designation }
-                      fieldStyle={{ width:'90%' }}
+                      sx={{ width:'30%',ml:2 }}
                   />
               </Box>
           </Box>
