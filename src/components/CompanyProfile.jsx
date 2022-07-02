@@ -81,10 +81,10 @@ class CompanyProfile extends React.PureComponent {
         <FilterEmployee disabled={true}/>
         <Box sx={{ display:'flex', p:1, gap:5 }}>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:1,justifyContent:'center',alignItems:'center' }} >
-                <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'100%' }} labelContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'60%' }} titleContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%',mb:1.5 }} >
-                    <Typography sx={{ ...textStyle,width:'30%' }}>Company Address : </Typography>
-                    <Box sx={{width: '70%'}}>
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Company Address : </Typography>
+                    <Box sx={{width: '60%'}}>
                       <AddressAutoComplete />
                     </Box>
                     
