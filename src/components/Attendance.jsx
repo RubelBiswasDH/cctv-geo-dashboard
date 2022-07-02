@@ -296,7 +296,7 @@ class Attendance extends React.PureComponent {
     let attendance_rows = this.mappedAttendanceInfo()
     const dyanmicColumns = this._generateAttendanceColumns()
     return (
-      <Box width='100%' height='54vh'>
+      <Box width='100%' height='72vh'>
         <Box sx={{py:2}}>
             <Typography
                 variant='h4'
