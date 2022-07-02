@@ -7,6 +7,7 @@ import { Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
 import AddressAutoComplete from './common/AddressAutoComplete_2'
+import StyledDatePicker from './common/StyledDatePicker'
 
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
@@ -169,19 +170,31 @@ class AddUser extends React.PureComponent {
 const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInputChange, _handleAutoCompChange) => {
     return ([
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1 }}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
             <AddressAutoComplete
                 _handleAutoCompInputChange = { _handleAutoCompInputChange }
                 _handleAutoCompChange = { _handleAutoCompChange }
                 filterOptions = { addressFilterOptions }
                 value={ newUser?.profile?.house_address } 
                 title={"House Address"} 
-                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
-                fieldStyle={{ width:'50%' }}
+                titleStyle={{ fontFamily: 'Roboto'}} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
-            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/> */}
-            <UserField  dispatch={dispatch} field={'profile'} subField={'birth_day'}  title={"Birth Date"} value={newUser?.profile?.birth_day} fieldStyle={{ width:'50%' }}/>
+            <StyledDatePicker
+                field={'profile'}
+                subField={'birth_day'}  
+                title={"Birth Date"} 
+                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                value={newUser?.profile?.birth_day}
+                dispatch={ dispatch }
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+            />
             <StyledDropdown 
                 filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
                 field={'profile'} 
@@ -189,7 +202,8 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 title={"Blood Group"} 
                 value={newUser?.profile?.blood_group || ''}
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:'50%' }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDropdown 
                 filterOptions={['Male', 'Female', 'Other']}
@@ -198,30 +212,53 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 title={"Gender"} 
                 value={newUser?.profile?.gender || ''}
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:'50%' }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:'50%' }}/> 
-            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'job_confirmed'}  title={"Job Confirmed"} value={newUser?.profile?.job_confirmed} fieldStyle={{ width:'50%' }}/> */}
-            <UserField  dispatch={dispatch} field={'profile'} subField={'joining_date'}  title={"Joining Date"} value={newUser?.profile?.joining_date} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/> 
+            <StyledDatePicker
+                field={'profile'}
+                subField={'joining_date'}  
+                title={"Joining Date"} 
+                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                value={newUser?.profile?.joining_date}
+                dispatch={ dispatch }
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+            />
+            <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
 
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:'50%' }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:'50%' }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
         </Box>
      
     ])
@@ -230,7 +267,7 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
 // field to add user information
 
 const UserField = (props) => {
-    const { title, label, value, field, subField, dispatch, style, fieldStyle, required, titleStyle } = props
+    const { title, label, value, field, subField, dispatch, style, fieldStyle, required, titleStyle, titleContainerStyle } = props
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize: '18px',
@@ -249,9 +286,11 @@ const UserField = (props) => {
     }
     return (
         <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
-            <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-                <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle, ...titleStyle }}>{title}</Typography>
+            { title && 
+            <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
+                <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle }}>{title}</Typography>
             </Box>
+            }
             <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
                 <FormControl
                     required={required}
@@ -290,12 +329,12 @@ const FilterField = (props) => {
 }
 const textStyle = {
     fontFamily: 'Roboto',
-    fontSize: '18px',
+    fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
 }
   return (
     <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-            <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+            <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle}}>{title}</Typography>
         </Box>
         <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
             <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>

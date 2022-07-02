@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Grid, Box, Typography, Paper, InputBase } from '@mui/material';
+import { Grid, Box, Typography, InputBase, FormControl } from '@mui/material';
 
 class StyledTextField extends React.PureComponent {
 
@@ -32,33 +32,34 @@ class StyledTextField extends React.PureComponent {
           }
     }
     render() {
-        const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
+        const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, titleContainerStyle, disabled } = this.props
 
         const { handleChange, _handleKeyDown } = this;
     
             return (
-                <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
-                    { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
-                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle, ...titleStyle}}>{title}</Typography>
+                <Grid xs={12} item sx={{display:'flex', width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
+                    { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
+                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, width:'100%', ...textStyle, ...titleStyle}}>{title}</Typography>
                     </Box>
                      }
                     <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>
-                        <Paper
+                        <FormControl
                             xs={12}
                             sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000',width:'100%', border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px', ...style }}
                         >   
                             
                             <InputBase
-                                sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
+                                sx={{ ml: .5, mt: .5, flex: 1, color: '#000000', opacity: 1,px:1 }}
                                 inputProps={{ 'aria-label': { title }, color: '#000000' }}
                                 value={value || ''}
                                 placeholder={ placeholder || ''}
                                 onChange={ handleChange }
                                 onKeyDown={ _handleKeyDown }
                                 disabled={disabled}
+                                fullWidth
                             />
-                        </Paper>
+                        </FormControl>
                     </Box>
                 </Grid>
             
