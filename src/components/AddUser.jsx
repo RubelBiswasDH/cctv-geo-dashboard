@@ -170,10 +170,10 @@ class AddUser extends React.PureComponent {
 const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInputChange, _handleAutoCompChange) => {
     return ([
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1 }}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
             <AddressAutoComplete
                 _handleAutoCompInputChange = { _handleAutoCompInputChange }
                 _handleAutoCompChange = { _handleAutoCompChange }
@@ -181,8 +181,8 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={ newUser?.profile?.house_address } 
                 title={"House Address"} 
                 titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
-                fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDatePicker
                 field={'profile'}
@@ -192,8 +192,8 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={newUser?.profile?.birth_day}
                 dispatch={ dispatch }
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDropdown 
                 filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
@@ -202,8 +202,8 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 title={"Blood Group"} 
                 value={newUser?.profile?.blood_group || ''}
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDropdown 
                 filterOptions={['Male', 'Female', 'Other']}
@@ -212,15 +212,15 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 title={"Gender"} 
                 value={newUser?.profile?.gender || ''}
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/> 
+            <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/> 
             <StyledDatePicker
                 field={'profile'}
                 subField={'joining_date'}  
@@ -229,36 +229,36 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={newUser?.profile?.joining_date}
                 dispatch={ dispatch }
                 action={ updateNewUserProfile }
-                fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
-            <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
 
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
         </Box>
      
     ])
