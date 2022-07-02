@@ -159,10 +159,21 @@ class Profile extends React.PureComponent {
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>General Information</Typography>
                                     <Button color={'btnCustomWaring'} variant={'contained'} size={'small'} style={{width:'auto',marginLeft:'auto', height:'40px'}} onClick={() => dispatch(setProfileEdit(true))} fullWidth>Edit</Button>
                                 </Box>
-                                <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Name"} field={"name"} value={userProfile?.name || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                        titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
-                                <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Mobile"} field={"phone"} value={userProfile?.phone || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
-                                        titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
+                                <StyledTextField 
+                                    disabled={disabled} 
+                                    action={ updateUserProfile } 
+                                    title={"Name"} field={"name"} 
+                                    value={userProfile?.name || ''} 
+                                    fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}
+                                />
+                                <StyledTextField 
+                                    disabled={disabled} 
+                                    action={ updateUserProfile } 
+                                    title={"Mobile"} field={"phone"} 
+                                    value={userProfile?.phone || ''} 
+                                    fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
+                                    titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
                                 <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Email"} field={"email"} value={userProfile?.email || ''} fieldStyle={{ width:{xs:'55%', lg:'70%'} }}
                                         titleContainerStyle={{width:{xs:'30%', lg:'15%'} }}/>
                                 <Box sx={{display:'flex',width:'100%'}} >

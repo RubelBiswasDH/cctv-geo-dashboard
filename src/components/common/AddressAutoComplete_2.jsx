@@ -11,7 +11,7 @@ class AddressAutoComplete extends React.PureComponent{
         const { _handleAutoCompInputChange, _handleAutoCompChange, filterOptions, title, titleStyle, value, titleContainerStyle, fieldStyle, sx } = this.props
         return(
             <Box sx={{display:'flex', width:'100%', ...sx}}>
-                { title && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', titleContainerStyle}}>
+                { title && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
                     <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...titleStyle }}>{title}</Typography>
                 </Box>
                 }
