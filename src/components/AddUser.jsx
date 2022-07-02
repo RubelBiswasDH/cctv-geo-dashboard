@@ -7,6 +7,7 @@ import { Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
 import AddressAutoComplete from './common/AddressAutoComplete_2'
+import StyledDatePicker from './common/StyledDatePicker'
 
 import { createUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
@@ -180,8 +181,16 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
                 fieldStyle={{ width:'50%' }}
             />
-            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'house_address'}  title={"House Address"} value={newUser?.profile?.house_address} fieldStyle={{ width:'50%' }}/> */}
-            <UserField  dispatch={dispatch} field={'profile'} subField={'birth_day'}  title={"Birth Date"} value={newUser?.profile?.birth_day} fieldStyle={{ width:'50%' }}/>
+            <StyledDatePicker
+                field={'profile'}
+                subField={'birth_day'}  
+                title={"Birth Date"} 
+                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                value={newUser?.profile?.birth_day}
+                dispatch={ dispatch }
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:'50%' }}
+            />
             <StyledDropdown 
                 filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
                 field={'profile'} 
@@ -204,8 +213,16 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:'50%' }}/> 
-            {/* <UserField  dispatch={dispatch} field={'profile'} subField={'job_confirmed'}  title={"Job Confirmed"} value={newUser?.profile?.job_confirmed} fieldStyle={{ width:'50%' }}/> */}
-            <UserField  dispatch={dispatch} field={'profile'} subField={'joining_date'}  title={"Joining Date"} value={newUser?.profile?.joining_date} fieldStyle={{ width:'50%' }}/>
+            <StyledDatePicker
+                field={'profile'}
+                subField={'joining_date'}  
+                title={"Joining Date"} 
+                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                value={newUser?.profile?.joining_date}
+                dispatch={ dispatch }
+                action={ updateNewUserProfile }
+                fieldStyle={{ width:'50%' }}
+            />
             <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:'50%' }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:'50%' }}/>
         </Box>,
