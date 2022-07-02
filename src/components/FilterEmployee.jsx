@@ -4,23 +4,29 @@ import { Button, Grid, Box, Typography } from '@mui/material'
 import { setCurrentEmployeeType } from '../redux/reducers/employeeReducer'
 
 const CustomButton = (props) => {
-        const {sx, name, currentEmployeeType} = props
+        const {sx, name, currentEmployeeType, disabled} = props
         const btnStyle = {
             textTransform:'none',
             minWidth:'100%',
             background:'#A5A6F6',
+            "&:disabled": {
+                backgroundColor: '#7879F1'
+              },
             boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12)',
             borderRadius: '4px',
+            "&:disabled": {
+                backgroundColor: '#7879F1'
+              }
         }
 
-        const activeBtn = (currentEmployeeType === name)? {background:'#7879F1'}:{}
+        const activeBtn = (currentEmployeeType === name )? {background:'#7879F1'}:{}
 
         const handleClick = () => {
             props.onClick()
         }
 
         return (
-            <Button onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="iris"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'#FFFFFF', ...sx}}>{props.children}</Typography></Button>
+            <Button disabled={disabled} onClick={handleClick} sx={{...btnStyle, ...activeBtn}} variant="contained" color="iris"><Typography sx={{p:.5,pt:.75, fontSize:{xs:'.2em', sm:'.8em',md:'.8em',lg:'.8em',xl:'.8em'},fontWeight:400,color:'#FFFFFF', ...sx}}>{props.children}</Typography></Button>
         );
 }
 
@@ -59,7 +65,7 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const { currentEmployeeType } = this.props
+        const { currentEmployeeType, disabled } = this.props
         const { handleCountEmployee, handleEmployeeTypeChange } = this
         return (
         <Box sx={theme => ({
@@ -74,19 +80,19 @@ class FilterEmpolyee extends React.PureComponent{
                 direction="row" 
                 sx={{p:0,m:0,mb:1,gap:2,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start'}}>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('total_employees')} name={'total_employees'} currentEmployeeType ={currentEmployeeType} >Total employees: {handleCountEmployee("","")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('total_employees')} name={'total_employees'} currentEmployeeType ={currentEmployeeType} >Total employees: {handleCountEmployee("","")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('males')} name={'males'} currentEmployeeType ={currentEmployeeType} >Total males: {handleCountEmployee("gender","male")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('males')} name={'males'} currentEmployeeType ={currentEmployeeType} >Total males: {handleCountEmployee("gender","male")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('females')} name={'females'} currentEmployeeType ={currentEmployeeType} >Total females: {handleCountEmployee("gender","female")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('females')} name={'females'} currentEmployeeType ={currentEmployeeType} >Total females: {handleCountEmployee("gender","female")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('probational_period')} name={'probational_period'} currentEmployeeType ={currentEmployeeType} >Probation: {handleCountEmployee("job_status","probation")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('probational_period')} name={'probational_period'} currentEmployeeType ={currentEmployeeType} >Probation: {handleCountEmployee("job_status","probation")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton sx={{}} onClick={() => handleEmployeeTypeChange('intern')} name={'intern'} currentEmployeeType ={currentEmployeeType} >Intern: {handleCountEmployee("job_status","intern")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('intern')} name={'intern'} currentEmployeeType ={currentEmployeeType} >Intern: {handleCountEmployee("job_status","intern")}</CustomButton>
                     </Grid>
                 
             </Grid>

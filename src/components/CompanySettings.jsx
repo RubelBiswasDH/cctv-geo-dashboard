@@ -9,10 +9,11 @@ import StyledTextField from '../components/common/StyledTextField'
 // Import Actions & Methods
 
 import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
+import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 
-import { setCurrentDepartment, setCurrentDesignation } from "../redux/reducers/companySettingsReducer"
+import { setCurrentDepartment, updateCurrentDesignations } from "../redux/reducers/companySettingsReducer"
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -62,24 +63,24 @@ class CompanySettings extends React.PureComponent {
         dispatch( setCurrentDepartment (''))
     }
     _handleAddDesignation = (department) => {
-        const { dispatch, companySettings, currentDesignation } = this.props
+        const { dispatch, companySettings, currentDesignations } = this.props
         const prevDesignations = companySettings?.departments[department]?.designations || []
 
         dispatch(updateCompanyDepartments({
             ...companySettings.departments,
             [department]:{ 
                 name: department,
-                designations:[ ...prevDesignations, currentDesignation]
+                designations:[ ...prevDesignations, currentDesignations[department]]
             }
         }))
-        dispatch( setCurrentDesignation (''))
+        dispatch( updateCurrentDesignations ({[department]:''}))
         dispatch( setCompanySettingsAction({
             ...companySettings,
             'departments':{
                 ...companySettings.departments,
                 [department]:{ 
                     name: department,
-                    designations:[ ...prevDesignations, currentDesignation]
+                    designations:[ ...prevDesignations, currentDesignations[department]]
                 }
             },
             
@@ -87,9 +88,9 @@ class CompanySettings extends React.PureComponent {
     }
 
 
-    _handleClearDesignationField = () => {
+    _handleClearDesignationField = (department) => {
         const { dispatch } = this.props
-        dispatch(setCurrentDesignation (''))
+        dispatch(updateCurrentDesignations ({[department]: '' }))
     }
 
     _handleDeleteDesignation = (dept, dsg) => {
@@ -130,9 +131,13 @@ class CompanySettings extends React.PureComponent {
         console.log('edit :')
     }
 
+    _handleAddUserBtnClick =() => {
+        const { dispatch } = this.props
+        dispatch(setCurrentView('add_user'))
+    }
   render() {
-    const { companySettings, currentDepartment, currentDesignation } = this.props
-    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment } = this
+    const { companySettings, currentDepartment, currentDesignations } = this.props
+    const { _handleAddDepartment, _handleClearDepartmentField, _handleAddDesignation, _handleClearDesignationField, _handleDeleteDesignation, _handleDeleteDepartment, _handleEditDepartmentBtnClick,  _handleEditDepartment, _handleAddUserBtnClick } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -158,7 +163,7 @@ class CompanySettings extends React.PureComponent {
             </Box>
             <Box sx={{ display: 'flex',width:'100%',justifyContent:'space-between',alignItems:'flex-start'}}>
                 <Paper sx={{ height:60, width:'100%', display:'flex',  pl:2}} elevation={2}>
-                    <StyledTextField action={ setCurrentDepartment } value={ currentDepartment }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0,}}/>
+                    <StyledTextField action={ setCurrentDepartment } onEnterKeyDown={() => { _handleAddDepartment() }} value={ currentDepartment }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0,}}/>
                     <Button onClick={ _handleAddDepartment }><CheckCircleIcon color="btnCheck" /></Button>
                     <Button onClick={ _handleClearDepartmentField }><CancelOutlinedIcon color="btnCancel"/></Button>
 
@@ -182,9 +187,9 @@ class CompanySettings extends React.PureComponent {
                                 <Typography>Add Designation</Typography>
                             </Box>
                             <Paper sx={{ height:50, width:'100%', display:'flex' }} elevation={0}>
-                                <StyledTextField action={ setCurrentDesignation } value={ currentDesignation }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
+                                <StyledTextField action={ updateCurrentDesignations } onEnterKeyDown={() => { _handleAddDesignation(d) }} subField={d} value={ currentDesignations[d] ?? '' }  fieldStyle={{height:'100%', width:'100%',m:0 }} style={{ border:'none',borderBottom:'.5px solid gray', boxShadow:0}}/>
                                 <Button onClick={() => { _handleAddDesignation(d) } }><CheckCircleIcon color="btnCheck" /></Button>
-                                <Button onClick={ _handleClearDesignationField }><CancelOutlinedIcon color="btnCancel"/></Button>
+                                <Button onClick={ () => { _handleClearDesignationField(d) } }><CancelOutlinedIcon color="btnCancel"/></Button>
                             </Paper>
                             <Box sx={{gap:0}}>
                                 { (companySettings?.departments && Object.keys(companySettings?.departments).length 
@@ -209,7 +214,7 @@ class CompanySettings extends React.PureComponent {
             </Box>
         </Box>
         <Box sx={{display:'flex', alignItems:'flex-end', justifyContent:'flex-start',width:'100%'}}>
-            <Button variant="contained" color={"btnSecondaryAdd"} sx={{ width: '20%' }}>Add User</Button>
+            <Button onClick={ _handleAddUserBtnClick }  variant="contained" color={"btnSecondaryAdd"} sx={{ width: '20%' }}>Add User</Button>
         </Box>
       </Box>
     )
@@ -263,7 +268,7 @@ const mapStateToProps = state => ({
   companyAddressData: state?.admin?.companyAddressData,
   companySettings: state?.admin?.companySettings,
   currentDepartment: state?.companySettings?.currentDepartment,
-  currentDesignation: state?.companySettings?.currentDesignation,
+  currentDesignations: state?.companySettings?.currentDesignations,
   settings: state?.companySettings?.settings,
 })
 

@@ -25,10 +25,16 @@ class StyledTextField extends React.PureComponent {
         }
     }
 
+    _handleKeyDown = (e) => {
+        const { onEnterKeyDown } = this.props
+        if(onEnterKeyDown && e.key === 'Enter'){
+            onEnterKeyDown()
+          }
+    }
     render() {
         const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
 
-        const { handleChange } = this;
+        const { handleChange, _handleKeyDown } = this;
     
             return (
                 <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
@@ -49,6 +55,7 @@ class StyledTextField extends React.PureComponent {
                                 value={value || ''}
                                 placeholder={ placeholder || ''}
                                 onChange={ handleChange }
+                                onKeyDown={ _handleKeyDown }
                                 disabled={disabled}
                             />
                         </Paper>

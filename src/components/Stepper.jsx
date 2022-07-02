@@ -22,7 +22,7 @@ class CustomStepper extends React.PureComponent {
         const { skipped } = this.state
         return skipped.has(step);
       };
-      handleCancle = () => {
+      handleCancel= () => {
         this.setState( prev => ({activeStep: 0}))
 
       };
@@ -61,7 +61,7 @@ class CustomStepper extends React.PureComponent {
       };
     
       render(){
-        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleCancle } = this
+        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleCancel} = this
         const { activeStep } = this.state
         const { handleSubmit, steps, contents } = this.props
         return (<Box sx={{ width: '100%'}}>
@@ -82,12 +82,12 @@ class CustomStepper extends React.PureComponent {
         {activeStep === steps.length ? (
           <React.Fragment>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', pt: 4} }>
-                <Typography sx={{fontSize:'20px'}}>Click the Submit button to create user or cancle to go back</Typography>
+                <Typography sx={{fontSize:'20px'}}>Click the Submit button to create user or cancel to go back</Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, gap:2,pr:10 }}>
             <Box sx={{ flex: '1 1 auto' }} />
-                <Button variant='contained' color='warning' onClick={ handleCancle }>Cancle</Button>
-                <Button variant='contained' color='success' onClick={ handleSubmit }>Sumbit</Button>
+                <Button variant='contained' color='warning' onClick={ handleCancel}>Cancel</Button>
+                <Button variant='contained' color='success' onClick={ handleSubmit }>Submit</Button>
             </Box>
           </React.Fragment>
         ) : (
@@ -114,8 +114,13 @@ class CustomStepper extends React.PureComponent {
                 </Button>
               )}
   
-            <Button variant='contained' color='success'  onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish': 'Next'}
+              <Button 
+                variant='contained' 
+                color='success'  
+                onClick={
+                  activeStep === steps.length - 1 ? handleSubmit : handleNext}
+              >
+                {activeStep === steps.length - 1 ? 'Submit': 'Next'}
               </Button>
             </Box>
           </React.Fragment>
