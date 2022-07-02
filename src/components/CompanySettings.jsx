@@ -179,7 +179,7 @@ class CompanySettings extends React.PureComponent {
                             id="panel1a-header"
                             >
                             <Button variant="outlined" color='error' size={'small'} onClick={ () => {  _handleDeleteDepartment(d) } }>Delete</Button>
-                            <Button variant="outlined" color='warning' size={'small'} onClick={ () => {  _handleEditDepartmentBtnClick(d) } } sx={{ml: 2}}>Edit</Button>
+                            {/* <Button variant="outlined" color='warning' size={'small'} onClick={ () => {  _handleEditDepartmentBtnClick(d) } } sx={{ml: 2}}>Edit</Button> */}
                             <Typography key={d}  sx={{ display:'flex',alignItems:'center', fontSize:'1.2em', ml: 5}}>{ d }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
