@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Grid, Box, Typography, Paper, InputBase } from '@mui/material';
+import { Grid, Box, Typography, InputBase, FormControl } from '@mui/material';
 
 class StyledTextField extends React.PureComponent {
 
@@ -43,7 +43,7 @@ class StyledTextField extends React.PureComponent {
                     </Box>
                      }
                     <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'50%', ...fieldStyle }}>
-                        <Paper
+                        <FormControl
                             xs={12}
                             sx={{ p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', color: '#000000',width:'100%', border: '1px solid rgba(0, 0, 0, 0.23)',
                             borderRadius: '4px', ...style }}
@@ -58,7 +58,7 @@ class StyledTextField extends React.PureComponent {
                                 onKeyDown={ _handleKeyDown }
                                 disabled={disabled}
                             />
-                        </Paper>
+                        </FormControl>
                     </Box>
                 </Grid>
             

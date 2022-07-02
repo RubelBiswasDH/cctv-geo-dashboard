@@ -9,6 +9,7 @@ import { updateUserProfile, setProfileEdit } from '../redux/reducers/adminReduce
 import { setCurrentProfileTab } from '../redux/reducers/employeeReducer'
 import StyledTextField from './common/StyledTextField'
 import StyledDropdown from './common/StyledDropdown'
+import StyledDatePicker from './common/StyledDatePicker'
 
 const GridContent = (props) => {
     const { style, title } = props
@@ -188,7 +189,20 @@ class Profile extends React.PureComponent {
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Personal Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"NID"} field={"nid"} value={userProfile?.nid || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"TIN"} field={"tin"} value={userProfile?.tin || ''} fieldStyle={{width:'70%'}}/>
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Birth Day"} field={"birth_day"} value={userProfile?.birth_day || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledDatePicker 
+                                        disabled={disabled}
+                                        field={'profile'}
+                                        subField={'birth_day'}  
+                                        title={"Birth Day"} 
+                                        titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                                        titleContainerStyle={{ width: '15%' }}
+
+                                        value={ userProfile?.birth_day }
+                                        dispatch={ dispatch }
+                                        action={ updateUserProfile }
+                                        fieldStyle={{ml:1.85, width:'70%' }}
+                                    />
+
                                     <StyledDropdown 
                                         filterOptions={['Male', 'Female', 'Other']}
                                         field={'profile'} 
@@ -207,8 +221,19 @@ class Profile extends React.PureComponent {
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Office Information</Typography>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Email :"} field={"office_email"} value={userProfile?.office_email || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Office Mobile :"} field={"office_mobile"} value={userProfile?.office_mobile || ''} fieldStyle={{width:'70%'}}/>
-                                    {/* <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Job Confirmed : "} field={"job_confirmed"} value={userProfile?.job_confirmed || ''} fieldStyle={{width:'70%'}}/> */}
-                                    <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Joining Date : "} field={"joining_date"} value={userProfile?.joining_date || ''} fieldStyle={{width:'70%'}}/>
+                                    <StyledDatePicker 
+                                        disabled={disabled}
+                                        field={'profile'}
+                                        subField={'joining_date'}  
+                                        title={"Joining Date : "} 
+                                        titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                                        titleContainerStyle={{ width: '15%' }}
+
+                                        value={ userProfile?.joining_date }
+                                        dispatch={ dispatch }
+                                        action={ updateUserProfile }
+                                        fieldStyle={{ml:1.85, width:'70%' }}
+                                    />
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Reporting Person :"} field={"reporting_person"} value={userProfile?.reporting_person || ''} fieldStyle={{width:'70%'}}/>
                                     <StyledTextField disabled={disabled} action={ updateUserProfile } title={"Gross Salary : "} field={"basic_salary"} value={userProfile?.basic_salary || ''} fieldStyle={{width:'70%'}}/>
                                     <Typography sx={{...textStyle,width:'20%', boxShadow:1,mb:2}}>Previous Office Information</Typography>

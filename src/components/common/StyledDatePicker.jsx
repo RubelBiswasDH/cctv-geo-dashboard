@@ -23,7 +23,7 @@ class StyledDatePicker extends React.PureComponent{
         }
     }
     render(){
-        const { sx, fieldStyle, title, titleStyle, titleContainerStyle, value  } = this.props
+        const { sx, fieldStyle, title, titleStyle, titleContainerStyle, value, disabled  } = this.props
         return <Box sx={{display:'flex', width:'100%', ...sx}}>
                 { title && 
                     <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle }}>
@@ -32,6 +32,7 @@ class StyledDatePicker extends React.PureComponent{
                 }
                 <LocalizationProvider dateAdapter={ AdapterDayjs }>
                     <DatePicker
+                        disabled={disabled}
                         value = { value }
                         onChange={ this._handleDateChange }
                         disableMaskedInput={ true }
