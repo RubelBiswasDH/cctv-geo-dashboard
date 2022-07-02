@@ -180,7 +180,7 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 filterOptions = { addressFilterOptions }
                 value={ newUser?.profile?.house_address } 
                 title={"House Address"} 
-                titleStyle={{ fontFamily: 'Roboto',fontSize: '18px'}} 
+                titleStyle={{ fontFamily: 'Roboto'}} 
                 fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
@@ -288,7 +288,7 @@ const UserField = (props) => {
         <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
             { title && 
             <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
-                <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle, ...titleStyle }}>{title}</Typography>
+                <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle }}>{title}</Typography>
             </Box>
             }
             <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
@@ -329,12 +329,12 @@ const FilterField = (props) => {
 }
 const textStyle = {
     fontFamily: 'Roboto',
-    fontSize: '18px',
+    fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
 }
   return (
     <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-            <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle}}>{title}</Typography>
+            <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle}}>{title}</Typography>
         </Box>
         <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
             <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>

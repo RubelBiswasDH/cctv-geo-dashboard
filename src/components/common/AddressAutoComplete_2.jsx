@@ -12,7 +12,7 @@ class AddressAutoComplete extends React.PureComponent{
         return(
             <Box sx={{display:'flex', width:'100%', ...sx}}>
                 { title && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
-                    <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...titleStyle }}>{title}</Typography>
+                    <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...titleStyle }}>{title}</Typography>
                 </Box>
                 }
                 <Autocomplete

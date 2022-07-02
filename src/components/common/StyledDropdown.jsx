@@ -32,7 +32,7 @@ class StyledDropdown extends React.PureComponent {
                 <Grid xs={12} item sx={{display:'flex',gap:0, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start',...sx }}>
                 { title && 
                     <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle }}>
-                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px', ...textStyle, ...titleStyle}}>{title}</Typography>
+                        <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle}}>{title}</Typography>
                     </Box>
                 }
                 <FormControl disabled={disabled} fullWidth={fullWidth} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
