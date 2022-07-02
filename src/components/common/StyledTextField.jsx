@@ -32,13 +32,13 @@ class StyledTextField extends React.PureComponent {
           }
     }
     render() {
-        const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, labelContainerStyle, disabled } = this.props
+        const { title, value, placeholder, style, fieldStyle, titleStyle, containerStyle, titleContainerStyle, disabled } = this.props
 
         const { handleChange, _handleKeyDown } = this;
     
             return (
-                <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
-                    { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...labelContainerStyle}}>
+                <Grid xs={12} item sx={{display:'flex', width:'100%',alignItems:'flex-start',justifyContent: 'flex-start', ...containerStyle }}>
+                    { (title) && <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
                         <Typography variant='h6' sx={{ fontWeight:600, fontSize:'20px',width:'100%', ...textStyle, ...titleStyle}}>{title}</Typography>
                     </Box>
                      }
@@ -50,13 +50,14 @@ class StyledTextField extends React.PureComponent {
                         >   
                             
                             <InputBase
-                                sx={{ ml: 3, mt: .5, flex: 1, color: '#000000', opacity: 1 }}
+                                sx={{ ml: .5, mt: .5, flex: 1, color: '#000000', opacity: 1,px:1 }}
                                 inputProps={{ 'aria-label': { title }, color: '#000000' }}
                                 value={value || ''}
                                 placeholder={ placeholder || ''}
                                 onChange={ handleChange }
                                 onKeyDown={ _handleKeyDown }
                                 disabled={disabled}
+                                fullWidth
                             />
                         </FormControl>
                     </Box>
