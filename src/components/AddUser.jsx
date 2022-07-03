@@ -18,14 +18,9 @@ import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/redu
 import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setFilterOptions } from '../redux/reducers/attendanceReducer'
-import { updateNewUser, updateNewUserProfile, setFileInput } from '../redux/reducers/adminReducer'
+import { updateNewUser, updateNewUserProfile, setFileInput, setAddUserDetails } from '../redux/reducers/adminReducer'
 
 class AddUser extends React.PureComponent {
- 
-  state = {
-    add_details:false
-  }
-
 
   componentWillUnmount(){
     const { dispatch } = this.props
@@ -54,9 +49,9 @@ class AddUser extends React.PureComponent {
     } 
 
     _handleAddDetails = () => {
-        const { dispatch, newUser } = this.props
+        const { dispatch, newUser, addUserDetails } = this.props
         if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
-            this.setState(state => ({add_details:!state.add_details}))
+            dispatch(setAddUserDetails(!addUserDetails))
         }
         else{
             dispatch(setToastMessage('Please fill all Basic Informations fields before move to adding details !'))
@@ -66,7 +61,8 @@ class AddUser extends React.PureComponent {
     }
 
     _handleSkipDetails = () => {
-        this.setState(state => ({add_details:!state.add_details}))  
+        const { dispatch, addUserDetails } = this.props
+        dispatch(setAddUserDetails(!addUserDetails))
     }
 
     _handleAutoCompInputChange = e => {
@@ -104,9 +100,8 @@ class AddUser extends React.PureComponent {
 
 
   render() {
-    const { dispatch, newUser, companySettings, companyNameOptions } = this.props
+    const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails } = this.props
     const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput } = this
-    const { add_details } = this.state
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{display:'flex',py:2,pb:5, justifyContent:'space-between'}}>
@@ -115,7 +110,7 @@ class AddUser extends React.PureComponent {
             >
                 Add New User
             </Typography>
-            { add_details && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
+            { addUserDetails && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
         </Box>
         <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2,gap:3, boxShadow:2}}>
             <Typography
@@ -141,7 +136,7 @@ class AddUser extends React.PureComponent {
 
             </Box>
         </Box>
-        { !add_details && <>
+        { !addUserDetails && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
                 <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
                     <Typography 
@@ -188,7 +183,7 @@ class AddUser extends React.PureComponent {
                 <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
             </Box>
         </>}
-        { add_details && 
+        { addUserDetails && 
             <Box>
                 {/* <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Continue with Minimal Information</Typography></Button> */}
             <Box 
@@ -466,7 +461,8 @@ const mapStateToProps = state => ({
   newUser: state?.admin?.newUser,
   companySettings: state?.admin?.companySettings,
   companyNameOptions: state?.register?.companyNameOptions ?? [],
-  fileInput: state?.admin?.fileInput
+  fileInput: state?.admin?.fileInput,
+  addUserDetails: state?.admin?.addUserDetails ?? false
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

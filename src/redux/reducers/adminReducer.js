@@ -37,7 +37,8 @@ const initialState = {
   },
   setSelectedUserId: '',
   userDeleteReason: '',
-  addressFilterOptions: []
+  addressFilterOptions: [],
+  addUserDetails: false
 }
 
 const adminSlice = createSlice({
@@ -68,7 +69,6 @@ const adminSlice = createSlice({
     setNewUserRole: (state, action) => {
       state.newUserRole = action.payload
     },
-
     setFileInput: (state, action) => {
       state.fileInput = action.payload
     },
@@ -125,9 +125,12 @@ const adminSlice = createSlice({
     },
     setAddressFilterOptions: ( state, action ) => {
       state.addressFilterOptions = action.payload
+    },
+    setAddUserDetails: ( state, action ) => {
+      state.addUserDetails = action.payload
     }
   }
 })
 
-export const { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments, setAddressFilterOptions } = adminSlice.actions
+export const { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments, setAddressFilterOptions, setAddUserDetails } = adminSlice.actions
 export default adminSlice.reducer
