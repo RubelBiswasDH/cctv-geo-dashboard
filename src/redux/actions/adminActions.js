@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { API } from '../../App.config'
 import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays, updateNewUser, setAddUserDetails } from '../reducers/adminReducer';
-import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
+import { setToastIsOpen, setToastMessage, setToastSeverity, setCurrentView } from '../reducers/dashboardReducer';
 
 import { getEmployee }  from '../actions/employeeActions'
 import { getAttendance } from './attendanceActions';
 import { getAuthToken } from '../../utils/utils'
+import { setView } from '../../utils/utils'
 
 import dayjs from 'dayjs'
 // setUserProfile Action
@@ -54,12 +55,16 @@ export function getCompanySettingsAction() {
 
 
 // setCompanySettingsAction
-export function setCompanySettingsAction(data) {
+export function setCompanySettingsAction( data, isNewUser ) {
     return dispatch => {
         const token = getAuthToken()
         axios.post(API.SET_COMPANY_SETTINGS, data, { headers: { Authorization: `Bearer ${ token }` } })
             .then(res => {
                 if(res.status===200){
+                    if(isNewUser){
+                        setView('company_settings')
+                        dispatch(setCurrentView('company_settings'))
+                    }
                     dispatch(getCompanySettingsAction())
                     dispatch(setMonthYear(''))
                     dispatch(setWorkingDays(''))
@@ -67,6 +72,7 @@ export function setCompanySettingsAction(data) {
                     dispatch(setToastMessage("Settings Successfully Updated"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
+                    
                 }
             })
             .catch(err => {
