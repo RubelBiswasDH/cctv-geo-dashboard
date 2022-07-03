@@ -10,6 +10,8 @@ import StyledTextField from '../components/common/StyledTextField'
 
 import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
+import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
+
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction, setCompanySettingsAction } from '../redux/actions/adminActions'
 
@@ -45,46 +47,65 @@ class CompanySettings extends React.PureComponent {
 
     _handleAddDepartment = () => {
         const { dispatch, companySettings, currentDepartment } = this.props
-        dispatch( setCurrentDepartment (''))
-        dispatch( setCompanySettingsAction({
-            ...companySettings,
-            'departments':{
+        if( currentDepartment && currentDepartment.length){
+            dispatch( setCurrentDepartment (''))
+            dispatch( setCompanySettingsAction({
+                ...companySettings,
+                'departments':{
+                    ...companySettings.departments,
+                    [currentDepartment]:{name:currentDepartment}
+                },
+            }) )
+            dispatch(updateCompanyDepartments({
                 ...companySettings.departments,
                 [currentDepartment]:{name:currentDepartment}
-            },
-        }) )
-        dispatch(updateCompanyDepartments({
-            ...companySettings.departments,
-            [currentDepartment]:{name:currentDepartment}
-        }))
+            }))
+        }
+        
+        else {
+            dispatch(setToastMessage("Fields can't  be empty"))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
     }
+    
     _handleClearDepartmentField = () => {
         const { dispatch } = this.props
         dispatch( setCurrentDepartment (''))
     }
+
     _handleAddDesignation = (department) => {
         const { dispatch, companySettings, currentDesignations } = this.props
         const prevDesignations = companySettings?.departments[department]?.designations || []
-
-        dispatch(updateCompanyDepartments({
-            ...companySettings.departments,
-            [department]:{ 
-                name: department,
-                designations:[ ...prevDesignations, currentDesignations[department]]
-            }
-        }))
-        dispatch( updateCurrentDesignations ({[department]:''}))
-        dispatch( setCompanySettingsAction({
-            ...companySettings,
-            'departments':{
+        if (currentDesignations
+            && Object.keys(currentDesignations).length
+            && currentDesignations[department]
+            && currentDesignations[department].length) {
+            dispatch(updateCompanyDepartments({
                 ...companySettings.departments,
-                [department]:{ 
+                [department]: {
                     name: department,
-                    designations:[ ...prevDesignations, currentDesignations[department]]
+                    designations: [...prevDesignations, currentDesignations[department]]
                 }
-            },
-            
-        }) )
+            }))
+            dispatch(updateCurrentDesignations({ [department]: '' }))
+            dispatch(setCompanySettingsAction({
+                ...companySettings,
+                'departments': {
+                    ...companySettings.departments,
+                    [department]: {
+                        name: department,
+                        designations: [...prevDesignations, currentDesignations[department]]
+                    }
+                },
+
+            }))
+        }
+        else {
+            dispatch(setToastMessage("Fields can't  be empty"))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
     }
 
 
