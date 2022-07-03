@@ -92,10 +92,13 @@ class AddUser extends React.PureComponent {
     _handleFileInput = e => {
         const { dispatch } = this.props
         e.preventDefault()
-        const file = e.target.files[0]
+        let file = e.target.files[0]
         const formData = new FormData()
         formData.append("users", file)
         dispatch(createBulkUser(formData))
+        file = null
+        formData.users = null
+        document.getElementById('fileInput').value='';
         // dispatch(setFileInput(file))
     }
 
@@ -440,6 +443,7 @@ const InputButton = (props) => {
                 </Typography>
             </Button>
             <input
+                id='fileInput'
                 ref={fileInput}
                 type="file"
                 style={{ display: 'none' }}

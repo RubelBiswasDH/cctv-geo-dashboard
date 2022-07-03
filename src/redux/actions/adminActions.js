@@ -190,6 +190,9 @@ export function createBulkUser(data) {
             })
             .catch(err => {
                 console.error(err)
+                dispatch(setToastSeverity('warning'))
+                dispatch(setToastMessage("Make sure your file properly formated as demo file or contains no duplicate user or existing user data"))
+                dispatch(setToastIsOpen(true))
             })
     }
 }
