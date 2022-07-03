@@ -435,7 +435,7 @@ switch (e.target.name) {
                 </Box>
                
                 {/* Company Address */}
-                <Box sx={{...boxStyle}}>
+                {/* <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Company Address' }</Typography>
 
                   <TextField
@@ -455,7 +455,7 @@ switch (e.target.name) {
                       authError && !authError.includes('password') ? authError : error.companyAddress ? error.companyAddress : null
                     }
                   />
-                </Box>
+                </Box> */}
                 {/* Retype Password */}
                 <Box sx={{...boxStyle}}>
                   <Typography sx={{...labelStyle}} variant='h6'>{ 'Retype Password' }</Typography>

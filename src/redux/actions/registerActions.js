@@ -32,13 +32,14 @@ export function register(user) {
 export function getCompanyList(name) {
     return dispatch => {
         if(name && name?.length > 0){
-        axios.get(API.AUTOCOMPLETE+name)
-            .then(res => {
-                dispatch(setCompanyNameOptions(res.data.places))
-            })
-            .catch(err => {
-                console.error(err)
-            })
+            let params = name.trim()
+            axios.get(API.AUTOCOMPLETE+params)
+                .then(res => {
+                    dispatch(setCompanyNameOptions(res.data.places))
+                })
+                .catch(err => {
+                    console.error(err)
+                })
         }
     }
 }

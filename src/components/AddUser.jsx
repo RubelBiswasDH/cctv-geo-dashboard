@@ -2,28 +2,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import downloadDemoCSV from '../assets/demo_users.xlsx'
+
 // Import Components
-import { Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
+import { Paper, Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
 import AddressAutoComplete from './common/AddressAutoComplete_2'
 import StyledDatePicker from './common/StyledDatePicker'
 
-import { createUser } from '../redux/actions/adminActions'
+import { createUser, createBulkUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
 
 import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setFilterOptions } from '../redux/reducers/attendanceReducer'
-import { updateNewUser, updateNewUserProfile } from '../redux/reducers/adminReducer'
+import { updateNewUser, updateNewUserProfile, setFileInput, setAddUserDetails } from '../redux/reducers/adminReducer'
 
 class AddUser extends React.PureComponent {
- 
-  state = {
-    add_details:false
-  }
-
 
   componentWillUnmount(){
     const { dispatch } = this.props
@@ -52,9 +49,9 @@ class AddUser extends React.PureComponent {
     } 
 
     _handleAddDetails = () => {
-        const { dispatch, newUser } = this.props
+        const { dispatch, newUser, addUserDetails } = this.props
         if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
-            this.setState(state => ({add_details:!state.add_details}))
+            dispatch(setAddUserDetails(!addUserDetails))
         }
         else{
             dispatch(setToastMessage('Please fill all Basic Informations fields before move to adding details !'))
@@ -64,7 +61,8 @@ class AddUser extends React.PureComponent {
     }
 
     _handleSkipDetails = () => {
-        this.setState(state => ({add_details:!state.add_details}))  
+        const { dispatch, addUserDetails } = this.props
+        dispatch(setAddUserDetails(!addUserDetails))
     }
 
     _handleAutoCompInputChange = e => {
@@ -79,11 +77,31 @@ class AddUser extends React.PureComponent {
             'house_address': value?.Address ?? ''
         }))
     }
+    _handleFileUpload = e => {
+        e.preventDefault()
+        const { dispatch, fileInput } = this.props
+        const formData = new FormData();
+        formData.append("users", fileInput)
+        dispatch(createBulkUser(formData))
+    }
+
+    _handleFileInput = e => {
+        const { dispatch } = this.props
+        e.preventDefault()
+        let file = e.target.files[0]
+        const formData = new FormData()
+        formData.append("users", file)
+        dispatch(createBulkUser(formData))
+        file = null
+        formData.users = null
+        document.getElementById('fileInput').value='';
+        // dispatch(setFileInput(file))
+    }
+
 
   render() {
-    const { dispatch, newUser, companySettings, companyNameOptions } = this.props
-    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange } = this
-    const { add_details } = this.state
+    const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails } = this.props
+    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{display:'flex',py:2,pb:5, justifyContent:'space-between'}}>
@@ -92,9 +110,33 @@ class AddUser extends React.PureComponent {
             >
                 Add New User
             </Typography>
-            { add_details && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
+            { addUserDetails && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
         </Box>
-        { !add_details && <>
+        <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2,gap:3, boxShadow:2}}>
+            <Typography
+                    variant='h5'
+                    sx={{
+                        fontWeight: 400,
+                        fontSize: '24px'
+                    }}
+            >
+                    Import Multiple Employee
+            </Typography>
+            <Typography
+                    variant='body2'
+                    sx={{fontWeight: 400, fontSize: '14px'}}
+                >
+                    Import the dummy csv file and change it according to your employees credentials. Click here to download 
+                    <Button href={downloadDemoCSV} onClick={() => null} variant='text'>DEMO CSV</Button>
+            </Typography>
+            
+             <Box sx={{display:'flex', width:'100%',gap:2}}>
+                <InputButton onChange={_handleFileInput}></InputButton>
+                {/* <Button onClick={_handleFileUpload} variant="outlined" style={{ ml:2,pt: .5, width: '10%' }}>Submit</Button> */}
+
+            </Box>
+        </Box>
+        { !addUserDetails && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
                 <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
                     <Typography 
@@ -141,7 +183,7 @@ class AddUser extends React.PureComponent {
                 <Button variant='contained' color='success'  onClick={ _handleSaveUser }><Typography>Add User</Typography></Button>
             </Box>
         </>}
-        { add_details && 
+        { addUserDetails && 
             <Box>
                 {/* <Button variant='contained' color='warning' onClick={ _handleAddDetails }><Typography>Continue with Minimal Information</Typography></Button> */}
             <Box 
@@ -354,12 +396,56 @@ const textStyle = {
   )
 }
 
-// Prop Types
-AddUser.propTypes = {
-    dispatch: PropTypes.func,
-    user: PropTypes.object,
-    newUser: PropTypes.object,
+//file input button
 
+const InputButton = (props) => {
+    const { sx, onChange } = props
+    const fileInput = React.createRef()
+    var title = (fileInput?.current && fileInput.current.files?.length > 0)?fileInput.current?.files[0]?.name:"IMPORT"
+
+    if(fileInput?.current && fileInput.current.files.length > 0){
+        // console.log(fileInput.current.files.length > 0)
+        // console.log({file: fileInput.current?.files[0]?.name})
+    }
+    
+    return (
+        <Paper
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', border:'1.5px solid black', ...sx }}
+        >
+            <Button
+                variant="text"
+                color="primary"
+                fullWidth
+                sx={{ display: 'flex',gap:1, alignItems: 'center', justifyContent: 'center',textTransform: 'none',width:'100%'}}
+                onClick={() => fileInput.current.click()}
+            >
+                <Typography
+                    sx={{
+                        color: 'white',
+                        fontSize: '.8em',
+                        pl: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        flex: 1,
+                        color: 'white',
+                        opacity: 1,
+                        borderRadius: 2
+                    }}>
+                    {title}
+                </Typography>
+            </Button>
+            <input
+                id='fileInput'
+                ref={fileInput}
+                type="file"
+                style={{ display: 'none' }}
+                onChange={onChange}
+            />
+        </Paper>
+    );
 }
 
 AddUser.defaultProps = {
@@ -374,7 +460,9 @@ const mapStateToProps = state => ({
   user: state?.auth?.user,
   newUser: state?.admin?.newUser,
   companySettings: state?.admin?.companySettings,
-  companyNameOptions: state?.register?.companyNameOptions ?? []
+  companyNameOptions: state?.register?.companyNameOptions ?? [],
+  fileInput: state?.admin?.fileInput,
+  addUserDetails: state?.admin?.addUserDetails ?? false
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

@@ -111,12 +111,15 @@ class StyledDataGrid extends React.PureComponent {
                                                     <Typography 
                                                         sx={{
                                                             fontFamily:'Roboto',
-                                                            fontSize:'16px',
+                                                            fontSize: {xs:'10px',sm:'12px',md:'14px',lg:'16px'},
                                                             fontWeight:400,
                                                             fontStyle: 'normal',
                                                             color:'#007AFF',
                                                             textTransform:'none',
                                                             textDecoration: 'underline',
+                                                            overflow:'hidden',
+                                                            whiteSpace: 'nowrap',
+                                                            textOverflow:'ellipsis',
                                                             }}
                                                             >
                                                             {cellValues.value}

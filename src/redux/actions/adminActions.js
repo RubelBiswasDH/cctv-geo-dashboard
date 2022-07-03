@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { API } from '../../App.config'
-import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays, updateNewUser} from '../reducers/adminReducer';
+import {setUserProfile, setProfileEdit, setCompanySettings, setNewUser, setAnnouncementMessage, setLateTime, setMonthYear, setWorkingDays, updateNewUser, setAddUserDetails } from '../reducers/adminReducer';
 import { setToastIsOpen, setToastMessage, setToastSeverity } from '../reducers/dashboardReducer';
 
 import { getEmployee }  from '../actions/employeeActions'
 import { getAttendance } from './attendanceActions';
 import { getAuthToken } from '../../utils/utils'
+
 import dayjs from 'dayjs'
 // setUserProfile Action
 export function setInvalidLateAttendanceAction(data) {
@@ -152,6 +153,7 @@ export function createUser(user) {
             .then(res => {
                 if(res.status===200){
                     dispatch(getEmployee())
+                    dispatch(setAddUserDetails(false))
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastIsOpen(true))
@@ -174,15 +176,15 @@ export function createUser(user) {
 export function createBulkUser(data) {
     return dispatch => {
         const token = getAuthToken()
-        axios.post(API.CREATE_BULK_USER, {'users':data}, { 
+        axios.post(API.CREATE_BULK_USER, data, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
                 'Content-Type': 'multipart/form-data',
-
                 } 
         })
             .then(res => {
                 if(res.status===200){
+                    dispatch(getEmployee())
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastIsOpen(true))
@@ -190,6 +192,9 @@ export function createBulkUser(data) {
             })
             .catch(err => {
                 console.error(err)
+                dispatch(setToastSeverity('warning'))
+                dispatch(setToastMessage("Make sure your file properly formated as demo file or contains no duplicate user or existing user data"))
+                dispatch(setToastIsOpen(true))
             })
     }
 }

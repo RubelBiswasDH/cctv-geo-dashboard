@@ -56,8 +56,8 @@ class AddressAutoComplete extends React.PureComponent{
                 }}
                 renderOption={(props, option) => (
                     <Grid container {...props} key={option.id} >
-                        <Grid item xs={12}><Typography sx={{ fontSize: '1em' }}>{option?.Address?.split(',')[0]}</Typography></Grid>
-                        <Grid item xs={12}><Typography>{option?.Address}</Typography></Grid>
+                        <Grid item xs={12}><Typography sx={{ fontSize: '1em' }}>{option?.Address}</Typography></Grid>
+                        <Grid item xs={12}><Typography>{`${option?.Address+', '}${option?.area+', '}${option?.district}`}</Typography></Grid>
                     </Grid>)}
                 renderInput={(params) =>
                     <TextField
