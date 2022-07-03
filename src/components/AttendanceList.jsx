@@ -21,7 +21,7 @@ import dayjs from 'dayjs'
 import { unionArrayOfObjects } from '../utils/utils'
 const columns = [      
   { field: 'serial_no', headerName: 'Sl No', minWidth: 50,flex:.25, sortable: false, filter: false, filterable: false },
-  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true },
+  { field: 'name', headerName: 'Name', minWidth: 150,flex:1, sortable: false, filter: true, filterable: true, overflow: 'hidden', whiteSpace: 'nowrap', textTverflow: 'ellipsis' },
   { field: 'present', headerName: 'Present', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'late', headerName: 'Late', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
   { field: 'absence', headerName: 'Absence', minWidth: 50,flex:1, sortable: false, filter: true, filterable: true },
