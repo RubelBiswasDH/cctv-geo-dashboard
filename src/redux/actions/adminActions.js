@@ -174,15 +174,15 @@ export function createUser(user) {
 export function createBulkUser(data) {
     return dispatch => {
         const token = getAuthToken()
-        axios.post(API.CREATE_BULK_USER, {'users':data}, { 
+        axios.post(API.CREATE_BULK_USER, data, { 
             headers: { 
                 Authorization: `Bearer ${ token }`, 
                 'Content-Type': 'multipart/form-data',
-
                 } 
         })
             .then(res => {
                 if(res.status===200){
+                    dispatch(getEmployee())
                     dispatch(setToastSeverity('success'))
                     dispatch(setToastMessage("User Successfully Created"))
                     dispatch(setToastIsOpen(true))
