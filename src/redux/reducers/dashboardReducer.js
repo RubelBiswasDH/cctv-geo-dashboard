@@ -6,7 +6,8 @@ const initialState = {
     currentView: currentView ?? 'attendance',
     toastIsOpen: false,
     toastMessage: '',
-    toastSeverity: 'success'
+    toastSeverity: 'success',
+    isNewUser: false
 }
 
 const dashboardSlice = createSlice({
@@ -24,10 +25,12 @@ const dashboardSlice = createSlice({
     },
     setToastSeverity: (state, action) => {
       state.toastSeverity = action.payload
+    },
+    setIsNewUser:  (state, action) => {
+      state.isNewUser = action.payload
     }
-    
   }
 })
 
-export const { setCurrentView, setToastIsOpen, setToastMessage, setToastSeverity } = dashboardSlice.actions
+export const { setCurrentView, setToastIsOpen, setToastMessage, setToastSeverity, setIsNewUser } = dashboardSlice.actions
 export default dashboardSlice.reducer

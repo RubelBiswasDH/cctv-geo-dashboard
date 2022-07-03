@@ -52,12 +52,12 @@ class CompanyProfile extends React.PureComponent {
     
     _handleSaveCompanyAddress = (e) => {
         e.preventDefault()
-        const { dispatch, companySettings, companyAddressData } = this.props
+        const { dispatch, companySettings, companyAddressData, isNewUser } = this.props
         if (companyAddressData) {
             const new_settings = {
                 companyAddressData: companySettings.companyAddressData
             }
-            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }))
+            dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }, isNewUser))
         }
         else {
             dispatch(setToastMessage('Something went wrong, try again..'))
@@ -144,6 +144,7 @@ CompanyProfile.propTypes = {
     selectedDate: PropTypes.string,
     sndList: PropTypes.array,
     autocompleteSelectedTask: PropTypes.object,
+    isNewUser: PropTypes.bool
 }
 
 CompanyProfile.defaultProps = {
@@ -156,6 +157,7 @@ CompanyProfile.defaultProps = {
   selectedDate: '',
   sndList: [],
   autocompleteSelectedTask: null,
+  isNewUser: false
 }
 
 const mapStateToProps = state => ({
@@ -165,7 +167,7 @@ const mapStateToProps = state => ({
   currentAttendanceTab: state?.attendanceList?.currentAttendanceTab,
   companyAddressData: state?.admin?.companyAddressData,
   companySettings: state?.admin?.companySettings,
-
+  isNewUser: state?.dashboard?.isNewUser ?? false
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

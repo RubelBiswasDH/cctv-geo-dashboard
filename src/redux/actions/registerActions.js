@@ -2,7 +2,7 @@ import axios from 'axios'
 import { AUTH, API } from '../../App.config'
 import { setCompanyNameOptions } from '../reducers/registerReducer'
 import {login} from '../actions/authActions'
-import {setToastMessage, setToastSeverity, setToastIsOpen} from "../reducers/dashboardReducer"
+import {setToastMessage, setToastSeverity, setToastIsOpen, setIsNewUser } from "../reducers/dashboardReducer"
 import { setView } from '../../utils/utils'
 
 // Login Action
@@ -11,6 +11,7 @@ export function register(user) {
         axios.post(AUTH.REGISTER_API, user)
             .then(res => {
                 setView('company_profile')
+                dispatch(setIsNewUser(true))
                 dispatch( login({ email: user.email, password:user.password, device:'web' }) )
             })
             .catch(err => {
