@@ -192,7 +192,7 @@ class CompanySettings extends React.PureComponent {
                 
             </Box> 
             <Box sx={{ display: 'flex',flexDirection:'column',width:'100%',justifyContent:'space-between',alignItems:'flex-start', boxShadow:0 }}>
-                { (companySettings && companySettings?.departments && Object.keys(companySettings?.departments).length) && Object.keys(companySettings?.departments).map( d => 
+                { (companySettings && companySettings?.departments && Object.keys(companySettings?.departments).length) ? Object.keys(companySettings?.departments).map( d => 
                     <Accordion key={d} sx={{width:'100%'}}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -228,7 +228,7 @@ class CompanySettings extends React.PureComponent {
                             </Box>
                         </AccordionDetails>
                     </Accordion>
-                )
+                ):''
                     
                 }
                 
