@@ -100,7 +100,7 @@ class Announcements extends React.PureComponent {
       list = list.filter( a => a.type==='GENERAL')
     }
     if(filterOptions && filterOptions?.name){
-     list = list.filter( a => a.name.toLowerCase().startsWith(filterOptions.name.toLowerCase()))
+     list = list.filter( a => a.name.toLowerCase().includes(filterOptions.name.toLowerCase()))
     }
     return list
   }
