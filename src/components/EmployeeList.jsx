@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, Tooltip, Button, Typography, TextField } from '@mui/material'
+import { Box, Tooltip, Button, Typography, TextField, FormControl } from '@mui/material'
 import { GridActionsCellItem } from '@mui/x-data-grid'
 import ManageAccountsSharpIcon from '@mui/icons-material/ManageAccountsSharp';
 import StyledDataGrid from './common/StyledDataGrid'
@@ -12,6 +12,7 @@ import StyledTextField from './common/StyledTextField'
 import StyledDropdown from './common/StyledDropdown'
 
 // Import Actions & Methods
+import { setFilterOptions, updateFilterOptions } from '../redux/reducers/announcementReducer'
 import { getUserProfile, deleteUser, updateUser } from '../redux/actions/adminActions'
 import { setCurrentView } from '../redux/reducers/dashboardReducer'
 import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
@@ -52,11 +53,16 @@ class EmployeeList extends React.PureComponent {
     this.setState({ start_date, end_date })
   }
 
+  componentWillUnmount(){
+    const { dispatch } = this.props
+    dispatch(setFilterOptions({}))
+  }
+
   transformedEmployeeList = () => {
 
     const { currentEmployeeType } = this.props
-
-    var empData = (this.props.employeeList)?.map(emp => ({
+    let empList = this._filteredEmployee()
+    let empData = (empList)?.map(emp => ({
       ...emp,
       profile:JSON.parse(emp.profile)
     }))
@@ -171,10 +177,41 @@ class EmployeeList extends React.PureComponent {
   _handleDeleteDialogClose = () => {
     this.setState({isDeleteDialogOpen:false})
   }
+
+  _filteredEmployee = () => {
+    const { employeeList } = this.props;
+    const { filterOptions } = this.props
+    let list = employeeList
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
+      return list
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='LEAVE'){
+      list = list.filter( a => a.type==='LEAVE')
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='LATE'){
+      list = list.filter( a => a.type==='LATE')
+    }
+    if(filterOptions && filterOptions?.type && filterOptions?.type==='GENERAL'){
+      list = list.filter( a => a.type==='GENERAL')
+    }
+    if(filterOptions && filterOptions?.name){
+     list = list.filter( a => a.name.toLowerCase().includes(filterOptions.name.toLowerCase()))
+    }
+    return list
+  }
   render() {
-    const { isTaskLoading, newUser, companySettings } = this.props
+    const { dispatch, isTaskLoading, newUser, companySettings, filterOptions } = this.props
     return (
       <Box width='100%' height='73vh'>
+        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
+          <FilterField
+            field = {'name'}
+            label = {'Name'} 
+            value = {filterOptions?.name ?? ''}
+            dispatch = {dispatch}
+            action = {updateFilterOptions}
+          />
+        </Box>
         <StyledDataGrid
           columns={columns }
           rows={this.transformedEmployeeList()}
@@ -276,6 +313,23 @@ class EmployeeList extends React.PureComponent {
   }
 }
 
+const FilterField = (props) => {
+  const { dispatch, action, value, field, label} = props
+  return (
+    <FormControl fullWidth>
+      <TextField
+            value={ value } 
+            onChange={ 
+              e => dispatch(action({ [field]: e.target.value })) } 
+            label={label} 
+            size={'small'}
+            sx = {{fontSize: '.75em'}}
+            fullWidth> 
+      </TextField>
+    </FormControl>
+  )
+}
+
 // Prop Types
 EmployeeList.propTypes = {
   dispatch: PropTypes.func,
@@ -305,6 +359,7 @@ const mapStateToProps = state => ({
   newUser: state?.admin?.newUser,
   selectedUserId: state?.admin?.selectedUserId,
   userDeleteReason: state?.admin?.userDeleteReason,
+  filterOptions:state?.announcements?.filterOptions
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })

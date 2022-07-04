@@ -141,7 +141,7 @@ class Attendance extends React.PureComponent {
         attList = attList.filter( a => a?.is_absent)
       }
       if(filterOptions && filterOptions?.name){
-       attList = attList.filter( a => a?.name?.toLowerCase().startsWith(filterOptions?.name?.toLowerCase()))
+       attList = attList.filter( a => a?.name?.toLowerCase().includes(filterOptions?.name?.toLowerCase()))
       }
       return attList
     }

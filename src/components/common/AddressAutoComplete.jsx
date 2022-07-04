@@ -2,22 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setCompanyAddress, setCompanyLongitude, setCompanyLatitude } from '../../redux/reducers/registerReducer'
-import { setCompanySettings, setCompanyAddressData } from '../../redux/reducers/adminReducer'
+import { setCompanySettings, setCompanyAddressData, setFallbackComapanyAddress } from '../../redux/reducers/adminReducer'
 import { getCompanyList } from '../../redux/actions/registerActions'
 import { Grid, Typography, TextField, Autocomplete } from '@mui/material'
 
 
 class AddressAutoComplete extends React.PureComponent{
-    state={}
+    state={
+        inputAddress:''
+    }
     // handleAutoCompInputChange
     _handleAutoCompInputChange = e => {
         const { dispatch } = this.props
+        dispatch(setFallbackComapanyAddress(e.target.value))
         dispatch(getCompanyList(e.target.value))
     }
 
     // handleAutoCompChange
     _handleAutoCompChange = (e, value) => {
         const { dispatch, companySettings } = this.props
+        dispatch(setFallbackComapanyAddress(''))
         dispatch(setCompanyAddress(value?.Address ?? ''))
         dispatch(setCompanyAddressData(value?.Address ? {
             exact_address: value?.Address,
@@ -37,14 +41,16 @@ class AddressAutoComplete extends React.PureComponent{
     render(){ 
         const { _handleAutoCompInputChange, _handleAutoCompChange } = this
         const { companyNameOptions, companySettings, sx } = this.props
+        const { inputAddress } = this.state
         return(
             <Autocomplete
+                clearOnBlur={false}
                 sx={{ width: '100%', ...sx}}
                 onChange={ _handleAutoCompChange }
                 onInputChange={ _handleAutoCompInputChange}
                 disablePortal
                 id="companySearch"
-                options={companyNameOptions || []}
+                options={ companyNameOptions ?? [] }
                 getOptionLabel={(option) => {
                     if (typeof option === 'string') {
                         return option;

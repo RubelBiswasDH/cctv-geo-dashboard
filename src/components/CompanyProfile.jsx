@@ -52,8 +52,14 @@ class CompanyProfile extends React.PureComponent {
     
     _handleSaveCompanyAddress = (e) => {
         e.preventDefault()
-        const { dispatch, companySettings, companyAddressData, isNewUser } = this.props
-        if (companyAddressData) {
+        const { dispatch, companySettings, companyAddressData, isNewUser, fallbackComapanyAddress } = this.props
+        if(fallbackComapanyAddress){
+          const new_settings = {
+            companyAddressData: {exact_address:fallbackComapanyAddress}
+        }
+          dispatch(setCompanySettingsAction({ ...companySettings, ...new_settings }, isNewUser))
+        }
+        else if (companyAddressData) {
             const new_settings = {
                 companyAddressData: companySettings.companyAddressData
             }
@@ -108,7 +114,7 @@ class CompanyProfile extends React.PureComponent {
             </Box>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:2}}>
                 <MapGL
-                    markerData={(companySettings && companySettings?.companyAddressData && Object.keys(companySettings?.companyAddressData).length) ? [companySettings?.companyAddressData
+                    markerData={(companySettings && companySettings?.companyAddressData && Object.keys(companySettings?.companyAddressData).length && companySettings?.companyAddressData?.latitude) ? [companySettings?.companyAddressData
                     ] : []
                     }
                     getUpdatedAddress={ _updateExactAddress }
@@ -167,7 +173,8 @@ const mapStateToProps = state => ({
   currentAttendanceTab: state?.attendanceList?.currentAttendanceTab,
   companyAddressData: state?.admin?.companyAddressData,
   companySettings: state?.admin?.companySettings,
-  isNewUser: state?.dashboard?.isNewUser ?? false
+  isNewUser: state?.dashboard?.isNewUser ?? false,
+  fallbackComapanyAddress: state?.admin?.fallbackComapanyAddress ?? ''
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
