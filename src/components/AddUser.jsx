@@ -20,7 +20,6 @@ import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setFilterOptions } from '../redux/reducers/attendanceReducer'
 import { updateNewUser, updateNewUserProfile, setFileInput, setAddUserDetails, setUserFieldError, updateUserFieldError } from '../redux/reducers/adminReducer'
-import { tin } from '@turf/turf'
 
 class AddUser extends React.PureComponent {
 
@@ -41,7 +40,8 @@ class AddUser extends React.PureComponent {
             tin = this._validateNumber(newUser?.profile?.tin),
             basic_salary = this._validateNumber(newUser?.profile?.basic_salary),
             account_number = this._validateNumber(newUser?.profile?.account_number),
-            routing_number = this._validateNumber(newUser?.profile?.routing_number)
+            routing_number = this._validateNumber(newUser?.profile?.routing_number),
+            office_email = _validateEmail(newUser?.profile?.office_email, true)
 
 
     if (name.success 
@@ -54,6 +54,7 @@ class AddUser extends React.PureComponent {
         && basic_salary.success
         && account_number.success
         && routing_number.success
+        && office_email.success
         ) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
@@ -82,7 +83,8 @@ class AddUser extends React.PureComponent {
             tin: tin.message,
             basic_salary: basic_salary.message,
             account_number: account_number.message,
-            routing_number: routing_number.message
+            routing_number: routing_number.message,
+            office_email : office_email.message
         }))
 
         dispatch(setToastMessage('Some fields are missing or containing invalid data !'))
@@ -167,10 +169,30 @@ class AddUser extends React.PureComponent {
         return verdict
     }
 
-    _validateEmail = ( email ) => {
+    _validateEmail = ( email, optional ) => {
         email = email?.trim()
         const re = /\S+@\S+\.\S+/
         const verdict = { success: false, message: '' }
+        if(optional){
+            if(email) {
+                const isValid = re.test(email)
+                if(isValid){
+                    verdict.success = true
+                    verdict.message = ''
+                }
+                else{
+                    verdict.success = false
+                    verdict.message = 'Invalid Email !'
+                    return verdict
+                }
+            }
+            else{
+                verdict.success = true
+                verdict.message = ''
+            }
+            return verdict
+        }
+
         if(email) {
             const isValid = re.test(email)
             if(isValid){
@@ -459,8 +481,17 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
             />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_email'}  title={"Office Email"} value={newUser?.profile?.office_email} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'office_email'}  
+                title={"Office Email"} 
+                value={newUser?.profile?.office_email} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={userFieldError}  
+                updateUserFieldError={ updateUserFieldError } 
+            />
             <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/> 
             <StyledDatePicker
