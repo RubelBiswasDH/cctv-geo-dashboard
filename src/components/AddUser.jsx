@@ -33,9 +33,11 @@ class AddUser extends React.PureComponent {
     const { _validateRegularField, _validateEmail, _validatePhone } = this
     const   name = _validateRegularField(newUser?.name),      
             phone = _validatePhone(newUser?.phone),
-            email = _validateEmail(newUser?.email)
+            email = _validateEmail(newUser?.email),
+            department = _validateRegularField(newUser?.profile?.department),
+            designation = _validateRegularField(newUser?.profile?.designation)
 
-    if (name.success && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
+    if (name.success && phone.success && email.success && department.success && designation.success ) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
                 ...newUser,
@@ -51,7 +53,9 @@ class AddUser extends React.PureComponent {
         dispatch(setUserFieldError({
             name: name.message,
             email: email.message,
-            phone: phone.message
+            phone: phone.message,
+            department: department.message,
+            designation: designation.message
         }))
 
         dispatch(setToastMessage('All fields are mandatory'))
@@ -62,13 +66,24 @@ class AddUser extends React.PureComponent {
 
     _handleAddDetails = () => {
         const { dispatch, newUser, addUserDetails } = this.props
-        if (newUser.name && newUser.phone && newUser.email && newUser?.profile?.department && newUser?.profile?.designation) {
+        const { _validateRegularField, _validateEmail, _validatePhone } = this
+        const   name = _validateRegularField(newUser?.name),      
+                phone = _validatePhone(newUser?.phone),
+                email = _validateEmail(newUser?.email),
+                department = _validateRegularField(newUser?.profile?.department),
+                designation = _validateRegularField(newUser?.profile?.designation)
+    
+        if (name.success && phone.success && email.success && department.success && designation.success ) {
             dispatch(setAddUserDetails(!addUserDetails))
         }
         else{
-            dispatch(setToastMessage('Please fill all Basic Informations fields before move to adding details !'))
-            dispatch(setToastIsOpen(true))
-            dispatch(setToastSeverity('warning'))
+            dispatch(setUserFieldError({
+                name: name.message,
+                email: email.message,
+                phone: phone.message,
+                department: department.message,
+                designation: designation.message
+            }))
         }
     }
 
@@ -145,8 +160,9 @@ class AddUser extends React.PureComponent {
         }
         return verdict
     }
+
     _validatePhone = phone => {
-        phone=phone.trim()
+        phone=phone?.trim()
         const re = /^(?:(?:\+|00)88|01)?\d{11}$/
         const verdict = { success: false, message: '' }
         if(phone) {
@@ -258,6 +274,8 @@ class AddUser extends React.PureComponent {
                     title={"Department : "} 
                     value={newUser?.profile?.department || ''} 
                     fieldStyle={{ width:'40%' }}
+                    userFieldError={userFieldError}  
+                    updateUserFieldError={ updateUserFieldError } 
                 />
                 <FilterField 
                     filterOptions={(
@@ -272,6 +290,8 @@ class AddUser extends React.PureComponent {
                     title={"Designation : "} 
                     value={newUser?.profile?.designation || ''} 
                     fieldStyle={{ width:'40%' }}
+                    userFieldError={userFieldError}  
+                    updateUserFieldError={ updateUserFieldError } 
                 />
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
@@ -470,7 +490,7 @@ const UserField = (props) => {
                 >   
                     <InputLabel sx={{display:'flex',width:'100%',transform: 'translate(8px, -8px) scale(1)'}} >{label}</InputLabel>
                     <InputBase
-                        sx={{ m: 0, p:0, ml:3, flex: 1, color: '#000000', opacity: 1, width:'100%', }}
+                        sx={{ m: 0, p:0, ml:3, flex: 1, color: '#000000', opacity: 1, width:'100%' }}
                         inputProps={{padding:0, 'aria-label': { title }, color: '#000000' }}
                         value={value || ''}
                         onChange={ handleChange }
@@ -484,41 +504,65 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-  const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle, containerStyle, titleStyle, titleContainerStyle } = props
-  const handleChange = e => {
-    e.preventDefault()
-    if (field === 'profile') {
-        dispatch(updateNewUserProfile({
-            [subField]: e.target.value
-        }))
-    }
-    else {
-        dispatch(updateNewUser({ [field]: e.target.value }))
-    }
+    const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle, containerStyle, titleStyle, titleContainerStyle, userFieldError, updateUserFieldError  } = props
+    const getError = () => {
+        if(userFieldError){
+            if(subField){
+                return userFieldError[subField]
+            } else {
+                return userFieldError[field]
+            }
+            } else {
+                return ''
+            }
+        }
 
-}
-const textStyle = {
-    fontFamily: 'Roboto',
-    fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
-}
+    const error = getError()
+    const handleChange = e => {
+        e.preventDefault()
+        if (field === 'profile') {
+            dispatch(updateNewUserProfile({
+                [subField]: e.target.value
+            }))
+        }
+        else {
+            dispatch(updateNewUser({ [field]: e.target.value }))
+        }
+    }
+    const textStyle = {
+        fontFamily: 'Roboto',
+        fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
+    }
   return (
     <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start', ...containerStyle }}>
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
             <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle}}>{title}{required && <span style={{color:'red'}}>*</span>}</Typography>
         </Box>
-        <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-            <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}}>{label}</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value= { value ?? filterOptions[0] }
-                label=""
-                onChange={handleChange}
-                sx = {{fontSize: '.75em'}}
-            >    
-                {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
-            </Select>
-        </FormControl>
+        <Box  sx={{display:'flex', flexDirection:'column', alignItems:'flex-start',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
+            <FormControl 
+                fullWidth={true} 
+                sx={{   
+                    p:0,
+                    m:0,
+                    width:'100%',
+                    border: error? '.5px solid red':'.5px solid rgba(0, 0, 0, 0.23)',
+                }} 
+                size="small"
+            >
+                <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}}>{label}</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value= { value ?? filterOptions[0] }
+                    label=""
+                    onChange={handleChange}
+                    sx = {{fontSize: '.75em', width:'100%'}}
+                >    
+                    {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
+                </Select>
+            </FormControl>
+            <FormHelperText error={error}>{error}</FormHelperText>
+        </Box>
     </Grid>
   )
 }
