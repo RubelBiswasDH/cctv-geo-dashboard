@@ -20,6 +20,7 @@ import { getCompanyList } from '../redux/actions/registerActions'
 
 import { setFilterOptions } from '../redux/reducers/attendanceReducer'
 import { updateNewUser, updateNewUserProfile, setFileInput, setAddUserDetails, setUserFieldError, updateUserFieldError } from '../redux/reducers/adminReducer'
+import { tin } from '@turf/turf'
 
 class AddUser extends React.PureComponent {
 
@@ -35,18 +36,39 @@ class AddUser extends React.PureComponent {
             phone = _validatePhone(newUser?.phone),
             email = _validateEmail(newUser?.email),
             department = _validateRegularField(newUser?.profile?.department),
-            designation = _validateRegularField(newUser?.profile?.designation)
+            designation = _validateRegularField(newUser?.profile?.designation),
+            nid = this._validateNumber(newUser?.profile?.nid),
+            tin = this._validateNumber(newUser?.profile?.tin),
+            basic_salary = this._validateNumber(newUser?.profile?.basic_salary),
+            account_number = this._validateNumber(newUser?.profile?.account_number),
+            routing_number = this._validateNumber(newUser?.profile?.routing_number)
 
-    if (name.success && phone.success && email.success && department.success && designation.success ) {
+
+    if (name.success 
+        && phone.success 
+        && email.success 
+        && department.success 
+        && designation.success 
+        && nid.success
+        && tin.success
+        && basic_salary.success
+        && account_number.success
+        && routing_number.success
+        ) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
                 ...newUser,
                 profile: JSON.stringify(newUser.profile)
             }
-            dispatch(createUser(detailUser))
+            // dispatch(createUser(detailUser))
+            console.log('user created successfull')
+            dispatch(setUserFieldError({}))
         }
         else{
-            dispatch(createUser(newUser))
+            // dispatch(createUser(newUser))
+            console.log('user created successfull')
+            dispatch(setUserFieldError({}))
+
         }
     }
     else {
@@ -55,10 +77,15 @@ class AddUser extends React.PureComponent {
             email: email.message,
             phone: phone.message,
             department: department.message,
-            designation: designation.message
+            designation: designation.message,
+            nid: nid.message,
+            tin: tin.message,
+            basic_salary: basic_salary.message,
+            account_number: account_number.message,
+            routing_number: routing_number.message
         }))
 
-        dispatch(setToastMessage('All fields are mandatory'))
+        dispatch(setToastMessage('Some fields are missing or containing invalid data !'))
         dispatch(setToastIsOpen(true))
         dispatch(setToastSeverity('warning'))
     }
@@ -140,7 +167,7 @@ class AddUser extends React.PureComponent {
         return verdict
     }
 
-    _validateEmail = email => {
+    _validateEmail = ( email ) => {
         email = email?.trim()
         const re = /\S+@\S+\.\S+/
         const verdict = { success: false, message: '' }
@@ -154,10 +181,12 @@ class AddUser extends React.PureComponent {
                 verdict.success = false
                 verdict.message = 'Invalid Email !'
             }
-        } else {
+        }
+        else {
             verdict.success = false
             verdict.message = 'Required field.'
         }
+
         return verdict
     }
 
@@ -181,6 +210,26 @@ class AddUser extends React.PureComponent {
         }
         return verdict
     }
+    _validateNumber = value => {
+        const verdict = { success: false, message: '' }
+        value = value?.trim()
+        const isNumber = /^[-]?\d+$/.test(value)
+        if(!value){
+            verdict.success = true
+            verdict.message = ''
+            return verdict
+        }
+        else if(value && isNumber){
+            verdict.success = true
+            verdict.message = ''
+        }
+        else if(value && !isNumber){
+            verdict.success = false
+            verdict.message = 'Invalid input!'
+        }
+        return verdict
+    }
+
   render() {
     const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails, userFieldError } = this.props
     const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput } = this
@@ -313,8 +362,16 @@ class AddUser extends React.PureComponent {
                     }}>
             <CustomStepper 
                 steps = {['Personal Info', 'Official Info', 'Bank Account', 'Emergency Contact']} 
-                contents = {formSteps(dispatch, newUser, companyNameOptions, _handleAutoCompInputChange, _handleAutoCompChange)}
-                handleSubmit = {_handleSaveUser}
+                contents = {
+                    formSteps(
+                        dispatch, 
+                        newUser, 
+                        companyNameOptions, 
+                        _handleAutoCompInputChange, 
+                        _handleAutoCompChange,
+                        userFieldError, 
+                        updateUserFieldError )}
+                    handleSubmit = {_handleSaveUser}
                 />
             </Box>
         </Box>
@@ -325,13 +382,35 @@ class AddUser extends React.PureComponent {
   }
 }
 
-const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInputChange, _handleAutoCompChange) => {
+const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInputChange, _handleAutoCompChange, userFieldError, updateUserFieldError) => {
     return ([
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1 }}>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'nid'}  title={"NID"} value={newUser?.profile?.nid} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'tin'}  title={"Tin"} value={newUser?.profile?.tin} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'nid'}  
+                title={"NID"} 
+                value={newUser?.profile?.nid} 
+                fieldStyle={{ 
+                    width:{xs:'55%', lg:'60%'} 
+                    }}
+                titleContainerStyle={{
+                    width:{xs:'30%', lg:'25%'} 
+                    }}
+                userFieldError={userFieldError}  
+                updateUserFieldError={ updateUserFieldError } 
+            />
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'tin'}  
+                title={"Tin"} 
+                value={newUser?.profile?.tin} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={ userFieldError }  
+                updateUserFieldError={ updateUserFieldError } 
+            />
             <AddressAutoComplete
                 _handleAutoCompInputChange = { _handleAutoCompInputChange }
                 _handleAutoCompChange = { _handleAutoCompChange }
@@ -339,8 +418,13 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={ newUser?.profile?.house_address } 
                 title={"House Address"} 
                 titleStyle={{ fontFamily: 'Roboto'}} 
-                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                fieldStyle={{ 
+                    width:{ 
+                        xs:'55%', 
+                        lg:'60%'} 
+                    }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+
             />
             <StyledDatePicker
                 field={'profile'}
@@ -351,7 +435,7 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 dispatch={ dispatch }
                 action={ updateNewUserProfile }
                 fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDropdown 
                 filterOptions={['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']}
@@ -361,7 +445,7 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={newUser?.profile?.blood_group || ''}
                 action={ updateNewUserProfile }
                 fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
             <StyledDropdown 
                 filterOptions={['Male', 'Female', 'Other']}
@@ -371,7 +455,7 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 value={newUser?.profile?.gender || ''}
                 action={ updateNewUserProfile }
                 fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
             />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
@@ -392,20 +476,47 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
             />
             <UserField  dispatch={dispatch} field={'profile'} subField={'reporting_person'}  title={"Reporting Person"} value={newUser?.profile?.reporting_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'basic_salary'}  title={"Gross Salary"} value={newUser?.profile?.basic_salary} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'basic_salary'}  
+                title={"Gross Salary"} 
+                value={newUser?.profile?.basic_salary} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={userFieldError}  
+                updateUserFieldError={ updateUserFieldError } 
+            />
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'account_title'}  title={"Account Title"} value={newUser?.profile?.account_title} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'account_number'}  title={"Account No"} value={newUser?.profile?.account_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'account_number'}  
+                title={"Account No"} 
+                value={newUser?.profile?.account_number} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={userFieldError}  
+                updateUserFieldError={ updateUserFieldError  }
+            />
             <UserField  dispatch={dispatch} field={'profile'} subField={'bank_name'}  title={"Bank Name"} value={newUser?.profile?.bank_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'branch_name'}  title={"Branch Name"} value={newUser?.profile?.branch_name} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'routing_number'}  title={"Routing No"} value={newUser?.profile?.routing_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'routing_number'}  
+                title={"Routing No"} 
+                value={newUser?.profile?.routing_number} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={ userFieldError}  
+                updateUserFieldError={ updateUserFieldError  }
+            />
 
         </Box>,
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
@@ -521,11 +632,17 @@ const FilterField = (props) => {
     const handleChange = e => {
         e.preventDefault()
         if (field === 'profile') {
+            dispatch(updateUserFieldError({
+                [subField]:''
+            }))
             dispatch(updateNewUserProfile({
                 [subField]: e.target.value
             }))
         }
         else {
+            dispatch(updateUserFieldError({
+                [field]:''
+            }))
             dispatch(updateNewUser({ [field]: e.target.value }))
         }
     }
