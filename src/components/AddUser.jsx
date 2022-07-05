@@ -161,7 +161,7 @@ class AddUser extends React.PureComponent {
                     required={true} 
                     title={"Department : "} 
                     value={newUser?.profile?.department || ''} 
-                    fieldStyle={{ width:'25%' }}
+                    fieldStyle={{ width:'40%' }}
                 />
                 <FilterField 
                     filterOptions={(
@@ -175,7 +175,7 @@ class AddUser extends React.PureComponent {
                     required={true}  
                     title={"Designation : "} 
                     value={newUser?.profile?.designation || ''} 
-                    fieldStyle={{ width:'25%' }}
+                    fieldStyle={{ width:'40%' }}
                 />
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
@@ -330,23 +330,21 @@ const UserField = (props) => {
         <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
             { title && 
             <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
-                <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle }}>{title}</Typography>
+                <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle }}>{title}{required && <span style={{color:'red'}}>*</span>}</Typography>
             </Box>
             }
             <Box  sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start', width:'50%', ...fieldStyle }}>
                 <FormControl
-                    required={required}
                     xs={12}
                     sx={{display:'flex',flexDirection:'column', p: '0px 0px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white', color: '#000000',width:'100%', border: '.5px solid rgba(0, 0, 0, 0.23)',
                     borderRadius: '4px', ...style }}
                 >   
-                    <InputLabel sx={{display:'flex',width:'100%',transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>
+                    <InputLabel sx={{display:'flex',width:'100%',transform: 'translate(8px, -8px) scale(1)'}} >{label}</InputLabel>
                     <InputBase
                         sx={{ m: 0, p:0, ml:3, flex: 1, color: '#000000', opacity: 1, width:'100%', }}
                         inputProps={{padding:0, 'aria-label': { title }, color: '#000000' }}
                         value={value || ''}
                         onChange={ handleChange }
-                        required={required}
                     />
                 </FormControl>
             </Box>
@@ -356,7 +354,7 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-  const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle } = props
+  const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle, containerStyle, titleStyle, titleContainerStyle } = props
   const handleChange = e => {
     e.preventDefault()
     if (field === 'profile') {
@@ -374,14 +372,13 @@ const textStyle = {
     fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
 }
   return (
-    <Grid xs={12} item sx={{display:'flex',gap:2, width:'100%',alignItems:'flex-start',justifyContent: 'flex-start' }}>
-        <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%'}}>
-            <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle}}>{title}</Typography>
+    <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start', ...containerStyle }}>
+        <Box sx={{display:'flex',alignItems:'center',justifyContent: 'flex-start',width:'15%', ...titleContainerStyle}}>
+            <Typography variant='h6' sx={{ fontWeight:600, fontSize:{xs:'16px', md:'18px', lg:'20px'}, ...textStyle, ...titleStyle}}>{title}{required && <span style={{color:'red'}}>*</span>}</Typography>
         </Box>
-        <FormControl required={required} fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
-            <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}} required={required}>{label}</InputLabel>
+        <FormControl fullWidth={false} sx={{p:0,m:0,width:'30%', ...fieldStyle}} size="small">
+            <InputLabel sx={{display:'flex',width:'100%', transform: 'translate(8px, -8px) scale(1)'}}>{label}</InputLabel>
             <Select
-                required={required}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value= { value ?? filterOptions[0] }
