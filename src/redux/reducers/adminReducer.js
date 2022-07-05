@@ -32,6 +32,9 @@ const initialState = {
 
     }
   },
+  userFieldError: {
+
+  },
   companyAddressData: {
 
   },
@@ -132,9 +135,15 @@ const adminSlice = createSlice({
     },
     setFallbackComapanyAddress: ( state, action ) => {
       state.fallbackComapanyAddress = action.payload
+    },
+    setUserFieldError: ( state, action ) => {
+      state.userFieldError = action.payload
+    },
+    updateUserFieldError: (state, action) => {
+      state.userFieldError = { ...state.userFieldError, ...action.payload }
     }
   }
 })
 
-export const { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments, setAddressFilterOptions, setAddUserDetails, setFallbackComapanyAddress } = adminSlice.actions
+export const { setActivityStatus, setDepartment, setContractType, setdesignation, setNewUserName, setNewUserEmail, setNewUserMobile, setNewUserRole, setFileInput, setAnnouncementMessage, setUserProfile, setProfileEdit, updateUserProfile, setLateTime, setMonthYear, setWorkingDays, setCompanySettings, updateCompanySettings, setNewUser, updateNewUser, updateNewUserProfile, setCompanyAddressData, setSelectedUserId, setUserDeleteReason, updateCompanyAddressData, updateCompanyDepartments, setAddressFilterOptions, setAddUserDetails, setFallbackComapanyAddress, setUserFieldError, updateUserFieldError } = adminSlice.actions
 export default adminSlice.reducer
