@@ -112,6 +112,7 @@ class AddUser extends React.PureComponent {
             </Typography>
             { addUserDetails && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
         </Box>
+        { !addUserDetails &&
         <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2,gap:3, boxShadow:2}}>
             <Typography
                     variant='h5'
@@ -136,6 +137,7 @@ class AddUser extends React.PureComponent {
 
             </Box>
         </Box>
+        }
         { !addUserDetails && <>
             <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%', pl:5,gap:3}}>
                 <Grid xs={12} item sx={{display:'flex', gap:0, pb:0, width:'100%',alignItems:'flex-start', justifyContent: 'flex-start' }}>
