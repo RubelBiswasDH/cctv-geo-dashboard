@@ -41,7 +41,9 @@ class AddUser extends React.PureComponent {
             basic_salary = this._validateNumber(newUser?.profile?.basic_salary),
             account_number = this._validateNumber(newUser?.profile?.account_number),
             routing_number = this._validateNumber(newUser?.profile?.routing_number),
-            office_email = _validateEmail(newUser?.profile?.office_email, true)
+            office_email = _validateEmail(newUser?.profile?.office_email, true),
+            office_mobile = _validatePhone(newUser?.profile?.office_mobile, true),
+            emergency_mobile_number = _validatePhone(newUser?.profile?.emergency_mobile_number, true)
 
 
     if (name.success 
@@ -55,6 +57,8 @@ class AddUser extends React.PureComponent {
         && account_number.success
         && routing_number.success
         && office_email.success
+        && office_mobile.success
+        && emergency_mobile_number.success
         ) {
         if(newUser.profile && Object.keys(newUser.profile).length ){
             const detailUser = {
@@ -84,7 +88,9 @@ class AddUser extends React.PureComponent {
             basic_salary: basic_salary.message,
             account_number: account_number.message,
             routing_number: routing_number.message,
-            office_email : office_email.message
+            office_email : office_email.message,
+            office_mobile : office_mobile.message,
+            emergency_mobile_number : emergency_mobile_number.message
         }))
 
         dispatch(setToastMessage('Some fields are missing or containing invalid data !'))
@@ -212,10 +218,31 @@ class AddUser extends React.PureComponent {
         return verdict
     }
 
-    _validatePhone = phone => {
+    _validatePhone = (phone, optional) => {
         phone=phone?.trim()
         const re = /^(?:(?:\+|00)88|01)?\d{11}$/
         const verdict = { success: false, message: '' }
+
+        if(optional){
+            if(phone) {
+                const isValid = re.test(phone)
+                if(isValid){
+                    verdict.success = true
+                    verdict.message = ''
+                }
+                else{
+                    verdict.success = false
+                    verdict.message = 'Invalid Phone Number !'
+                    return verdict
+                }
+            }
+            else{
+                verdict.success = true
+                verdict.message = ''
+            }
+            return verdict
+        }
+
         if(phone) {
             const isValid = re.test(phone)
             if(isValid){
@@ -492,8 +519,17 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
                 userFieldError={userFieldError}  
                 updateUserFieldError={ updateUserFieldError } 
             />
-            <UserField  dispatch={dispatch} field={'profile'} subField={'office_mobile'}  title={"Office Phone No"} value={newUser?.profile?.office_mobile} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/> 
+            <UserField  
+                dispatch={dispatch} 
+                field={'profile'} 
+                subField={'office_mobile'}  
+                title={"Office Phone No"} 
+                value={newUser?.profile?.office_mobile} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={userFieldError}  
+                updateUserFieldError={ updateUserFieldError } 
+            /> 
             <StyledDatePicker
                 field={'profile'}
                 subField={'joining_date'}  
@@ -553,8 +589,17 @@ const formSteps = (dispatch, newUser, addressFilterOptions, _handleAutoCompInput
         <Box sx={{display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'center',width:'100%',gap:1}}>
             <UserField  dispatch={dispatch} field={'profile'} subField={'contact_person'}  title={"Contact Person"} value={newUser?.profile?.contact_person} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
-            <UserField  dispatch={dispatch} field={'profile'} subField={'emergency_mobile_number'}  title={"Mobile Number"} value={newUser?.profile?.emergency_mobile_number} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
-                                    titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
+            <UserField  
+                dispatch={dispatch}
+                field={'profile'} 
+                subField={'emergency_mobile_number'}  
+                title={"Mobile Number"} 
+                value={newUser?.profile?.emergency_mobile_number} 
+                fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
+                titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}
+                userFieldError={ userFieldError}  
+                updateUserFieldError={ updateUserFieldError }
+            />
             <UserField  dispatch={dispatch} field={'profile'} subField={'relationship'}  title={"Relationship"} value={newUser?.profile?.relationship} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
                                     titleContainerStyle={{width:{xs:'30%', lg:'25%'} }}/>
             <UserField  dispatch={dispatch} field={'profile'} subField={'last_working_place'}  title={"Last Working Place"} value={newUser?.profile?.last_working_place} fieldStyle={{ width:{xs:'55%', lg:'60%'} }}
