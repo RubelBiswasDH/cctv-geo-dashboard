@@ -65,15 +65,12 @@ class AddUser extends React.PureComponent {
                 ...newUser,
                 profile: JSON.stringify(newUser.profile)
             }
-            // dispatch(createUser(detailUser))
-            console.log('user created successfull')
+            dispatch(createUser(detailUser))
             dispatch(setUserFieldError({}))
         }
         else{
-            // dispatch(createUser(newUser))
-            console.log('user created successfull')
+            dispatch(createUser(newUser))
             dispatch(setUserFieldError({}))
-
         }
     }
     else {
@@ -290,7 +287,6 @@ class AddUser extends React.PureComponent {
             >
                 Add New User
             </Typography>
-            { addUserDetails && <Button variant='contained' color='warning' onClick={ _handleSkipDetails }><Typography>Back to Basic Informations</Typography></Button>}
         </Box>
         { !addUserDetails &&
         <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2,gap:3, boxShadow:2}}>
@@ -409,18 +405,19 @@ class AddUser extends React.PureComponent {
                     bordeRadius: '4px',
                     gap:2
                     }}>
-            <CustomStepper 
-                steps = {['Personal Info', 'Official Info', 'Bank Account', 'Emergency Contact']} 
-                contents = {
-                    formSteps(
-                        dispatch, 
-                        newUser, 
-                        companyNameOptions, 
-                        _handleAutoCompInputChange, 
-                        _handleAutoCompChange,
-                        userFieldError, 
-                        updateUserFieldError )}
-                    handleSubmit = {_handleSaveUser}
+                <CustomStepper 
+                    steps = {['Personal Info', 'Official Info', 'Bank Account', 'Emergency Contact']} 
+                    contents = {
+                        formSteps(
+                            dispatch, 
+                            newUser, 
+                            companyNameOptions, 
+                            _handleAutoCompInputChange, 
+                            _handleAutoCompChange,
+                            userFieldError, 
+                            updateUserFieldError )}
+                        handleSubmit = {_handleSaveUser}
+                        _handleSkipDetails ={_handleSkipDetails} 
                 />
             </Box>
         </Box>
@@ -615,7 +612,7 @@ const UserField = (props) => {
     const { title, label, value, field, subField, dispatch, style, fieldStyle, required, titleStyle, titleContainerStyle, userFieldError, updateUserFieldError } = props
     const textStyle = {
         fontFamily: 'Roboto',
-        fontSize: '18px',
+        fontSize:{xs:'16px', md:'18px', lg:'20px'}
     }
     
     const getError = () => {

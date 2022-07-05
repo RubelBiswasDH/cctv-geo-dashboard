@@ -8,6 +8,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
 
 class CustomStepper extends React.PureComponent {
     state = {
@@ -59,12 +60,15 @@ class CustomStepper extends React.PureComponent {
           })
 
       };
-    
+      handleExitStepper = () => {
+        this.props._handleSkipDetails()
+      }
       render(){
-        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleCancel} = this
+        const { isStepOptional, isStepSkipped, handleNext, handleSkip, handleBack, handleCancel, handleExitStepper} = this
         const { activeStep } = this.state
         const { handleSubmit, steps, contents } = this.props
         return (<Box sx={{ width: '100%'}}>
+        <Button onClick={handleExitStepper}><CloseIcon/></Button>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => { 
             const stepProps = {};
@@ -93,7 +97,7 @@ class CustomStepper extends React.PureComponent {
         ) : (
           <React.Fragment>
             {/* steppers content */}
-            <Box sx={{display:"flex",pt:5, p:5, minHeight: '100%',gap:1}}>
+            <Box sx={{display:"flex", flexDirection:'column',alignItems:'center', justifyContent:'center',p:2, minHeight:'400px',gap:1}}>
                 {contents[activeStep]}
             </Box>
             
