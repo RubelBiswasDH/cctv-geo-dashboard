@@ -6,11 +6,12 @@ import { Box, Button, Typography } from '@mui/material'
 import MapGL from '../components/common/MapGL'
 
 // Import Actions & Methods
-import { updateCompanyAddressData, updateCompanySettings } from '../redux/reducers/adminReducer'
+import { updateCompanyAddressData, updateCompanySettings, setCompanySettings, setFallbackComapanyAddress } from '../redux/reducers/adminReducer'
 import { getAttendance }  from '../redux/actions/attendanceActions'
 import { setCompanySettingsAction } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 
+import { getReverseGeoAddress } from '../utils/utils'
 
 import dayjs from 'dayjs'
 
@@ -72,9 +73,31 @@ class CompanyProfile extends React.PureComponent {
         }
     }
 
+    _handleReverseGeo = (e) => {
+      const { dispatch } = this.props
+      const {lngLat} = e
+      getReverseGeoAddress({ longitude: lngLat.lng, latitude: lngLat.lat })
+      .then(res => {
+        const reverseData = res.place
+        if(reverseData) {
+          // Get Updated Address from Reverse Geo Code
+          const updatedAddress = {
+            exact_address: reverseData.address,
+            longitude: lngLat.lng,
+            latitude: lngLat.lat 
+          }
+          dispatch(setFallbackComapanyAddress(''))
+          dispatch(setCompanySettings({...this.props.companySettings, ...{companyAddressData:updatedAddress}}))
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  
+    }
   render() {
     const { dispatch, companySettings } = this.props
-    const { _updateExactAddress, _handleSaveCompanyAddress } = this
+    const { _updateExactAddress, _handleSaveCompanyAddress, _handleReverseGeo } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{py:2}}>
@@ -118,6 +141,7 @@ class CompanyProfile extends React.PureComponent {
                     ] : []
                     }
                     getUpdatedAddress={ _updateExactAddress }
+                    _handleReverseGeo = { _handleReverseGeo }
                 />
 
             </Box>

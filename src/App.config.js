@@ -31,6 +31,7 @@ export const API = {
   SET_LATE_TIME: `${BASE_URL}/`,
   SEND_ANNOUNCEMENT: `${BASE_URL}/api/send-announcement-dashboard`,
   AUTOCOMPLETE: 'https://api.bmapsbd.com/search/autocomplete/web?search=',
+  REVERSEGEO: `https://barikoi.xyz/v1/api/search/reverse/Mjg5MTpGMDNaTU1HTjZU/geocode`,
   GET_ATTENDANCE_STATISTICS: `${BASE_URL}/api/get-attendance-statistics`,
   CHANGE_USER_ACCESS: `${BASE_URL}/api/change-user-action`,
 
@@ -76,11 +77,11 @@ export const MAP = {
     },
     {
       title: 'Light',
-      uri:'https://map.barikoi.com/styles/osm-liberty/style.json?key=Mjg5MTpGMDNaTU1HTjZU'
+      uri:'https://map.barikoi.com/styles/osm-liberty/style.json'
     },
     {
       title: 'Dark',
-      uri:'https://map.barikoi.com/styles/barikoi-dark/style.json?key=Mjg5MTpGMDNaTU1HTjZU'
+      uri:'https://map.barikoi.com/styles/barikoi-dark/style.json'
     }
   ],
 }
