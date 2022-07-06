@@ -289,7 +289,7 @@ class AddUser extends React.PureComponent {
             </Typography>
         </Box>
         { !addUserDetails &&
-        <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2,gap:3, boxShadow:2}}>
+        <Box sx={{ display:'flex', flexDirection:'column',justifyContent:'flex-start', alignItems:'flex-start',width:'70%', ml:4,mb:2, px:1, pb:2, p:4, gap:3, boxShadow:2}}>
             <Typography
                     variant='h5'
                     sx={{
