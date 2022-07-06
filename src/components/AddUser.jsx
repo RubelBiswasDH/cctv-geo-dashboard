@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import downloadDemoCSV from '../assets/demo_users.xlsx'
 
 // Import Components
-import { Paper, Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography } from '@mui/material'
+import { Paper, Grid, InputBase, InputLabel, Select, Box, Button, FormControl, MenuItem, Typography, TextField } from '@mui/material'
 import { FormHelperText } from '@mui/material';
 import CustomStepper from './Stepper'
 import StyledDropdown from './common/StyledDropdown'
@@ -370,6 +370,12 @@ class AddUser extends React.PureComponent {
                     fieldStyle={{ width:'40%' }}
                     userFieldError={userFieldError}  
                     updateUserFieldError={ updateUserFieldError } 
+                    addMoreOptionComponent={ 
+                        <Box sx={{display:'flex', width:'100%'}}>
+                            <TextField fullWidth size={'small'} sx={{width:'70%'}}/> 
+                            <Button onClick={() => console.log('clicked')}  sx={{width:'30%'}}>Add</Button>
+                        </Box>
+                        } 
                 />
                 <FilterField 
                     filterOptions={(
@@ -385,7 +391,8 @@ class AddUser extends React.PureComponent {
                     value={newUser?.profile?.designation || ''} 
                     fieldStyle={{ width:'40%' }}
                     userFieldError={userFieldError}  
-                    updateUserFieldError={ updateUserFieldError } 
+                    updateUserFieldError={ updateUserFieldError }
+                    
                 />
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
@@ -688,7 +695,7 @@ const UserField = (props) => {
 
 
 const FilterField = (props) => {
-    const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle, containerStyle, titleStyle, titleContainerStyle, userFieldError, updateUserFieldError  } = props
+    const { dispatch, value, field, subField, filterOptions, required, label, title, fieldStyle, containerStyle, titleStyle, titleContainerStyle, userFieldError, updateUserFieldError, addMoreOptionComponent  } = props
     const getError = () => {
         if(userFieldError){
             if(subField){
@@ -748,7 +755,22 @@ const FilterField = (props) => {
                     onChange={handleChange}
                     sx = {{fontSize: '.75em', width:'100%'}}
                 >    
-                    {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))}            
+                    {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))} 
+                    { addMoreOptionComponent && 
+                    <MenuItem
+                        onClickCapture={(e) => {
+                            e.stopPropagation()
+                       }}
+                       onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = "#ffffff";
+                            e.target.style.cursor = "default";
+                        }}
+                        onClick={(e) => {
+                        console.log('text')
+                        }}>
+                        { addMoreOptionComponent }
+                    </MenuItem>
+                    }
                 </Select>
             </FormControl>
             <FormHelperText error={error}>{error}</FormHelperText>
