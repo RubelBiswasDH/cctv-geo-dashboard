@@ -102,7 +102,7 @@ class StyledDataGrid extends React.PureComponent {
                                                 :(cellValues.value === 'P')
                                                 ?<Tooltip title={'Checked In : '+(cellValues?.row?.check_in_time ?? cellValues?.row[cellValues?.field+"_enter_time"])}><Chip icon={<DoneRoundedIcon />} label="On Time" variant="outlined" size="small" /></Tooltip>
                                                 :(cellValues.value === 'L')
-                                                ?<Tooltip title={'Checked In : '+( cellValues?.row?.check_in_time ?? cellValues?.row[cellValues?.field+"_enter_time"])}><Chip icon={<ErrorRoundedIcon />} label="Late" variant="outlined" size="small" /></Tooltip>
+                                                ?<Tooltip title={cellValues?.row?.announcement? `Announcements: ${cellValues?.row?.announcement}` : cellValues?.row[cellValues?.field+"_enter_time"] ? `Checked In : ${cellValues?.row[cellValues?.field+"_enter_time"]}`:''}><Chip icon={<ErrorRoundedIcon />} label="Late" variant="outlined" size="small" /></Tooltip>
                                                 :(cellValues.value === 'A')
                                                 ?<Chip icon={<CachedRoundedIcon />} label="On Leave" variant="outlined" size="small" />
                                                 :cellValues.value
