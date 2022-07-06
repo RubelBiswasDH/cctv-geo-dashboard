@@ -61,13 +61,17 @@ class EmployeeList extends React.PureComponent {
   transformedEmployeeList = () => {
 
     const { currentEmployeeType } = this.props
-    let empList = this._filteredEmployee()
+    // let empList = this._filteredEmployee()
+    const { employeeList, deletedEmployeeList } = this.props
+
+    let empList = employeeList
     let empData = (empList)?.map(emp => ({
       ...emp,
-      profile:JSON.parse(emp.profile)
+      profile:JSON.parse(emp?.profile)
     }))
 
-    var data = []
+    let deletedEmpData = deletedEmployeeList?deletedEmployeeList:[]
+    let data = []
     if(empData.length > 0){
 
     switch (currentEmployeeType) {
@@ -83,12 +87,15 @@ class EmployeeList extends React.PureComponent {
         case 'females':
             data = empData.filter(emp => emp?.profile?.gender?.toLowerCase() === 'female');
             break;
+        case 'deleted':
+            data = deletedEmpData
+            break;
         default:
           data = empData;
       } 
       
     }
-    return data.map((emp,i) => ({
+    return data?.map((emp,i) => ({
       ...emp,
       designation:emp?.profile?.designation,
       department: emp?.profile?.department,
@@ -179,7 +186,7 @@ class EmployeeList extends React.PureComponent {
   }
 
   _filteredEmployee = () => {
-    const { employeeList } = this.props;
+    const { employeeList } = this.props
     const { filterOptions } = this.props
     let list = employeeList
     if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
@@ -353,6 +360,7 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   attendanceList: state?.attendanceList?.attendanceList,
   employeeList: state?.employeeList?.employeeList,
+  deletedEmployeeList: state?.employeeList?.deletedEmployeeList,
   companySettings: state?.admin?.companySettings,
   currentView: state?.dashboard?.currentView,
   currentEmployeeType: state?.employeeList?.currentEmployeeType,

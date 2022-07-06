@@ -36,49 +36,6 @@ const CustomSelect = (props) => {
 
 class StyledDataGrid extends React.PureComponent {
     // Handle Status Color
-    _getStatusColor = status => {
-        let colors = { color: '#FFF' }
-        if (status) {
-            switch(status) {
-                case 'OPEN':
-                    colors = {...colors, background: '#99A799', }
-                    break;
-
-                case 'DISPATCHED':
-                    colors = {...colors, background: '#54A0FF'}
-                    break;
-                case 'ASSIGNED':
-                    colors = {...colors, background: '#9B59B6'}
-                    break;
-
-                case 'ONGOING':
-                    colors = {...colors, background: '#2133A1'}
-                    break;
-
-                case 'PRECOMPLETION':
-                    colors = {...colors, background: '#F75C1E'}
-                    break;
-
-                case 'RESOLVED':
-                    colors = {...colors, background: '#43BC5D'}
-                    break;
-                    
-                case 'CLOSED':
-                    colors = {...colors, background: '#064635'}
-                    break;
-                
-                case 'CANCELLED':
-                    colors = {...colors, background: '#FF1818'}
-                    break;
-
-                default:
-                    colors = { ...colors, color: '#000000' }
-            }
-        }
-        
-        return colors
-    }
-
     render() {
         const { rows, columns, disableColumnFilter, renderActions, rowHeight, ...restProps } = this.props       
         return (
@@ -105,6 +62,7 @@ class StyledDataGrid extends React.PureComponent {
                                         {       
                                                 cellValues.field === 'name' ?
                                                 <Button 
+                                                    disabled={cellValues?.row?.deleted_reason}
                                                     onClick={cellValues.row.viewProfile}
                                                     sx={{display:'flex',justifyContent:'flex-start'}}
                                                     > 
@@ -135,7 +93,7 @@ class StyledDataGrid extends React.PureComponent {
                                                 :cellValues?.field === 'delete_user'
                                                 ? <Button onClick={cellValues.row.deleteUser}><Typography sx={{color:'red'}}>Delete</Typography></Button>
                                                 :cellValues?.field === 'update_user'
-                                                ? <Button onClick={cellValues.row.updateUser}><Typography >Update</Typography></Button>
+                                                ? <Button disabled={cellValues?.row?.deleted_reason} onClick={cellValues.row.updateUser}><Typography >Update</Typography></Button>
 
                                                 :(cellValues.field === 'validation' & cellValues?.row?.is_late === "Yes")
                                                 ?<CustomSelect dispatch={this.props.dispatch} onChange={cellValues?.row?.setValidation} options={[0,1]} value={cellValues?.row?.is_valid}></CustomSelect>

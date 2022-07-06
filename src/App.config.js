@@ -18,6 +18,7 @@ export const API = {
   CREATE_USER: `${BASE_URL}/api/create-user`,
   GET_USER: `${BASE_URL}/api/get-user/`,
   GET_USERS: `${BASE_URL}/api/get-users/`,
+  GET_DELETED_USERS: `${BASE_URL}/api/get-deleted-user/`,
   DELETE_USER: `${BASE_URL}/api/delete-user/`,
   UPDATE_USER:  `${BASE_URL}/api/update-user/`,
   CREATE_BULK_USER: `${BASE_URL}/api/create-bulk-user`,

@@ -65,7 +65,7 @@ class FilterEmpolyee extends React.PureComponent{
     }
 
     render(){
-        const { currentEmployeeType, disabled } = this.props
+        const { currentEmployeeType, disabled, deletedEmployeeList } = this.props
         const { handleCountEmployee, handleEmployeeTypeChange } = this
         return (
         <Box sx={theme => ({
@@ -89,10 +89,7 @@ class FilterEmpolyee extends React.PureComponent{
                         <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('females')} name={'females'} currentEmployeeType ={currentEmployeeType} >Total females: {handleCountEmployee("gender","female")}</CustomButton>
                     </Grid>
                     <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('probational_period')} name={'probational_period'} currentEmployeeType ={currentEmployeeType} >Probation: {handleCountEmployee("job_status","probation")}</CustomButton>
-                    </Grid>
-                    <Grid sx={{m:0,p:0}} item xs={6} sm={3} md={2}>
-                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('intern')} name={'intern'} currentEmployeeType ={currentEmployeeType} >Intern: {handleCountEmployee("job_status","intern")}</CustomButton>
+                        <CustomButton disabled={disabled} sx={{}} onClick={() => handleEmployeeTypeChange('deleted')} name={'deleted'} currentEmployeeType ={currentEmployeeType} >Deleted: { deletedEmployeeList?.length ?? 0}</CustomButton>
                     </Grid>
                 
             </Grid>
@@ -107,6 +104,7 @@ const mapStateToProps = state => ({
     authError: state?.auth?.error,
     currentView: state?.dashboard?.currentView,
     employeeList: state?.employeeList?.employeeList,
+    deletedEmployeeList: state?.employeeList?.deletedEmployeeList,
     currentEmployeeType: state?.employeeList?.currentEmployeeType,
   })
 
