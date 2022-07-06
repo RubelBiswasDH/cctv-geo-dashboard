@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // Import Components
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography, TextField } from '@mui/material'
 import MapGL from '../components/common/MapGL'
 
 // Import Actions & Methods
@@ -20,11 +20,16 @@ import StyledTextField from '../components/common/StyledTextField'
 import AddressAutoComplete from './common/AddressAutoComplete'
 import TimeKeeper from 'react-timekeeper';
 
+// import { TimePicker, LocalizationProvider, LoadingButton } from '@mui/lab'
+
+import TimeField from 'react-simple-timefield';
+
 class CompanyProfile extends React.PureComponent {
  
   state = {
     last_check_in_time: "11:32 PM",
     selected_time: null,
+    time: "12:30am"
   }
  
     // Handle Get Data
@@ -110,7 +115,7 @@ class CompanyProfile extends React.PureComponent {
         <FilterEmployee disabled={true}/>
         <Box sx={{ display:'flex', p:1, gap:5 }}>
             <Box sx={{ display:'flex',flexDirection:'column',width:'45%', gap:1,justifyContent:'center',alignItems:'center' }} >
-                <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'60%' }} titleContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
+                <StyledTextField action={ updateCompanySettings } field={'name'} title={"Company Name : "} value={companySettings?.name} fieldStyle={{ width:'60%' }} titleStyle={{ fontSize: {xs:'12px',sm:'14px',md:'16px',lg:'20px'} }} titleContainerStyle={{width:'40%' }} containerStyle={{ maxHeight: '50px' }}/>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%',mb:1.5 }} >
                     <Typography sx={{ ...textStyle,width:'40%' }}>Company Address : </Typography>
                     <Box sx={{width: '60%'}}>
@@ -119,15 +124,26 @@ class CompanyProfile extends React.PureComponent {
                     
                 </Box>
                 <Box sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
-                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Late Time : </Typography>
-                    <TimeKeeper
+                    <Typography sx={{ ...textStyle,width:'40%' }}>Set Late Time (24h) : </Typography>
+                    {/* <TimeKeeper
                       time={companySettings?.late_time}
                       onChange={ (newTime) => {
                         dispatch(updateCompanySettings({late_time:newTime.formatted24}))
                       }}
                       hour24Mode
-                    />
+                    /> */}
+                    <TimeField
+                      input={<TextField  size={'small'} sx={{width:'60%'}}/>}
+                      value={companySettings?.late_time} 
+                      onChange={(event, time) => {
+                        dispatch(updateCompanySettings({late_time:time}))
+                      }
+                    }
+                  />
                 </Box> 
+                <Box>
+                
+                </Box>
                 <Box  sx={{ display:'flex',flexDirection:'row',width:'100%'}}>
                   <Typography>*Any employee reach after this time will considered as <span style={{color:'red'}}>'Late'</span> </Typography>
                 </Box>
@@ -157,7 +173,7 @@ const textStyle = {
     fontFamily: 'Roboto',
     fontStyle: 'normal',
     fontWeight: 600,
-    fontSize: '20px',
+    fontSize: {xs:'12px',sm:'14px',md:'16px',lg:'20px'},
     lineHeight: '160%',
     letterSpacing: '0.15px',
     color: 'rgba(0, 0, 0, 0.87)',
