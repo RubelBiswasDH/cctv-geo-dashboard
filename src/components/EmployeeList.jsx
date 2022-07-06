@@ -42,7 +42,8 @@ class EmployeeList extends React.PureComponent {
     selectedTimeline: [
   ],
     isTimelineLoading: false,
-    feedback: null
+    feedback: null,
+    delete_error: ''
   }
 
   componentDidMount() {
@@ -138,6 +139,7 @@ class EmployeeList extends React.PureComponent {
   
     this.setState({ isUpdateDialogOpen:true })
   }
+
   _handleUpdateeUser = () => {
     const { dispatch, selectedUserId, newUser } = this.props
     const userData = {
@@ -154,6 +156,7 @@ class EmployeeList extends React.PureComponent {
   }
   _handleDeleteUserReason = (e) => {
     const { dispatch } = this.props
+    this.setState({delete_error:''})
     dispatch( setUserDeleteReason(e.target.value))
 
   }
@@ -174,9 +177,10 @@ class EmployeeList extends React.PureComponent {
           dispatch( setUserDeleteReason(''))
     }
     else {
-      dispatch(setToastMessage("Deleting reason is required !")) 
-      dispatch(setToastIsOpen(true)) 
-      dispatch(setToastSeverity("warning"))
+      // dispatch(setToastMessage("Deleting reason is required !")) 
+      // dispatch(setToastIsOpen(true)) 
+      // dispatch(setToastSeverity("warning"))
+      this.setState({delete_error:'Deleting reason is required !'})
     }
 
 
@@ -208,6 +212,7 @@ class EmployeeList extends React.PureComponent {
   }
   render() {
     const { dispatch, isTaskLoading, newUser, companySettings, filterOptions } = this.props
+    const { delete_error } = this.state
     return (
       <Box width='100%' height='73vh'>
         <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
@@ -246,7 +251,15 @@ class EmployeeList extends React.PureComponent {
             </>
           }
         > 
-          <TextField onChange={ this._handleDeleteUserReason } fullWidth sx={{fontSize:'1em'}}></TextField>
+          <TextField 
+            onChange={ this._handleDeleteUserReason } 
+            fullWidth 
+            sx={{fontSize:'1em'}}
+            error={delete_error?.length > 0}
+            helperText={delete_error}
+          >
+            
+          </TextField>
         </StyledDialog>
         <StyledDialog 
           isDialogOpen={ this.state.isUpdateDialogOpen }
