@@ -1,0 +1,10 @@
+{
+    "districts": [
+        {
+            "id": 1,
+            "name": "Dhaka",
+            "nation_id": 1,
+            "nation_name": "Bangladesh"
+        }
+    ]
+}

@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import _isEqual from 'fast-deep-equal'
 import _debounce from 'lodash.debounce'
-import { Map, NavigationControl, Popup, Marker } from 'bkoi-gl'
+import { Map, NavigationControl, Popup, Marker, FullscreenControl } from 'bkoi-gl'
+// import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
 import { bbox } from '@turf/turf'
-import { MAP } from '../../App.config'
+
 
 // Import Styles
+import 'mapbox-gl-style-switcher/styles.css'
 
-
-// Import Assets
-import cctvIcon from '../../assets/icons/cctv-camera.png'
+// Import Types
+import { BASE_URL, MAP } from '../../App.config'
 
 class MapGL extends React.PureComponent {
   state = {
@@ -31,16 +31,18 @@ class MapGL extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { markerData, geojsonData } = this.props
+    const { geojsonData, markerData } = this.props
+    console.log({markerData})
     const { map } = this.state
-    
+    // console.log({markerData})
+
     // If map changes in state
-    if(map && prevState.map !== map) {      
+    if(prevState.map !== map) {      
       // Render Geojson Layer
       this._renderGeojsonOnLoad(geojsonData)
+
       // Render Markers
-      // this._renderMarkers(markerData)
-      this._renderMarkersOnLoad((markerData))
+      this._renderMarkers(markerData)
     }
 
     // If Geojson Data Changes
@@ -50,7 +52,7 @@ class MapGL extends React.PureComponent {
     }
 
     // If Marker Data Changes
-    if (!_isEqual(prevProps.markerData, markerData)) {   
+    if (!_isEqual(prevProps.markerData, markerData)) {      
       // Render Markers
       this._renderMarkers(markerData, { fitBounds: !prevProps.markerData?.length && markerData.length })
     }
@@ -64,21 +66,22 @@ class MapGL extends React.PureComponent {
   // Create Map
   _createMap = () => {
     const { container, center, zoom } = this.state
+
     const map = new Map({
       container,
       center,
       zoom,
+      style: MAP.STYLES[1].uri,
       accessToken: MAP.ACCESS_TOKEN,
-      attributionControl: false,
-      style: MAP.STYLES[1].uri
+      attributionControl: false
     })
 
-    // Add Controls
-    map.addControl(new NavigationControl(), 'top-left')
     // Map Resize Event
     this._handleMapResize(map)
+
     // Disable Double Click Zoom
     map.doubleClickZoom.disable()
+
     this.setState({ map })
   }
 
@@ -108,8 +111,14 @@ class MapGL extends React.PureComponent {
     const renderedMarkers = []
     markerData.forEach(m => {
       const marker = this._createMarker(m)
-      if(marker && marker.marker) { 
+      if(marker && marker.marker) {
         marker.marker.addTo(map)
+
+        // Show Popup Initially
+        // marker.marker._popup.addTo(map)
+
+        // use GetElement to get HTML Element from marker and add event
+
         renderedMarkers.push(marker)
       }
     })
@@ -118,41 +127,14 @@ class MapGL extends React.PureComponent {
     if(options.fitBounds) {
       this._fitBounds(markerData)
     }
-    this.setState({ renderedMarkers })
-  }
-
-  //startblock
-
-  _renderMarkersOnLoad = (markerData) => {
-    const { map } = this.state
-
-    // Remove Existing Markers
-
-
-    if(!markerData || markerData.length <= 0) {
-      return
-    }
-    this._removeMarkers()
-    // Create Markers
-    const renderedMarkers = []
-    map.on('load', () => {
-      markerData.forEach(m => {
-        const marker = this._createMarker(m)
-        if(marker && marker.marker) { 
-          marker.marker.addTo(map)
-          renderedMarkers.push(marker)
-        }
-      })
-    })
 
     this.setState({ renderedMarkers })
   }
-
-  //endblock
 
   // Remove Markers
   _removeMarkers = () => {
-    const { map, renderedMarkers } = this.state
+    const { renderedMarkers } = this.state
+
     if(!renderedMarkers || renderedMarkers.length <= 0) {
       return
     }
@@ -161,15 +143,13 @@ class MapGL extends React.PureComponent {
       if(m && m.marker) {
         m.marker.remove()
       }
-    })
+    }) 
 
     this.setState({ renderedMarkers: [] })
   }
 
   // Create marker instance
-  _createMarker = data => {
-    const { map } = this.state
-    const { defaultMarker, handleMarkerClick, _handleClearSelectedData } = this.props
+  _createMarker = data => {         
 
     if(!data) {
       return null
@@ -177,89 +157,173 @@ class MapGL extends React.PureComponent {
 
     if(data.longitude === null || data.longitude === undefined || data.longitude === '' || data.latitude === null || data.latitude === undefined || data.latitude === '') {
       return null
-    }
+    }           
 
-    const lngLat = [ data.longitude, data.latitude ]
+    const temp = this._generateMarker(data)
+    return temp
+
+    // const customPopup = this._createCustomPopup(data)
+    
+    // // Create Popup
+    // const popup = new Popup({ focusAfterOpen: false, maxWidth: '260px' })      
+    //   .setDOMContent( customPopup )
+
+    // // Add Marker
+    // const marker = new Marker(data.is_active === 0 ? greenCarMarker : data.is_active === 1 ? redCarMarker : '')
+    //   .setLngLat(lngLat)
+    //   .setPopup(defaultMarker ? null : popup)
+    
+    // return { marker, data }
+  }
+
+  // Create marker
+  _generateMarker = (data) => {    
+    const { defaultMarker } = this.props 
+
+    const lngLat = [ data.longitude, data.latitude ]    
+    // Create Hub Marker
+    const hubMarker = document.createElement('div')
+    hubMarker.className = 'orangeHomeMarker'
+    // hubMarker.innerText = '1'
+      // Create Green Package Marker
+    const greenPackageMarker = document.createElement('div')
+    greenPackageMarker.className = 'greenPackageMarker'
+    const whitePackageMarker = document.createElement('div')
+    whitePackageMarker.className = 'whitePackageMarker'
+    const yellowPackageMarker = document.createElement('div')
+    yellowPackageMarker.className = 'yellowPackageMarker'
+    if(data?.index){
+      yellowPackageMarker.innerText = ''+data?.index
+    }
+    // Create Green Marker
+    const greenCarMarker = document.createElement('div')
+    greenCarMarker.className = 'greenCarMarker'
+
+    // Create Red Marker
+    const redCarMarker = document.createElement('div')
+    redCarMarker.className = 'redCarMarker' 
+
+    // Create Green Marker
+    const orangeCarMarker = document.createElement('div')
+    orangeCarMarker.className = 'orangeCarMarker'
+
+    // Create Red Marker
+    const greyCarMarker = document.createElement('div')
+    greyCarMarker.className = 'greyCarMarker'  
+
+    const customPopup = this._createCustomPopup(data)
 
     // Create Popup
-    const popup = new Popup({ focusAfterOpen: false, maxWidth: '360px' })
-      .setHTML(`<div class='custom-popup-container'>
-          ${data?.exact_address}</div>`)
+    const popup = new Popup({ focusAfterOpen: false, maxWidth: '260px' })      
+      .setDOMContent( customPopup )
 
-    popup.on('close', () => {
-      _handleClearSelectedData()
-    });
-
-    if(defaultMarker || (data && !data?.isCctv) || ( data && data?.isSelectedPoint)) {
-      // Create Marker Element
-      const marker = new Marker()
-        .setLngLat(lngLat)
-        .setPopup(defaultMarker ? null : popup)
-      
-      const markerEl = marker.getElement()
-      if(markerEl) {
-        // markerEl.addEventListener('click',() => dispatch(setSelectedDataId(data?.id)))
-        markerEl.addEventListener('click',() => handleMarkerClick(data))
-
-      }
-
-      map.flyTo({
-          center: [data.longitude, data.latitude ],
-          zoom: 16
-      })
-
-      return { marker, data }
-    }
-
-    // Create Marker Element
-    const markerElement = this._createMarkerElement()
-    const marker = new Marker(markerElement)
+    // Add Marker
+    const marker = new Marker(
+      data?.field_force_status === 'ONLINE' && data?.user_type === 'FIELD_FORCE' ? greenCarMarker : 
+      data?.field_force_status === 'OFFLINE' && data?.user_type === 'FIELD_FORCE' ? greyCarMarker : 
+      data?.field_force_status === 'ONGOING' && data?.user_type === 'FIELD_FORCE' ? redCarMarker : 
+      data?.field_force_status === 'ASSIGNED' && data?.user_type === 'FIELD_FORCE' ? orangeCarMarker :
+      data?.location_type === 'hub' ? hubMarker:
+      data?.vehicle_type === 'TRUCK' ? redCarMarker:
+      data?.vehicle_type === 'TWO WHEELER' ? greenCarMarker:
+      data?.vehicle_type === 'MINI TRUCK' ? greenCarMarker:   
+      data?.isPkg === true ? yellowPackageMarker:    
+      data?.user_type === 'FIELD_FORCE' ? greyCarMarker : null
+    )
       .setLngLat(lngLat)
       .setPopup(defaultMarker ? null : popup)
-    
-    const markerEl = marker.getElement()
-    if(markerEl) {
-      markerEl.addEventListener('click',() => handleMarkerClick(data))
-    }
-    
+
     return { marker, data }
   }
 
-  // Create Narker Element
-  _createMarkerElement = () => {
-    // Create a DOM element for marker
-    const icon = document.createElement('img')
-    icon.className = 'maplibregl-marker'
-    icon.src = cctvIcon
-    icon.style.width = '16px'
-    icon.style.height = '16x'
-    icon.style.cursor = 'pointer'
-    return icon
+  // Create Custom Popup
+  _createCustomPopup = (data) => {  
+   
+    const tempEl = document.createElement('div')    
+    
+    const nameText = document.createTextNode(`${data.exact_address ? data.exact_address : data.ff_user_name ? data.ff_user_name : ''}`)
+    const updatedTimeText = document.createTextNode(`${data.updated_at ? data.updated_at : ''}`)
+    const vehicleId = document.createTextNode(`${data.user_id ? data.user_id : ''}`)
+    const nameEl = document.createElement('div')
+    nameEl.style.display = 'flex'
+
+    const userIdEl = document.createElement('div')
+    userIdEl.style.display = 'flex'
+    const userIdTitle = document.createTextNode('User : ')
+    userIdEl.appendChild(userIdTitle)
+
+    const nameTitleEl = document.createElement('p')
+    nameTitleEl.setAttribute('class', 'customPopupTitle')
+    const nameTitle = document.createTextNode('Name: ')
+    nameTitleEl.appendChild(nameTitle)
+
+    nameEl.appendChild(nameTitleEl)
+    nameEl.appendChild(nameText)
+    userIdEl.appendChild(vehicleId)
+
+    const updatedTimeEl = document.createElement('div')
+    updatedTimeEl.style.display = 'flex'
+
+    const updateTimeTitleEl = document.createElement('p')
+    updateTimeTitleEl.setAttribute('class', 'customPopupTitle')
+    const updateTimeTitle = document.createTextNode('Updated at: ')
+    updateTimeTitleEl.appendChild(updateTimeTitle)
+
+    updatedTimeEl.appendChild(updateTimeTitleEl)
+    updatedTimeEl.appendChild(updatedTimeText)
+
+    const areaEl = document.createElement('div')
+    areaEl.style.display = 'flex'
+
+    if(data.address) {      
+      const areaText = document.createTextNode(`${data.address ?? ''}`)      
+
+      const areaTitleEl = document.createElement('p')
+      areaTitleEl.setAttribute('class', 'customPopupTitle')
+      const areaTitle = document.createTextNode('Area: ')
+      areaTitleEl.appendChild(areaTitle)
+
+      areaEl.appendChild(areaTitleEl)
+      areaEl.appendChild(areaText)
+    }
+    if(data.vehicle_type){
+      tempEl.appendChild(userIdEl)
+    }
+    tempEl.setAttribute('id', 'custom-popup')
+    tempEl.appendChild(nameEl)
+    tempEl.appendChild(updatedTimeEl)
+    tempEl.appendChild(areaEl)
+    return tempEl
   }
 
   // Fit Bounds
-  _fitBounds = markerData => {
+  _fitBounds = (data, options={ dataType: 'row-object' }) => {
     const { map } = this.state
     let ifFitBounds = true
-    // To GeoJSON
-    if(markerData && markerData.length){
-    const geoJson = {
-      type: 'FeatureCollection',
-      features: markerData.map(d => {
-        if(d.recentOperation) {
-          ifFitBounds = false
-        }
 
-        return {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [ d.longitude, d.latitude ]
+    let geoJson = null
+    if(options?.dataType === 'geojson') {
+      geoJson = data
+
+    } else {
+      // To GeoJSON
+      geoJson = {
+        type: 'FeatureCollection',
+        features: data.map(d => {
+          if(d.recentOperation) {
+            ifFitBounds = false
           }
-        }
-      })
+
+          return {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [ d.longitude, d.latitude ]
+            }
+          }
+        })
+      }
     }
-  
 
     // Fit Bounds
     if(ifFitBounds) {
@@ -268,7 +332,6 @@ class MapGL extends React.PureComponent {
 
       map.fitBounds(_bbox, { padding: 64, maxZoom: 18, animate: false })
     }
-  }
   }
 
   // Handle Map Resize
@@ -286,8 +349,8 @@ class MapGL extends React.PureComponent {
     }
   }
 
-   // Render Geojson
-   _renderGeojson = (geojsonData, options={ fitBounds: true }) => {    
+  // Render Geojson
+  _renderGeojson = (geojsonData, options={ fitBounds: true }) => {    
     const { map, geojsonSourceId, geojsonLayerId } = this.state
 
     // Remove Existing Geojson
@@ -304,28 +367,6 @@ class MapGL extends React.PureComponent {
         data: f
       })
 
-
-      //
-      if(f?.geometry?.type === 'Point') {
-        // Add Polygon Layer
-        map.addLayer({
-            'id': `${ geojsonLayerId }-${ i }`,
-            'type': 'circle',
-            'source': `${ geojsonSourceId }-${ i }`,
-            'layout': {
-              'visibility': 'visible'
-              },
-            "paint": {
-              "circle-radius": 35,
-              "circle-opacity": .1,
-              "circle-stroke-width": 1.5,
-              "circle-stroke-color": "#0059FF",
-              "circle-stroke-opacity": 1,
-          },
-          "filter": ["==", '$type', "Point"],
-        })
-    }
-//
       if(f?.geometry?.type === 'LineString') {
         // Add LineString
         map.addLayer({
@@ -356,7 +397,7 @@ class MapGL extends React.PureComponent {
             },
             'paint': {
                 'fill-color': f?.properties?.fillColor ?? '#0080ff',
-                'fill-opacity': f?.properties?.opacity ?? 0.1,
+                'fill-opacity': f?.properties?.opacity ?? 0.1
             },
             'filter': [ '==', '$type', 'Polygon' ]
         })
@@ -375,50 +416,22 @@ class MapGL extends React.PureComponent {
                 'line-color': f?.properties?.lineColor ?? '#008000',
                 'line-width': f?.properties?.lineWidth ?? 2
             }
-          })
-        }
-      })
-
-        
-      // Fit Map Bounds
-      if(options.fitBounds) {
-        this._fitBounds(geojsonData, { dataType: 'geojson' })
+        })
       }
+    })
 
-      this.setState({ renderedGeojson: geojsonData })
+    // Fit Map Bounds
+    if(options.fitBounds) {
+      this._fitBounds(geojsonData, { dataType: 'geojson' })
     }
 
-      // Remove Geojson
-    _removeGeojson = () => {
-      const { map, geojsonSourceId, geojsonLayerId, renderedGeojson } = this.state
+    this.setState({ renderedGeojson: geojsonData })
+  }
 
-      if(!renderedGeojson) {      
-        return
-      }    
-
-      // Remove Geojson Layer
-      renderedGeojson.features.forEach((f, i) => {
-        if(map.getLayer(`${ geojsonLayerId }-${ i }`)) {      
-          map.removeLayer(`${ geojsonLayerId }-${ i }`)
-        }
-
-        if(map.getLayer(`${ geojsonLayerId }-${ i }-outline`)) {      
-          map.removeLayer(`${ geojsonLayerId }-${ i }-outline`)
-        }
-      })
-
-      // Remove Geojson Source
-      renderedGeojson.features.forEach((f, i) => {
-        if(map.getSource(`${ geojsonSourceId }-${ i }`)) {      
-          map.removeSource(`${ geojsonSourceId }-${ i }`)
-        }
-      })
-
-      this.setState({ renderedGeojson: null })
-    }
-    // Render GeoJSON without map on load
+  // Render GeoJSON without map on load
   _renderGeojsonOnLoad = (geojsonData, options={ fitBounds: true }) => {    
     const { map, geojsonSourceId, geojsonLayerId } = this.state
+    
     // Remove Existing Geojson
     this._removeGeojson()
 
@@ -463,9 +476,8 @@ class MapGL extends React.PureComponent {
                   'visibility': 'visible'
               },
               'paint': {
-                  'fill-color': f?.properties?.fillColor ?? '#0080ff',
-                  'fill-opacity': f?.properties?.opacity ?? 0.1,
-
+                  'fill-color': f?.properties?.fillColor ?? '#3A0E89',
+                  'fill-opacity': f?.properties?.opacity ?? 0.1
               },
               'filter': [ '==', '$type', 'Polygon' ]
           })
@@ -497,9 +509,38 @@ class MapGL extends React.PureComponent {
     this.setState({ renderedGeojson: geojsonData })
 }
 
+  // Remove Geojson
+  _removeGeojson = () => {
+    const { map, geojsonSourceId, geojsonLayerId, renderedGeojson } = this.state
+
+    if(!renderedGeojson) {      
+      return
+    }    
+
+    // Remove Geojson Layer
+    renderedGeojson.features.forEach((f, i) => {
+      if(map.getLayer(`${ geojsonLayerId }-${ i }`)) {      
+        map.removeLayer(`${ geojsonLayerId }-${ i }`)
+      }
+
+      if(map.getLayer(`${ geojsonLayerId }-${ i }-outline`)) {      
+        map.removeLayer(`${ geojsonLayerId }-${ i }-outline`)
+      }
+    })
+
+    // Remove Geojson Source
+    renderedGeojson.features.forEach((f, i) => {
+      if(map.getSource(`${ geojsonSourceId }-${ i }`)) {      
+        map.removeSource(`${ geojsonSourceId }-${ i }`)
+      }
+    })
+
+    this.setState({ renderedGeojson: null })
+  }
+
   render() {
     const { container } = this.state
-  
+
     return (
       <div id={ container } style={ containerStyles } />
     )
@@ -513,7 +554,7 @@ const containerStyles = {
   padding: 0,
   width: '100%',
   height: '100%',
-  minHeight: '750px',
+  minHeight: '400px',
   overflow: 'hidden',
   border: '1px solid #dcdcdc',
   borderRadius: '4px',
@@ -522,23 +563,15 @@ const containerStyles = {
 
 // Prop Types
 MapGL.propTypes = {
+  geojsonData: PropTypes.object,
   markerData: PropTypes.array,
-  defaultMarker: PropTypes.bool,
-  geoJsonData: PropTypes.object,
-  handleMarkerClick: PropTypes.func,
+  defaultMarker: PropTypes.bool
 }
 
 MapGL.defaultProps = {
+  geojsonData: null,
   markerData: [],
-  defaultMarker: false,
-  geoJsonData: {},
-  handleMarkerClick: () => null
+  defaultMarker: false
 }
 
-const mapStateToProps = state => ({
-
-})
-
-const mapDispatchToProps = dispatch => ({ dispatch })
-
-export default connect(mapStateToProps, mapDispatchToProps)(MapGL)
+export default MapGL

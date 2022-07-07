@@ -8,7 +8,7 @@ import App from './App'
 
 // Import Styles
 import './index.css'
-
+import 'mapbox-gl-style-switcher/styles.css'
 // Import MUI Theme
 import theme from './styles/theme'
 

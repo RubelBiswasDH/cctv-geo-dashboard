@@ -1,0 +1,22 @@
+{
+    "thanas": [
+        {
+            "id": 1,
+            "name": "Lalbagh",
+            "district_id": 1,
+            "district_name": "Dhaka"
+        },
+        {
+            "id": 2,
+            "name": "Chawk Bazar",
+            "district_id": 1,
+            "district_name": "Dhaka"
+        },
+        {
+            "id": 3,
+            "name": "Kotwali",
+            "district_id": 1,
+            "district_name": "Dhaka"
+        }
+    ]
+}

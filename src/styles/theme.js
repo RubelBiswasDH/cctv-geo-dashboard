@@ -5,7 +5,13 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          background: '#FFFFFF'
+          background: '#FFFFFF',
+        }
+      }
+    },
+    MuiDrawer:{
+      styleOverrides: {
+        root: {
         }
       }
     },
@@ -146,8 +152,12 @@ const theme = createTheme({
       contrastText: '#00',
     },
     text: {
-      white: 'white'
+      white: 'white',
+    },
+    black: {
+      main: '#000'
     }
+  
   },
  
 })

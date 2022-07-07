@@ -1,55 +1,42 @@
-div {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.App {
+  text-align: center;
 }
 
-/* MUI Style Overrides */
-.MuiBox-root {
-  box-sizing: border-box !important;
-  margin: 0;
-  padding: 0;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-/* MUI Data Grid Style Overrides */
-.MuiDataGrid-viewport, .MuiDataGrid-row, .MuiDataGrid-renderingZone {
-  max-height: fit-content !important;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-.MuiDataGrid-cell {
-  height: unset !important;
-  max-height: fit-content !important;
-  overflow: auto;
-  white-space: initial !important;
-  line-height: 16px !important;
-  display: flex !important;
-  align-items: center;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  justify-content: flex-start !important;
-}
-
-.MuiDataGrid-columnHeaderTitle {
-  height: unset !important;    
-  max-height: fit-content !important;
-  overflow: auto;
-  white-space: initial !important;
-  line-height: 16px !important;
-  display: flex !important;
-  align-items: center;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
-
-.MuiDataGrid-columnHeaderTitleContainer {
-  padding: 0 !important;
-}
-
-.flex-center{
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
-.d-flex{
-  display: flex;
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.maplibregl-marker {
+  cursor: pointer;
 }

@@ -3,48 +3,50 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // Import Components
-import { Box, AppBar, Toolbar, Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Grid, Chip } from '@mui/material'
+import { Box, AppBar, Toolbar, Tooltip, IconButton, Menu, MenuItem, ListItemIcon, Grid } from '@mui/material'
 import { Logout, AccountCircle } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-// import descoLogo from '../assets/desco-logo.png'
-import bkoiLogo from '../assets/barikoi-logo.png'
-
-// Import Actions & Methods
-import { logout } from '../redux/actions/authActions'
-import { getUserProfile } from '../redux/actions/adminActions'
-import { setCurrentView } from '../redux/reducers/dashboardReducer'
-import { setUserProfile, setProfileEdit } from "../redux/reducers/adminReducer"
-import { setIsLeftNavOpen } from "../redux/reducers/hrtReducer"
+// import actions and reducers
+import { setIsLeftNavOpen, setCurrentAddress, setAddressOptions } from '../redux/reducers/cctvGeoReducer'
+import AddressAutoComplete from './common/AddressAutoComplete'
+import { getAddressList } from '../redux/actions/cctvGeoActions'
 
 class NavBar extends React.PureComponent {
-  state = {
-    accMenuAnchorEl: null,
-    notificationsMenuAnchorEl: null,
-    isTaskDetailsOpen: false,
-    selectedTask: {},
-    filterOptions: ['option1','option2','option3'],
-    user: {}
-  }
-  componentDidMount = ()=> {
-    const user = JSON.parse(localStorage.getItem('user'))
-    this.setState({user:user})
+    state = {
+
+    }
+    componentWillUnmount = ()=> {
+      const { dispatch } = this.props
+      dispatch(setAddressOptions([]))
+    }
+
+    // handleAutoCompInputChange
+    _handleAutoCompInputChange = e => {
+      const { dispatch } = this.props
+      const searchParams = e.target.value
+      if(searchParams && searchParams?.length){
+        dispatch(getAddressList(searchParams))
+      }
+      else{
+        dispatch(setCurrentAddress({}))
+        dispatch(setAddressOptions([]))
+      }
   }
 
-  _getUserProfile = () => {
-        this.props.dispatch(setUserProfile({}))
-        this.props.dispatch(setProfileEdit(false))
-        this.props.dispatch(getUserProfile(this.state.user.id))
-        this.props.dispatch(setCurrentView('profile'))
-  }
-  // Get Avatar String
-  _stringAvatar = name => ({
-    sx: {
-      width: '32px',
-      height: '32px'
-    },
-    children: name ? name.split(' ').map(d => d.trim()[0].toUpperCase()).join('') : null
-  })
+    // handleAutoCompChange
+    _handleAutoCompChange = (e, value) => {
+        const { dispatch } = this.props
+        if(value && Object.keys(value)?.length && value?.Address){
+          const selectedPointData = {
+            ...value,
+            isSelectedPoint: true
+          }
+          dispatch(setCurrentAddress(value?.Address ? selectedPointData : {}))
+          dispatch(setAddressOptions([]))
+        }
+
+    }
 
   // Open Account Settings Menu
   _openAccountMenu = e => {
@@ -56,16 +58,6 @@ class NavBar extends React.PureComponent {
     this.setState({ accMenuAnchorEl: null })
   }
 
-  // Close Notificataions Menu
-  _closeNotificataionsMenu = () => {
-    this.setState({ notificationsMenuAnchorEl: null })
-  }
-
-  // On Logout
-  _onLogout = () => {
-    const { dispatch } = this.props
-    dispatch( logout() )
-  }
 
   // handle left nav open 
   _handleLeftNavOpen = () => {
@@ -74,16 +66,16 @@ class NavBar extends React.PureComponent {
   }
 
   render() {
-    const { user, appBarProps, isLeftNavOpen } = this.props
-    const { accMenuAnchorEl, notificationsMenuAnchorEl } = this.state
+    const { _handleAutoCompInputChange, _handleAutoCompChange } = this
+    const { user, appBarProps, isLeftNavOpen, addressOptions } = this.props
+    const { accMenuAnchorEl } = this.state
     const accMenuOpen = Boolean(accMenuAnchorEl)
-    const notificationsMenuOpen = Boolean(notificationsMenuAnchorEl)
     return (
       <React.Fragment>
-        <AppBar position='sticky' { ...appBarProps }   style={{ zIndex: 1251 }}>
+        <AppBar position='sticky' { ...appBarProps }  elevation={1} style={{display:'flex', maxHeight:'50px', zIndex: 1251,justifyContent:'center' }}>
           <Box sx={{ ...appBarStyles }}>
             <Grid container spacing={ 0 }>
-              <Grid item xs={ 12 } sm={ 12 } md={ 6 } sx={{ ...brandContainerStyles,width:'100%' }}>
+              <Grid item xs={ 12 } sm={ 12 } md={ 8 } sx={{ ...brandContainerStyles,width:'100%' }}>
                
                 <Box sx={{display:'flex'}}>
                 { !isLeftNavOpen &&
@@ -94,33 +86,21 @@ class NavBar extends React.PureComponent {
                         onClick={ this._handleLeftNavOpen }
                         sx={{mr:1}}
                       >
-                        <MenuIcon color={"primary"} fontSize='small' />
+                        <MenuIcon color={"black"} fontSize='small' />
                       </IconButton>
                   }
-                  <a href='/'>
-                    <img
-                      src={ bkoiLogo }
-                      alt='Brand Logo'
-                      height='32px'
-                      style={ imgStyles }
-                    />
-                  </a>
+
                 </Box>
               </Grid>
-                  
-              <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
+              <Grid item xs={ 12 } sm={ 12 } md={ 3.5 } sx ={{display:'flex', alignItems:'center'}}>
+                <AddressAutoComplete 
+                    filterOptions={addressOptions} 
+                    _handleAutoCompInputChange={ _handleAutoCompInputChange } 
+                    _handleAutoCompChange = { _handleAutoCompChange }
+                />
+              </Grid>  
+              <Grid item xs={ 12 } sm={ 12 } md={ .5 } >
                 <Toolbar variant='dense' sx={ {...toolbarStyles , justifyContent:'flex-end'} }>
-
-                  {
-                    user?.user_type &&
-                    <Chip
-                        sx={{px:2,mr:1}}                        
-                        color='primary'
-                        label={ user?.user_type? user.user_type : 'Unassigned' }
-                        size={ 'small' }
-                    />
-                  }
-                  
                   <Tooltip
                     title={ user.name ? user.name : 'Account Settings' }
                     arrow={ true }
@@ -132,7 +112,7 @@ class NavBar extends React.PureComponent {
                       aria-expanded={ accMenuOpen ? 'true' : undefined }
                       onClick={ this._openAccountMenu }
                     >
-                      <MoreVertIcon ccolor={"primary"}/>
+                      <MoreVertIcon color={"black"}/>
                     </IconButton>
                   </Tooltip>
                 </Toolbar>
@@ -140,25 +120,6 @@ class NavBar extends React.PureComponent {
             </Grid>
           </Box>
         </AppBar>
-
-        <React.Fragment>
-          <Menu
-            anchorEl={ notificationsMenuAnchorEl }
-            id='notifications-menu'
-            open={ notificationsMenuOpen }
-            onClose={ this._closeNotificataionsMenu }
-            onClick={ this._closeNotificataionsMenu }
-            PaperProps={ menuPaperProps }
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            MenuListProps={{
-              sx: {
-                padding: 0
-              }
-            }}
-          >
-          </Menu>
-        </React.Fragment>
 
         <React.Fragment>
           <Menu
@@ -178,7 +139,7 @@ class NavBar extends React.PureComponent {
               <ListItemIcon>
                 <AccountCircle fontSize='small' />
               </ListItemIcon>
-              { (this.state.user.username)?this.state.user.username:'User Name' }
+              {'User Name' }
             </MenuItem>
             <MenuItem
               dense={ true }
@@ -226,13 +187,6 @@ const appBarStyles = {
   alignItems: 'center'
 }
 
-const imgStyles = {
-  boxSizing: 'border-box',
-  margin: 0,
-  padding: 0,
-  objectFit: 'fill'
-}
-
 const brandContainerStyles = {
   display: 'flex',
   justifyContent: 'space-between',
@@ -260,8 +214,8 @@ NavBar.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  user: state?.auth?.user,
-  isLeftNavOpen: state?.hrt?.isLeftNavOpen,
+  isLeftNavOpen: state?.cctvGeo?.isLeftNavOpen ?? true,
+  addressOptions: state?.cctvGeo?.addressOptions ?? []
 })
 
 const mapDispatchToProps = dispatch => ({ dispatch })
