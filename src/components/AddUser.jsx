@@ -12,6 +12,10 @@ import StyledDropdown from './common/StyledDropdown'
 import AddressAutoComplete from './common/AddressAutoComplete_2'
 import StyledDatePicker from './common/StyledDatePicker'
 
+import { setCurrentDepartment } from "../redux/reducers/companySettingsReducer"
+import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
+import { setCompanySettingsAction } from '../redux/actions/adminActions'
+
 import { createUser, createBulkUser } from '../redux/actions/adminActions'
 import { setToastMessage, setToastIsOpen, setToastSeverity } from "../redux/reducers/dashboardReducer"
 // Import Actions & Methods
@@ -276,9 +280,33 @@ class AddUser extends React.PureComponent {
         return verdict
     }
 
+    _handleAddDepartment = () => {
+        const { dispatch, companySettings, currentDepartment } = this.props
+        if( currentDepartment && currentDepartment.length){
+            dispatch( setCurrentDepartment (''))
+            dispatch( setCompanySettingsAction({
+                ...companySettings,
+                'departments':{
+                    ...companySettings.departments,
+                    [currentDepartment]:{name:currentDepartment}
+                },
+            }) )
+            dispatch(updateCompanyDepartments({
+                ...companySettings.departments,
+                [currentDepartment]:{name:currentDepartment}
+            }))
+        }
+        
+        else {
+            dispatch(setToastMessage("Fields can't  be empty"))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
+    }
+
   render() {
     const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails, userFieldError } = this.props
-    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput } = this
+    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput, _handleAddDepartment } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{display:'flex',py:2,pb:5, justifyContent:'space-between'}}>
@@ -371,10 +399,7 @@ class AddUser extends React.PureComponent {
                     userFieldError={userFieldError}  
                     updateUserFieldError={ updateUserFieldError } 
                     addMoreOptionComponent={ 
-                        <Box sx={{display:'flex', width:'100%'}}>
-                            <TextField fullWidth autoFocus size={'small'} sx={{width:'70%'}}/> 
-                            <Button onClick={() => console.log('clicked')}  sx={{width:'30%'}}>Add</Button>
-                        </Box>
+                       <AddMoreOptionsInput value={this.props.currentDepartment} _handleInputChange = { e => dispatch(setCurrentDepartment(e.target.value))} _handleAddBtnClick = { _handleAddDepartment }/>
                         } 
                 />
                 <FilterField 
@@ -773,7 +798,15 @@ const FilterField = (props) => {
     </Grid>
   )
 }
-
+const AddMoreOptionsInput = (props) => {
+    const { _handleAddBtnClick, _handleInputChange, value } = props
+    return (
+        <Box sx={{display:'flex', width:'100%'}}>
+            <TextField value={value} onChange = { _handleInputChange } fullWidth autoFocus size={'small'} sx={{width:'70%'}}/> 
+            <Button onClick={ _handleAddBtnClick }  sx={{width:'30%'}}>Add</Button>
+        </Box>
+    )
+}
 //file input button
 
 const InputButton = (props) => {
@@ -838,6 +871,7 @@ const mapStateToProps = state => ({
   user: state?.auth?.user,
   newUser: state?.admin?.newUser,
   companySettings: state?.admin?.companySettings,
+  currentDepartment: state?.companySettings?.currentDepartment,
   companyNameOptions: state?.register?.companyNameOptions ?? [],
   fileInput: state?.admin?.fileInput,
   addUserDetails: state?.admin?.addUserDetails ?? false,
