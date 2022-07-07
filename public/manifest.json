@@ -1,6 +1,6 @@
 {
-  "short_name": "HR Trace Dashboard",
-  "name": "HR Trace Dashboard",
+  "short_name": "CCTV Geo Dashboard",
+  "name": "CCTV Geo Dashboard",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
