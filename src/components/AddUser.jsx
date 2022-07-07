@@ -372,7 +372,7 @@ class AddUser extends React.PureComponent {
                     updateUserFieldError={ updateUserFieldError } 
                     addMoreOptionComponent={ 
                         <Box sx={{display:'flex', width:'100%'}}>
-                            <TextField fullWidth size={'small'} sx={{width:'70%'}}/> 
+                            <TextField fullWidth autoFocus size={'small'} sx={{width:'70%'}}/> 
                             <Button onClick={() => console.log('clicked')}  sx={{width:'30%'}}>Add</Button>
                         </Box>
                         } 
@@ -726,6 +726,7 @@ const FilterField = (props) => {
             dispatch(updateNewUser({ [field]: e.target.value }))
         }
     }
+
     const textStyle = {
         fontFamily: 'Roboto',
         fontSize:{xs:'12px',sm:'14px', md:'16px', lg:'20px'}
@@ -758,17 +759,11 @@ const FilterField = (props) => {
                     {filterOptions.map(d => (<MenuItem key={d} value={d}>{d}</MenuItem>))} 
                     { addMoreOptionComponent && 
                     <MenuItem
-                        onClickCapture={(e) => {
-                            e.stopPropagation()
-                       }}
-                       onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#ffffff";
-                            e.target.style.cursor = "default";
-                        }}
-                        onClick={(e) => {
-                        console.log('text')
-                        }}>
-                        { addMoreOptionComponent }
+                        onKeyDown={(e) => e.stopPropagation()}
+                    >
+                        <form onClick={(e)=>{e.stopPropagation()}} style={{width:'100%'}}>
+                          { addMoreOptionComponent }
+                        </form>
                     </MenuItem>
                     }
                 </Select>
