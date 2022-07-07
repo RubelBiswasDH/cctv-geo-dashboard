@@ -35,7 +35,7 @@ class MapGL extends React.PureComponent {
     const { map } = this.state
     
     // If map changes in state
-    if(map && prevState.map !== map) {      
+    if(prevState.map !== map) {      
       // Render Geojson Layer
       this._renderGeojsonOnLoad(geojsonData)
       // Render Markers
