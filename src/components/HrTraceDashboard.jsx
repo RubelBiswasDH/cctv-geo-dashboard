@@ -26,7 +26,7 @@ import Button from '@mui/material/Button';
 import { getAttendance, getAttendanceReport }  from '../redux/actions/attendanceActions'
 import { getCompanySettingsAction } from '../redux/actions/adminActions'
 import { getAnnouncements } from '../redux/actions/announcementsActions'
-import { getEmployee }  from '../redux/actions/employeeActions'
+import { getEmployee, getDeletedUsers }  from '../redux/actions/employeeActions'
 import { setToastIsOpen, setCurrentView } from '../redux/reducers/dashboardReducer'
 import { activateSocket_A, deactivateSocket } from '../redux/actions/socketActions'
 
@@ -48,6 +48,7 @@ class HrTraceDashboard extends React.PureComponent {
     const currentView = getCurrentView()
     dispatch(setCurrentView(currentView))
     dispatch( getEmployee() )
+    dispatch( getDeletedUsers() )
     dispatch( getAnnouncements({start_date: `${start_date}`, end_date: `${end_date}`}))
     dispatch( getCompanySettingsAction() )
 

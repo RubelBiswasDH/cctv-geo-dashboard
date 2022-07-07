@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     employeeList: [],
+    deletedEmployeeList : [],
     employee: {},
     currentEmployeeType:'',
     isDeleteDialogOpen: false,
@@ -46,8 +47,11 @@ const employeeSlice = createSlice({
     updateEmployeeProfile: ( state, action) => {
       state.profile = { ...state.profile, ...action.payload}
     },
+    setDeletedEmployeeList: ( state, action ) => {
+      state.deletedEmployeeList = action.payload
+    }
   }
 })
 
-export const { setEmployee, setEmployeeList, setCurrentEmployeeType, setError, isUpdateDialogOpen, isDeleteDialogOpen, selectedUserId, setCurrentProfileTab, setEmployeeProfile, updateEmployeeProfile } = employeeSlice.actions
+export const { setEmployee, setEmployeeList, setCurrentEmployeeType, setError, isUpdateDialogOpen, isDeleteDialogOpen, selectedUserId, setCurrentProfileTab, setEmployeeProfile, updateEmployeeProfile, setDeletedEmployeeList } = employeeSlice.actions
 export default employeeSlice.reducer

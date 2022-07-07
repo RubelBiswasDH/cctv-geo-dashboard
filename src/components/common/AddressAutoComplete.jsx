@@ -44,7 +44,7 @@ class AddressAutoComplete extends React.PureComponent{
         const { inputAddress } = this.state
         return(
             <Autocomplete
-                clearOnBlur={false}
+                clearOnBlur={true}
                 sx={{ width: '100%', ...sx}}
                 onChange={ _handleAutoCompChange }
                 onInputChange={ _handleAutoCompInputChange}

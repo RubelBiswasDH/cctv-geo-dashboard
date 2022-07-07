@@ -147,7 +147,7 @@ class Attendance extends React.PureComponent {
     }
 
   mappedAttendanceInfo = () => {
-    const { currentAttendanceTab } = this.props
+    const { currentAttendanceTab, announcements } = this.props
     const attendanceList  = this._filteredAttendance()
     
     const employeeList = this._getUniqueEmployee(attendanceList)
@@ -170,6 +170,14 @@ class Attendance extends React.PureComponent {
           else{
             return 'P'
           }
+        }
+        const getAnnouncement = (a) => {
+            const announcement = announcements.find( announcement => (
+                  (dayjs(announcement?.created_at).format("DD/MM/YYYY") === dayjs(a?.created_at).format("DD/MM/YYYY"))
+                  && (announcement?.user_id === a?.user_id)
+            ))?.description ?? ''
+            return announcement
+              
         }
         const getIndividualAttendance = ( id ) => attendanceList.forEach( a => {
           if (a.user_id === id) {
@@ -212,6 +220,7 @@ class Attendance extends React.PureComponent {
               "check_in_time": a?.enter_time?dayjs(a?.enter_time).format('hh:mm A'):'',
               "check_out_time" : a?.exit_time?dayjs(a?.exit_time).format('hh:mm A'):'',
               "status": getStatus(a),
+              "announcement": getAnnouncement(a) ?? ''
             }
           ]
         }

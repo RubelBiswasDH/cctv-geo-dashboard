@@ -8,11 +8,12 @@ import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher'
 import { bbox } from '@turf/turf'
 import { MAP } from '../../App.config'
 import { setCompanySettings } from '../../redux/reducers/adminReducer'
+import { getReverseGeoAddress } from '../../utils/utils'
+
 // Import Styles
 import 'mapbox-gl-style-switcher/styles.css'
 
 // Import Actions
-import { getReverseGeoAddress } from '../../utils/utils'
 
 class MapGL extends React.PureComponent {
   state = {
@@ -53,14 +54,14 @@ class MapGL extends React.PureComponent {
   // Create Map
   _createMap = () => {
     const { container, center, zoom } = this.state
-
+    const { _handleReverseGeo } = this.props
     const map = new Map({
       container,
       center,
       zoom,
       accessToken: MAP.ACCESS_TOKEN,
       attributionControl: false,
-      style: MAP.STYLES[0].uri
+      style: MAP.STYLES[1].uri
     })
 
     // Add Controls
@@ -74,24 +75,8 @@ class MapGL extends React.PureComponent {
     map.doubleClickZoom.disable()
     // get Current Location
     map.on('click', e => {
-      const {lngLat} = e
-      getReverseGeoAddress({ longitude: lngLat.lng, latitude: lngLat.lat })
-      .then(res => {
-        const reverseData = res.place
-        if(reverseData) {
-          // Get Updated Address from Reverse Geo Code
-          const updatedAddress = {
-            exact_address: reverseData.address,
-            longitude: lngLat.lng,
-            latitude: lngLat.lat 
-          }
-          this.props.dispatch(setCompanySettings({...this.props.companySettings, ...{companyAddressData:updatedAddress}}))
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  
+      _handleReverseGeo(e)
+   
       //end
       })
     this.setState({ map })

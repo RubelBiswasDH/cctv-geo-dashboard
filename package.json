@@ -19,10 +19,13 @@
     "mapbox-gl-style-switcher": "^1.0.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-dropdown-timepicker": "^1.0.4",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "react-timekeeper": "^2.2.1"
+    "react-simple-timefield": "^3.2.5",
+    "react-timekeeper": "^2.2.1",
+    "react-ts-timepicker": "^0.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
