@@ -132,14 +132,32 @@ class CompanyProfile extends React.PureComponent {
                       }}
                       hour24Mode
                     /> */}
-                    <TimeField
+                    {/* <TimeField
                       input={<TextField  size={'small'} sx={{width:'60%'}}/>}
                       value={companySettings?.late_time} 
                       onChange={(event, time) => {
                         dispatch(updateCompanySettings({late_time:time}))
+                        }
                       }
-                    }
-                  />
+                    /> */}
+                    <TextField
+                      size={'small'} 
+                      sx={{width:'60%'}}
+                      id="time"
+                      label=""
+                      type="time"
+                      value={companySettings?.late_time} 
+                      onChange={(e) => {
+                        dispatch(updateCompanySettings({late_time:e.target.value}))
+                        }
+                      }
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 300, // 5 min
+                      }}
+                    />
                 </Box> 
                 <Box>
                 
