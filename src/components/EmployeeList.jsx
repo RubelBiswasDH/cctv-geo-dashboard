@@ -62,14 +62,23 @@ class EmployeeList extends React.PureComponent {
   transformedEmployeeList = () => {
 
     const { currentEmployeeType } = this.props
-    // let empList = this._filteredEmployee()
-    const { employeeList, deletedEmployeeList } = this.props
 
-    let empList = employeeList
-    let empData = (empList)?.map(emp => ({
-      ...emp,
-      profile:JSON.parse(emp?.profile)
-    }))
+    const { employeeList, deletedEmployeeList } = this.props
+    let empList = this._filteredEmployee()
+    // let empList = employeeList
+    let empData = []
+    empList?.forEach(emp => {
+      if(typeof(emp?.profile) === 'string'){
+        empData = [...empData, {
+          ...emp,
+          profile:JSON.parse(emp?.profile)
+        }]
+      } else {
+        empData = [...empData, {
+          ...emp
+        }]
+      }
+    })
 
     let deletedEmpData = deletedEmployeeList?deletedEmployeeList:[]
     let data = []
@@ -77,22 +86,22 @@ class EmployeeList extends React.PureComponent {
 
     switch (currentEmployeeType) {
         case 'intern':
-            data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='intern');
+            data = empData.filter(emp => (!emp?.deleted_reason) && emp?.profile?.job_status?.toLowerCase()==='intern');
             break;
         case 'probational_period':
-            data = empData.filter(emp => emp?.profile?.job_status?.toLowerCase()==='probation');
+            data = empData.filter(emp => (!emp?.deleted_reason) && emp?.profile?.job_status?.toLowerCase()==='probation');
             break;
         case 'males':
-            data = empData.filter(emp => emp?.profile?.gender?.toLowerCase() === 'male');
+            data = empData.filter(emp => (!emp?.deleted_reason) && emp?.profile?.gender?.toLowerCase() === 'male');
             break;
         case 'females':
-            data = empData.filter(emp => emp?.profile?.gender?.toLowerCase() === 'female');
+            data = empData.filter(emp => (!emp?.deleted_reason) && emp?.profile?.gender?.toLowerCase() === 'female');
             break;
         case 'deleted':
-            data = deletedEmpData
+            data = empData.filter(emp => emp?.deleted_reason);
             break;
         default:
-          data = empData;
+          data = empData.filter(emp => (!emp?.deleted_reason));
       } 
       
     }
@@ -190,9 +199,9 @@ class EmployeeList extends React.PureComponent {
   }
 
   _filteredEmployee = () => {
-    const { employeeList } = this.props
+    const { employeeList, deletedEmployeeList } = this.props
     const { filterOptions } = this.props
-    let list = employeeList
+    let list = [ ...employeeList, ...deletedEmployeeList ]
     if(filterOptions && filterOptions?.type && filterOptions?.type==='ALL'){
       return list
     }
@@ -215,8 +224,9 @@ class EmployeeList extends React.PureComponent {
     const { delete_error } = this.state
     return (
       <Box width='100%' height='73vh'>
-        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'center',p:2,px:0, gap:2}}>
+        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'flex-start',p:2,px:0, gap:2}}>
           <FilterField
+            sx={{width:"30%"}}
             field = {'name'}
             label = {'Name'} 
             value = {filterOptions?.name ?? ''}
@@ -334,9 +344,9 @@ class EmployeeList extends React.PureComponent {
 }
 
 const FilterField = (props) => {
-  const { dispatch, action, value, field, label} = props
+  const { dispatch, action, value, field, label, sx} = props
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth sx={{...sx}}>
       <TextField
             value={ value } 
             onChange={ 
