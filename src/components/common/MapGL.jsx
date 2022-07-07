@@ -40,7 +40,7 @@ class MapGL extends React.PureComponent {
       this._renderGeojsonOnLoad(geojsonData)
       // Render Markers
       // this._renderMarkers(markerData)
-      this._renderMarkersOnLoad((markerData))
+      this._renderMarkers((markerData))
     }
 
     // If Geojson Data Changes
