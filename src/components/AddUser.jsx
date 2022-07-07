@@ -433,7 +433,7 @@ class AddUser extends React.PureComponent {
                     userFieldError={userFieldError}  
                     updateUserFieldError={ updateUserFieldError } 
                     addMoreOptionComponent={ 
-                       <AddMoreOptionsInput value={this.props.currentDepartment} _handleInputChange = { e => dispatch(setCurrentDepartment(e.target.value))} _handleAddBtnClick = { _handleAddDepartment }/>
+                       <AddMoreOptionsInput label={"Add another department"} value={this.props.currentDepartment} _handleInputChange = { e => dispatch(setCurrentDepartment(e.target.value))} _handleAddBtnClick = { _handleAddDepartment }/>
                         } 
                 />
                 <FilterField 
@@ -453,7 +453,7 @@ class AddUser extends React.PureComponent {
                     updateUserFieldError={ updateUserFieldError }
                     addMoreOptionComponent={ 
                         (newUser?.profile?.department) &&
-                        <AddMoreOptionsInput value={this.props.currentDesignation} _handleInputChange = { e => dispatch(setCurrentDesignation(e.target.value))} _handleAddBtnClick = { _handleAddDesignation }/>
+                        <AddMoreOptionsInput label={"Add another designation"} value={this.props.currentDesignation} _handleInputChange = { e => dispatch(setCurrentDesignation(e.target.value))} _handleAddBtnClick = { _handleAddDesignation }/>
                     } 
                 />
             </Box>
@@ -836,11 +836,11 @@ const FilterField = (props) => {
   )
 }
 const AddMoreOptionsInput = (props) => {
-    const { _handleAddBtnClick, _handleInputChange, value } = props
+    const { _handleAddBtnClick, _handleInputChange, value, label } = props
     return (
-        <Box sx={{display:'flex', width:'100%'}}>
-            <TextField value={value} onChange = { _handleInputChange } fullWidth autoFocus size={'small'} sx={{width:'70%'}}/> 
-            <Button onClick={ _handleAddBtnClick }  sx={{width:'30%'}}>Add</Button>
+        <Box sx={{display:'flex', width:'100%', gap:2, pt:1,justifyContent:'space-between'}}>
+            <TextField label={label} value={value} onChange = { _handleInputChange } fullWidth autoFocus size={'small'} sx={{width:'75%'}}/> 
+            <Button variant={'outlined'} onClick={ _handleAddBtnClick } size={'small'} sx={{width:'20%'}}>Add</Button>
         </Box>
     )
 }
