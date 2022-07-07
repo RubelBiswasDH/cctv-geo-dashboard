@@ -5,6 +5,7 @@ const initialState = {
       departments:{}
     },
     currentDepartment:'',
+    currentDesignation:'',
     currentDesignations: {},
     
 }
@@ -22,6 +23,9 @@ const companySettingsSlice = createSlice({
     },
     setCurrentDepartment: (state, action) => {
       state.currentDepartment = action.payload
+    },
+    setCurrentDesignation: (state, action) => {
+      state.currentDesignation = action.payload
     },
     setDepartments: (state, action) => {
       state.settings.departments = action.payload
@@ -41,5 +45,5 @@ const companySettingsSlice = createSlice({
   }
 })
 
-export const { setSettings, updateSettngs, setCurrentDepartment, setDepartments, updateDepartments, addDesignation, setCurrentDesignations, updateCurrentDesignations } = companySettingsSlice.actions
+export const { setSettings, updateSettngs, setCurrentDepartment, setCurrentDesignation, setDepartments, updateDepartments, addDesignation, setCurrentDesignations, updateCurrentDesignations } = companySettingsSlice.actions
 export default companySettingsSlice.reducer

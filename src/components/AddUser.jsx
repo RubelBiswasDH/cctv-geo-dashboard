@@ -12,7 +12,7 @@ import StyledDropdown from './common/StyledDropdown'
 import AddressAutoComplete from './common/AddressAutoComplete_2'
 import StyledDatePicker from './common/StyledDatePicker'
 
-import { setCurrentDepartment } from "../redux/reducers/companySettingsReducer"
+import { setCurrentDepartment, setCurrentDesignation, updateCurrentDesignations } from "../redux/reducers/companySettingsReducer"
 import { updateCompanyDepartments } from '../redux/reducers/adminReducer'
 import { setCompanySettingsAction } from '../redux/actions/adminActions'
 
@@ -295,6 +295,7 @@ class AddUser extends React.PureComponent {
                 ...companySettings.departments,
                 [currentDepartment]:{name:currentDepartment}
             }))
+            dispatch(updateNewUserProfile({ department: currentDepartment }))
         }
         
         else {
@@ -304,9 +305,42 @@ class AddUser extends React.PureComponent {
         }
     }
 
+    _handleAddDesignation = () => {
+        const { dispatch, companySettings, currentDesignations, newUser, currentDesignation } = this.props
+        const department = newUser?.profile?.department ?? ''
+        const prevDesignations = companySettings?.departments[department]?.designations || []
+        if (currentDesignation
+            && currentDesignation.length) {
+            dispatch(updateCompanyDepartments({
+                ...companySettings.departments,
+                [department]: {
+                    name: department,
+                    designations: [...prevDesignations, currentDesignation]
+                }
+            }))
+            dispatch(setCurrentDesignation(''))
+            dispatch(setCompanySettingsAction({
+                ...companySettings,
+                'departments': {
+                    ...companySettings.departments,
+                    [department]: {
+                        name: department,
+                        designations: [...prevDesignations, currentDesignation]
+                    }
+                },
+
+            }))
+            dispatch(updateNewUserProfile({ designation: currentDesignation }))
+        }
+        else {
+            dispatch(setToastMessage("Fields can't  be empty"))
+            dispatch(setToastIsOpen(true))
+            dispatch(setToastSeverity('warning'))
+        }
+    }
   render() {
-    const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails, userFieldError } = this.props
-    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput, _handleAddDepartment } = this
+    const { dispatch, newUser, companySettings, companyNameOptions, addUserDetails, userFieldError, currentDesignation } = this.props
+    const { _handleSaveUser, _handleAddDetails, _handleSkipDetails, _handleAutoCompInputChange, _handleAutoCompChange, _handleFileUpload, _handleFileInput, _handleAddDepartment, _handleAddDesignation } = this
     return (
       <Box width='100%' height='54vh'>
         <Box sx={{display:'flex',py:2,pb:5, justifyContent:'space-between'}}>
@@ -417,7 +451,10 @@ class AddUser extends React.PureComponent {
                     fieldStyle={{ width:'40%' }}
                     userFieldError={userFieldError}  
                     updateUserFieldError={ updateUserFieldError }
-                    
+                    addMoreOptionComponent={ 
+                        (newUser?.profile?.department) &&
+                        <AddMoreOptionsInput value={this.props.currentDesignation} _handleInputChange = { e => dispatch(setCurrentDesignation(e.target.value))} _handleAddBtnClick = { _handleAddDesignation }/>
+                    } 
                 />
             </Box>
             <Box sx={{display:'flex', flexDirection:'row',justifyContent:'flex-end', alignItems:'center',width:'60%', pr:5,mt:3,gap:3}}>
@@ -712,7 +749,7 @@ const UserField = (props) => {
                         onChange={ handleChange }
                     />
                 </FormControl>
-                <FormHelperText error={error}>{error}</FormHelperText>
+                <FormHelperText error={error?.length > 0}>{error}</FormHelperText>
             </Box>
         </Grid>
     )
@@ -793,7 +830,7 @@ const FilterField = (props) => {
                     }
                 </Select>
             </FormControl>
-            <FormHelperText error={error}>{error}</FormHelperText>
+            <FormHelperText error={error?.length > 0}>{error}</FormHelperText>
         </Box>
     </Grid>
   )
@@ -872,6 +909,7 @@ const mapStateToProps = state => ({
   newUser: state?.admin?.newUser,
   companySettings: state?.admin?.companySettings,
   currentDepartment: state?.companySettings?.currentDepartment,
+  currentDesignation: state?.companySettings?.currentDesignation,
   companyNameOptions: state?.register?.companyNameOptions ?? [],
   fileInput: state?.admin?.fileInput,
   addUserDetails: state?.admin?.addUserDetails ?? false,
